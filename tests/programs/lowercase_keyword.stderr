@@ -1,0 +1,2 @@
+lowercase_keyword.ars:1:5: syntax error: expected `;` after the expression, found identifier `x`
+  hint: keywords are written in uppercase: `LET`

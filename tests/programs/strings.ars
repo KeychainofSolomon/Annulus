@@ -1,0 +1,6 @@
+LET greeting = "hello";
+MANIFEST greeting;
+MANIFEST "two
+lines";
+PRINT greeting == "hello";
+PRINT "" == "";

@@ -1,0 +1,3 @@
+PRINT 1 == "1";
+PRINT TRUE == 1;
+PRINT FALSE == FALSE;

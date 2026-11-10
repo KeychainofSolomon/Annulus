@@ -1,0 +1,1 @@
+type_error.ars:1:11: runtime error: operator `+` requires integer operands, found string and string

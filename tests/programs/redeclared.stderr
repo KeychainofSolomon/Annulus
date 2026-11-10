@@ -1,0 +1,2 @@
+redeclared.ars:2:5: name error: `a` is already declared
+  hint: declarations are immutable; `a` was first declared at 1:5

@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.ars -text
+*.stdout -text
+*.stderr -text
+*.status -text

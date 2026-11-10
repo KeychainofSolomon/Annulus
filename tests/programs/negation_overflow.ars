@@ -1,0 +1,2 @@
+LET floor = -9223372036854775808;
+PRINT -floor;

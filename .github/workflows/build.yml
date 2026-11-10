@@ -1,28 +1,90 @@
 name: build
+
 on:
   push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
   workflow_dispatch:
+
 permissions:
   contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_TOOLCHAIN: "1.97.0"
+
 jobs:
-  build:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+          components: clippy, rustfmt
+      - run: cargo fmt --check
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked
+      - run: cargo test --locked --release
+
+  reproducibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: first
+      - uses: actions/checkout@v4
+        with:
+          path: second
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+      - run: cargo build --locked --release
+        working-directory: first
+      - run: cargo build --locked --release
+        working-directory: second
+      - run: cmp first/target/release/ars-magna second/target/release/ars-magna
+
+  package:
+    needs: [verify, reproducibility]
     strategy:
       matrix:
         include:
           - os: windows-latest
             target: x86_64-pc-windows-msvc
+            built: ars-magna.exe
             artifact: ars-magna-windows-x86_64.exe
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
+            built: ars-magna
             artifact: ars-magna-linux-x86_64
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
           targets: ${{ matrix.target }}
-      - run: cargo build --release --target ${{ matrix.target }}
+      - run: cargo build --locked --release --target ${{ matrix.target }}
+      - run: |
+          mkdir dist
+          cp "target/${{ matrix.target }}/release/${{ matrix.built }}" "dist/${{ matrix.artifact }}"
+          ./dist/${{ matrix.artifact }} --version
+          ./dist/${{ matrix.artifact }} examples/first_light.ars | diff - examples/first_light.stdout
+          ./dist/${{ matrix.artifact }} examples/logic.ars | diff - examples/logic.stdout
+          cd dist && sha256sum "${{ matrix.artifact }}" > "${{ matrix.artifact }}.sha256"
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: target/${{ matrix.target }}/release/ars-magna*
+          path: |
+            dist/${{ matrix.artifact }}
+            dist/${{ matrix.artifact }}.sha256
+          if-no-files-found: error

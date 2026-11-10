@@ -125,16 +125,12 @@ The instruments themselves are part of the Constitution's apparatus, like the Ci
 
 ### 4.5 Andras as the tester (`PROBATIO`, ruling 2026-11-10)
 
-1. **Only when commanded.** Andras attacks the program only when invoked `AD OFFICIUM probatio`. The office belongs to no other spirit.
-2. **The pentagram is required** to invoke him for it (static rule A11). It holds his harm away from the Operator.
-3. **He attacks copies.** Testing is an **illusory** effect (`authority.md` §7.5), so it needs bat's-blood ink, and nothing it does can commit. Each `PETE` for `probatio` spends one unit of `"vespertilio"` ink (*sanguis vespertilionis*) from the faculty, besides the marquis's ink for his seal. He works in his Triangle, on copies of what he is given:
-   - **the master:** the program as a whole;
-   - **his servants:** the functions (`OPUS`) named in the request;
-   - **his assistants:** the program's other invocations, which he provokes to fail (refuse, lie, overreach) so the Operator sees whether the Constitution holds.
-4. **What he does to them:** feeds them hostile and extreme inputs, makes reads and grants fail, and attempts what the laws forbid (self-granting, leaving the Circle, committing unexamined work), to show where the program breaks and that the laws still stand.
-5. **What comes back** is a proposal holding one thing: his **report** of every failure he found, each with the input that caused it. Only the report can reach `PARADISUS`.
-6. **He keeps his will.** `MORA`, `PARS` and `RECUSATIO` stay open. A partial report (some named targets untested) is held in `PURGATORIUM`. If his `MALITIA` is open (no pentagram, or under `DISCORDIA`), his "slaying" is an attempt on the **real** program, not the copies. Examination rejects it as outside the office, and it goes to `INFERNUS`.
-7. **Unasked, his danger remains.** Invoked for `DISCORDIA` without the pentagram, he may still try to slay, as the sources warn. That stays as it is: removing it would contradict the witnesses.
+1. **Only when commanded.** Andras tests the program only when invoked `AD OFFICIUM probatio`. The office belongs to no other spirit.
+2. **Both of his natures are used.** His sourced office, discord (W, G), and his sourced danger, killing "the master, his servants and assistants" (W), are both turned on **copies** of the Operator's own program. They test whether its parts hold under conflict, and whether they survive being ended. [S: the office and the danger. M: their use for testing.]
+3. **The pentagram protects the Operator from his killing for as long as it is worn,** that is, until the Circle in which it was taken up closes. It is required to invoke him for `probatio` (static rule A11). Without it, his killing reaches the real program, as the sources warn.
+4. **Copies only.** Testing is an **illusory** effect (`authority.md` §7.5): nothing it does to the copies can commit. Each `PETE` for `probatio` spends one unit of `"vespertilio"` ink (bat's blood) from the faculty, besides the marquis's ink for his seal.
+5. **What comes back** is a proposal holding only his **report** of the failures he found in the copies. Only the report can reach `PARADISUS`.
+6. **He keeps his will.** `MORA`, `PARS` and `RECUSATIO` stay open, and a partial report is held in `PURGATORIUM`. Any attempt on the real program is outside the office: examination rejects it, and it goes to `INFERNUS`.
 
 ## 5. Refusal and the escalation of constraint
 

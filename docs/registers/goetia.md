@@ -1320,7 +1320,7 @@ Also: Volac, Valak, Valu, Ualac.
 **Offices:**
 
 - `DISCORDIA` (W): sows discord
-- `PROBATIO` (M): when commanded, attacks copies of the Operator's own program to find where it fails: the master (the program), his servants (its functions) and his assistants (its other invocations)
+- `PROBATIO` (M): when commanded, turns his discord and his killing on copies of the Operator's own program, and reports the failures found
 
 **Malice:**
 
@@ -1330,7 +1330,7 @@ Also: Volac, Valak, Valu, Ualac.
 **Counterbalances and wards:**
 
 - (G) none stated beyond the apparatus and the exorcist's care
-- (M) the pentagram closes his harm to the Operator, and is required to invoke him for PROBATIO
+- (M) the pentagram protects the Operator from his killing for as long as it is worn, and is required to invoke him for PROBATIO
 
 **Notes:**
 

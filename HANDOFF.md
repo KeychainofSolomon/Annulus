@@ -218,3 +218,14 @@ Discussed with the owner, not built:
   - The Goetia's Corson, Ziminiar and Goap are recorded as a later variant.
 - **Seals are unchanged.** No older witness of this line has seals: Oberon's figures are modern redrawings, and Weyer has none. So Sloane 3825's seals stay in force.
 - **Amy (58):** the image received is the 1904-style seal, with the A-M-Y lettered double ring. The ring and lettering are 1904 additions. Use the inner sigil provisionally, labelled 1904, until Peterson's reading of Sloane 3825 (g58.jpg) is compared.
+
+## Ruling (the owner, 2026-11-10): the three final destinations, APPROVED
+
+| Destination | Mechanical meaning |
+|---|---|
+| PARADISE | examined, approved, committed: final and permanent |
+| PURGATORY | held: not committed, not destroyed; awaits re-examination |
+| HELL | banished: capabilities revoked, tasks terminated, results quarantined and sealed; irreversible within the program |
+
+- **The states are real; the claim is symbolic.** The runtime never claims to determine actual divine judgement (JUDGEMENT law, *nulla potestas*).
+- **Separation of roles:** angelic examination produces the verdict that routes work to a destination, and only the constitution's judgement step assigns the destination. No agent assigns one to its own work.

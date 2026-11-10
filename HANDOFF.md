@@ -133,3 +133,22 @@ Discussed with the owner, not built:
 - Primary sources to use instead: the 1575 Basel first edition (a Wellcome Collection download exists: wellcomecollection.org/works/r4hhxh28) and Peterson's Latin/English edition (esotericarchives.com/solomon/arbatel.htm).
 - The *Arbatel* (1575) predates the Lemegeton manuscripts.
 - Where the Olympic spirits fit in Annulus is undecided.
+
+## Update: old-web sources found (deep search)
+
+- **Twilit Grotto / Esoteric Archives, original .GIFs** (esotericarchives.com/gifs/index.html), Joseph Peterson's 1990s collection:
+  - a 72-seal Goetic table;
+  - Goetia triangle, hexagram, pentagram, ring and seal of Solomon, brass vessel;
+  - magic circles credited per manuscript (Add. 10862, Sloane 3847, M276, Kings 288, Lansdowne 1202, Sloane 3645);
+  - Hebrew *Mafteah Shelomoh* pentacles (Or. 14759);
+  - Lansdowne 1202/1203 seals;
+  - the Olympic spirits (Arbatel) and the "juratus" planetary seals;
+  - a 1620 magical calendar;
+  - Bruno's planetary images (1591).
+  - Per-image provenance is uneven: the Goetic table cites no manuscript.
+- **fromoldbooks.org/Mathers-Goetia/**: scans of the 1904 Goetia, possibly higher resolution than the Gutenberg plates.
+- **sacred-texts.com/grim/** (1999): Goetia, Arbatel, Key of Solomon texts.
+- **tarrdaniel.com Thelemagick / Hermetic Magick library**: an old-style mirror site.
+- **Shem HaMephorash seals:** no primary source online yet; 360headsoftheearthzone.com and a wizardforums thread point toward Rudd's manuscripts.
+- **Graveworm Arbatel**: see above.
+- Wayback Machine snapshots of GeoCities and Angelfire are not searchable with the available tools. The owner can browse them himself, or the built-in browser can be used.

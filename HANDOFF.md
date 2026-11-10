@@ -110,3 +110,19 @@ Discussed with the owner, not built:
 - Read the remaining unread mottos and names listed in the angelic-hierarchy document.
 - Add the Goetia former-order data to a sourced demonic-hierarchy document. Offered to the owner, not yet confirmed.
 - Apply the Annulus rename. Write founding principles 2–7 into the spec. Update `ROADMAP.md` to the 18-step sequence of the definitive handoff, which adds: an instruction-set spec, authority analysis, audit records, four error classes, and a native backend.
+
+## Update: Key of Solomon PDF examined
+
+- The PDF is the revised Mathers edition with figures replaced from manuscripts.
+- **All 44 planetary pentacles** are present: figures 11–54 on PDF pages 55–99 (Saturn 7, Jupiter 7, Mars 7, Sun 7, Venus 5, Mercury 5, Moon 6).
+- **Source manuscript stated for 16:**
+  - Saturn 3–7: M276 and Kings 288;
+  - Jupiter 1–7: all M276;
+  - Mars 1–4: Lansdowne 1202, Harley 3981, Sloane 3091 ×2.
+- **Not stated for 28:** Saturn 1–2, Mars 5–7, and all of Sun, Venus, Mercury and Moon. These are probably Mathers' own redrawings.
+- Some figures are manuscript photographs (grey, faint, e.g. Saturn 1); others are clean line drawings (e.g. Mars 1).
+- Image sizes are 300–640 px. The geometry is traceable. The ring lettering (Hebrew and Latin) is roughly 10 px tall, so faithful lettering is the weak point.
+- Extract images with `pdfimages -f N -l N -png`. Page-to-figure table: figure = page − 44, except page 55–56 (both figure 11).
+- Open questions for the owner:
+  - Is the stated-source subset enough?
+  - Which Key of Solomon manuscript counts as "most authentic"? Not yet researched.

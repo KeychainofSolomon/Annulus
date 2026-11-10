@@ -265,3 +265,8 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - Candaria (L.2.f.46): the contents give no count of them.
 - **guideangel.com:** a name-reference site, with no seals and no manuscripts.
 - **NEXT (the owner):** download from the Kassel viewer: p. 155 (the four kings), the Seal figure L.4.f.22, the candaria L.2.f.46 and the Semamphoras table L.2.f.14. The viewer can't be reached from this workspace.
+- 2026-11-10, Michael's sigil (bookofsymbols.wordpress.com, a modern clean redrawing; consulted, not kept in the repository).
+  - **Its form:** a looped baseline, a solid trefoil hanging beneath it, a step, a zigzag, and crossed strokes.
+  - **Identification, from memory, not yet checked against an image:** the *Heptameron*'s Sunday character for Michael (also in Agrippa's Fourth Book and Barrett 1801).
+  - **To verify:** compare against an early printing of the *Heptameron* to rule out Barrett's Anael/Michael swap.
+  - **Under the per-work rule:** the *Heptameron* is its own work. Michael rules Sunday/the Sun there, while the *Liber iuratus* gives the Sun to Raphael. Both are recorded.

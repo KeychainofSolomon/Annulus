@@ -73,3 +73,18 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - Certainty: catalogue record.
   - Open lead: view f. 32 and the sigil pages to check for early versions of the Goetic seals. The owner attaches images from the Wellcome viewer.
 - 2026-11-10 | MS 110 link | works/jaunz2nx returns 404 for the owner (dead link). Working record: wellcomecollection.org/works/p8bhyjys. Image viewer: wellcomecollection.org/works/afsfdgzh/items
+
+## Wellcome MS 110 examined (`thething.pdf`, 257 images) — 2026-11-10
+
+- **Drawing pages:** 27, 31, 38, 48–51, 58–59, 68, 74, 82, 89, 92, 134–137, 162–165, 169, 179, 181, 191–193, 198–200, 205, 207–210, 212, 214–215, 224, 232, 234–236. Most are circles, triangles and talisman grids.
+
+| Image | Content |
+|---|---|
+| 27 | characters of the **four kings**: Oriens, "Pamon" (Paimon), Egin, "Amamon"; cast "on a Thursday in the hour of Jupiter"; a pentagram "Salomons seale" |
+| 31 | framed square of king characters (?) |
+| 74 (= **f. 30**, blue foliation) | ***"signa planetarum"***: characters of Saturn, Jupiter, Mars, Sol, Venus, Mercury, Luna |
+| 235 | characters of the 12 zodiac signs; "these be the four principal kings of the firmament": East Oriens, West Paimon, **North Amaimon, South Egin** |
+
+- **Disagreement between witnesses:** Oberon (Folger V.b.26) has Amaymon in the **south** and Egin in the **north**; MS 110 has the reverse. Keep both, with attribution.
+- **No 72-spirit Goetic seal set found** at catalogue level. The page cited for "Gorsyer" (f. 32 ≈ image 78) is text.
+- **Open decision for the owner:** MS 110 (late 16th c.) gives an older **character for Paimon**, as one of the four kings, unlike his Goetic seal. Under the layered rule: is it the same item (it supersedes) or a different sign of the same spirit (both stand)?

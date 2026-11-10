@@ -72,3 +72,4 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - **Digitised: 256 images, Public Domain Mark.**
   - Certainty: catalogue record.
   - Open lead: view f. 32 and the sigil pages to check for early versions of the Goetic seals. The owner attaches images from the Wellcome viewer.
+- 2026-11-10 | MS 110 link | works/jaunz2nx returns 404 for the owner (dead link). Working record: wellcomecollection.org/works/p8bhyjys. Image viewer: wellcomecollection.org/works/afsfdgzh/items

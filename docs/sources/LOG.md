@@ -138,3 +138,17 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **Open:** verify the pairing against a facsimile of Harley 6483.
 - **Open:** collate against Sloane 3825 frame 41L, a 72-name table not yet transcribed.
 - **Note:** the *Testament of Solomon* question ("by what angel thou art frustrated") comes from a separate, much older work with its own, different demon–angel pairs. Using it as the motif is fine; its pairs are not Rudd's.
+
+## Wellcome MS 4662: pentacles of the 72 Shem angels (received 2026-11-10)
+
+- **What we have:** Vârtejaru's blog compilation (2020), 39 pages. It holds 72 seal images, cleaned up, with one angel name per seal in the manuscript's spelling. The common order begins Vehuiah, Jeliel, Sitael, ʿAlamiah, Mahasiah, Lalael, Achaiah, so it follows the common order at 5-7.
+- **The compiler re-sorted the seals into the "orthodox" angel order and dropped the page references.** The manuscript's own sequence and pages are not in this PDF.
+- **The manuscript (Wellcome catalogue):** late 18th c., French, 160 pp. Title: "Livre du Secret des Secrets ou la Clavicule de Salomon". The preface calls it "Secret des Secrets de Tozgraec". Thorndike II, 225-228. Public domain; 176 images online at wellcomecollection.org/works/j3ng8p39.
+- **Standing:** a separate work, not Rudd's. These are not Rudd's dual seals (Harley 6483). They stand as this manuscript's own angel pentacles, attributed.
+- **Provisional observation from thumbnails (verify):** several seals reuse the stock of Clavicula pentacles.
+  - "aala alda laga aga" matches 1446 P3 (Agla Alga Laga Agal).
+  - A 2×2 grid of syllables resembles 1446 P4.
+  - A bearded face resembles Mathers Sun 1.
+  - A Hebrew letter-square, a Hebrew hourglass, a hand on a banner and a lamb also appear.
+- **Lead:** "Tozgraec" = Toz Graecus. Ganell's SSM attributes the 72 names behind the *Liber iuratus* Seal to "Tot Grecus". Check whether these are the same tradition.
+- **To do:** fetch the Wellcome images to restore the manuscript's own order and pages.

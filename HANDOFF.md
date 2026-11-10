@@ -126,3 +126,10 @@ Discussed with the owner, not built:
 - Open questions for the owner:
   - Is the stated-source subset enough?
   - Which Key of Solomon manuscript counts as "most authentic"? Not yet researched.
+
+## Update: Olympic spirits (Arbatel, 1575)
+
+- The owner recalled an old occult site listing the Olympic spirits' sigils. It is probably **graveworm.com/arbatel/arb06.html**, a hand-coded 1990s-style site with `.gif` characters for Aratron, Bethor, Phaleg, Och, Hagith, Ophiel and Phul. Its translation is unnamed and the fidelity of its sigils is unverified.
+- Primary sources to use instead: the 1575 Basel first edition (a Wellcome Collection download exists: wellcomecollection.org/works/r4hhxh28) and Peterson's Latin/English edition (esotericarchives.com/solomon/arbatel.htm).
+- The *Arbatel* (1575) predates the Lemegeton manuscripts.
+- Where the Olympic spirits fit in Annulus is undecided.

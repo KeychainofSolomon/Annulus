@@ -53,6 +53,7 @@ The governing document is the owner's "Definitive Architecture and Engineering H
 - File extension: `.ann`.
 - `DIMITTE` (dismiss) and `RELEGA` (banish) are kept.
 - The "Definitive Architecture" re-attachment is not needed.
+- **Rank of a Goetic spirit comes from Sloane 3825** (with the seals and the metal table). Weyer's ranks are variants. Legions, names, offices and directions still come from the oldest *Officium* witness (Weyer where it speaks). See `docs/sources/occultist-explorer/CROSSCHECK.md` for the 8 legion corrections.
 
 ## Spec progress (step 3)
 

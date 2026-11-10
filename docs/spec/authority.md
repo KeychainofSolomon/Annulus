@@ -79,7 +79,7 @@ Each law is enforced by the compiler's authority analysis, by the VM, or by both
 | Rite | Work | Governing witness for the rite |
 |---|---|---|
 | `clavicula` | Key of Solomon | BnF Ital. 1524 (1446); later Key copies as additions |
-| `goetia` | Lemegeton Goetia, within the *Liber officiorum spirituum* line (ruling 2026-11-10) | for names, offices, legions and directions: the oldest *Officium* witness (Oberon c. 1577-83, Wellcome 110, Weyer); for seals: Sloane 3825 (1641+) |
+| `goetia` | Lemegeton Goetia, within the *Liber officiorum spirituum* line (ruling 2026-11-10) | for names, offices, legions and directions: the oldest *Officium* witness (Oberon c. 1577-83, Wellcome 110, Weyer); for seals, **ranks** and seal metals: Sloane 3825 (1641+) (ruling 2026-11-10: rank goes with the seal and the metal table, from one book; Weyer's ranks are kept as variants) |
 | `iuratus` | *Liber iuratus Honorii* | the text, as edited by Peterson; for the Seal drawing, Ganell SSM (L.4.f.22) |
 | `arbatel` | *Arbatel de magia veterum* | Basel 1575 |
 | `janua` | *Janua Magica Reserata* and the nine Keys | Sloane 3825 |

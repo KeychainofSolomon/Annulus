@@ -59,4 +59,13 @@ The ruling of 4.1 names names, offices, legions and directions, but **not rank**
 1. **Rank from Sloane 3825.** It is the same work as the metal table and the seals, so seal, rank and metal all come from one book. Weyer's ranks are recorded as variants.
 2. **Rank from Weyer**, like legions. Decarabia would then be a king and earl, and his seal gold or copper-and-silver, although Sloane 3825 draws and classes him as a marquis.
 
-Until the owner rules, the register uses reading 1, labelled provisional.
+**Ruling (the owner, 2026-11-10): reading 1.** Rank comes from Sloane 3825; Weyer's ranks are recorded as variants. Applied to the six spirits:
+
+| # | Spirit | Rank | Change from the app |
+|---|---|---|---|
+| 8 | Barbatos | duke | none |
+| 19 | Sallos | duke | none |
+| 25 | Glasya-Labolas | president | **drop "earl"**: it is a 1904 addition that would change his seal metal from Sloane's class, so it conflicts |
+| 44 | Shax | marquis | none |
+| 54 | Murmur | duke and earl | none |
+| 69 | Decarabia | marquis | none |

@@ -118,6 +118,7 @@ All [O].
 | `CONSTRINGE` … `PER NOMEN` | "bind … by the name" | constrains an invoked spirit by a divine name | [S] Belial: "constrained by Divine Power" (G); the Constraint (G) |
 | `APPELLA` | "call by name" | addresses the spirit by his name | [S] Asmoday: "speak his name" (W); "Art thou Asmoday?" (G) |
 | `VETA` | "forbid!" | commands the spirit to do no harm | [S] Focalor: "harms no one if so commanded" (W) |
+| `INVOCA REGEM` | "call upon the king" | invokes one of the four kings, to send a spirit under his power | [S] G Observations: "to be Invocated and Commanded to send such or such a Spirit"; The Invocation of the King (G); Weyer ch. III |
 
 The instruments are declined as Latin objects (`GERE ANULUM`), as `ATRAMENTO` is after `INSCRIBE`.
 
@@ -179,7 +180,7 @@ primary        = integer | string | "VERUM" | "FALSUM" | "NIHIL"
 sequence       = "[" , [ arguments ] , "]" ;
 
 rite_expression = invocation | request | seal | ink | name | entry ;
-invocation     = "INVOCA" , entity , "AD" , "OFFICIUM" , identifier ;
+invocation     = "INVOCA" , ( "REGEM" , identifier | entity , "AD" , "OFFICIUM" , identifier ) ;
 request        = "PETE" , identifier , "(" , [ arguments ] , ")" ;
 seal           = "SIGILLUM" , entity ;
 ink            = "ATRAMENTUM" , string ;                 (* draws raw ink of that class *)

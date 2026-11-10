@@ -139,7 +139,7 @@ The instruments themselves are part of the Constitution's apparatus, like the Ci
 1. **Coniuratio:** the conjuration to call forth.
 2. **Coniuratio secunda:** the second conjuration.
 3. **Constrictio:** the constraint.
-4. **Invocatio regis:** the invocation of the king he is under.
+4. **Invocatio regis:** the invocation of the king he is under (`INVOCA REGEM`; skipped where his king is not stated).
 5. **Catena spirituum:** "the General Curse, called the Spirits' Chain, against all Spirits that rebel".
 6. **Ignis:** the conjuration of the fire. The spirit's seal, bound in a box, is held over the fire.
 7. **Maledictio maior:** the greater curse, which is `RELEGA`: banishment, with results to the Vessel.

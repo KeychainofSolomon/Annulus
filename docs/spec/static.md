@@ -116,6 +116,10 @@ An entry outside the range, a label not in the rite's register, or a reference t
 
 4.5a **The apparatus.** `GERE`, `OFFER`, `CONSTRINGE`, `APPELLA` and `VETA` are rite operations: only inside a Circle (§4.1). An instrument taken up lasts until its Circle closes. Where a spirit **requires** an instrument (`spirits.md` §4.4: Beleth, Berith, Astaroth; Andras for `probatio`, §4.5), it MUST be taken up before `INVOCA`, on every path (A11). `PETE` to Andras for `probatio` takes the names of the program's functions as `VERBUM` arguments; each MUST name an `OPUS` of the program. The name in `CONSTRINGE … PER NOMEN` follows the rule for `NOMEN` (`grammar.md` §5, item 4).
 
+4.5b **The kings.** `INVOCA REGEM r` names a king of the Circle's rite (`docs/registers/reges.md`). It is defined for `goetia` and `rudd` (which shares the Goetia's kings); in other rites it is an error (A3). It yields `NIHIL`: the king does not appear, and nothing is released. [S: the kings "are not to be called forth except it be upon Great Occasions; but are to be Invocated and Commanded to send" (G).]
+
+**A President needs his king.** `INVOCA` of a spirit whose only rank is President requires `INVOCA REGEM` of the king he obeys, earlier in the same Circle, on every path (A13). [S: Weyer ch. III, "non potest constringi, nisi rex cui paret, invocaretur", ruling 2026-11-10.] The king a spirit obeys is the one the register names (`reges.md`: so far only Amaymon, for Agares, Asmoday, Gaap and Seere). A President whose king is not stated cannot be invoked (A13). Spirits of two ranks are not bound by this rule when invoked within their other rank's hours.
+
 4.6 **OFFICE.** The identifier after `AD OFFICIUM` MUST name one of the spirit's office kinds in the rite (`docs/registers/goetia.md`); an office marked `NULLUM` cannot be invoked. Each office has a fixed signature: what `PETE` may pass, and what the proposal will contain. The arguments to `PETE` MUST match it. The offices register, mapping each traditional office to computational work, is still to be written: open item §7.
 
 4.7 **Rite values are bound to their Circle.** Invocations, proposals, seals, ink, entries and divine names MUST stay in the Circle that produced them. They MUST NOT be:
@@ -189,6 +193,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 | A10 | invocation without the spirit's operative seal |
 | A11 | invocation without a required instrument |
 | A12 | a name cited as divine that is not a recorded form of a divine name |
+| A13 | a President invoked without his king, or whose king is not stated |
 
 ## 7. Open items
 

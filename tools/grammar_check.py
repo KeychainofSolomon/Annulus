@@ -9,7 +9,7 @@ KEYWORDS = {
     "SIGILLUM", "INSCRIBE", "ATRAMENTO", "ATRAMENTUM", "CONSECRA", "EXAMINA",
     "PARADISUS", "PURGATORIUM", "INFERNUS", "VADE", "PACE", "DIMITTE", "RELEGA",
     "NOMEN", "SPIRITUS", "ANGELUS",
-    "GERE", "ANULUM", "VIRGAM", "HEXAGRAMMUM", "PENTAGRAMMUM", "OFFER", "CONSTRINGE", "APPELLA", "VETA",
+    "GERE", "ANULUM", "VIRGAM", "HEXAGRAMMUM", "PENTAGRAMMUM", "OFFER", "CONSTRINGE", "APPELLA", "VETA", "REGEM",
     "HORA", "DIES", "ADVOCA", "TRIANGULUM", "VAS",
 }
 RESERVED = {"HORA", "DIES", "ADVOCA", "TRIANGULUM", "VAS"}
@@ -416,6 +416,9 @@ class Parser:
             self.arguments_until("]")
             return False
         if self.accept("INVOCA"):
+            if self.accept("REGEM"):
+                self.expect_kind("identifier")
+                return False
             self.entity()
             self.expect("AD")
             self.expect("OFFICIUM")

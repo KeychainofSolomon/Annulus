@@ -53,6 +53,13 @@ This part says what happens **while a program runs**. A program reaches this poi
 
 **Illusory and veiled work** spends bat's-blood ink, class `"vespertilio"`, one unit per request. Andras's testing is the first such office (`spirits.md` §4.5).
 
+**The kings at runtime.** `INVOCA REGEM r` is refused (class 2) outside the four kings' hours: "à tertia hora usque ad meridiem, à nona hora usque ad vesperas" (Weyer ch. III). Within them, the runtime performs the Invocation of the King in its source form, by the names it cites (El, Iehovah Tetragrammaton, Primeumaton, all in `nomina.md`), and records it. It has three effects for the rest of the Circle:
+- a President under that king may be invoked (static rule A13), though still never at nightfall;
+- escalation step 4, the invocation of the king, is already done for every spirit under him;
+- nothing more. The invocation *asks* the king to send the spirit "without harm" and "to answer truly and faithfully", but no witness says the request is granted, so it closes no outcome of the will. After it, "he will come without doubt, if not at the first or second time of rehearsing" (G): `RECUSATIO` stays open until the Spirits' Chain.
+
+Escalation step 4 for a spirit whose king is not stated is recorded as skipped: "he is bound in chains in hell, and … not in the custody of his King" is the sources' own case for going straight on to the Chain (G).
+
 ## 5. Invocation and the will
 
 5.1 **The time window is checked first.** `INVOCA` is refused (class 2) outside the spirit's binding hours by rank, or on a day of the Moon's age not allowed (`authority.md` §8.3). How the runtime reads the conditions:
@@ -67,7 +74,7 @@ This part says what happens **while a program runs**. A program reaches this poi
 | the Moon's age 2, 4, 6, 8, 10, 12, 14 | whole days since the astronomical new moon |
 | Earls: "in woods or places where men resort not, or where no noise is" | **[O, for approval]** no other invocation is open in the program |
 | Dukes: "in clear weather" | **[O, for approval]** no `TEMPESTAS` effect is active |
-| Presidents, at any hour (Weyer, ruling 2026-11-10) | refused unless the king he obeys is invoked, and always at nightfall. Until the syntax for invoking a king exists, every pure President is refused. The witnesses name the king for only four spirits (Agares, Asmoday, Gaap, Seere: Amaymon); see `docs/registers/reges.md` |
+| Presidents, at any hour (Weyer, ruling 2026-11-10) | refused unless the king he obeys is invoked, and always at nightfall. A pure President is refused unless `INVOCA REGEM` of his king came first in the Circle. The witnesses name the king for only four spirits (Agares, Asmoday, Gaap, Seere: Amaymon); see `docs/registers/reges.md` |
 
 A spirit of two ranks may be invoked when **either** rank's window is open. [O; the mixed-rank question stays open]
 

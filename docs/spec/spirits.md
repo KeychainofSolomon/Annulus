@@ -47,6 +47,19 @@ The register gives each spirit one veracity class. The class names are [O]; the 
 
 **The Triangle in Annulus is always present** (`authority.md` §6.4). So triangle-compelled spirits answer truly whenever properly invoked. Their lies become possible only where a rite's apparatus is incomplete, for instance where a spirit's own required figure (Furfur's triangle, Wellcome 110) is missing.
 
+### 3.1 What a lie is
+
+A lie takes one of two forms, depending on the kind of office. [O: the mechanism.]
+
+1. **Lies of information.** These arise in the offices that tell: `PRAETERITA`, `PRAESENTIA`, `FUTURA`, `RESPONSA`, `OCCULTA`, `THESAURI`, `AMISSA`. The true answer is replaced by a different well-formed value of the same type, drawn like any choice of the will (`dynamic.md` §5.4). Nothing in its form betrays it, so examination cannot catch it. Only constraint closes it, as in the sources.
+2. **Lies of work.** These arise in every other office. A lie can only be a false account of what the proposal does. The examiner inspects the proposal's actual effects, so the false account is caught: `REJECT`, and the proposal goes to `INFERNUS`.
+
+### 3.2 Belial and Berith
+
+- **Berith** tells things past, present and to come, so his lies are of the first kind. The ring of art closes `MENDACIUM` for **one hour** from its use; after the hour it is open again. [S: "compelled for an hour by a ring of art", W.]
+- **Belial's** offices all do work (dignities, favour, familiars), so his lies are of the second kind, and examination catches them. `MENDACIUM` closes only when **both** conditions are met: offerings, sacrifices and gifts, and then constraint by divine power. [S: W and G agree on both.]
+- **Until the syntax for offerings, the ring and the divine-name constraint exists,** their compelling conditions cannot be met. Every answer from either is held in `PURGATORIUM`. It is never committed, and never readable by the program, whether it happens to be true or not.
+
 ## 4. Malice and its counterbalances
 
 4.1 **Malice is sourced, not invented.** A spirit has `MALITIA` open only for harms the witnesses give him: Focalor slays and drowns; Vepar and Sabnock rot wounds; Andras "will slay both him and his fellows"; Valefar draws his familiars on "until they are brought to the gallows" (W); Malphas "deceives all sacrificers" (W).

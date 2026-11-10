@@ -72,7 +72,7 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 | `OBSEQUIUM` | the requested work, complete and true |
 | `MORA` | the same, delivered only after a delay the runtime records |
 | `PARS` | part of the requested work |
-| `MENDACIUM` | an answer that may be false. Only spirits whose compelling condition is unmet. In Annulus the Triangle is always present, so triangle-compelled spirits (Furfur, Shax, Haures) cannot choose it. Belial and Berith can, until the syntax for offerings and the ring exists (`grammar.md` reserved words) |
+| `MENDACIUM` | a lie, in one of the two forms of `spirits.md` §3.1: a substitute answer of the same form (offices that tell), or a false account of the work (other offices, caught by examination). Only spirits whose compelling condition is unmet can choose it. In Annulus the Triangle is always present, so triangle-compelled spirits (Furfur, Shax, Haures) cannot. Belial and Berith can, until the syntax for offerings and the ring exists (`spirits.md` §3.2) |
 | `MALITIA` | the requested work **plus** a harmful effect of the spirit's own office, unasked |
 | `RECUSATIO` | nothing; escalation resumes at the constraint (step 3) |
 

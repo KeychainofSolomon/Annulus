@@ -100,3 +100,21 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - Link: http://mdz-nbn-resolving.de/urn:nbn:de:bvb:12-bsb10207003-0 (via deutsche-digitale-bibliothek.de).
   - The Wellcome record (works/r4hhxh28) is not fetchable from here; dead end for the tools.
   - Also: booksofmagick.com/wp-content/uploads/2020/08/Arbatel-de-magia-veterum-color.pdf, a colour scan with edition unverified.
+
+## Arbatel 1575 (BSB Res/L.eleg.m. 1350 m), received 2026-11-10
+
+- **File:** `bsb10207003.pdf`, 187 images. The text layer is useless (offset-encoded, OCR missing).
+- **All seven Olympic characters are printed as woodcuts, clear and traceable:**
+
+| Spirit | Planet | Printed page | PDF page |
+|---|---|---|---|
+| Aratron | Saturn | 26 | 71 |
+| Bethor | Jupiter | 27 | 72 |
+| Phaleg | Mars | 28 | 73 |
+| Och | Sun | 29 | 74 |
+| Hagith | Venus | 30 (top) | 75 |
+| Ophiel | Mercury | 30 (bottom) | 75 |
+| Phul | Moon | 31 | 76 |
+
+- Each comes with its legions, kings, princes and offices as printed.
+- Status: the **oldest witness** for the Olympic spirits; it supersedes graveworm and Twilit Grotto.

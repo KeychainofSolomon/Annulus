@@ -206,3 +206,15 @@ Discussed with the owner, not built:
 - **The *Liber iuratus* ban on invoking the nine orders** binds only the *Liber iuratus*. The *Janua*'s nine Keys stand.
 - **The "Paymone angelus Mercurii" question is moot.** It is a different work from the Goetia.
 - **Open:** does the Goetia count as a later copy of the *Liber officiorum spirituum* (via Weyer), or as a separate work? This decides whether 16th-century offices and legion counts override the Goetia's.
+
+## Ruling (the owner, 2026-11-10): the Goetia counts as part of the *Liber officiorum spirituum* line
+
+- **The Goetia belongs to the same work** as the *Officium* tradition: Weyer, Oberon's Officium, Wellcome 110's Offitium, Sloane 3853 ff. 257-259.
+- **So within that line, the older witness wins** on name forms, offices, legion counts and directions, where the identification is secure.
+  - Example: Morax has 36 legions (Wellcome 110 and Weyer), against 30 in the Goetia.
+  - Example: Naberius appears as a raven, not a crane.
+  - Example: Beleth carries men from region to region (Wellcome 110); that ability stands.
+- **The four kings in this line:** Oberon's Officium (c. 1577-83) gives Oriens E, Paymon W, Amaymon S, Egin N. **The Goetia's Amaymon-in-the-East is superseded.**
+  - The Goetia's Corson, Ziminiar and Goap are recorded as a later variant.
+- **Seals are unchanged.** No older witness of this line has seals: Oberon's figures are modern redrawings, and Weyer has none. So Sloane 3825's seals stay in force.
+- **Amy (58):** the image received is the 1904-style seal, with the A-M-Y lettered double ring. The ring and lettering are 1904 additions. Use the inner sigil provisionally, labelled 1904, until Peterson's reading of Sloane 3825 (g58.jpg) is compared.

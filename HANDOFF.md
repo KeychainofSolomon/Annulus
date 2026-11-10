@@ -1,0 +1,112 @@
+# Session handoff: Annulus (formerly ARS MAGNA)
+
+Written 2026-11-10 for the next Claude session. Read this first, then `docs/STATUS.md`, `docs/ROADMAP.md` and `docs/sources/sloane-3825/angelic-hierarchy.md`.
+
+## The person
+
+The owner. Writes the design handoffs himself.
+
+## The project
+
+A real programming language whose authority and execution model is the Solomonic framework: circles, spirits, angelic examination, licence to depart and banishment, mapped onto capability security, sandboxing and transactional effects.
+
+The governing document is the owner's "Definitive Architecture and Engineering Handoff", 18 sections. **Ask him to re-attach it.** Key points:
+- The language is implemented in Rust, but Rust must not leak into the language.
+- Bytecode and VM are the reference execution model; a native x86-64 backend comes later.
+- Eight foundational laws: ORIGIN, SOVEREIGNTY, DECLARATION, OFFICE, CONTAINMENT, EXAMINATION, RELEASE, JUDGEMENT.
+- Axiom: *nulla potestas sibi ipsi oritur* (no authority is self-originating).
+- 14 Latin subsystems, from LOGOS to EXAMINATIO.
+- 18-step development sequence.
+- The implementation source must contain no comments.
+
+## Decisions the owner has made
+
+1. **Name: Annulus**, for the Ring of Solomon. The rename is **not yet applied** in the code: the crate, binaries and `.ars` extension still say ars-magna.
+2. **Zero annotations in Annulus programs.** No comment syntax exists; the lexer rejects it.
+3. **"Fully obfuscated, like the real world until you look closer."** Agreed design:
+   - opaque surface, fully lawful depth;
+   - obscure but never ambiguous;
+   - a compiler-generated "reveal" reading (the REVELATIO subsystem);
+   - examination and audit always operate on the revealed form.
+
+   The owner explicitly commits to holding this.
+4. **True sigils, only if they faithfully replicate Solomon's seals.** Otherwise the feature is moot.
+5. **Seals cover only the authority layer.** Ordinary code needs a different veil.
+   - Planetary signs were rejected for this: in Sloane 3825 they belong to the angelic hierarchy.
+   - The replacement veil is still undecided.
+6. **The most authentic source wins:** the oldest manuscript.
+   - Sloane 3825 is the authority; it is Peterson's base text, first half of the 1600s.
+   - For the doubled seals, use one version from the most authentic period. Bune is settled: figure 31, "the least is best" per Sloane 3648 and 2731.
+7. **Stay true to the source material, no matter what.**
+   - No sanitising of names, seals or offices.
+   - The protections (circle, triangle, examination, licence to depart) are equally mandatory.
+   - Disagreements between sources are kept, with attribution.
+   - Inventions are always labelled as original.
+
+## Still open: ask the owner
+
+- Keyword language (English, Latin or mixed) and casing; whether to keep the duplicate spellings `LET`/`DECLARE` and `PRINT`/`MANIFEST`.
+- Mixed-type equality: keep `false`, or make it a type error? Recommendation: type error.
+- Proposed meaning of the final destinations: PARADISE = fully examined and committed; PURGATORY = held for re-examination; HELL = banished and quarantined. Awaiting approval.
+- Licence for the project.
+- Seal artwork: the 1904 plates (with lettered double rings) or Sloane 3825's bare sigils. His fidelity rule points to Sloane 3825.
+- Do type declarations count as forbidden "annotations"? Recommendation: required on public interfaces.
+- What Annulus is ultimately for: real programs, a working model of Solomonic magic, or his Mage setting. Asked twice; no answer yet.
+- How the 72 spirits' offices map to computational jobs. His Occultist Explorer project already gave all 72 real functions; it may be reusable.
+
+## State of the code (v0.2.1, Milestone 1 complete)
+
+- The repository is this folder (git). The first commit is the untouched v0.2 import; the second is Milestone 1.
+- **Milestone 1 delivered:**
+  - code split into modules with source positions;
+  - all audited defects fixed;
+  - 50 tests, all passing;
+  - pinned Rust 1.97.0, `Cargo.lock`;
+  - Linux build verified byte-identical across folders;
+  - CI workflow written but **never run**;
+  - Windows .exe **never built**.
+- **Local build note:** the environment had no network and no Windows target. Use `RUSTUP_TOOLCHAIN=stable cargo … --offline`.
+- **Next engineering step:** the formal spec (grammar plus authority model), then one end-to-end slice: one circle, one spirit with one office, invoke, propose, angel examines, commit or banish, running in the VM with tests. Recommend small verified steps, never one big pass.
+
+## Proposed demon and history model
+
+Discussed with the owner, not built:
+- Spirits are untrusted workers: they do authority-sensitive effects inside the Triangle of Art, which is the sandbox.
+- Angels examine. The 72 Shem HaMephorash angels are the natural counterpart examiners.
+- No agent approves its own work.
+- Ranks bound authority; legions bound the number of child tasks.
+- **HISTORIA** is an immutable chronicle built into the runtime (Creation, War, Fall), read-only to programs.
+  - Origin never changes, even for the fallen.
+  - Allegiance and jurisdiction changed at the Fall.
+  - Former orders come from the Goetia: Barbatos "of the Order of Virtues, of which some part he retaineth still"; Paimon and Beleth "is of"; Agares, Gaap and Raum "was of"; Camio, Murmur; Belial "created next after Lucifer… fell first"; Marchosias, Phenex and Focalor hope to return "to the Seventh Throne".
+  - Each fact records who attests it: scripture, the narrator, or the spirit's own unverified claim.
+- MILITIA, under Michael, owns banishment.
+- Optional invention, to be labelled as such: a spirit is examined by the angelic order it fell from.
+
+## Sources
+
+**The owner holds these; ask him to re-attach them.**
+
+| Source | What it gives | Status |
+|---|---|---|
+| 1904/1916 *Goetia* plates (Project Gutenberg 72679; 7 images) | figures 1–80 = the 72 seals plus 8 doubles; 81–152 Rudd's Hebrew table; 153–184 circle, triangle, hexagram, pentagram, Ring of Solomon (fig. 157), vessel, Secret Seal | received |
+| Sloane 3825 microfilm PDF (`Janua-Magica-Reserata-Sloane-3825.pdf`, 194 frames) | frame 8: Trinity seals; frames 57–99: nine angelic Keys; frames ~109–119: the Goetia with bare seals; frames 120–153: other Lemegeton parts | studied for angels; Goetia frames **not yet** studied |
+| Mathers, *The Key of Solomon the King* (132-page PDF) | the 44 planetary pentacles, for capabilities | **received at the end of this session, not yet examined** |
+| Seals of the 72 Shem HaMephorash angels (Rudd: Harley 6482 / Sloane 3824) | examiner seals | not obtained |
+
+## Seal tracing
+
+- Pipeline: `tools/sigils/trace.py` (OpenCV contours to SVG, plus a comparison sheet).
+- Grid detection: `grid.py` and `grid2.py`. Doubled-seal sheet: `pairs.py`.
+- Bael sample traced at 97.5 % match with the plate (`tools/sigils/samples`).
+- Known issues: the double outer ring merges where the two lines nearly touch, and lines come out slightly bold.
+- No potrace or fontforge available. fontTools is untested; check whether it is installed.
+- Plate grid coordinates are in `pairs.py`.
+- Plan: trace all seals, build an "Annulus" font in which the spirit's name in source renders as its seal, and record provenance per glyph.
+
+## Deferred tasks
+
+- Research fuller transcriptions of every Sloane 3825 fragment (the owner asked for this "later").
+- Read the remaining unread mottos and names listed in the angelic-hierarchy document.
+- Add the Goetia former-order data to a sourced demonic-hierarchy document. Offered to the owner, not yet confirmed.
+- Apply the Annulus rename. Write founding principles 2–7 into the spec. Update `ROADMAP.md` to the 18-step sequence of the definitive handoff, which adds: an instruction-set spec, authority analysis, audit records, four error classes, and a native backend.

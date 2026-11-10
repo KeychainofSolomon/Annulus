@@ -181,7 +181,22 @@ The names in the form are references to Constitution entries (section 2.3).
 | Ink | Source | Effect class |
 |---|---|---|
 | bat's blood | 1446 I.5, I.10; Mathers I.16 | **veiled** effects (visible only inside their Circle, always still audited) and **illusory** effects (they appear but can never commit: dry runs and test doubles) |
-| by rank of spirit | the seal metal of the rank. Provisional, from the 1904 Goetia: Kings gold, Dukes copper, Princes tin, Marquises silver, Presidents mercury, Earls copper and silver equally, Knights lead; to be checked against Sloane 3825 | a spirit's operative seal requires the ink class of its rank |
+| by rank of spirit | the seal metal of the rank (table 7.5a) | a spirit's operative seal requires the ink class of its rank 
+**7.5a Seal metals by rank.** [S: Sloane 3825 f111 (119R), the "Observations": "The seals of those 72 kings are to be made in Mettalls"; the 1904 edition agrees.]
+
+| Rank | Metal (planet in Sloane 3825) | Ink class |
+|---|---|---|
+| King (*rex*) | gold (☉) | `"rex"` |
+| Marquis (*marchio*) | silver (☽) | `"marchio"` |
+| Duke (*dux*) | copper (♀) | `"dux"` |
+| Prelate (*praelatus*), read as Prince | tin (♃) | `"princeps"` |
+| Knight (*eques*) | lead (♄) | `"eques"` |
+| President (*praeses*) | mercury (☿) | `"praeses"` |
+| Earl (*comes*) | copper and silver "equally alike" (♀ & ☽) | `"comes"` |
+
+- Sloane 3825 names **Prelates**, not Princes. The 1904 edition writes "Princes and Prelates", and Peterson's edition reads Prelates as Princes. The spirit list uses "prince" (Vassago, Sitri, Stolas), so the reading is adopted, labelled as a reading.
+- Iron (♂) is absent from the list. [S, as an absence; noted by Peterson.]
+- **Mixed ranks** (for example Botis, president and earl): the sources give no rule. Open item.
 
 7.6 **Tempering: binding at creation.** An instrument's limits are fixed when it is made and can never be widened.
 [S: the knife "Artano" tempered in goose blood (1446 II.7). O: the immutability rule.]
@@ -205,7 +220,22 @@ The names in the form are references to Constitution entries (section 2.3).
 8.3 **Rank limits.**
 - **Legions** cap the number of concurrent sub-tasks a spirit may start. [S: legion counts. O: the cap.]
 - **Attendants:** a king's attendants start with him and are released with him. Paimon comes with the kings Bebal and Abalam (Sloane 3825). [S]
-- **Time windows:** the binding hours by rank (Goetia Observations) limit *when* each rank may be invoked. `arbatel` requires the spirit's own day at sunrise, and holding a spirit beyond one hour is forbidden (Aph. XXI). [S] The precise Goetic table is to be transcribed from Sloane 3825.
+- **Time windows:** the binding hours by rank limit *when* each rank may be invoked under `goetia`. [S: Sloane 3825 f111 (119R); the 1904 edition agrees.]
+
+  | Rank | May be bound |
+  |---|---|
+  | King | from 9 till 12 at noon, and from 3 till sunset |
+  | Marquis | from 3 in the afternoon till 9 at night, and from 9 at night till sunrise |
+  | Duke | from sunrise till noon, in clear weather |
+  | Prelate (Prince) | any hour of the day |
+  | Knight | from dawn till sunrise, or from 4 o'clock till sunset |
+  | President | any time, except twilight at night, unless the king they are under is invoked |
+  | Earl | any hour of the day, in woods or places where men resort not, or where no noise is |
+
+  The same page adds the **Moon's age:** the work is done when the Moon is 2, 4, 6, 8, 10, 12 or 14 days old, "as Salomon sayeth". [S]
+
+  `arbatel` requires the spirit's own day at sunrise, and holding a spirit beyond one hour is forbidden (Aph. XXI). [S]
+- **The four kings over the 72 (`goetia`):** the same page puts the 72 under Amaymon, Corson, Ziminiar and Goap, "kings ruling in ye 4 quarters East, West, North & South", not to be called "except it be upon great occasions". [S] Whether the two lists pair in order (Amaymon East, Corson West, Ziminiar North, Goap South) is not stated; it is recorded as unresolved. These kings differ from the *Officium* four (§5.2); each list holds within its own work.
 
 8.4 **Spirits may not tell the truth.** A spirit's output carries a provenance mark and is never trusted until examined. Two kinds of act are distinguished:
 - **natural acts:** predictable functions of the spirit's office;
@@ -290,8 +320,9 @@ Every grant, inscription, invocation, examination, verdict, judgement and releas
 
 ## 15. Open items
 
-- **Transcriptions from Sloane 3825:** the seal metals and binding hours by rank (Observations), frame 41L (the 72 angel names: if the *Janua* and Rudd count as one work, 41L decides the spellings), and frame 40 (the angels of the lunar mansions).
+- **Transcriptions from Sloane 3825:** frame 41L (the 72 angel names: if the *Janua* and Rudd count as one work, 41L decides the spellings), and frame 40 (the angels of the lunar mansions).
 - **The `heptameron` rite:** verify the sigils against an early printing; Tuesday's angel is Samael.
 - **Amy's seal:** compare with Peterson's g58.jpg.
+- **Mixed ranks:** which metal and which hours apply to a spirit of two ranks.
 - **Possibly older seals:** Sloane 3853 ff. 257-259 and the Folger V.b.26 originals.
 - **Ganell, the four kings and their *ydea*** (SSM L.3.f.21, 1346): the oldest witness of the kings. It belongs to the `iuratus` line, so its directions apply within that rite.

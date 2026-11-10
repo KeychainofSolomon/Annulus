@@ -298,3 +298,16 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - So the "blot" is probably the scribe's own correction, and the seal may be legible in the original or in Peterson's reading.
   - **Under the within-one-work rule:** use Sloane 3825 as read by Peterson. Sloane 2731 is the next-oldest witness of the Goetia, held in reserve.
   - **TODO:** the owner to save g58.jpg and g58b.jpg; they can't be reached from this workspace.
+
+## 2026-11-10: Goetia Observations (Sloane 3825 f111, 119R)
+
+- **Seal metals:** "The seals of those 72 kings are to be made in Mettalls": the chief King ☉, Marquises ☽, Dukes ♀, Prelates ♃, Knights ♄, Presidents ☿, Earls ♀ & ☽ "equally alike". The reading is from our render notes of the manuscript. It agrees with Peterson's esotericarchives transcription of Sloane 3825 and with the 1904 edition (which writes "Princes and Prelates"). There is no iron/♂. There is no rule for mixed ranks (Peterson notes this too).
+- **Binding hours:** as recorded in `spec/authority.md` §8.3. For Presidents, the 1904 edition reads "any time, excepting Twilight, at Night, unless the King whom they are under be Invocated", matching the manuscript note. Peterson's summary as fetched garbled this, so the manuscript reading is kept.
+- **Moon's age:** 2, 4, 6, 8, 10, 12 or 14 days, "as Salomon sayeth".
+- **Four kings:** Amaymon, Corson, Ziminiar, Goap, "kings ruling in ye 4 quarters East, West, North & South". The pairing of names to directions is not stated.
+
+## 2026-11-10: Occultist Explorer spirit data (the owner's project)
+
+- `occultist-explorer/spirits.json` was extracted from the owner's `engine/spirits.js` without running it. It holds 72 entries: number, name, rank, legions, office (quoted from de Laurence 1916), malice, risk, the Explorer function, company, ward, phase.
+- **Witness status:** de Laurence 1916 reprints the 1904 edition, so it is a late witness in the *Officium* line. Its office quotes are permissible where they don't conflict with older witnesses. It keeps only one office per spirit; the sources give most spirits several (e.g. Furfur also raises "Lightnings and Thunders, Blasts, and Great Tempestuous Storms", 1904 edition).
+- **Functions:** the Explorer's functions are specific to web archiving and are [O]. The 13 "companies" are a grouping original to the Explorer.

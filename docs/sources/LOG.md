@@ -274,3 +274,7 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - **Its form:** one long baseline crossed by letter-like marks: a hook, two b-forms, a barred rectangle (ladder), a "b" and "A M" shapes, ending in a curl.
   - **Identification, from memory:** the *Heptameron*'s Monday/Moon character for Gabriel.
   - **To verify:** compare against an early printing.
+- 2026-11-10: the **full set of seven day-angel sigils** (bookofsymbols, modern redrawings) was consulted (a website's images, not kept in the repository), in weekday order Sun to Sat.
+  - **The set:** Michael (Sun), Gabriel (Moon), "Camael" (Mars), Raphael (Mercury), Sachiel (Jupiter), Anael (Venus), Cassiel (Saturn).
+  - **Note:** the *Heptameron* names Tuesday's angel **Samael**. "Camael" is a later relabel (Golden Dawn usage). Under the per-work rule the *Heptameron* label stands: Samael.
+  - **Note:** Michael's and Samael's sigils share the solid trefoil and zigzag motif, so check that they haven't been swapped. The Barrett Anael/Michael confusion is also still to be checked against an early printing of the *Heptameron* (16th-c. Agrippa *Opera*).

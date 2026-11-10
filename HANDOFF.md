@@ -173,3 +173,19 @@ Discussed with the owner, not built:
 - Paimon's late-16th-century character in Wellcome MS 110 (image 27, among the four kings) **supersedes** his Goetic seal from Sloane 3825.
 - The general rule is confirmed: when an older witness gives a different sign for the same entity, the older sign wins.
 - Check the other three kings (Oriens, Amaymon, Egin) and any other Goetic spirits that appear in MS 110 or Folger V.b.26 in the same way.
+
+## Full source reading and rulings (the owner, 2026-11-10)
+
+- All nine source PDFs were read in full.
+- They are condensed into three skills, ordered by date: `key-of-solomon-tradition`, `solomonic-spirits-tradition` and `solomonic-angelic-tradition`.
+
+**Rulings:**
+- **The Paimon ruling is WITHDRAWN.** Wellcome MS 110 image 27 shows the Tetragrammaton letters of a ring, not king characters. No Goetic spirit has a seal in MS 110. Paimon keeps his Sloane 3825 seal. The general rule that the older sign supersedes still stands.
+- **Bune: Sloane 3825's "the first is best" wins**, so use the first (left) seal. This replaces fig. 31 and the "least is best" note from Sloane 3648 and 2731, which is kept as a disagreement.
+- **The four kings follow BnF Ital. 1524 (1446), the oldest witness:** Oriens East, Paimon West, Amaymon South, Egin North.
+
+**Corrections to the notes above:**
+- **Mathers PDF:** figure = page − 45 for pp. 56–99. A source is stated for 42 of the 44 pentacles, mostly in captions inside the images.
+- **Sloane 3825:** dated 1641 or later. The 1904 "doubles" may be copies of seals the scribe struck out.
+- **Arbatel 1575:** Bethor has 32 provinces, total 186.
+- **Book of Oberon:** all its figures are modern redrawings.

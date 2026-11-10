@@ -6,10 +6,10 @@ Witnesses: **W** Weyer 1577, **S** Sloane 3825, **G** 1904 edition, **K** the Ke
 
 | # | Rite | Quarter | Names | Deciding witness | Spirits under him |
 |---|---|---|---|---|---|
-| 1 | `goetia` | East | Amaymon (S); Amoymon (W); Amaimon (W) | W: 'Amoymon rex Orientalis' | Agares (G: 'under the Power of the East'); Asmoday (W: 'sub potestate Amaymonis'; G); Gaap (G: 'Amaymon his King'); Seere (S: 'under Amaymon king of ye East') |
-| 2 | `goetia` | South | Corson (S); Gorson (W) | W: 'Gorson rex Meridionalis' | none stated |
-| 3 | `goetia` | North | Ziminiar (S); Zymymar (W); Zimimar (W); Zimimay (G) | W: 'Zymymar rex Septentrionalis' | none stated |
-| 4 | `goetia` | West | Goap (S); Goap (W) | W: 'Goap rex & princeps Occidentalis' | none stated |
+| 1 | `goetia` | East | Amaymon (S); Amoymon (W); Amaimon (W) | W: 'Amoymon rex Orientalis' | Bael (W, S); Agares (W, S); Marbas (F); Amon (F); Barbatos (F); Eligos (F; A); Asmoday (W, S: under Amaymon); Gaap (S: under Amaymon); Vepar (F); Seere (S: under Amaymon) |
+| 2 | `goetia` | South | Corson (S); Gorson (W) | W: 'Gorson rex Meridionalis' | Berith (F); Astaroth (F); Foras (F; A); Malphas (F); Gremory (A); Ose (F); Decarabia (F) |
+| 3 | `goetia` | North | Ziminiar (S); Zymymar (W); Zimimar (W); Zimimay (G) | W: 'Zymymar rex Septentrionalis' | Vine (F) |
+| 4 | `goetia` | West | Goap (S); Goap (W) | W: 'Goap rex & princeps Occidentalis' | Samigina (F); Stolas (F); Raum (F); Vual (F); Balam (F); Zagan (F); Belial (F) |
 | 5 | `clavicula` | East | Oriens (K) | BnF Ital. 1524 (1446), ruling 2026-11-10 | none stated |
 | 6 | `clavicula` | West | Paimon (K) | BnF Ital. 1524 (1446), ruling 2026-11-10 | none stated |
 | 7 | `clavicula` | South | Amaymon (K) | BnF Ital. 1524 (1446), ruling 2026-11-10 | none stated |

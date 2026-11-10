@@ -238,7 +238,7 @@ The names in the form are references to Constitution entries (section 2.3).
 
   `arbatel` requires the spirit's own day at sunrise, and holding a spirit beyond one hour is forbidden (Aph. XXI). [S]
 - **The four kings over the 72 (`goetia`):** the same page puts the 72 under Amaymon, Corson, Ziminiar and Goap, "kings ruling in ye 4 quarters East, West, North & South", not to be called "except it be upon great occasions". [S] Whether the two lists pair in order (Amaymon East, Corson West, Ziminiar North, Goap South) is not stated; it is recorded as unresolved. Weyer (ch. III) gives the pairing: Amaymon East, Gorson South, Zymymar North, Goap West. They may be bound "from the third hour till noon, and from the ninth hour till evening" (*à tertia hora usque ad meridiem, à nona hora usque ad vesperas*). [S] See `docs/registers/reges.md`.
-- **Presidents need their king.** The witnesses name the king only for Gaap (Amaymon), so of the pure Presidents only Gaap's case is decided. `INVOCA REGEM` (`static.md` §4.5b) invokes the king. Spirits of two ranks (Botis, Marax, Gaap, Zagan) may still be invoked within their other rank's window.
+- **Presidents need their king.** The witnesses name the king only for Gaap (Amaymon), so his king is the `goetia` king of the quarter the witnesses give him (ruling 2026-11-10: by quarter, not by a name from the other king-set). `INVOCA REGEM` (`static.md` §4.5b) invokes the king. Spirits of two ranks (Botis, Marax, Gaap, Zagan) may still be invoked within their other rank's window.
 
 8.4 **Spirits may not tell the truth.** A spirit's output carries a provenance mark and is never trusted until examined. Two kinds of act are distinguished:
 - **natural acts:** predictable functions of the spirit's office;

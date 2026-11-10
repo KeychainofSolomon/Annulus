@@ -19,20 +19,44 @@
   "witness": "W: 'Amoymon rex Orientalis'",
   "subjects": [
    {
+    "spirit": "Bael",
+    "source": "W, S"
+   },
+   {
     "spirit": "Agares",
-    "source": "G: 'under the Power of the East'"
+    "source": "W, S"
+   },
+   {
+    "spirit": "Marbas",
+    "source": "F"
+   },
+   {
+    "spirit": "Amon",
+    "source": "F"
+   },
+   {
+    "spirit": "Barbatos",
+    "source": "F"
+   },
+   {
+    "spirit": "Eligos",
+    "source": "F; A"
    },
    {
     "spirit": "Asmoday",
-    "source": "W: 'sub potestate Amaymonis'; G"
+    "source": "W, S: under Amaymon"
    },
    {
     "spirit": "Gaap",
-    "source": "G: 'Amaymon his King'"
+    "source": "S: under Amaymon"
+   },
+   {
+    "spirit": "Vepar",
+    "source": "F"
    },
    {
     "spirit": "Seere",
-    "source": "S: 'under Amaymon king of ye East'"
+    "source": "S: under Amaymon"
    }
   ],
   "n": 1
@@ -51,7 +75,36 @@
    }
   ],
   "witness": "W: 'Gorson rex Meridionalis'",
-  "subjects": [],
+  "subjects": [
+   {
+    "spirit": "Berith",
+    "source": "F"
+   },
+   {
+    "spirit": "Astaroth",
+    "source": "F"
+   },
+   {
+    "spirit": "Foras",
+    "source": "F; A"
+   },
+   {
+    "spirit": "Malphas",
+    "source": "F"
+   },
+   {
+    "spirit": "Gremory",
+    "source": "A"
+   },
+   {
+    "spirit": "Ose",
+    "source": "F"
+   },
+   {
+    "spirit": "Decarabia",
+    "source": "F"
+   }
+  ],
   "n": 2
  },
  {
@@ -76,7 +129,12 @@
    }
   ],
   "witness": "W: 'Zymymar rex Septentrionalis'",
-  "subjects": [],
+  "subjects": [
+   {
+    "spirit": "Vine",
+    "source": "F"
+   }
+  ],
   "n": 3
  },
  {
@@ -93,7 +151,36 @@
    }
   ],
   "witness": "W: 'Goap rex & princeps Occidentalis'",
-  "subjects": [],
+  "subjects": [
+   {
+    "spirit": "Samigina",
+    "source": "F"
+   },
+   {
+    "spirit": "Stolas",
+    "source": "F"
+   },
+   {
+    "spirit": "Raum",
+    "source": "F"
+   },
+   {
+    "spirit": "Vual",
+    "source": "F"
+   },
+   {
+    "spirit": "Balam",
+    "source": "F"
+   },
+   {
+    "spirit": "Zagan",
+    "source": "F"
+   },
+   {
+    "spirit": "Belial",
+    "source": "F"
+   }
+  ],
   "n": 4
  },
  {

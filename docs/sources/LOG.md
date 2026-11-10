@@ -312,3 +312,10 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **Witness status:** de Laurence 1916 reprints the 1904 edition, so it is a late witness in the *Officium* line. Its office quotes are permissible where they don't conflict with older witnesses. It keeps only one office per spirit; the sources give most spirits several (e.g. Furfur also raises "Lightnings and Thunders, Blasts, and Great Tempestuous Storms", 1904 edition).
 - **Functions:** the Explorer's functions are specific to web archiving and are [O]. The 13 "companies" are a grouping original to the Explorer.
 - **Cross-check done** (`occultist-explorer/CROSSCHECK.md`). Against Weyer 1577, Sloane 3825 and 1904: the order and the office quotes are sound. 8 legion counts need correcting by the oldest witness (Gusion 45, Marax 36, Viné 35, Bifrons 26, Osé 3, Valac 30, Haures 20, Belial 80). There are 6 rank differences, pending the owner's ruling on which witness governs rank.
+
+## 2026-11-10: The 72-spirit register
+
+- Built `registers/goetia.json`. Offices come from Weyer (Peterson's edition; contradictions checked against the Latin), with 1904 additions where they don't conflict. Ranks come from Sloane 3825. Legions are the 8 corrections.
+- **Conflicts resolved by Weyer:** Naberius (*prelaturarum et dignitatum iacturam parit*: loss, not restoring); Paimon (*Aquilonem*: face north); Sitri (*secreta feminarum*); Zagan (*sanguinem in oleum*); Osé (*durat ad horam*).
+- **Resolved by internal evidence:** Haures. Weyer reads *si fuerit in triangulo, mentitur*; read as the negation, per Weyer's own Furfur and Shax and per Sloane 3825.
+- Correction to the cross-check: 1904 gives Osé 30, not 36.

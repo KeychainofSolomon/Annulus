@@ -114,7 +114,7 @@ An entry outside the range, a label not in the rite's register, or a reference t
 
 4.5 **The seal comes first.** `INVOCA` of a spirit requires that the spirit's operative seal was inscribed earlier in the same Circle, on every path. [S: Sloane 3825, the Goetia, e.g. Bael: his character "is to be worne as a Lamen before him who calleth him forth, or else he will not doe you homage". O: the path rule.]
 
-4.6 **OFFICE.** The identifier after `AD OFFICIUM` MUST be one of the spirit's offices in the rite. Each office has a fixed signature: what `PETE` may pass, and what the proposal will contain. The arguments to `PETE` MUST match it. The offices register, mapping each traditional office to computational work, is still to be written: open item §7.
+4.6 **OFFICE.** The identifier after `AD OFFICIUM` MUST name one of the spirit's office kinds in the rite (`docs/registers/goetia.md`); an office marked `NULLUM` cannot be invoked. Each office has a fixed signature: what `PETE` may pass, and what the proposal will contain. The arguments to `PETE` MUST match it. The offices register, mapping each traditional office to computational work, is still to be written: open item §7.
 
 4.7 **Rite values are bound to their Circle.** Invocations, proposals, seals, ink, entries and divine names MUST stay in the Circle that produced them. They MUST NOT be:
 - assigned to a variable declared outside that Circle;
@@ -186,7 +186,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 
 ## 7. Open items
 
-- **The offices register:** each spirit's offices, per rite, as computational work, with signatures for `PETE`. The owner's Occultist Explorer project may supply them.
+- **Signatures for `PETE`:** the offices register now exists (`docs/registers/goetia.md`, rules in `spirits.md`). Each office kind still needs its argument and proposal types.
 - **Mixed ranks:** which ink class a spirit of two ranks takes.
 - **Registers for `clavicula`, `iuratus` and `janua`.**
 - **Modules (`LIBER`, `ADHIBE`):** how files are found and what a module exports; deferred to the part on the standard library.

@@ -28,7 +28,7 @@ Oberon (c. 1577-83) and Wellcome 110 were not checked: no transcription is to ha
 | 21 | Marax | 30 | 30 (or 36?) | 36, "triginta sex" | **36** |
 | 45 | Viné | 36 | 35 | none | **35** |
 | 46 | Bifrons | 6 | 6 | 26, "viginti sex" | **26** |
-| 57 | Osé | 30 | 3 | none | **3** (1904 has 36; the app's 30 matches no witness) |
+| 57 | Osé | 30 | 3 | none | **3** (the app's 30 follows 1904) |
 | 62 | Valac | 38 | 30 | 30, "triginta" | **30** |
 | 64 | Haures (Flauros) | 36 | 36 | 20, "viginti" | **20** |
 | 68 | Belial | 50 | 80 | 80, "octoginta" | **80** |

@@ -56,6 +56,8 @@ CI builds and smoke-tests both platform binaries, each with a SHA-256 checksum:
 | [`docs/spec/authority.md`](docs/spec/authority.md) | Normative draft: the authority model (constitution, laws, rites, seals and ink, examination, judgement) |
 | [`docs/spec/provenance.md`](docs/spec/provenance.md) | The source-precedence rule and the dated register of witnesses |
 | [`docs/spec/grammar.md`](docs/spec/grammar.md) | Lexical grammar, the Latin keyword table and the EBNF syntax (draft 1) |
+| [`docs/spec/spirits.md`](docs/spec/spirits.md) | The spirits: offices as computer work, will, malice, counterbalances and wards (draft 1) |
+| [`docs/registers/goetia.md`](docs/registers/goetia.md) | The register of the 72 spirits, generated from `goetia.json` |
 | [`docs/spec/static.md`](docs/spec/static.md) | Static semantics: names, types and the compile-time authority checks (draft 1) |
 | [`docs/AUDIT.md`](docs/AUDIT.md) | Audit of the v0.2 prototype: what worked, what was broken, what must be redesigned |
 | [`docs/STATUS.md`](docs/STATUS.md) | Implemented and unimplemented features |

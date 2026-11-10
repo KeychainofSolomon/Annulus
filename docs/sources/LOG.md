@@ -205,3 +205,18 @@ Format: `date | question | source | what it gives | certainty | open lead`
 **The oldest seals made for the 72 angels themselves are Rudd's** (Harley 6483, a 1712-13 copy of mid-17th-c. Rudd material): a circle with the Hebrew name and the psalm versicle.
 
 **Leads:** check whether Gallica has Lat. 15127, 14075 and 18510 online; get Harley 6483 images or Skinner & Rankine's edition.
+
+## Kircher, *Oedipus Aegyptiacus* II (Rome, 1652-54): "Speculum Cabalae mysticae" plate, fol. 287 (received 2026-11-10)
+
+- **Image:** `kircher/oedipus-aegyptiacus-II-fol287-speculum-cabalae.png`.
+- **The design:** concentric rings divided into 72 rays, numbered 1-72 from the top, each carrying a Hebrew root.
+  - The rings also hold "Deus" in 72 languages (DIOS, GOTT, BOOG, DIEV …), the nations, and divine attributes.
+  - The centre is IHS with the pentagrammaton יהשוה. The plate argues that the Tetragrammaton points to the name of Jesus.
+- **The corner trees:**
+  - The upper trees carry the 72 roots on numbered leaves.
+  - Lower left: the seven planetary angels mapped to the head's openings (Gabriel and Raphael the eyes, Michael and Samael the ears, Anael and Zadkiel the nostrils, the mouth Raphael/Ziel(?)).
+  - Lower right: the 12 tribes, each with a permutation of YHVH and a zodiac sign.
+- **Its witness to the order:** the leaves read 5 מהש, 6 ללה, 7 אכא. This independently confirms the order computed from Exodus. Printed in Rudd's lifetime, decades before Smart's 1712 copies.
+- **No angel seals:** names only.
+- **Standing:** a separate work, Kircher's. It stands as Kircher's, attributed.
+- **Lead for Annulus:** the plate is itself a ring of 72 numbered sectors around a fixed centre. It is a sourced visual model for the register.

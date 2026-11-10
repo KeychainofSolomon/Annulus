@@ -47,6 +47,10 @@ This part says what happens **while a program runs**. A program reaches this poi
 
 4.3 **Inscription.** `INSCRIBE` spends the consecrated ink and produces the operative seal. A seal lapses when its ink's source is released. Ink drawn from the faculty lasts as long as the program.
 
+## 4a. The apparatus at runtime
+
+`GERE` records the instrument as held, with the time it was taken up; Berith's hour counts from it. `OFFER` spends one unit of the spirit's ink class, or is a denial for Malphas. `CONSTRINGE` performs the constraint (escalation step 3) at once, by the named name, and records it. `APPELLA` and `VETA` are recorded commands. Their effects on the will are those of `spirits.md` §4.4.
+
 ## 5. Invocation and the will
 
 5.1 **The time window is checked first.** `INVOCA` is refused (class 2) outside the spirit's binding hours by rank, or on a day of the Moon's age not allowed (`authority.md` §8.3). How the runtime reads the conditions:
@@ -72,7 +76,7 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 | `OBSEQUIUM` | the requested work, complete and true |
 | `MORA` | the same, delivered only after a delay the runtime records |
 | `PARS` | part of the requested work |
-| `MENDACIUM` | a lie, in one of the two forms of `spirits.md` §3.1: a substitute answer of the same form (offices that tell), or a false account of the work (other offices, caught by examination). Only spirits whose compelling condition is unmet can choose it. In Annulus the Triangle is always present, so triangle-compelled spirits (Furfur, Shax, Haures) cannot. Belial and Berith can, until the syntax for offerings and the ring exists (`spirits.md` §3.2) |
+| `MENDACIUM` | a lie, in one of the two forms of `spirits.md` §3.1: a substitute answer of the same form (offices that tell), or a false account of the work (other offices, caught by examination). Only spirits whose compelling condition is unmet can choose it. In Annulus the Triangle is always present, so triangle-compelled spirits (Furfur, Shax, Haures) cannot. Belial, Berith and Asmoday can, until their conditions are met with the apparatus (`spirits.md` §4.4). Valefor always can: no condition that compels him is stated |
 | `MALITIA` | the requested work **plus** a harmful effect of the spirit's own office, unasked |
 | `RECUSATIO` | nothing; escalation resumes at the constraint (step 3) |
 
@@ -128,7 +132,8 @@ A spirit's helper tasks (`FAMILIARES`, and the sub-tasks of any office) are capp
 
 ## 10. Open items
 
-- The syntax for offerings, the ring, the hazel wand and the divine-name constraint, so that `MENDACIUM` can be closed for Belial and Berith.
+- The register of divine names that `NOMEN` and `CONSTRINGE … PER NOMEN` must match, transcribed from the Circle of Solomon (Sloane 3825 f112) and the instruments.
+- How the instruments are made (materials, days), and the vestments and the Secret Seal (`spirits.md` §4.4).
 - The four kings as a register, for the Presidents' twilight rule and for Paimon's attendant kings.
 - Signatures for each office kind (what `PETE` passes and what the proposal holds).
 - The owner's approval of the two [O] readings of the Earls' and Dukes' conditions (§5.1).

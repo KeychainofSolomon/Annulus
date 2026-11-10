@@ -58,7 +58,7 @@ A lie takes one of two forms, depending on the kind of office. [O: the mechanism
 
 - **Berith** tells things past, present and to come, so his lies are of the first kind. The ring of art closes `MENDACIUM` for **one hour** from its use; after the hour it is open again. [S: "compelled for an hour by a ring of art", W.]
 - **Belial's** offices all do work (dignities, favour, familiars), so his lies are of the second kind, and examination catches them. `MENDACIUM` closes only when **both** conditions are met: offerings, sacrifices and gifts, and then constraint by divine power. [S: W and G agree on both.]
-- **Until the syntax for offerings, the ring and the divine-name constraint exists,** their compelling conditions cannot be met. Every answer from either is held in `PURGATORIUM`. It is never committed, and never readable by the program, whether it happens to be true or not.
+- **Until a program meets their conditions** with the apparatus (§4.4), every answer from either is held in `PURGATORIUM`. It is never committed, and never readable by the program, whether it happens to be true or not.
 
 ## 4. Malice and its counterbalances
 
@@ -84,6 +84,44 @@ A lie takes one of two forms, depending on the kind of office. [O: the mechanism
 - a rejected proposal goes to `INFERNUS`, and its results are sealed in the Vessel.
 
 [S: Rudd, Harley 6483, which pairs every Goetic spirit with his angel. The older principle that each demon has an angel "by whom he is frustrated" is the *Testament of Solomon*'s, a separate work; it is cited for context, not as law.]
+
+### 4.4 The apparatus
+
+The Operator takes up the instruments inside a Circle (`grammar.md` §3.3). Each piece does what its witness says it does, and nothing more.
+
+**General instruments:**
+
+| Instrument | Effect for every spirit | Source |
+|---|---|---|
+| `GERE ANULUM` | protects the Operator from spirits' harmful breath and fumes | S f113; G |
+| `GERE HEXAGRAMMUM` | once the spirit has appeared, `RECUSATIO` is closed for its requests: "compelled to be obedient". Delay (`MORA`) and partial work (`PARS`) stay open: obedience is not completeness | S f112; G |
+| `GERE PENTAGRAMMUM` | "to preserve thee from danger": harm aimed at the Operator himself is closed | G (preserve); S f112 (to command) |
+| `GERE VIRGAM` | no general effect stated | |
+
+**What each spirit requires or allows:**
+
+| Spirit | Rule | Source |
+|---|---|---|
+| 13 Beleth | `INVOCA` requires `ANULUM` and `VIRGAM`; his fury (`MALITIA`) is closed by the wand | G "he must hold a Hazel Wand", "thou must have always a Silver Ring"; W |
+| 28 Berith | `INVOCA` requires `ANULUM`; the ring closes `MENDACIUM` for **one hour** from its taking up | G "thou must make use of a Ring"; W "compelled for an hour" |
+| 29 Astaroth | `INVOCA` requires `ANULUM`; it closes his `MALITIA` (the noisome breath) | G "Thou must in no wise let him approach … hold the Magical Ring"; W |
+| 32 Asmoday | `APPELLA` closes `MENDACIUM` | W "unless the exorcist speaks his name"; G "Art thou Asmoday?" |
+| 68 Belial | `MENDACIUM` closes only after `OFFER` **and then** `CONSTRINGE … PER NOMEN`, in that order | G "must have Offerings … unless he be constrained by Divine Power"; W |
+| 9 Paimon | without `OFFER`, every request is `RECUSATIO`; without `CONSTRINGE`, his answers are only `PARS`, since "his speech is such that the Magician cannot well understand unless he can compel him" | G; W (offering) |
+| 41 Focalor | `VETA` closes his `MALITIA` | W "harms no one if so commanded"; G |
+| 63 Andras | `PENTAGRAMMUM` closes his harm to the Operator. **[O link]** The witnesses state no counterbalance for him; this applies the pentagram's general effect | G (pentagram) |
+| 39 Malphas | `OFFER` is refused (a denial): he "deceives all sacrificers" | W; G |
+| 33 Gaap | `OFFER` is allowed; no effect is stated | W "receives offerings" |
+| 42 Vepar | his `MORBUS` effects must be reversible | W "all can be healed with care" |
+
+**What is recorded but not enforced:** these conditions have no mechanical analogue yet, so the register keeps them as notes:
+- Asmoday's other conditions: called abroad, standing, head uncovered, lest Amaymon deceive.
+- The vestments: sceptre or sword, mitre or cap, white linen robe, lion-skin girdle.
+- The making of the Secret Seal: Tuesday or Saturday at midnight, the Moon increasing in Virgo, a black cock's blood.
+
+The instruments themselves are part of the Constitution's apparatus, like the Circle and the Triangle. A program takes them up but does not make them. [O] How they are made (gold or silver ring, calf-skin hexagram) is recorded for a later part.
+
+**An offering costs** one unit of the spirit's ink class from the faculty. [O: an offering is a gift of the Operator's own substance.]
 
 ## 5. Refusal and the escalation of constraint
 

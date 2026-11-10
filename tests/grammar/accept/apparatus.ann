@@ -1,0 +1,19 @@
+FACULTAS {
+    atramentum "rex" 2;
+}
+
+CIRCULUS RITU goetia {
+    INTENTIO "favour of friends and foes";
+    GERE ANULUM;
+    GERE VIRGAM;
+    GERE HEXAGRAMMUM;
+    GERE PENTAGRAMMUM;
+    SIT sigillum = INSCRIBE SIGILLUM belial ATRAMENTO CONSECRA ATRAMENTUM "rex";
+    SIT belial = INVOCA SPIRITUS 68 AD OFFICIUM concordia;
+    OFFER belial;
+    CONSTRINGE belial PER NOMEN "Tetragrammaton";
+    APPELLA belial;
+    VETA belial;
+    SIT p = PETE belial();
+    SI EXAMINA p == PARADISUS { VADE IN PACE belial; } ALITER { RELEGA belial; }
+}

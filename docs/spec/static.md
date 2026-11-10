@@ -94,7 +94,7 @@ A program cannot declare, assign or shadow a register label (`authority.md` §2.
 
 These rules are checked before the program runs. Where a law can only be checked while running (budgets, time windows, verdicts), Part 4 covers it.
 
-4.1 **CONTAINMENT and SOVEREIGNTY: rite operations stay inside a Circle.** `INVOCA`, `PETE`, `SIGILLUM`, `ATRAMENTUM`, `CONSECRA`, `INSCRIBE`, `EXAMINA`, `VADE IN PACE`, `DIMITTE` and `RELEGA` are errors outside a `CIRCULUS` block. A function body counts as outside unless the operation is in a Circle inside that body. [S: the operator works only within the circle.]
+4.1 **CONTAINMENT and SOVEREIGNTY: rite operations stay inside a Circle.** `GERE`, `OFFER`, `CONSTRINGE`, `APPELLA`, `VETA`, `INVOCA`, `PETE`, `SIGILLUM`, `ATRAMENTUM`, `CONSECRA`, `INSCRIBE`, `EXAMINA`, `VADE IN PACE`, `DIMITTE` and `RELEGA` are errors outside a `CIRCULUS` block. A function body counts as outside unless the operation is in a Circle inside that body. [S: the operator works only within the circle.]
 
 4.2 **The rite must exist.** `RITU` names one of the rites in `authority.md` §4.1. The intention string MUST NOT be empty. [O]
 
@@ -113,6 +113,8 @@ An entry outside the range, a label not in the rite's register, or a reference t
 4.4 **No Triangle for angels.** `INVOCA` applies only to entities that have a Triangle: spirits in `goetia` and `rudd`. Invoking an angel or an Olympic spirit is an error. Calling through a channel uses `ADVOCA`, defined in a later part. [S: `authority.md` §6.5.]
 
 4.5 **The seal comes first.** `INVOCA` of a spirit requires that the spirit's operative seal was inscribed earlier in the same Circle, on every path. [S: Sloane 3825, the Goetia, e.g. Bael: his character "is to be worne as a Lamen before him who calleth him forth, or else he will not doe you homage". O: the path rule.]
+
+4.5a **The apparatus.** `GERE`, `OFFER`, `CONSTRINGE`, `APPELLA` and `VETA` are rite operations: only inside a Circle (§4.1). An instrument taken up lasts until its Circle closes. Where a spirit **requires** an instrument (`spirits.md` §4.4: Beleth, Berith, Astaroth), it MUST be taken up before `INVOCA`, on every path (A11). The name in `CONSTRINGE … PER NOMEN` follows the rule for `NOMEN` (`grammar.md` §5, item 4).
 
 4.6 **OFFICE.** The identifier after `AD OFFICIUM` MUST name one of the spirit's office kinds in the rite (`docs/registers/goetia.md`); an office marked `NULLUM` cannot be invoked. Each office has a fixed signature: what `PETE` may pass, and what the proposal will contain. The arguments to `PETE` MUST match it. The offices register, mapping each traditional office to computational work, is still to be written: open item §7.
 
@@ -183,6 +185,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 | A8 | faculty: missing, duplicate or unknown grant |
 | A9 | invocation not released on some path, or used after release |
 | A10 | invocation without the spirit's operative seal |
+| A11 | invocation without a required instrument |
 
 ## 7. Open items
 

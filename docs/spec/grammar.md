@@ -105,6 +105,22 @@ All [O].
 | `NOMEN` | "name" | references a divine name in the Constitution | [S] binding "by" the names |
 | `SPIRITUS` / `ANGELUS` | "spirit" / "angel" | register types; also refer to an entry by number, e.g. `SPIRITUS 34` | [O] |
 
+### 3.3 The apparatus (inside a Circle)
+
+| Keyword | Latin sense | Role | Provenance |
+|---|---|---|---|
+| `GERE` | "bear, wear" | the Operator takes up an instrument for the rest of the Circle | [O] |
+| `ANULUM` | "the ring" | Solomon's ring, held before the face | [S] Sloane 3825 f113: "This Ring is to be held before the face of the Exorcist to preserve him from the stinking fumes of spirits"; Beleth, Berith, Astaroth |
+| `VIRGAM` | "the wand" | the hazel wand | [S] Beleth: "he must hold a Hazel Wand in his hand" (G); "a hazel rod" (W) |
+| `HEXAGRAMMUM` | "the hexagram" | Solomon's sexangled figure, shown to the spirits | [S] Sloane 3825 f112: "shewed to the spirits when they are appeared that they may be compelled to be obedient" |
+| `PENTAGRAMMUM` | "the pentagram" | Solomon's pentagonal figure, worn on the breast | [S] Sloane 3825 f112: "worne upon the breast … to command ye spirits"; G: "to preserve thee from danger" |
+| `OFFER` | "offer!" | makes an offering to an invoked spirit | [S] Paimon, Belial, Gaap, Malphas |
+| `CONSTRINGE` … `PER NOMEN` | "bind … by the name" | constrains an invoked spirit by a divine name | [S] Belial: "constrained by Divine Power" (G); the Constraint (G) |
+| `APPELLA` | "call by name" | addresses the spirit by his name | [S] Asmoday: "speak his name" (W); "Art thou Asmoday?" (G) |
+| `VETA` | "forbid!" | commands the spirit to do no harm | [S] Focalor: "harms no one if so commanded" (W) |
+
+The instruments are declined as Latin objects (`GERE ANULUM`), as `ATRAMENTO` is after `INSCRIBE`.
+
 **Reserved for later parts:** `HORA` (hour), `DIES` (day), `ADVOCA` (call an angel through its channel), `TRIANGULUM` (a spirit-specific containment figure), `VAS` (the Vessel).
 
 ## 4. Syntax
@@ -129,7 +145,7 @@ type           = "NUMERUS" | "VERITAS" | "VERBUM" | "NIHIL" | "ATRAMENTUM"
 block          = "{" , { statement } , "}" ;
 statement      = declaration | output | conditional | loop | iteration
                | "DESINE" , ";" | "PERGE" , ";" | return | attempt | circle
-               | release | simple ;
+               | release | apparatus | simple ;
 simple         = expression , [ "=" , expression ] , ";" ;      (* assignment if "=" *)
 declaration    = "SIT" , [ "MUTABILIS" ] , identifier , [ ":" , type ] , "=" , expression , ";" ;
 output         = "MANIFESTA" , expression , ";" ;
@@ -142,6 +158,9 @@ attempt        = "TENTA" , block , "CAPE" , identifier , block ;
 circle         = "CIRCULUS" , "RITU" , identifier , "{" , intent , { statement } , "}" ;
 intent         = "INTENTIO" , string , ";" ;
 release        = ( "VADE" , "IN" , "PACE" | "DIMITTE" | "RELEGA" ) , expression , ";" ;
+apparatus      = "GERE" , ( "ANULUM" | "VIRGAM" | "HEXAGRAMMUM" | "PENTAGRAMMUM" ) , ";"
+               | ( "OFFER" | "APPELLA" | "VETA" ) , expression , ";"
+               | "CONSTRINGE" , expression , "PER" , "NOMEN" , string , ";" ;
 
 expression     = disjunction ;
 disjunction    = conjunction , { "VEL" , conjunction } ;

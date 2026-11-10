@@ -9,6 +9,7 @@ KEYWORDS = {
     "SIGILLUM", "INSCRIBE", "ATRAMENTO", "ATRAMENTUM", "CONSECRA", "EXAMINA",
     "PARADISUS", "PURGATORIUM", "INFERNUS", "VADE", "PACE", "DIMITTE", "RELEGA",
     "NOMEN", "SPIRITUS", "ANGELUS",
+    "GERE", "ANULUM", "VIRGAM", "HEXAGRAMMUM", "PENTAGRAMMUM", "OFFER", "CONSTRINGE", "APPELLA", "VETA",
     "HORA", "DIES", "ADVOCA", "TRIANGULUM", "VAS",
 }
 RESERVED = {"HORA", "DIES", "ADVOCA", "TRIANGULUM", "VAS"}
@@ -272,6 +273,19 @@ class Parser:
             self.expect("IN")
             self.expect("PACE")
             self.expression()
+            self.expect(";")
+        elif self.accept("GERE"):
+            if not (self.accept("ANULUM") or self.accept("VIRGAM") or self.accept("HEXAGRAMMUM") or self.accept("PENTAGRAMMUM")):
+                self.fail("expected an instrument")
+            self.expect(";")
+        elif self.accept("OFFER") or self.accept("APPELLA") or self.accept("VETA"):
+            self.expression()
+            self.expect(";")
+        elif self.accept("CONSTRINGE"):
+            self.expression()
+            self.expect("PER")
+            self.expect("NOMEN")
+            self.expect_kind("string")
             self.expect(";")
         elif self.accept("DIMITTE") or self.accept("RELEGA"):
             self.expression()

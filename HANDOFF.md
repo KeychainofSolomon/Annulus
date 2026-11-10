@@ -61,6 +61,7 @@ The governing document is the owner's "Definitive Architecture and Engineering H
 - Part 1 `authority.md`, Part 2 `grammar.md`, Part 3 `static.md`: draft 1 each, awaiting the owner's approval.
 - The grammar is LL(1). `tools/grammar_check.py` checks it against `tests/grammar/` (57 programs) and runs in CI.
 - Part 1a `spirits.md` and the 72-spirit register `docs/registers/goetia.json` (rendered to `goetia.md` by `tools/build_register.py`): offices from Weyer first, then Sloane 3825, then 1904; legions corrected; will, malice, counterbalances; Rudd examiner per spirit.
+- The apparatus (`GERE ANULUM/VIRGAM/HEXAGRAMMUM/PENTAGRAMMUM`, `OFFER`, `CONSTRINGE … PER NOMEN`, `APPELLA`, `VETA`) is in the grammar and in `spirits.md` §4.4, from Sloane 3825 ff. 112-113 and the spirit entries.
 - Part 4 `dynamic.md`: draft 1. The whole step-3 specification is now drafted and awaits the owner's approval; after it, step 4 (instruction set) begins.
 
 ## Still open: ask the owner

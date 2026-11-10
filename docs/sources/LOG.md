@@ -278,3 +278,18 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - **The set:** Michael (Sun), Gabriel (Moon), "Camael" (Mars), Raphael (Mercury), Sachiel (Jupiter), Anael (Venus), Cassiel (Saturn).
   - **Note:** the *Heptameron* names Tuesday's angel **Samael**. "Camael" is a later relabel (Golden Dawn usage). Under the per-work rule the *Heptameron* label stands: Samael.
   - **Note:** Michael's and Samael's sigils share the solid trefoil and zigzag motif, so check that they haven't been swapped. The Barrett Anael/Michael confusion is also still to be checked against an early printing of the *Heptameron* (16th-c. Agrippa *Opera*).
+
+## ANSWERED (2026-11-10): do the 72 angels have seals of their own?
+
+**No original set exists.** Every seal set is a later addition.
+
+**Timeline:**
+- **Jewish tradition** (Bahir, Rashi; Zohar II 51b): 72 three-letter NAMES OF GOD from Exodus 14:19-21. No angels and no sigils. The name itself is what gets written.
+- **Reuchlin, *De arte cabalistica* (1517):** first makes them angels (-el/-yah), as products of God's will. Names and verses only.
+- **Agrippa, OP III.25 (1533):** a table of the 72 angels with their verses, and no seals. But **OP III.29-30 give methods for making a spirit's character from its name**, including the kabbalists' method.
+- **de Vigenère, then Kircher (1652-54):** names and verses only.
+- **Rudd, Harley 6483 (mid-17th c.; copy 1712-13):** the FIRST seals tied to each angel, and they are made of the name and the verse in a circle.
+- **18th c.:** the Toz pentacles given angel labels (Wellcome 4662); the Arsenal 2495 sigils, later published by Lenain and Ambelain (1951), whose attribution Ambelain himself retracted.
+- **Modern decks:** derived from the above.
+
+**Consequence for Annulus:** the most authentic "seal" of angel n is its Hebrew name (and verse), which is Rudd's form. A drawn sigil can be DERIVED from the name by Agrippa's documented method (III.30), labelled as derived. That is a deterministic function of the name, the same pattern as deriving a key from a spirit's number.

@@ -88,3 +88,15 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **Disagreement between witnesses:** Oberon (Folger V.b.26) has Amaymon in the **south** and Egin in the **north**; MS 110 has the reverse. Keep both, with attribution.
 - **No 72-spirit Goetic seal set found** at catalogue level. The page cited for "Gorsyer" (f. 32 ≈ image 78) is text.
 - **Open decision for the owner:** MS 110 (late 16th c.) gives an older **character for Paimon**, as one of the four kings, unlike his Goetic seal. Under the layered rule: is it the same item (it supersedes) or a different sign of the same spirit (both stand)?
+
+## 2026-11-10: McLean's Harley 6482 and the 1575 Arbatel
+
+- **Adam McLean, *A Treatise on Angel Magic* (1989/1990)**, an edition of Harley 6482 (Dr Rudd). Copyrighted; for reference only.
+  - The 72 **Schemhamphoras** angels are given with their Latin psalm verses and Hebrew names (Vehujah, Ieliel, Sitael, Elemijel, Lelahel, Achajah, …).
+  - It also contains **"Dr Rudd's Nine Hierarchies of Angels with their invocations to visible appearance"** (p. 171), "The Nine Great Celestial Keys" (p. 191), **"The Seals" (p. 202)** and "The Olympian Spirits" (p. 212).
+  - This is the same tradition as the nine angelic Keys of Sloane 3825.
+  - Open: check whether p. 202 holds seals for the 72 angels, or only the nine Keys' seals. Compare its Keys with Sloane 3825; the older witness wins.
+- **Arbatel 1575, first edition:** Basel 1575, Bayerische Staatsbibliothek Res/L.eleg.m. 1350 m, digitised.
+  - Link: http://mdz-nbn-resolving.de/urn:nbn:de:bvb:12-bsb10207003-0 (via deutsche-digitale-bibliothek.de).
+  - The Wellcome record (works/r4hhxh28) is not fetchable from here; dead end for the tools.
+  - Also: booksofmagick.com/wp-content/uploads/2020/08/Arbatel-de-magia-veterum-color.pdf, a colour scan with edition unverified.

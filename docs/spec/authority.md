@@ -181,7 +181,8 @@ The names in the form are references to Constitution entries (section 2.3).
 | Ink | Source | Effect class |
 |---|---|---|
 | bat's blood | 1446 I.5, I.10; Mathers I.16 | **veiled** effects (visible only inside their Circle, always still audited) and **illusory** effects (they appear but can never commit: dry runs and test doubles) |
-| by rank of spirit | the seal metal of the rank (table 7.5a) | a spirit's operative seal requires the ink class of its rank 
+| by rank of spirit | the seal metal of the rank (table 7.5a) | a spirit's operative seal requires the ink class of its rank |
+
 **7.5a Seal metals by rank.** [S: Sloane 3825 f111 (119R), the "Observations": "The seals of those 72 kings are to be made in Mettalls"; the 1904 edition agrees.]
 
 | Rank | Metal (planet in Sloane 3825) | Ink class |

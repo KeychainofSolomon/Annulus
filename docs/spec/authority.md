@@ -47,9 +47,10 @@ Annulus is both a programming language and a simulation of the Solomonic traditi
 
 2.3 **Divine names are references, not property.** A program MAY cite a divine name; the authority belongs to the Constitution's entry, not to the speaker. No program MAY extend, rewrite or shadow a Constitution entry. [S: the Clavicula, Lemegeton and *Liber iuratus*, where every binding works "by" God's names.]
 
-2.4 **The licence (the launch grant).** A program starts with no capabilities. Its first and only external grant is the **licence**, given by the person who launches it.
+2.4 **The faculty (the launch grant).** A program starts with no capabilities. Its first and only external grant is the **faculty** (`FACULTAS`), given by the person who launches it. It is not called *licentia*: in the sources the licence (*licentia*) is the licence to depart (§9).
 - **What it lists:** the resources the program may touch (files, network, devices) and the budget of ink.
 - **How it is treated:** the licence is recorded, bounded and auditable.
+- **How it is declared:** the program declares the faculty it requests; the launching person grants all of it, part of it, or none.
 - [O] Honestly stated, the launching person is the real-world source of the Operator's standing. The specification says so rather than hiding it.
 - [S, model] In the sources the magician acts only by permission. In the *Liber iuratus*, permission for the vision is granted from above; the Key requires confession and fasting before any work.
 
@@ -59,7 +60,7 @@ Each law is enforced by the compiler's authority analysis, by the VM, or by both
 
 | Law | Rule | Enforcement |
 |---|---|---|
-| ORIGIN | every capability has a recorded chain of grants ending in the Constitution or the licence | VM; audit |
+| ORIGIN | every capability has a recorded chain of grants ending in the Constitution or the faculty | VM; audit |
 | SOVEREIGNTY | every capability is valid only inside a named jurisdiction (a Circle) | compiler and VM |
 | DECLARATION | every entity, office and effect class used MUST be declared; programs MUST NOT add register entries | compiler |
 | OFFICE | an agent MAY act only within its declared office; asking a spirit for work outside its office is an error | compiler and VM |
@@ -165,7 +166,7 @@ The names in the form are references to Constitution entries (section 2.3).
 | Olympic spirits | the 1575 woodcut characters, including Phaleg's inset sign. Rudd's ringed "Sigillum" versions are later additions |
 | Day-angels | the *Heptameron* sigils (provisional, section 4.1) |
 
-7.3 **Ink is a finite budget drawn from a living source.** Inscribing spends ink from a budget owned by a living source: the licence (section 2.4), or a running invocation.
+7.3 **Ink is a finite budget drawn from a living source.** Inscribing spends ink from a budget owned by a living source: the faculty (section 2.4), or a running invocation.
 - **Provenance:** ink records its source.
 - **Lapse:** when the source is released or banished, every seal inscribed in its ink lapses.
 

@@ -37,8 +37,8 @@ Nothing is reported as built or tested unless it was.
 
 1. **Authority model:** the constitution, the axiom, the eight laws, seals and ink, registers, examination, destinations. File: `docs/spec/authority.md`.
 2. **Provenance register:** the source-precedence rule, plus a sourced or original label on every element. File: `docs/spec/provenance.md`.
-3. **Lexical grammar:** comments, literals, the keyword set and casing. Open question: Latin, English or mixed keywords.
-4. **Syntax in EBNF**, checked to be unambiguous, with parser tests derived from it.
+3. **Lexical grammar:** comments, literals, the keyword set and casing. Keywords are all Latin (ruled 2026-11-10). File: `docs/spec/grammar.md` (draft 1).
+4. **Syntax in EBNF**, in the same file (draft 1). Still to do: an unambiguity check, and parser tests derived from it.
 5. **Static semantics:** scopes, name resolution, types, and authority analysis.
 6. **Dynamic semantics:** evaluation order, the effect model, failure classes.
 

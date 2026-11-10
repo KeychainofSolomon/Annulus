@@ -247,3 +247,21 @@ Format: `date | question | source | what it gives | certainty | open lead`
 **Rudd's 72 angel seals (Harley 6483):** no free host. Enochian.org shows one archived page image. The many online sets are modern redrawings or the Ambelain/Arsenal 2495 set.
 - To get Rudd's seals: Skinner & Rankine's edition, or British Library images.
 - 2026-11-10, guideangel.com/angels_names.html (Eran Shoshan): has no seals. It lists the 72 in Bardon, Agrippa and Abulafia transliterations (5 Mahasiah, 6 Lelahel, 7 Achaiah). It says Kircher's *Oedipus Aegyptiacus* pairs each name with a verse, and gives name 70 "the first verse from Genesis". So Rudd's Genesis 1:1 for no. 70 is the inherited verse list, not a Rudd quirk.
+
+## Ganell SSM (1346): what is reachable (2026-11-10)
+
+- **No per-chapter transcriptions online.** esotericarchives' ssm.htm gives the contents only, with links into the Kassel viewer: http://orka.bibliothek.uni-kassel.de/viewer/image/1343812736802/<page>/
+  - Linked pages: 11, 26, 38, 43, 47, 50, 58, 61, 79, 81, 101, 106, 135, 155.
+  - Two more manuscripts: Halle (opendata.uni-halle.de) and Berlin Germ. Fol. 903 (a German translation).
+- **KEY for the spirits skill:** Book 3, Treatise 1, "Operatio 4" (L.3.f.21, Kassel viewer p. 155) covers the four principal kings under Satan (Oriennens, Amaymon, Paymon, Egyn), with their *ydea* (image).
+  - This is the oldest witness of the four kings in our chain (1346, older than the 1446 Clavicula).
+  - Peterson also says Ganell alone keeps Amaymon's seal.
+  - Their directions in the SSM still need checking. It is a separate work (the LIH/SSM line), so it doesn't override the Clavicula; it is recorded as its own tradition.
+- **Other chapters:**
+  - "De officiis spirituum" (L.2.f.33, viewer p. 101);
+  - "Operatio 5": the seven kings and the circle figure (L.3.f.29);
+  - "Sigillum angelorum" (L.3.f.4);
+  - "Sigillum aereorum" (L.3.f.35);
+  - Candaria (L.2.f.46): the contents give no count of them.
+- **guideangel.com:** a name-reference site, with no seals and no manuscripts.
+- **NEXT (the owner):** download from the Kassel viewer: p. 155 (the four kings), the Seal figure L.4.f.22, the candaria L.2.f.46 and the Semamphoras table L.2.f.14. The viewer can't be reached from this workspace.

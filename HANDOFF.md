@@ -167,3 +167,9 @@ Discussed with the owner, not built:
 - **Later additions stand where they don't clash.** Examples: the 44 planetary pentacles beyond the 1446 set, the Goetia's 72 spirits (Sloane 3825), the angelic Keys (Sloane 3825).
 - The same rule applies down the chain: within the later material, the oldest witness still wins (Sloane 3825 over the 1904 edition).
 - **Open task:** match the ~9 pentacles of 1446 against the 44 to find which later pentacles are versions of a 1446 one (1446 wins) and which are new (they stand).
+
+## Decision (the owner, 2026-11-10): older supersedes, applied to Paimon
+
+- Paimon's late-16th-century character in Wellcome MS 110 (image 27, among the four kings) **supersedes** his Goetic seal from Sloane 3825.
+- The general rule is confirmed: when an older witness gives a different sign for the same entity, the older sign wins.
+- Check the other three kings (Oriens, Amaymon, Egin) and any other Goetic spirits that appear in MS 110 or Folger V.b.26 in the same way.

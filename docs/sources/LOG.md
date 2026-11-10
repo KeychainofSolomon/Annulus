@@ -152,3 +152,9 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - A Hebrew letter-square, a Hebrew hourglass, a hand on a banner and a lamb also appear.
 - **Lead:** "Tozgraec" = Toz Graecus. Ganell's SSM attributes the 72 names behind the *Liber iuratus* Seal to "Tot Grecus". Check whether these are the same tradition.
 - **To do:** fetch the Wellcome images to restore the manuscript's own order and pages.
+
+**Order research (2026-11-10):**
+- **The original sequence can't be reached from this session.** Shell access to Wellcome is blocked; the blog and its rssing mirror are blocked or behind a captcha. **The owner to download the Wellcome viewer PDF** (works/j3ng8p39, 176 images).
+- **What survives in the compilation:** Vârtejaru re-sorted the seals into orthodox order "whilst keeping the spellings". So each seal's angel label is the manuscript's own; only the sequence and any numbering are lost.
+- **The pairing may be arbitrary.** Vârtejaru (BnF Lat. 18510 post, 19.02.2020), relaying Jérémie Segouin and Andy Foster: probably "a vast collection of pentacles that was attributed randomly to the 72 angels". BnF Lat. 18510 ("Testamenti sive claviculae Salomonis scientia enucleata ad Roboam", before 1870) has 74 pentacles and does not link them to angels.
+- **Correction:** the 1904 Goetia figs 81-152 give Rudd's Hebrew names of the 72 *spirits*, not the angels. Crowley calls many of them "manifestly incorrect". They cannot settle the angel order at 5-7.

@@ -40,7 +40,7 @@ Nothing is reported as built or tested unless it was.
 3. **Lexical grammar:** comments, literals, the keyword set and casing. Keywords are all Latin (ruled 2026-11-10). File: `docs/spec/grammar.md` (draft 1).
 4. **Syntax in EBNF**, in the same file (draft 1). Checked LL(1): every choice is decided by the next token. The reference recognizer `tools/grammar_check.py` runs the accept/reject programs in `tests/grammar/`, and CI runs it.
 5. **Static semantics:** scopes, name resolution, types, and authority analysis. File: `docs/spec/static.md` (draft 1).
-6. **Dynamic semantics:** evaluation order, the effect model, failure classes.
+6. **Dynamic semantics:** evaluation order, the effect model, failure classes. File: `docs/spec/dynamic.md` (draft 1).
 
 **Exit criterion:** the owner approves the specification.
 

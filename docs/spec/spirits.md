@@ -29,7 +29,7 @@ Contradictions resolved by the oldest witness: Naberius (loss of dignities, not 
 | `MALITIA` | performs a harmful act of its own office unasked | only spirits whose offices the sources list as harmful, and only while the counterbalance is unmet (§4) |
 | `RECUSATIO` | refuses: will not appear, enter the Triangle, or answer | every spirit, until constrained (§5) |
 
-2.3 **How the will chooses.** Each choice is drawn from the runtime's entropy source, among the outcomes still open. It is recorded in the audit, so a run can be replayed exactly. [O] Annulus gives no probabilities. The register records which outcomes are open, never how likely they are, because no witness states likelihoods.
+2.3 **How the will chooses.** Each choice is drawn from the runtime's entropy source, among the outcomes still open. It is recorded in the audit, so a run can be replayed exactly. [O] The register records which outcomes are open, never how likely they are, because no witness states likelihoods. The runtime therefore draws uniformly among the open outcomes (`dynamic.md` §5.4).
 
 2.4 **Even the faithful are examined.** A spirit the sources call faithful or of good nature (Vassago, Orobas, Marchocias, Phenex, Seere) has `MENDACIUM` and `MALITIA` closed. Its work is still a proposal and is still examined, because the examination law admits no exemption.
 

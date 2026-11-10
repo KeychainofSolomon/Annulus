@@ -282,7 +282,7 @@ Examination is not judgement (section 11). [Architecture §10]
 
 11.1 **Only the Constitution's judgement step assigns a destination,** on the basis of the examiner's verdict. No agent assigns a destination to its own work.
 
-11.2 **The destinations:**
+11.2 **The destinations** apply to the proposal judged, not to the spirit who made it; releasing the spirit stays the Operator's act (`dynamic.md` §6.2):
 
 | Destination | Mechanics |
 |---|---|

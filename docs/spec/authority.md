@@ -131,6 +131,10 @@ It defines permissions, prohibitions and resource limits [Architecture §9].
 - [S: BnF 1524 p246, the Book II circle with an open corridor into the centre, and p191 L.]
 - [O: the single-entry rule.]
 
+6.2a **The uninvited go to Hell** (ruling 2026-11-10). Any agent that reaches a Circle other than through an invocation the Operator made there is an **intruder**: a spirit not invoked, or an outside program or AI agent acting on the program without a grant. It is not examined, because it has nothing to examine. No capability it holds traces to the faculty (law ORIGIN), and whether it was invoked is a recorded fact, not a judgement, so no examiner's error can condemn it. Its messages are refused at the entrance, everything it sent is sealed in the Vessel (`INFERNUS`), it is barred from the program for the rest of the run, and all of it is recorded. [S: the Circle "to preserve himself from the malice of those evill Spirits" (Sloane 3825 f112); Orobas and Haures suffer no other spirit to tempt the Operator (G, W). O: the mechanism.]
+
+Invited agents keep the rule of §11: Hell applies to their *proposals*, and their release stays the Operator's act.
+
 6.3 **The form follows the rite.** A Circle's structure (its rings, names and figures) is drawn from its rite:
 - `clavicula`: the 1446 Circle of the Art (p194): a square with 8 crosses, 4 hexagrams and the ring of names.
 - `goetia`: the Circle of Solomon with its double ring of names (Sloane 3825, 120R).

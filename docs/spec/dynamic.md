@@ -126,6 +126,10 @@ Seals inscribed in ink drawn from the invocation lapse with it (`authority.md` �
 
 A spirit's helper tasks (`FAMILIARES`, and the sub-tasks of any office) are capped at his legion count. Exceeding it is a denial. [S: legion counts. O: the cap.]
 
+## 8a. Intruders
+
+The runtime admits into a Circle only what comes through its entrance from an invocation recorded there (`authority.md` §6.2). Anything else is an intruder (§6.2a): refused, its input sealed in the Vessel, its source barred for the rest of the run, and recorded. This is a class 2 denial against the intruder, never against the program: the program goes on.
+
 ## 9. The audit
 
 9.1 The runtime writes the audit, not the program; it needs no grant. One record per event, in order:

@@ -53,3 +53,17 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - **Folger V.b.26** (c. 1577–83, "Book of Oberon"): spirit catalogues with drawings.
 - **Lead:** Folger V.b.26 is the most likely pre-Sloane-3825 witness with spirit seals. The Folger has a digital collection (LUNA); the owner would attach page images.
 - **Dead end:** en.wikipedia.org is not on the WebFetch allowlist; use mirrors.
+
+## Folger V.b.26, via *The Book of Oberon* (2015) — 2026-11-10
+
+- **Edition:** Harms, Clark and Peterson, *The Book of Oberon* (Llewellyn, 2015), 601 pages.
+  - This is a copyrighted modern edition.
+  - Use it as a reference only. Do not trace its figures: some are J. R. Clark's redrawings.
+- **"Officium de spirittibus" (The offices of spirits)**, book p. 191:
+  - a catalogue of about 30+ spirits, close to Weyer and the *Liber Officiorum Spirituum*;
+  - variant names include Forcase (Weyer #29 Porras/Forcas), Coolor, Hanar, Hooab, Formecones, Lewteffar/Falcas, Barbaryes;
+  - the editors compare it with Sloane 3853, Wellcome MS 110 and Peterson's Lesser Key.
+  - **It gives no seals for these spirits.** Only "the Seal of Solomon" is mentioned.
+- **Its seals and figures belong to its own material:** Oberyon and his followers, Bilgall, Ascariell, planetary characters, talismans.
+- **Conclusion:** no earlier witness of the Goetic seals here. Sloane 3825 remains the oldest seal source found.
+- **New leads (spirit catalogues):** Sloane 3853, ff. 257–258; Wellcome MS 110, f. 32. These are possibly older spirit lists, with seals unknown.

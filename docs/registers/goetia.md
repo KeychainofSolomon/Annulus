@@ -1424,7 +1424,6 @@ Also: Amduscias, Amdukias.
 - `DIGNITATES` (W): distributes presentations and senatorships
 - `CONCORDIA` (W): favour of friends and foes
 - `FAMILIARES` (W): gives excellent familiars
-- `NULLUM` (G): senatorships
 
 **Malice:**
 

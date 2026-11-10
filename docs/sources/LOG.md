@@ -246,3 +246,4 @@ Format: `date | question | source | what it gives | certainty | open lead`
 
 **Rudd's 72 angel seals (Harley 6483):** no free host. Enochian.org shows one archived page image. The many online sets are modern redrawings or the Ambelain/Arsenal 2495 set.
 - To get Rudd's seals: Skinner & Rankine's edition, or British Library images.
+- 2026-11-10, guideangel.com/angels_names.html (Eran Shoshan): has no seals. It lists the 72 in Bardon, Agrippa and Abulafia transliterations (5 Mahasiah, 6 Lelahel, 7 Achaiah). It says Kircher's *Oedipus Aegyptiacus* pairs each name with a verse, and gives name 70 "the first verse from Genesis". So Rudd's Genesis 1:1 for no. 70 is the inherited verse list, not a Rudd quirk.

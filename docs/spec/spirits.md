@@ -26,7 +26,7 @@ Contradictions resolved by the oldest witness: Naberius (loss of dignities, not 
 | `MORA` | obeys, but late | every spirit (Amdusias's music comes "not soon or immediately") |
 | `PARS` | obeys only in part | every spirit (Shax "promises obedience but does not fully keep it") |
 | `MENDACIUM` | answers falsely | only spirits the sources call liars, and only while the condition that compels them is unmet (§3) |
-| `MALITIA` | performs a harmful act of its own office unasked | only spirits whose offices the sources list as harmful, and only while the counterbalance is unmet (§4) |
+| `MALITIA` | performs, unasked, a harm the witnesses give him (in his offices or his warnings) | only spirits whose offices the sources list as harmful, and only while the counterbalance is unmet (§4) |
 | `RECUSATIO` | refuses: will not appear, enter the Triangle, or answer | every spirit, until constrained (§5) |
 
 2.3 **How the will chooses.** Each choice is drawn from the runtime's entropy source, among the outcomes still open. It is recorded in the audit, so a run can be replayed exactly. [O] The register records which outcomes are open, never how likely they are, because no witness states likelihoods. The runtime therefore draws uniformly among the open outcomes (`dynamic.md` §5.4).

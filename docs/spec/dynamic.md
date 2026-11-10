@@ -77,7 +77,7 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 | `MORA` | the same, delivered only after a delay the runtime records |
 | `PARS` | part of the requested work |
 | `MENDACIUM` | a lie, in one of the two forms of `spirits.md` §3.1: a substitute answer of the same form (offices that tell), or a false account of the work (other offices, caught by examination). Only spirits whose compelling condition is unmet can choose it. In Annulus the Triangle is always present, so triangle-compelled spirits (Furfur, Shax, Haures) cannot. Belial, Berith and Asmoday can, until their conditions are met with the apparatus (`spirits.md` §4.4). Valefor always can: no condition that compels him is stated |
-| `MALITIA` | the requested work **plus** a harmful effect of the spirit's own office, unasked |
+| `MALITIA` | the requested work **plus**, unasked, a harm the witnesses give the spirit (`spirits.md` §4.1) |
 | `RECUSATIO` | nothing; escalation resumes at the constraint (step 3) |
 
 5.4 **The draw.** The runtime draws uniformly among the outcomes still open, from its entropy source or the launch seed. Uniform is [O]: the sources state no likelihoods, so none is favoured. Every draw is recorded with its result. A run given the same seed, clock and place repeats exactly.

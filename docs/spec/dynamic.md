@@ -59,13 +59,15 @@ This part says what happens **while a program runs**. A program reaches this poi
 
 | Condition (source) | Runtime reading |
 |---|---|
-| clock hours (9, 12, 3, 4 o'clock) | local time at the declared place |
+| Weyer's canonical hours | **temporal hours** at the declared place: daylight from sunrise to sunset divided into twelve equal hours. *Hora prima* begins at sunrise; *tertia* at the start of the third hour; *meridies* at noon, the end of the sixth; *nona* at the start of the ninth; *vesperae* at sunset. [O: the reading of canonical terms as temporal hours; Sloane's clock hours are the same points at the equinox] |
+| *completorium* (compline), *crepusculum noctis* (nightfall) | the end of civil twilight. [O] |
+| *finis diei* (Marquises) | the next sunrise, as Sloane 3825 reads it ("till sunrising") |
 | sunrise, noon, sunset, dawn | computed for the declared place and date |
 | twilight | civil twilight. [O: the sources do not define it] |
 | the Moon's age 2, 4, 6, 8, 10, 12, 14 | whole days since the astronomical new moon |
 | Earls: "in woods or places where men resort not, or where no noise is" | **[O, for approval]** no other invocation is open in the program |
 | Dukes: "in clear weather" | **[O, for approval]** no `TEMPESTAS` effect is active |
-| Presidents at twilight "unless the King whom they are under be invocated" | refused until the syntax for invoking a king exists. The witnesses name the king for only four spirits (Agares, Asmoday, Gaap, Seere: Amaymon); see `docs/registers/reges.md` |
+| Presidents, at any hour (Weyer, ruling 2026-11-10) | refused unless the king he obeys is invoked, and always at nightfall. Until the syntax for invoking a king exists, every pure President is refused. The witnesses name the king for only four spirits (Agares, Asmoday, Gaap, Seere: Amaymon); see `docs/registers/reges.md` |
 
 A spirit of two ranks may be invoked when **either** rank's window is open. [O; the mixed-rank question stays open]
 

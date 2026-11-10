@@ -64,7 +64,7 @@ The governing document is the owner's "Definitive Architecture and Engineering H
 - The apparatus (`GERE ANULUM/VIRGAM/HEXAGRAMMUM/PENTAGRAMMUM`, `OFFER`, `CONSTRINGE … PER NOMEN`, `APPELLA`, `VETA`) is in the grammar and in `spirits.md` §4.4, from Sloane 3825 ff. 112-113 and the spirit entries.
 - **Andras as tester** (ruling 2026-11-10): office `PROBATIO`, only when commanded; pentagram required; attacks copies only (illusory, bat's-blood ink); only his failure report can commit. See `spirits.md` §4.5.
 - Registers of divine names (`nomina.json`, 71 entries, Sloane 3825 ff. 112-113 + First Conjuration) and four kings (`reges.json`: goetia per Weyer ch. III, clavicula per 1446).
-- **Open ruling:** Weyer's binding hours (ch. III) vs Sloane 3825's, especially Presidents (Weyer: never without their king).
+- **Binding hours: Weyer ch. III governs** (ruling 2026-11-10). Presidents can never be bound unless their king is invoked, and never at nightfall. So pure Presidents are blocked until king invocation exists and their kings are known (only Gaap's, Amaymon, is stated).
 - Part 4 `dynamic.md`: draft 1. The whole step-3 specification is now drafted and awaits the owner's approval; after it, step 4 (instruction set) begins.
 
 ## Still open: ask the owner

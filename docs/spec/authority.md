@@ -222,23 +222,23 @@ The names in the form are references to Constitution entries (section 2.3).
 8.3 **Rank limits.**
 - **Legions** cap the number of concurrent sub-tasks a spirit may start. [S: legion counts. O: the cap.]
 - **Attendants:** a king's attendants start with him and are released with him. Paimon comes with the kings Bebal and Abalam (Sloane 3825). [S]
-- **Time windows:** the binding hours by rank limit *when* each rank may be invoked under `goetia`. [S: Sloane 3825 f111 (119R); the 1904 edition agrees.]
+- **Time windows:** the binding hours by rank limit *when* each rank may be invoked under `goetia` and `rudd`. **Weyer 1577 (ch. III) governs** (ruling 2026-11-10: the oldest witness of the line). Sloane 3825 f111 is the later copy: it restates Weyer's canonical hours as clock hours, and where it only restates them, its wording is the reading of Weyer's terms.
 
-  | Rank | May be bound |
-  |---|---|
-  | King | from 9 till 12 at noon, and from 3 till sunset |
-  | Marquis | from 3 in the afternoon till 9 at night, and from 9 at night till sunrise |
-  | Duke | from sunrise till noon, in clear weather |
-  | Prelate (Prince) | any hour of the day |
-  | Knight | from dawn till sunrise, or from 4 o'clock till sunset |
-  | President | any time, except twilight at night, unless the king they are under is invoked |
-  | Earl | any hour of the day, in woods or places where men resort not, or where no noise is |
+  | Rank | Weyer 1577 (governs) | Sloane 3825 (later copy) |
+  |---|---|---|
+  | King | "à tertia hora usque ad meridiem, à nona hora usque ad vesperas" | from 9 till 12 at noon, and from 3 till sunset |
+  | Marquis | "à nona usque ad completorium, vel à completorio usque ad finem diei" | 3 in the afternoon till 9 at night, and 9 at night till sunrise |
+  | Duke | from the first hour until noon, in clear weather | sunrise till noon, in clear weather |
+  | Prelate (Prince) | any hour of the day | any hour of the day |
+  | Knight | "ab aurora usque ad ortum solis, vel à vesperis usque ad finem solis" | dawn till sunrise, or 4 o'clock till sunset |
+  | President | **"in aliqua hora diei non potest constringi, nisi rex cui paret, invocaretur, & nec in crepusculo noctis"**: never unless the king he obeys is invoked, and never at nightfall | any time except twilight, unless the king is invoked. **Conflicts; Weyer prevails** |
+  | Earl | any hour, in woods or fields where men do not go | the same, and "where no noise is" (a later addition that does not conflict, so it stands) |
 
   The same page adds the **Moon's age:** the work is done when the Moon is 2, 4, 6, 8, 10, 12 or 14 days old, "as Salomon sayeth". [S]
 
   `arbatel` requires the spirit's own day at sunrise, and holding a spirit beyond one hour is forbidden (Aph. XXI). [S]
 - **The four kings over the 72 (`goetia`):** the same page puts the 72 under Amaymon, Corson, Ziminiar and Goap, "kings ruling in ye 4 quarters East, West, North & South", not to be called "except it be upon great occasions". [S] Whether the two lists pair in order (Amaymon East, Corson West, Ziminiar North, Goap South) is not stated; it is recorded as unresolved. Weyer (ch. III) gives the pairing: Amaymon East, Gorson South, Zymymar North, Goap West. They may be bound "from the third hour till noon, and from the ninth hour till evening" (*à tertia hora usque ad meridiem, à nona hora usque ad vesperas*). [S] See `docs/registers/reges.md`.
-- **Weyer's binding hours differ from Sloane 3825's** for Presidents. Weyer: "Præses in aliqua hora diei non potest constringi, nisi rex cui paret, invocaretur, & nec in crepusculo noctis": never without his king invoked, and never at nightfall. Sloane 3825: any time except twilight, unless the king is invoked. **Awaiting the owner's ruling** on which governs the hours.
+- **Presidents need their king.** The witnesses name the king only for Gaap (Amaymon), and Annulus has no syntax yet for invoking a king. So no pure President can be invoked until both exist. Spirits of two ranks (Botis, Marax, Gaap, Zagan) may still be invoked within their other rank's window.
 
 8.4 **Spirits may not tell the truth.** A spirit's output carries a provenance mark and is never trusted until examined. Two kinds of act are distinguished:
 - **natural acts:** predictable functions of the spirit's office;

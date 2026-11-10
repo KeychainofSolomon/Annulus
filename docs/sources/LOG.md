@@ -118,3 +118,4 @@ Format: `date | question | source | what it gives | certainty | open lead`
 
 - Each comes with its legions, kings, princes and offices as printed.
 - Status: the **oldest witness** for the Olympic spirits; it supersedes graveworm and Twilit Grotto.
+- 2026-11-10 | Sloane 3853 date | article "Necromancing Theurgic Magic: A Reappraisal of the Liber iuratus Extracts…", *Magic, Ritual, and Witchcraft* (journal; the owner's PDF) | **first part of Sloane 3853 dated to the second half of the 16th century** (from its two scribes' textual references); a composite Latin/English miscellany with *Liber iuratus* extracts and a reference to the Schemhamphoras in the Sigillum Dei ring | article (scholarly) | still to check: whether ff. 257–258 (the spirit list) carry seals; the owner would need scans of Sloane 3853

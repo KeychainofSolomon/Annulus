@@ -1348,7 +1348,7 @@
     "text": "makes a man loved by friends and foes"
    },
    {
-    "kind": "NULLUM",
+    "kind": "APPELLATIO",
     "witness": "W",
     "text": "gives a good name"
    }
@@ -1397,7 +1397,7 @@
     "text": "makes a man witty and eloquent"
    },
    {
-    "kind": "NULLUM",
+    "kind": "LONGAEVITAS",
     "witness": "W",
     "text": "makes a man live long"
    },
@@ -1436,7 +1436,7 @@
     "text": "teaches geometry, arithmetic, astronomy and mechanics"
    },
    {
-    "kind": "NULLUM",
+    "kind": "TUTELA",
     "witness": "W",
     "text": "gives the Ring of Virtues"
    },
@@ -1494,6 +1494,10 @@
    {
     "witness": "G",
     "text": "first and choicest under the power of Amaymon"
+   },
+   {
+    "witness": "W",
+    "text": "the Ring of Virtues is mapped to protection against destruction; the sources name the ring but never say what it does (ruling 2026-11-10: the ring, from Weyer, takes this office over the 1904 edition's 'invincible', which stays NULLUM)"
    }
   ]
  },

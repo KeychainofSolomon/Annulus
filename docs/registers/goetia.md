@@ -677,7 +677,7 @@ Also: Beale, Beal, Bofry, Bolfry.
 - `DOCTRINA` (W): makes a man admirable in rhetoric
 - `LINGUAE` (W): gives understanding of tongues
 - `CONCORDIA` (W): makes a man loved by friends and foes
-- `NULLUM` (W): gives a good name
+- `APPELLATIO` (W): gives a good name
 
 **Notes:**
 
@@ -697,7 +697,7 @@ Also: Forras, Forcas.
 - `VIRTUTES` (G): the virtues of herbs and precious stones
 - `INVISIBILITAS` (W): makes a man invisible
 - `MENS` (W): makes a man witty and eloquent
-- `NULLUM` (W): makes a man live long
+- `LONGAEVITAS` (W): makes a man live long
 - `AMISSA` (W): recovers things lost
 - `THESAURI` (W): reveals treasure
 
@@ -712,7 +712,7 @@ Also: Sydonay, Asmodai.
 **Offices:**
 
 - `DOCTRINA` (W): teaches geometry, arithmetic, astronomy and mechanics
-- `NULLUM` (W): gives the Ring of Virtues
+- `TUTELA` (W): gives the Ring of Virtues
 - `INVISIBILITAS` (W): makes a man invisible
 - `THESAURI` (W): shows where treasure lies
 - `CUSTODIA` (W): guards the treasure
@@ -733,6 +733,7 @@ Also: Sydonay, Asmodai.
 **Notes:**
 
 - (G) first and choicest under the power of Amaymon
+- (W) the Ring of Virtues is mapped to protection against destruction; the sources name the ring but never say what it does (ruling 2026-11-10: the ring, from Weyer, takes this office over the 1904 edition's 'invincible', which stays NULLUM)
 
 ### 33. Gaap
 

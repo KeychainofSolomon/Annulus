@@ -158,3 +158,26 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **What survives in the compilation:** Vârtejaru re-sorted the seals into orthodox order "whilst keeping the spellings". So each seal's angel label is the manuscript's own; only the sequence and any numbering are lost.
 - **The pairing may be arbitrary.** Vârtejaru (BnF Lat. 18510 post, 19.02.2020), relaying Jérémie Segouin and Andy Foster: probably "a vast collection of pentacles that was attributed randomly to the 72 angels". BnF Lat. 18510 ("Testamenti sive claviculae Salomonis scientia enucleata ad Roboam", before 1870) has 74 pentacles and does not link them to angels.
 - **Correction:** the 1904 Goetia figs 81-152 give Rudd's Hebrew names of the 72 *spirits*, not the angels. Crowley calls many of them "manifestly incorrect". They cannot settle the angel order at 5-7.
+
+## RESOLVED (2026-11-10): the order of the 72 angels, including 5-7
+
+**Computed from the text.** `tools/shem_names.py` derives the 72 roots from the consonantal Leningrad text of Exodus 14:19-21: v19 read forwards, v20 backwards, v21 forwards.
+- Each verse checks out at exactly 72 letters.
+- Result: 5 = מהש (Mahasiah), 6 = ללה (Lelahel), 7 = אכא (Achaiah).
+- This is the canonical order of the Hebrew itself.
+
+**Rudd's Goetia (Harley 6483) follows the canonical order.** Source: the Wikipedia Shem HaMephorash table, citing Skinner & Rankine, *Goetia of Dr Rudd*, pp. 366-376.
+- 5 Mahasiah→Marbas (Ps 34:4), 6 Lelahel→Valefar (Ps 9:11), 7 Achaiah→Amon (Ps 103:8).
+- All 72 Hebrew names in that table match the computed roots plus -el or -yah.
+- So the Occultist Explorer pairing is correct.
+
+**Harley 6482's sequence 5 Lelahel, 6 Achajah, 7 Mahasiah is a slip in that copy.** Mahasiah is displaced from 5 to 7, against the Hebrew.
+- Its "doublets" are transliteration errors, not real repeats. Hahajah at 12 and 24 stands for ההע and חהו; Michael at 42 and 48 stands for מיכ and מיה.
+- Its "Sirael" (3) is Sitael, סיט.
+
+**Real repeats in the Hebrew** (distinct angels whose roots share letters):
+- לאו at 11 and 17 (both Lauviah);
+- והו at 1 (Vehuiah) and 49 (Vehuel);
+- מבה at 14 (Mebahel) and 55 (Mebahiah).
+
+**The angel seals:** Harley 6483 draws a circle for each of the 72 angels beside each demon seal. Each circle carries the angel's versicle (Latin psalm) and Hebrew name; the manuscript doesn't say whether it was meant as the reverse of the lamen. The designs themselves still need Skinner & Rankine's edition or BL images.

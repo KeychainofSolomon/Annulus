@@ -112,7 +112,7 @@ An entry outside the range, a label not in the rite's register, or a reference t
 
 4.4 **No Triangle for angels.** `INVOCA` applies only to entities that have a Triangle: spirits in `goetia` and `rudd`. Invoking an angel or an Olympic spirit is an error. Calling through a channel uses `ADVOCA`, defined in a later part. [S: `authority.md` §6.5.]
 
-4.5 **The seal comes first.** `INVOCA` of a spirit requires that the spirit's operative seal was inscribed earlier in the same Circle, on every path. [S: the Goetia, where the spirit's seal is made beforehand and worn as a lamen when he is called. O: the path rule.]
+4.5 **The seal comes first.** `INVOCA` of a spirit requires that the spirit's operative seal was inscribed earlier in the same Circle, on every path. [S: Sloane 3825, the Goetia, e.g. Bael: his character "is to be worne as a Lamen before him who calleth him forth, or else he will not doe you homage". O: the path rule.]
 
 4.6 **OFFICE.** The identifier after `AD OFFICIUM` MUST be one of the spirit's offices in the rite. Each office has a fixed signature: what `PETE` may pass, and what the proposal will contain. The arguments to `PETE` MUST match it. The offices register, mapping each traditional office to computational work, is still to be written: open item §7.
 
@@ -127,7 +127,7 @@ Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
 - `INSCRIBE s ATRAMENTO a`: `s` MUST be an exemplar seal and `a` MUST be consecrated ink.
 - **All drawn ink is raw** and MUST pass `CONSECRA` before use. [S: the blood is exorcised and blessed before any writing (*Liber iuratus* CXXXVII; Mathers II.16).]
 - **One inscription per ink.** Consecrated ink is spent by one `INSCRIBE`; using the same ink value twice is an error. [O]
-- **The ink class must match the seal** (`authority.md` §7.5). A spirit's seal takes the ink of the spirit's rank: Furfur, an Earl (*comes*), takes `ATRAMENTUM "comes"`. Where the class is known before running, a mismatch is an error. The table of ranks to seal metals is still to be transcribed from Sloane 3825.
+- **The ink class must match the seal** (`authority.md` §7.5). A spirit's seal takes the ink of the spirit's rank: Furfur, an Earl (*comes*), takes `ATRAMENTUM "comes"`. Where the class is known before running, a mismatch is an error. Provisional table of ranks to seal metals, from the 1904 Goetia: Kings gold; Dukes copper; Princes and Prelates tin; Marquises silver; Presidents mercury; Earls copper and silver in equal parts; Knights lead. It stays provisional until checked against the Sloane 3825 Observations.
 - **No self-minted ink.** Ink comes only from `ATRAMENTUM "classis"`, which draws from the faculty. No expression creates ink from program data (`authority.md` §1.4).
 
 4.9 **DECLARATION: the faculty.**
@@ -186,7 +186,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 ## 7. Open items
 
 - **The offices register:** each spirit's offices, per rite, as computational work, with signatures for `PETE`. The owner's Occultist Explorer project may supply them.
-- **The ink table:** ranks to seal metals (Goetia Observations, Sloane 3825), which names the ink classes.
+- **The ink table:** the provisional 1904 table (§4.8) must be checked against the Sloane 3825 Observations.
 - **Registers for `clavicula`, `iuratus` and `janua`.**
 - **Modules (`LIBER`, `ADHIBE`):** how files are found and what a module exports; deferred to the part on the standard library.
 - **Destination as a written type:** for passing destinations to functions, a type name is needed. The proposal is `DESTINATIO`.

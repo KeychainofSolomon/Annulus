@@ -181,7 +181,7 @@ The names in the form are references to Constitution entries (section 2.3).
 | Ink | Source | Effect class |
 |---|---|---|
 | bat's blood | 1446 I.5, I.10; Mathers I.16 | **veiled** effects (visible only inside their Circle, always still audited) and **illusory** effects (they appear but can never commit: dry runs and test doubles) |
-| by rank of spirit | the seal metal of the rank (Goetia Observations; table to be transcribed from Sloane 3825) | a spirit's operative seal requires the ink class of its rank |
+| by rank of spirit | the seal metal of the rank. Provisional, from the 1904 Goetia: Kings gold, Dukes copper, Princes tin, Marquises silver, Presidents mercury, Earls copper and silver equally, Knights lead; to be checked against Sloane 3825 | a spirit's operative seal requires the ink class of its rank |
 
 7.6 **Tempering: binding at creation.** An instrument's limits are fixed when it is made and can never be widened.
 [S: the knife "Artano" tempered in goose blood (1446 II.7). O: the immutability rule.]

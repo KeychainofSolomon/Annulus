@@ -160,3 +160,10 @@ Discussed with the owner, not built:
 - It does **not** have the 44 planetary pentacles.
 - Ask the owner which set Annulus uses.
 - Research method: use the `occult-source-research` skill (proposed this session) and the log.
+
+## Decision: layered source authority (the owner, 2026-11-10)
+
+- **BnF Ital. 1524 (1446) is foundational for everything it covers.** Where a later source covers the same material and differs, the 1446 version supersedes it. Examples: the same pentacle drawn differently, or the same circle.
+- **Later additions stand where they don't clash.** Examples: the 44 planetary pentacles beyond the 1446 set, the Goetia's 72 spirits (Sloane 3825), the angelic Keys (Sloane 3825).
+- The same rule applies down the chain: within the later material, the oldest witness still wins (Sloane 3825 over the 1904 edition).
+- **Open task:** match the ~9 pentacles of 1446 against the 44 to find which later pentacles are versions of a 1446 one (1446 wins) and which are new (they stand).

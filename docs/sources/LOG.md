@@ -24,3 +24,20 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - personalsigil.com/ars-goetia: no stated source.
 - Searches for Angelfire/GeoCities Olympic spirit pages: search engines don't index archived pages; use the browser on the Wayback Machine.
 - Shell downloads from archive.org and booksofmagick.com: blocked.
+
+## BnF Ital. 1524 (1446), examined 2026-11-10
+
+- **File:** `Compilazioni_di_vari_trattati_latini_____btv1b10036527h.pdf`, 246 PDF pages, one two-page opening per PDF page.
+- **The Clavicula** (ff. 178v–235r) is about PDF pp. 180–236. Drawings found:
+
+| PDF page | Content |
+|---|---|
+| 194 | a square frame enclosing a lettered circle, with crosses at the corners |
+| 195 | **"Pentacoli… ovvero Candarie di Salomone" (?)**: about 9 round pentacles with lettered rings (crosses, *Agla*, and *Sab… la ba…* (?) in a grid), plus one empty circle captioned ***"questo circulo è superfluo"*** ("this circle is superfluous") |
+| 196 | the great magic circle, with concentric inscriptions; small seals beside it (a hexagram, a magic square, others) |
+| 228, 242, 246 | small marginal drawings, not yet examined |
+
+- **Conclusion:** the oldest witness has its **own small set of about 9 pentacles**, not the 44 planetary pentacles of the later tradition.
+  - The 44-pentacle set appears only in later manuscripts.
+  - For Annulus this is a fidelity decision for the owner: the 1446 set (oldest), or the 44 (later, with manuscript sources for 16).
+- **Next step:** transcribe p. 195 and p. 196 at 200 dpi; check pp. 228, 242 and 246.

@@ -152,3 +152,11 @@ Discussed with the owner, not built:
 - **Shem HaMephorash seals:** no primary source online yet; 360headsoftheearthzone.com and a wizardforums thread point toward Rudd's manuscripts.
 - **Graveworm Arbatel**: see above.
 - Wayback Machine snapshots of GeoCities and Angelfire are not searchable with the available tools. The owner can browse them himself, or the built-in browser can be used.
+
+## Update: the oldest Key of Solomon examined
+
+- BnF Ital. 1524 (1446) is received; see `docs/sources/LOG.md`.
+- It has about 9 "Pentacoli/Candarie di Salomone" on PDF p. 195 and the great circle on p. 196.
+- It does **not** have the 44 planetary pentacles.
+- Ask the owner which set Annulus uses.
+- Research method: use the `occult-source-research` skill (proposed this session) and the log.

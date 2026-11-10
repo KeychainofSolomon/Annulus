@@ -1,0 +1,151 @@
+[
+ {
+  "rite": "goetia",
+  "quarter": "East",
+  "names": [
+   {
+    "text": "Amaymon",
+    "witness": "S"
+   },
+   {
+    "text": "Amoymon",
+    "witness": "W"
+   },
+   {
+    "text": "Amaimon",
+    "witness": "W"
+   }
+  ],
+  "witness": "W: 'Amoymon rex Orientalis'",
+  "subjects": [
+   {
+    "spirit": "Agares",
+    "source": "G: 'under the Power of the East'"
+   },
+   {
+    "spirit": "Asmoday",
+    "source": "W: 'sub potestate Amaymonis'; G"
+   },
+   {
+    "spirit": "Gaap",
+    "source": "G: 'Amaymon his King'"
+   },
+   {
+    "spirit": "Seere",
+    "source": "S: 'under Amaymon king of ye East'"
+   }
+  ],
+  "n": 1
+ },
+ {
+  "rite": "goetia",
+  "quarter": "South",
+  "names": [
+   {
+    "text": "Corson",
+    "witness": "S"
+   },
+   {
+    "text": "Gorson",
+    "witness": "W"
+   }
+  ],
+  "witness": "W: 'Gorson rex Meridionalis'",
+  "subjects": [],
+  "n": 2
+ },
+ {
+  "rite": "goetia",
+  "quarter": "North",
+  "names": [
+   {
+    "text": "Ziminiar",
+    "witness": "S"
+   },
+   {
+    "text": "Zymymar",
+    "witness": "W"
+   },
+   {
+    "text": "Zimimar",
+    "witness": "W"
+   },
+   {
+    "text": "Zimimay",
+    "witness": "G"
+   }
+  ],
+  "witness": "W: 'Zymymar rex Septentrionalis'",
+  "subjects": [],
+  "n": 3
+ },
+ {
+  "rite": "goetia",
+  "quarter": "West",
+  "names": [
+   {
+    "text": "Goap",
+    "witness": "S"
+   },
+   {
+    "text": "Goap",
+    "witness": "W"
+   }
+  ],
+  "witness": "W: 'Goap rex & princeps Occidentalis'",
+  "subjects": [],
+  "n": 4
+ },
+ {
+  "rite": "clavicula",
+  "quarter": "East",
+  "names": [
+   {
+    "text": "Oriens",
+    "witness": "K"
+   }
+  ],
+  "witness": "BnF Ital. 1524 (1446), ruling 2026-11-10",
+  "subjects": [],
+  "n": 5
+ },
+ {
+  "rite": "clavicula",
+  "quarter": "West",
+  "names": [
+   {
+    "text": "Paimon",
+    "witness": "K"
+   }
+  ],
+  "witness": "BnF Ital. 1524 (1446), ruling 2026-11-10",
+  "subjects": [],
+  "n": 6
+ },
+ {
+  "rite": "clavicula",
+  "quarter": "South",
+  "names": [
+   {
+    "text": "Amaymon",
+    "witness": "K"
+   }
+  ],
+  "witness": "BnF Ital. 1524 (1446), ruling 2026-11-10",
+  "subjects": [],
+  "n": 7
+ },
+ {
+  "rite": "clavicula",
+  "quarter": "North",
+  "names": [
+   {
+    "text": "Egin",
+    "witness": "K"
+   }
+  ],
+  "witness": "BnF Ital. 1524 (1446), ruling 2026-11-10",
+  "subjects": [],
+  "n": 8
+ }
+]

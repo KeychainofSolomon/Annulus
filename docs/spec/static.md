@@ -152,6 +152,8 @@ Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
 
 4.12 **Nested Circles.** An inner Circle sees the outer Circle's variables. Rite values stay bound to the Circle that made them (§4.7). An inner Circle of another rite is a cross-rite operation and so declares both rites by its nesting (`authority.md` §4.3). An inner Circle never gains a grant the outer lacks. The faculty is program-wide, and Circles only narrow it.
 
+4.13 **Divine names.** The string in `NOMEN "…"` and in `CONSTRINGE … PER NOMEN "…"` MUST equal, exactly, one recorded form of an entry of kind `deus` in `docs/registers/nomina.md`. Angels, orders, sephiroth, spheres and the unexplained names on the figures cannot be cited as divine names (A12). [S: the constraint is "by Divine Power", by God's names; O: the exact-match rule.]
+
 ## 5. Changes to the grammar made by this part
 
 - `ATRAMENTUM , string` is a primary expression: it draws raw ink of that class.
@@ -186,6 +188,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 | A9 | invocation not released on some path, or used after release |
 | A10 | invocation without the spirit's operative seal |
 | A11 | invocation without a required instrument |
+| A12 | a name cited as divine that is not a recorded form of a divine name |
 
 ## 7. Open items
 

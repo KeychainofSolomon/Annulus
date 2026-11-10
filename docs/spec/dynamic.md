@@ -65,7 +65,7 @@ This part says what happens **while a program runs**. A program reaches this poi
 | the Moon's age 2, 4, 6, 8, 10, 12, 14 | whole days since the astronomical new moon |
 | Earls: "in woods or places where men resort not, or where no noise is" | **[O, for approval]** no other invocation is open in the program |
 | Dukes: "in clear weather" | **[O, for approval]** no `TEMPESTAS` effect is active |
-| Presidents at twilight "unless the King whom they are under be invocated" | refused: the four kings are not yet in a register |
+| Presidents at twilight "unless the King whom they are under be invocated" | refused until the syntax for invoking a king exists. The witnesses name the king for only four spirits (Agares, Asmoday, Gaap, Seere: Amaymon); see `docs/registers/reges.md` |
 
 A spirit of two ranks may be invoked when **either** rank's window is open. [O; the mixed-rank question stays open]
 

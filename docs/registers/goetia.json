@@ -1497,6 +1497,10 @@
    },
    {
     "witness": "W",
+    "text": "under Amaymon (W: sub potestate Amaymonis)"
+   },
+   {
+    "witness": "W",
     "text": "the Ring of Virtues is mapped to protection against destruction; the sources name the ring but never say what it does (ruling 2026-11-10: the ring, from Weyer, takes this office over the 1904 edition's 'invincible', which stays NULLUM)"
    }
   ]
@@ -1505,8 +1509,7 @@
   "n": 33,
   "name": "Gaap",
   "aliases": [
-   "Tap",
-   "Goap"
+   "Tap"
   ],
   "rank": "president/prince",
   "rank_variants": null,

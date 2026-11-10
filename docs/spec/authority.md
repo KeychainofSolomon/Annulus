@@ -116,7 +116,8 @@ Each property records its source, the witness's date, and its **attestation**: s
 | Olympic spirits | 7 | Arbatel 1575: provinces 49 / 42 / 35 / 28 / 21 / 14 / 7 = 196 (the printed XXXII for Bethor is a misprint) |
 | Day-angels | 7 | *Heptameron*: Michael, Gabriel, Samael, Raphael, Sachiel, Anael, Cassiel |
 | Orders | 9 | per rite: `iuratus` order and ban (section 12); `janua` Scale of Ten |
-| Kings of the quarters | 4 | per rite: `clavicula` and the *Officium* line give Oriens E, Paymon W, Amaymon S, Egin N |
+| Divine and sacred names | 71 | `docs/registers/nomina.md`: the Circle of Solomon, Triangle, hexagram, pentagram and Ring as drawn in Sloane 3825 f112-113, and the names of the First Conjuration; the 1904 edition fills only what the manuscript leaves illegible |
+| Kings of the quarters | 4 per rite | `docs/registers/reges.md`. `goetia`: Amaymon E, Gorson (Corson) S, Zymymar (Ziminiar) N, Goap W (Weyer 1577, ch. III, the oldest witness to pair them; Sloane 3825 names the same four without pairing). `clavicula`: Oriens E, Paimon W, Amaymon S, Egin N (BnF 1524, ruling). The Oberon and Wellcome 110 set (the four 'kings of the firmament') is recorded as a variant |
 
 5.3 **Identity is the number.** Numbers never change. Names are labels and MAY be corrected without breaking stored data. [O; this follows Occultist Explorer's key derivation by number.]
 
@@ -236,7 +237,8 @@ The names in the form are references to Constitution entries (section 2.3).
   The same page adds the **Moon's age:** the work is done when the Moon is 2, 4, 6, 8, 10, 12 or 14 days old, "as Salomon sayeth". [S]
 
   `arbatel` requires the spirit's own day at sunrise, and holding a spirit beyond one hour is forbidden (Aph. XXI). [S]
-- **The four kings over the 72 (`goetia`):** the same page puts the 72 under Amaymon, Corson, Ziminiar and Goap, "kings ruling in ye 4 quarters East, West, North & South", not to be called "except it be upon great occasions". [S] Whether the two lists pair in order (Amaymon East, Corson West, Ziminiar North, Goap South) is not stated; it is recorded as unresolved. These kings differ from the *Officium* four (§5.2); each list holds within its own work.
+- **The four kings over the 72 (`goetia`):** the same page puts the 72 under Amaymon, Corson, Ziminiar and Goap, "kings ruling in ye 4 quarters East, West, North & South", not to be called "except it be upon great occasions". [S] Whether the two lists pair in order (Amaymon East, Corson West, Ziminiar North, Goap South) is not stated; it is recorded as unresolved. Weyer (ch. III) gives the pairing: Amaymon East, Gorson South, Zymymar North, Goap West. They may be bound "from the third hour till noon, and from the ninth hour till evening" (*à tertia hora usque ad meridiem, à nona hora usque ad vesperas*). [S] See `docs/registers/reges.md`.
+- **Weyer's binding hours differ from Sloane 3825's** for Presidents. Weyer: "Præses in aliqua hora diei non potest constringi, nisi rex cui paret, invocaretur, & nec in crepusculo noctis": never without his king invoked, and never at nightfall. Sloane 3825: any time except twilight, unless the king is invoked. **Awaiting the owner's ruling** on which governs the hours.
 
 8.4 **Spirits may not tell the truth.** A spirit's output carries a provenance mark and is never trusted until examined. Two kinds of act are distinguished:
 - **natural acts:** predictable functions of the spirit's office;

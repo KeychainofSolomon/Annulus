@@ -319,3 +319,9 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **Conflicts resolved by Weyer:** Naberius (*prelaturarum et dignitatum iacturam parit*: loss, not restoring); Paimon (*Aquilonem*: face north); Sitri (*secreta feminarum*); Zagan (*sanguinem in oleum*); Osé (*durat ad horam*).
 - **Resolved by internal evidence:** Haures. Weyer reads *si fuerit in triangulo, mentitur*; read as the negation, per Weyer's own Furfur and Shax and per Sloane 3825.
 - Correction to the cross-check: 1904 gives Osé 30, not 36.
+
+## 2026-11-10: Divine names and the four kings
+
+- **Names:** read from the Sloane 3825 drawings (f112 Circle, Triangle, hexagram, pentagram; f113 Ring). Peterson notes that Sloane 3825's text omits the Circle's name list, so his list is the 1904 footnote; we use the drawing. Sloane differs from 1904 at Chokmah (Jophiel, not Ratziel) and spells Methratton. Michael stands at Hod in the Circle (the f32 table gives him Tiphereth: an internal inconsistency, recorded). The First Conjuration's names come via Peterson's transcription of Sloane 3825.
+- **Four kings:** Weyer ch. III, "Observa horas in quibus quatuor reges, scilicet Amoymon rex Orientalis, Gorson rex Meridionalis, Zymymar rex Septentrionalis, Goap rex & princeps Occidentalis possunt constringi, à tertia hora usque ad meridiem, à nona hora usque ad vesperas." Peterson: Gorson, Zimimar and Goap don't appear as cardinal kings before Weyer.
+- **Hours conflict:** Weyer's Presidents rule is stricter than Sloane 3825's (see `spec/authority.md` §8.3). Ruling needed.

@@ -1,0 +1,1049 @@
+[
+ {
+  "n": 1,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Eheia",
+    "witness": "S"
+   },
+   {
+    "text": "Ehyeh",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Kether",
+  "note": null
+ },
+ {
+  "n": 2,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Kether",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Kether",
+  "note": null
+ },
+ {
+  "n": 3,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Methratton",
+    "witness": "S"
+   },
+   {
+    "text": "Metatron",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Kether",
+  "note": null
+ },
+ {
+  "n": 4,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Haioth Hakadosh",
+    "witness": "S"
+   },
+   {
+    "text": "Chaioth Ha-Qadesh",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Kether",
+  "note": null
+ },
+ {
+  "n": 5,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Reschith hagalgalim",
+    "witness": "S"
+   },
+   {
+    "text": "Rashith Ha-Galgalim",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Kether",
+  "note": null
+ },
+ {
+  "n": 6,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Iah",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chokmah",
+  "note": null
+ },
+ {
+  "n": 7,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Chokmah",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chokmah",
+  "note": null
+ },
+ {
+  "n": 8,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Jophiel",
+    "witness": "S"
+   },
+   {
+    "text": "Ratziel",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chokmah",
+  "note": null
+ },
+ {
+  "n": 9,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Ophanim",
+    "witness": "S"
+   },
+   {
+    "text": "Auphanim",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chokmah",
+  "note": null
+ },
+ {
+  "n": 10,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Masloth",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chokmah",
+  "note": null
+ },
+ {
+  "n": 11,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Iehovah Elohim",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Binah",
+  "note": null
+ },
+ {
+  "n": 12,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Binah",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Binah",
+  "note": null
+ },
+ {
+  "n": 13,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Zaphkiel",
+    "witness": "S"
+   },
+   {
+    "text": "Tzaphquiel",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Binah",
+  "note": null
+ },
+ {
+  "n": 14,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Aralim",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Binah",
+  "note": null
+ },
+ {
+  "n": 15,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Sabbathy",
+    "witness": "S"
+   },
+   {
+    "text": "Shabbathai",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Binah",
+  "note": null
+ },
+ {
+  "n": 16,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "El",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chesed",
+  "note": null
+ },
+ {
+  "n": 17,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Hesed",
+    "witness": "S"
+   },
+   {
+    "text": "Chesed",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chesed",
+  "note": null
+ },
+ {
+  "n": 18,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Zadkiel",
+    "witness": "S"
+   },
+   {
+    "text": "Tzadquiel",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chesed",
+  "note": null
+ },
+ {
+  "n": 19,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Hasmalim",
+    "witness": "S"
+   },
+   {
+    "text": "Chaschmalim",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chesed",
+  "note": null
+ },
+ {
+  "n": 20,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Zedeck",
+    "witness": "S"
+   },
+   {
+    "text": "Tzedeq",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Chesed",
+  "note": null
+ },
+ {
+  "n": 21,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Elohim Gibor",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Geburah",
+  "note": null
+ },
+ {
+  "n": 22,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Geburah",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Geburah",
+  "note": null
+ },
+ {
+  "n": 23,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Camael",
+    "witness": "S"
+   },
+   {
+    "text": "Kamael",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Geburah",
+  "note": null
+ },
+ {
+  "n": 24,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Seraphim",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Geburah",
+  "note": null
+ },
+ {
+  "n": 25,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Madim",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Geburah",
+  "note": null
+ },
+ {
+  "n": 26,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Iehovah Eloah Va-Daath",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Tiphereth",
+  "note": null
+ },
+ {
+  "n": 27,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Tiphereth",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Tiphereth",
+  "note": null
+ },
+ {
+  "n": 28,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Raphael",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Tiphereth",
+  "note": null
+ },
+ {
+  "n": 29,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Malakim",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Tiphereth",
+  "note": null
+ },
+ {
+  "n": 30,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Schemes",
+    "witness": "S"
+   },
+   {
+    "text": "Shemesh",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Tiphereth",
+  "note": null
+ },
+ {
+  "n": 31,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Iehovah Sabaoth",
+    "witness": "S"
+   },
+   {
+    "text": "Iehovah Tzabaoth",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Netzach",
+  "note": null
+ },
+ {
+  "n": 32,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Nezah",
+    "witness": "S"
+   },
+   {
+    "text": "Netzach",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Netzach",
+  "note": null
+ },
+ {
+  "n": 33,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Haniel",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Netzach",
+  "note": null
+ },
+ {
+  "n": 34,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Elohim",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Netzach",
+  "note": null
+ },
+ {
+  "n": 35,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Noga",
+    "witness": "S"
+   },
+   {
+    "text": "Nogah",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Netzach",
+  "note": null
+ },
+ {
+  "n": 36,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Elohim Sabaoth",
+    "witness": "S"
+   },
+   {
+    "text": "Elohim Tzabaoth",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Hod",
+  "note": null
+ },
+ {
+  "n": 37,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Hod",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Hod",
+  "note": null
+ },
+ {
+  "n": 38,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Michael",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Hod",
+  "note": null
+ },
+ {
+  "n": 39,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Ben Elohim",
+    "witness": "S"
+   },
+   {
+    "text": "Beni Elohim",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Hod",
+  "note": null
+ },
+ {
+  "n": 40,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Cochab",
+    "witness": "S"
+   },
+   {
+    "text": "Kokav",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Hod",
+  "note": null
+ },
+ {
+  "n": 41,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Sadai",
+    "witness": "S"
+   },
+   {
+    "text": "Shaddai El Chai",
+    "witness": "G"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Yesod",
+  "note": null
+ },
+ {
+  "n": 42,
+  "kind": "sephira",
+  "forms": [
+   {
+    "text": "Iesod",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Yesod",
+  "note": null
+ },
+ {
+  "n": 43,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Gabriel",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Yesod",
+  "note": null
+ },
+ {
+  "n": 44,
+  "kind": "ordo",
+  "forms": [
+   {
+    "text": "Cherubim",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Yesod",
+  "note": null
+ },
+ {
+  "n": 45,
+  "kind": "sphaera",
+  "forms": [
+   {
+    "text": "Levanah",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon (S f112)",
+  "segment": "Yesod",
+  "note": null
+ },
+ {
+  "n": 46,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Adonai",
+    "witness": "S"
+   },
+   {
+    "text": "Adonay",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle of Solomon, the four hexagrams (A-D-O-N-A-I); First Conjuration",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 47,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Tetragrammaton",
+    "witness": "S"
+   },
+   {
+    "text": "Tetragramaton",
+    "witness": "S"
+   }
+  ],
+  "place": "Circle candles; Triangle; Hexagram; Pentagram; Ring; First Conjuration",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 48,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Anephexeton",
+    "witness": "S"
+   },
+   {
+    "text": "Anephezeton",
+    "witness": "S"
+   },
+   {
+    "text": "Anepheneton",
+    "witness": "S"
+   },
+   {
+    "text": "ANEPHENETON",
+    "witness": "S"
+   },
+   {
+    "text": "Anaphaxeton",
+    "witness": "G"
+   }
+  ],
+  "place": "Triangle; Ring",
+  "segment": null,
+  "note": "Sloane 3825 reads the Triangle's form uncertainly (Anephexeton?) and the Ring's as ANEPHENETON; the 1904 edition: 'Anaphaxeton is sometimes written Anepheneton'"
+ },
+ {
+  "n": 49,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Primeumaton",
+    "witness": "S"
+   }
+  ],
+  "place": "Triangle",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 50,
+  "kind": "angelus",
+  "forms": [
+   {
+    "text": "Michael",
+    "witness": "S"
+   }
+  ],
+  "place": "Triangle (centre); Ring (outside)",
+  "segment": null,
+  "note": "the same Michael as the Hod segment; recorded once per figure"
+ },
+ {
+  "n": 51,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "AGLA",
+    "witness": "S"
+   }
+  ],
+  "place": "Hexagram",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 52,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Alpha",
+    "witness": "S"
+   }
+  ],
+  "place": "Hexagram",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 53,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Omega",
+    "witness": "S"
+   }
+  ],
+  "place": "Hexagram",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 54,
+  "kind": "figura",
+  "forms": [
+   {
+    "text": "Tau",
+    "witness": "S"
+   }
+  ],
+  "place": "Hexagram (centre)",
+  "segment": null,
+  "note": "a sign, not a name"
+ },
+ {
+  "n": 55,
+  "kind": "figura",
+  "forms": [
+   {
+    "text": "Abdia",
+    "witness": "S"
+   }
+  ],
+  "place": "Pentagram (S f112)",
+  "segment": null,
+  "note": "written on the figure; the witnesses do not say whose names these are"
+ },
+ {
+  "n": 56,
+  "kind": "figura",
+  "forms": [
+   {
+    "text": "Ballaton",
+    "witness": "S"
+   }
+  ],
+  "place": "Pentagram (S f112)",
+  "segment": null,
+  "note": "written on the figure; the witnesses do not say whose names these are"
+ },
+ {
+  "n": 57,
+  "kind": "figura",
+  "forms": [
+   {
+    "text": "Bellony",
+    "witness": "S"
+   }
+  ],
+  "place": "Pentagram (S f112)",
+  "segment": null,
+  "note": "written on the figure; the witnesses do not say whose names these are"
+ },
+ {
+  "n": 58,
+  "kind": "figura",
+  "forms": [
+   {
+    "text": "Hally",
+    "witness": "S"
+   }
+  ],
+  "place": "Pentagram (S f112)",
+  "segment": null,
+  "note": "reading uncertain; written on the figure; the witnesses do not say whose names these are"
+ },
+ {
+  "n": 59,
+  "kind": "figura",
+  "forms": [
+   {
+    "text": "Halliza",
+    "witness": "S"
+   }
+  ],
+  "place": "Pentagram (S f112)",
+  "segment": null,
+  "note": "reading uncertain; written on the figure; the witnesses do not say whose names these are"
+ },
+ {
+  "n": 60,
+  "kind": "figura",
+  "forms": [
+   {
+    "text": "Soluzen",
+    "witness": "S"
+   }
+  ],
+  "place": "Pentagram (S f112)",
+  "segment": null,
+  "note": "centre; written on the figure; the witnesses do not say whose names these are"
+ },
+ {
+  "n": 61,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "El",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": "also the Chesed segment"
+ },
+ {
+  "n": 62,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Elohim",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 63,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Elohe",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 64,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Zebeoth",
+    "witness": "S"
+   },
+   {
+    "text": "Zebaoth",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 65,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Elion",
+    "witness": "S"
+   },
+   {
+    "text": "Elyon",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 66,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Escerchie",
+    "witness": "S"
+   },
+   {
+    "text": "Eskerie",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 67,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Jah",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 68,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Saday",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 69,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Helioren",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 70,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Jehovah",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": null
+ },
+ {
+  "n": 71,
+  "kind": "deus",
+  "forms": [
+   {
+    "text": "Amioram",
+    "witness": "S"
+   },
+   {
+    "text": "Amiorem",
+    "witness": "S"
+   }
+  ],
+  "place": "First Conjuration (S)",
+  "segment": null,
+  "note": "Peterson: likely from Annora, 'the Terrible'"
+ }
+]

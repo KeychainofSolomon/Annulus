@@ -733,11 +733,12 @@ Also: Sydonay, Asmodai.
 **Notes:**
 
 - (G) first and choicest under the power of Amaymon
+- (W) under Amaymon (W: sub potestate Amaymonis)
 - (W) the Ring of Virtues is mapped to protection against destruction; the sources name the ring but never say what it does (ruling 2026-11-10: the ring, from Weyer, takes this office over the 1904 edition's 'invincible', which stays NULLUM)
 
 ### 33. Gaap
 
-Also: Tap, Goap.
+Also: Tap.
 
 **Rank:** president and prince (S). **Legions:** 66 (W). **Examiner:** Yehuiah (Shem angel 33).
 

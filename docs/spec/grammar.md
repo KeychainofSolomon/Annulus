@@ -45,7 +45,7 @@ Any other word (`Furfur`, `xSIT`, `7y`) is a lexical error. So a keyword can nev
   [O] This echoes the manuscripts, which set divine names and rubrics apart in capitals.
 
 **Strings:**
-- Strings may contain any Unicode text, including Hebrew. Divine names and angel names are written in their own script (§5.4).
+- Strings may contain any Unicode text, including Hebrew. Divine names are written as the witness writes them (`docs/registers/nomina.md`): Sloane 3825 writes them in Latin letters.
 - `\u{…}` takes 1 to 6 hexadecimal digits. The value must be a Unicode scalar value: at most 10FFFF, and not D800–DFFF.
 - A string cannot cross a line break; write `\n` instead.
 
@@ -210,7 +210,7 @@ The full rules are in Part 3, `static.md`. In summary:
 1. **`entity`** resolves through the Constitution's registers, by number or by label, within the Circle's rite. An unknown name is a compile-time error. `furfur` and `SPIRITUS 34` are the same entity.
 2. **`AD OFFICIUM` office** must be one of the spirit's offices in that rite. A spirit asked for anything else is a compile-time error (law OFFICE).
 3. **`EXAMINA p`** sends `p` to the examiner fixed by the Constitution (Rudd's angel *n* for spirit *n* in `rudd`). It yields a destination. There is no syntax for choosing an examiner.
-4. **`NOMEN "…"`** must match a divine name entry exactly, in its own script, for example `NOMEN "אגלא"`.
+4. **`NOMEN "…"`** must match exactly one recorded form of a divine name (kind `deus`) in `docs/registers/nomina.md`, for example `NOMEN "AGLA"` or `NOMEN "Tetragrammaton"`.
 
 ## 6. Built-in types (summary)
 

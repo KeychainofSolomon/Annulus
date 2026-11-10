@@ -189,3 +189,20 @@ Discussed with the owner, not built:
 - **Sloane 3825:** dated 1641 or later. The 1904 "doubles" may be copies of seals the scribe struck out.
 - **Arbatel 1575:** Bethor has 32 provinces, total 186.
 - **Book of Oberon:** all its figures are modern redrawings.
+
+## Decision (the owner, 2026-11-10): "oldest wins" applies only within one work
+
+- **The rule works inside a single work's line of copies.** The oldest copy of that work wins (for example, the 1446 Clavicula over Mathers' Key, or the 1575 Arbatel over Rudd's copy of it).
+- **Separate works do not override each other.** The *Liber iuratus*, the Clavicula, the *Liber officiorum spirituum* line, the Goetia, the Arbatel and the *Janua* each keep their own readings, attributed. Annulus can treat them as separate jurisdictions.
+
+**Consequences:**
+- **The four kings' directions** are per work:
+  - Clavicula 1446, Oberon, the *Janua* and Rudd: Amaymon South, Egin North.
+  - The Goetia: its own four kings (Amaymon East, Corson, Ziminiar, Goap).
+  - Wellcome MS 110 disagrees with itself.
+- **Sun/Mercury angels** are per work:
+  - *Liber iuratus*: Raphael is the Sun, Michael is Mercury.
+  - *Janua* Keys and Scale: Michael is the Sun, Raphael is Mercury.
+- **The *Liber iuratus* ban on invoking the nine orders** binds only the *Liber iuratus*. The *Janua*'s nine Keys stand.
+- **The "Paymone angelus Mercurii" question is moot.** It is a different work from the Goetia.
+- **Open:** does the Goetia count as a later copy of the *Liber officiorum spirituum* (via Weyer), or as a separate work? This decides whether 16th-century offices and legion counts override the Goetia's.

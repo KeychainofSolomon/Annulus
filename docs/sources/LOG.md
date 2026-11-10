@@ -220,3 +220,29 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **No angel seals:** names only.
 - **Standing:** a separate work, Kircher's. It stands as Kircher's, attributed.
 - **Lead for Annulus:** the plate is itself a ring of 72 numbered sectors around a fixed centre. It is a sourced visual model for the register.
+
+## CORRECTION (2026-11-10): Arbatel 1575, Olympic provinces (PDF p. 69 = printed p. 24; crop saved as `arbatel-1575-p24-provinces.png`)
+
+**What the page prints:** ARATRON XXXXIX, BETHOR **XXXII**, PHALEG XXXV, OCH XXVIII, HAGITH XXI, OPHIEL XIIII, PHVL VII, total **CLXXXXVI (196)**.
+- The earlier helper misread the total as 186.
+
+**What it means:** the 1575 edition contradicts itself. The listed numbers add up to 186, but it prints 196, and the series runs 49, 42, 35, 28, 21, 14, 7 (falling by 7) only if Bethor has 42.
+- So "XXXII" is a printer's error with one X dropped. **The 1575 edition intends 42.** Peterson's Latin text silently prints XXXXII.
+- Later witnesses (Turner 1655, Sloane 3851, Rudd/Harley 6482) copied the 32 and changed the total to 186 to match: a later "fix" of the misprint.
+
+**Verdict under the within-one-work rule:** the oldest witness's intent wins, so Bethor has **42**, total 196. The 32/186 reading stays on record as the later line of copies.
+
+## Where the sources are hosted online (2026-11-10)
+
+**esotericarchives.com** (Peterson's "Twilit Grotto", the long-running occult site):
+- **Arbatel** (solomon/arbatel.htm): the Olympic characters (`arbatel7.gif` to `arbate13.gif`) and the **Seal of Secrets** (aph. 27), which the 1575 edition only describes.
+  - The drawing is from **Sloane 3851** (English translation in manuscript, ff. 10r-29v, in the hand of "Mr. Arthur Gauntlet"), shown as `arbseal.gif`.
+  - A second version is from **Leipzig Cod. Mag. 55**, with N and S mislabelled.
+- **Ganell, *Summa sacre magice* (1346)** (ganell/ssm.htm), from the Kassel MS, 4° astron. 3, available online at orka.bibliothek.uni-kassel.de:
+  - **De candariis Salomonis**, L.2.f.46 (the "candarie" also in BnF 1524, 1446);
+  - the **Seal of God figure**, L.4.f.22, the oldest drawing that agrees with the text (answers open question 2 in the angelic skill);
+  - the Semamphoras table, L.2.f.14 (solomon/semamforas_table.htm), and De Thos Grecus (tables "secundum tos grecum", Book 5).
+  - **No 72-angel seals:** Ganell's Semamphoras is a different system.
+
+**Rudd's 72 angel seals (Harley 6483):** no free host. Enochian.org shows one archived page image. The many online sets are modern redrawings or the Ambelain/Arsenal 2495 set.
+- To get Rudd's seals: Skinner & Rankine's edition, or British Library images.

@@ -270,3 +270,7 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - **Identification, from memory, not yet checked against an image:** the *Heptameron*'s Sunday character for Michael (also in Agrippa's Fourth Book and Barrett 1801).
   - **To verify:** compare against an early printing of the *Heptameron* to rule out Barrett's Anael/Michael swap.
   - **Under the per-work rule:** the *Heptameron* is its own work. Michael rules Sunday/the Sun there, while the *Liber iuratus* gives the Sun to Raphael. Both are recorded.
+- 2026-11-10, Gabriel's sigil (the same modern source; consulted, not kept in the repository).
+  - **Its form:** one long baseline crossed by letter-like marks: a hook, two b-forms, a barred rectangle (ladder), a "b" and "A M" shapes, ending in a curl.
+  - **Identification, from memory:** the *Heptameron*'s Monday/Moon character for Gabriel.
+  - **To verify:** compare against an early printing.

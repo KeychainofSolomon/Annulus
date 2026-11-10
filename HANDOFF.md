@@ -229,3 +229,12 @@ Discussed with the owner, not built:
 
 - **The states are real; the claim is symbolic.** The runtime never claims to determine actual divine judgement (JUDGEMENT law, *nulla potestas*).
 - **Separation of roles:** angelic examination produces the verdict that routes work to a destination, and only the constitution's judgement step assigns the destination. No agent assigns one to its own work.
+
+## Purpose (the owner, 2026-11-10)
+
+"Authenticity to the source material is key. This is as much a simulation as it is a coding language."
+
+- **The question is answered:** Annulus is both a general-purpose language and a faithful simulation of the Solomonic tradition.
+- **Keeping a sourced detail:** it is kept only if it has a mechanical analogue (ruling of the same day).
+- **Specification started:** `docs/spec/authority.md` and `docs/spec/provenance.md`.
+- **Roadmap:** now the 18 steps (`docs/ROADMAP.md`).

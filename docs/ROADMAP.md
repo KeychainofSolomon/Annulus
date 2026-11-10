@@ -1,119 +1,64 @@
 # Roadmap
 
-This roadmap follows the development order in the engineering handoff (section 12). Each milestone ends with: source tree, build instructions, real test results, working examples, an updated specification, both binaries when built, and an implemented/unimplemented list.
+Annulus is both a general-purpose programming language and a faithful simulation of the Solomonic tradition. Its mechanics must be grounded in the sources. Every cosmological element is labelled either as sourced, with its witness and date, or as original to Annulus. The source rule is in `docs/spec/provenance.md`.
 
-Sizes are rough relative effort, not dates.
+The order follows the Definitive Architecture handoff (section 17). Each milestone delivers:
+- the source tree;
+- the updated specifications;
+- build instructions;
+- working examples;
+- automated tests and their actual results;
+- implemented and outstanding feature lists.
 
-| # | Milestone | Size | State |
-|---|---|---|---|
-| 1 | Audit and reproducible build | S | **Done in v0.2.1** |
-| 2 | Formal grammar and semantics | M | Next |
-| 3 | Compiler and intermediate representation | M | |
-| 4 | Versioned bytecode format and virtual machine | L | |
-| 5 | Types, functions, control flow, modules | XL | |
-| 6 | Circles, capabilities and containment | L | |
-| 7 | Transactional execution and examination | L | |
-| 8 | Invocation lifecycle and termination | M | |
-| 9 | Angelic hierarchy and delegated authority | M | |
-| 10 | Historical cosmological entities and states | M | |
-| 11 | Remaining subsystems | L | |
-| 12 | Build, test and package release binaries | S | |
+Nothing is reported as built or tested unless it was.
 
-## Milestone 2 — Formal grammar and semantics
+| # | Step | State |
+|---|---|---|
+| 1 | Audit the v0.2 source | **Done** (v0.2.1, `docs/AUDIT.md`) |
+| 2 | Reproducible Rust build | **Done** (v0.2.1; pinned toolchain, CI double build) |
+| 3 | Formal language specification | **In progress**: authority model first (`docs/spec/authority.md`), then grammar and semantics |
+| 4 | Instruction set | |
+| 5 | Intermediate representation | |
+| 6 | Compiler | |
+| 7 | Bytecode generation and verification | |
+| 8 | Virtual machine | |
+| 9 | Type system and general-purpose features | |
+| 10 | Memory and resource management (including ink budgets) | |
+| 11 | Circles and capabilities | |
+| 12 | Transactional execution | |
+| 13 | Examination and judgement | |
+| 14 | Invocation lifecycle | |
+| 15 | Angelic authority and hierarchy | |
+| 16 | Remaining cosmological subsystems (HISTORIA, REVELATIO, registers) | |
+| 17 | Native x86-64 compilation | |
+| 18 | Windows and Linux releases | |
 
-Write a normative specification (`docs/spec/`) covering the whole language, not just what exists.
+## Step 3: the formal specification
 
-- Complete lexical grammar: comments, string escapes, numeric literal forms, keyword set and casing rule.
-- Complete syntax in EBNF, checked to be unambiguous; the parser's tests are derived from it.
-- Static semantics: scopes, name resolution, the type system, which errors are compile-time.
-- Dynamic semantics: evaluation order, the effect model, failure behaviour.
-- The authority model in prose: origin, jurisdiction, capability derivation, examination, commit, release.
-- A provenance register (`docs/spec/provenance.md`) that labels every cosmological element as either **historical tradition**, with its source, or **original to Annulus**.
+1. **Authority model:** the constitution, the axiom, the eight laws, seals and ink, registers, examination, destinations. File: `docs/spec/authority.md`.
+2. **Provenance register:** the source-precedence rule, plus a sourced or original label on every element. File: `docs/spec/provenance.md`.
+3. **Lexical grammar:** comments, literals, the keyword set and casing. Open question: Latin, English or mixed keywords.
+4. **Syntax in EBNF**, checked to be unambiguous, with parser tests derived from it.
+5. **Static semantics:** scopes, name resolution, types, and authority analysis.
+6. **Dynamic semantics:** evaluation order, the effect model, failure classes.
 
-Exit criteria: spec reviewed and approved by the language owner; every decision in section 4 of the audit settled.
+**Exit criterion:** the owner approves the specification.
 
-## Milestone 3 — Compiler and intermediate representation
+## The first end-to-end working
 
-- Split compilation into resolve → type-check → lower → generate.
-- A typed, scoped intermediate representation with explicit effects, so later passes (containment, examination) can see every effect statically.
-- Multiple diagnostics per run instead of stopping at the first.
+This is the first slice through steps 4 to 14, with tests at each stage:
+1. One circle.
+2. Furfur (Goetia 34) is invoked into the triangle for his office.
+3. Lehahiah (Shem angel 34) examines what Furfur proposes.
+4. The work is committed (PARADISE), held (PURGATORY), or banished and quarantined (HELL).
 
-## Milestone 4 — Versioned bytecode and virtual machine
+Furfur is chosen because the Goetia says he speaks falsely unless he is confined in the triangle, so his output is untrusted by default.
 
-- A binary bytecode format: magic number, format version, constant pool, function table, code, source-position table.
-- A bytecode verifier that rejects malformed or unsafe code before execution.
-- Jumps, call frames, return.
-- `annulus build` (source → bytecode file) and `annulus run` (bytecode or source).
-- Fuel (an instruction budget) so execution is bounded and deterministic.
-- Identical bytecode from identical source on both platforms, tested.
+## Data still pending (blocks nothing above)
 
-## Milestone 5 — Types, functions, control flow, modules
-
-- Primitive types: integer, boolean, string, plus a decision on rationals or fixed-point numbers for NUMERUS.
-- Composite types: records, lists, maps, tagged unions.
-- Functions and procedures, closures if the spec requires them.
-- Conditionals, loops, pattern matching.
-- Error handling as values (result types), not exceptions.
-- Modules with explicit imports and exports.
-
-## Milestone 6 — Circles, capabilities and containment
-
-Laws: ORIGIN, SOVEREIGNTY, DECLARATION, CONTAINMENT; axiom NULLA POTESTAS SIBI IPSI ORITUR.
-
-Proposed technical basis (to be confirmed in milestone 2): **object capabilities**.
-
-- An authority is an unforgeable runtime value. No instruction creates one from nothing; new authorities are only derived from, and narrower than, an existing one. This is the axiom enforced by the VM.
-- Every authority records its origin chain. The root of every chain is a fixed marker for THE ABSOLUTE that programs can refer to but never hold, call or impersonate.
-- A CIRCLE is a bounded execution region: the set of authorities, the fuel, memory and effect budget code inside it receives. Nothing inside can reach outside except through granted authorities.
-
-## Milestone 7 — Transactional execution and examination
-
-Laws: EXAMINATION, JUDGEMENT.
-
-- Effects inside an operation are written to a journal, not performed.
-- An examiner with a different identity from the operator approves or rejects the journal. The VM refuses self-approval by comparing identities.
-- Approved journals are committed; rejected ones are discarded entirely.
-- Ordinary examination is kept separate from the symbolic final judgement.
-
-## Milestone 8 — Invocation lifecycle
-
-INVOKE, EXAMINE, LICENSE TO DEPART, DISMISS and BANISH as distinct VM operations with a defined state machine.
-
-- LICENSE TO DEPART: orderly end; temporary authorities revoked; outstanding work allowed to finish and be examined.
-- BANISH: forced end; execution halted, authorities revoked, child tasks terminated, uncommitted effects discarded, results quarantined.
-- Release is guaranteed: an invocation that ends any other way, including by error or fuel exhaustion, is released by the runtime (law RELEASE).
-
-## Milestone 9 — Angelic hierarchy and delegated authority
-
-- The nine orders (Seraphim to Angels) as a typed hierarchy.
-- The three ministries (NUNTIATIO, MINISTERIUM, MILITIA) as offices, not ranks; an angel may hold several.
-- Origin, allegiance, nature, office, jurisdiction and judgement as separate fields on an entity.
-- Angelic oversight as bounded, independently terminable runtime interventions.
-
-## Milestone 10 — Historical cosmological entities and states
-
-- HISTORIA: the War in Heaven and the Fall as recorded state transitions of allegiance.
-- Fallen entities with per-entity retained, inverted or lost offices, not a single rule for all.
-- LUCIFER's domain as a jurisdiction whose authority is real but derived.
-- PARADISE, PURGATORY and HELL as the language's symbolic final destinations, with no claim to determine actual judgement.
-
-## Milestone 11 — Remaining subsystems
-
-LOGOS, NUMERUS, MEMORIA, POTESTAS, OFFICIUM, MANIFESTATIO, IUDICIUM, HISTORIA, ANGELICUS, REVELATIO, CIRCULUS, IDENTITAS, INVOKATIO, EXAMINATIO: each as a real runtime component with tests. Several are delivered by earlier milestones (for example POTESTAS and CIRCULUS in 6, IUDICIUM and EXAMINATIO in 7, INVOKATIO in 8). This milestone completes and audits the rest.
-
-## Milestone 12 — Release packaging
-
-- Tagged releases with both binaries and checksums attached.
-- Windows reproducibility verified in CI (two builds compared).
-- Optional fully static Linux build (musl) so the binary runs on any distribution regardless of glibc version.
-
-## Decisions needed from the language owner
-
-These shape milestone 2 and should be settled before it is written:
-
-1. **Keyword language.** Keep English (`LET`, `PRINT`), move to Latin to match the subsystem names (`DECLARA`, `MANIFESTA`), or mix?
-2. **Casing.** Keep uppercase-only keywords?
-3. **Duplicate spellings.** Keep both `LET`/`DECLARE` and `MANIFEST`/`PRINT`, or choose one of each?
-4. **Mixed-type equality.** Should `1 == "1"` stay `false` or become a compile-time type error? (Recommended: type error.)
-5. **Final destinations.** Proposed mapping, for approval: PARADISE = an invocation fully examined and committed; PURGATORY = held for re-examination; HELL = banished and quarantined. These would be outcome labels only.
-6. **Licence** for the project.
+- Traced seal artwork from Sloane 3825. Until then, seals are stored as manuscript references.
+- Sloane 3825 frame 41L (the 72 angel names) and frame 40 (the angels of the lunar mansions).
+- Rudd's 72 angel seals (Harley 6483).
+- Amy's seal, by comparison with Peterson's g58.jpg.
+- The *Heptameron* day-angel sigils, checked against an early printing.
+- The ring lettering of the 1446 pentacles, from Gallica colour images.

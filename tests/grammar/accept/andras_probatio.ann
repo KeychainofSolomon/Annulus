@@ -1,0 +1,18 @@
+FACULTAS {
+    atramentum "marchio" 1;
+    atramentum "vespertilio" 1;
+}
+
+OPUS dividere(a: NUMERUS, b: NUMERUS) -> NUMERUS {
+    REDDE a / b;
+}
+
+CIRCULUS RITU rudd {
+    INTENTIO "find where dividere fails";
+    GERE PENTAGRAMMUM;
+    SIT sigillum = INSCRIBE SIGILLUM andras ATRAMENTO CONSECRA ATRAMENTUM "marchio";
+    SIT andras = INVOCA SPIRITUS 63 AD OFFICIUM probatio;
+    SIT relatio = PETE andras("dividere");
+    SIT iudicium = EXAMINA relatio;
+    SI iudicium == PARADISUS { VADE IN PACE andras; } ALITER { RELEGA andras; }
+}

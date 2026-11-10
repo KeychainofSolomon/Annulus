@@ -51,6 +51,8 @@ This part says what happens **while a program runs**. A program reaches this poi
 
 `GERE` records the instrument as held, with the time it was taken up; Berith's hour counts from it. `OFFER` spends one unit of the spirit's ink class, or is a denial for Malphas. `CONSTRINGE` performs the constraint (escalation step 3) at once, by the named name, and records it. `APPELLA` and `VETA` are recorded commands. Their effects on the will are those of `spirits.md` §4.4.
 
+**Illusory and veiled work** spends bat's-blood ink, class `"vespertilio"`, one unit per request. Andras's testing is the first such office (`spirits.md` §4.5).
+
 ## 5. Invocation and the will
 
 5.1 **The time window is checked first.** `INVOCA` is refused (class 2) outside the spirit's binding hours by rank, or on a day of the Moon's age not allowed (`authority.md` §8.3). How the runtime reads the conditions:

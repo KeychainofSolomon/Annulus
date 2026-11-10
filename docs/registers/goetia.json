@@ -2823,6 +2823,11 @@
     "kind": "DISCORDIA",
     "witness": "W",
     "text": "sows discord"
+   },
+   {
+    "kind": "PROBATIO",
+    "witness": "M",
+    "text": "when commanded, attacks copies of the Operator's own program to find where it fails: the master (the program), his servants (its functions) and his assistants (its other invocations)"
    }
   ],
   "malice": [
@@ -2839,9 +2844,18 @@
    {
     "witness": "G",
     "text": "none stated beyond the apparatus and the exorcist's care"
+   },
+   {
+    "witness": "M",
+    "text": "the pentagram closes his harm to the Operator, and is required to invoke him for PROBATIO"
    }
   ],
-  "notes": []
+  "notes": [
+   {
+    "witness": "M",
+    "text": "PROBATIO is the owner's ruling of 2026-11-10: the danger the witnesses give him, turned under command into an office. It is not in the sources"
+   }
+  ]
  },
  {
   "n": 64,

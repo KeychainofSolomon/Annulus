@@ -10,7 +10,7 @@ Status: draft 1, 2026-11-10. Normative once approved by the owner. The register 
 | rank, seal, seal metal | Sloane 3825 (ruling 2026-11-10) | Weyer's ranks are recorded as variants |
 | additions | a later witness's office or warning stands if it does not contradict an older one | |
 
-Every line of the register carries its witness: **W** Weyer 1577 (Latin, with Scot's English of 1584), **S** Sloane 3825, **G** the 1904 edition.
+Every line of the register carries its witness: **W** Weyer 1577 (Latin, with Scot's English of 1584), **S** Sloane 3825, **G** the 1904 edition. **M** marks the owner's rulings, which are original to Annulus and never tradition.
 
 Contradictions resolved by the oldest witness: Naberius (loss of dignities, not their restoring), Paimon (face north), Sitri (secrets of women), Zagan (blood and oil), Osé (one hour). One is resolved by internal evidence: Haures lies when **not** in a triangle. Weyer's "si fuerit in triangulo, mentitur" contradicts Weyer's own Furfur and Shax, and Sloane 3825 reads it with the negation.
 
@@ -123,6 +123,19 @@ The instruments themselves are part of the Constitution's apparatus, like the Ci
 
 **An offering costs** one unit of the spirit's ink class from the faculty. [O: an offering is a gift of the Operator's own substance.]
 
+### 4.5 Andras as the tester (`PROBATIO`, ruling 2026-11-10)
+
+1. **Only when commanded.** Andras attacks the program only when invoked `AD OFFICIUM probatio`. The office belongs to no other spirit.
+2. **The pentagram is required** to invoke him for it (static rule A11). It holds his harm away from the Operator.
+3. **He attacks copies.** Testing is an **illusory** effect (`authority.md` §7.5), so it needs bat's-blood ink, and nothing it does can commit. Each `PETE` for `probatio` spends one unit of `"vespertilio"` ink (*sanguis vespertilionis*) from the faculty, besides the marquis's ink for his seal. He works in his Triangle, on copies of what he is given:
+   - **the master:** the program as a whole;
+   - **his servants:** the functions (`OPUS`) named in the request;
+   - **his assistants:** the program's other invocations, which he provokes to fail (refuse, lie, overreach) so the Operator sees whether the Constitution holds.
+4. **What he does to them:** feeds them hostile and extreme inputs, makes reads and grants fail, and attempts what the laws forbid (self-granting, leaving the Circle, committing unexamined work), to show where the program breaks and that the laws still stand.
+5. **What comes back** is a proposal holding one thing: his **report** of every failure he found, each with the input that caused it. Only the report can reach `PARADISUS`.
+6. **He keeps his will.** `MORA`, `PARS` and `RECUSATIO` stay open. A partial report (some named targets untested) is held in `PURGATORIUM`. If his `MALITIA` is open (no pentagram, or under `DISCORDIA`), his "slaying" is an attempt on the **real** program, not the copies. Examination rejects it as outside the office, and it goes to `INFERNUS`.
+7. **Unasked, his danger remains.** Invoked for `DISCORDIA` without the pentagram, he may still try to slay, as the sources warn. That stays as it is: removing it would contradict the witnesses.
+
 ## 5. Refusal and the escalation of constraint
 
 `RECUSATIO` is met by the Goetia's own sequence. Each step is stronger than the last, and each is recorded:
@@ -175,6 +188,7 @@ Beleth is the model case: if he will not enter the triangle, "rehearse the Bonds
 | `CONSECRATIO` | teaches to consecrate the things of Amaymon's dominion (Gaap) | proposes validators for consecration; the Constitution still signs (`authority.md` §7.4) |
 | `TUTELA` | gives the Ring of Virtues (Asmoday, W) | protects a thing against deletion (`EVERSIO`) and termination (`NEX`). It is proposed and examined like any effect, and it never outranks the faculty: the person who launched the program can always lift it. The sources name the ring without saying what it does, so this mapping is [O] (ruling 2026-11-10) |
 | `LONGAEVITAS` | makes a man live long (Foras, W) | lengthens a lifetime: how long data is kept before it expires, or how long a task stays alive. Never beyond the faculty's budget, for no spirit gives time any more than it mints ink |
+| `PROBATIO` | **none: the owner's ruling (M), for Andras only.** His danger, to "kill the master, his servants and assistants" (W), turned under command into an office | attacks **copies** of the Operator's own program to find where it fails (§4.5) |
 | `APPELLATIO` | gives a good name (Forneus, W) | names and labels things: file names, titles, descriptions. **Partial:** "good name" means reputation, and its other half, trust, is not offered, because a fallen spirit cannot vouch for anything (axiom 1.1) |
 
 6.2 **Harmful kinds stay harmful.** `DISCORDIA`, `EVERSIO`, `TEMPESTAS`, `NEX`, `MORBUS`, `FURTUM` and `MENS` are real, destructive computer work: deletion, termination, corruption, disruption. They act only on what the faculty grants and only after examination. They are not softened: a spirit invoked for `NEX` really ends tasks.

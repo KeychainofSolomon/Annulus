@@ -325,3 +325,39 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **Names:** read from the Sloane 3825 drawings (f112 Circle, Triangle, hexagram, pentagram; f113 Ring). Peterson notes that Sloane 3825's text omits the Circle's name list, so his list is the 1904 footnote; we use the drawing. Sloane differs from 1904 at Chokmah (Jophiel, not Ratziel) and spells Methratton. Michael stands at Hod in the Circle (the f32 table gives him Tiphereth: an internal inconsistency, recorded). The First Conjuration's names come via Peterson's transcription of Sloane 3825.
 - **Four kings:** Weyer ch. III, "Observa horas in quibus quatuor reges, scilicet Amoymon rex Orientalis, Gorson rex Meridionalis, Zymymar rex Septentrionalis, Goap rex & princeps Occidentalis possunt constringi, à tertia hora usque ad meridiem, à nona hora usque ad vesperas." Peterson: Gorson, Zimimar and Goap don't appear as cardinal kings before Weyer.
 - **Hours conflict:** Weyer's Presidents rule is stricter than Sloane 3825's (see `spec/authority.md` §8.3). Ruling needed.
+
+## 2026-11-10: Which king each spirit obeys (research)
+
+Stated in our witnesses (W = Weyer 1577; S = Sloane 3825; F = Folger V.b.26, the Book of Oberon, c.1577-83, via Peterson's footnotes to his Sloane 3825 edition; A = Ad. 36674 fol. 65r, *Officiorum Spirituum*, via Peterson's `offices.htm`):
+
+| Spirit | Rank | Stated | Witness |
+|---|---|---|---|
+| 1 Bael | king | "de potestate Orientis"; "a king ruling in ye East" | W; S |
+| 2 Agares | duke | "sub potestate Orientis"; "under ye power of ye East" | W; S |
+| 4 Gamigin | marquis | West | F |
+| 5 Marbas | **president** | East | F |
+| 7 Amon | marquis | East | F |
+| 8 Barbatos | duke | East | F |
+| 15 Eligos | duke | East; as "Algor", "under Oriens king of the East" | F; A |
+| 28 Berith | duke | South | F |
+| 29 Astaroth | duke | South | F |
+| 31 Foras | **president** | South; as "Partas", "under Amamion kinge of the Sowth" | F; A |
+| 32 Asmoday | king | "sub potestate Amaymonis"; "first & chifiest under ye power of Amaymon" | W; S |
+| 33 Gaap | **president**/prince | "ye dominion of Amaymon his king" | S |
+| 36 Stolas | prince | West, "under Paymon" | F |
+| 39 Malphas | **president** | South | F |
+| 40 Raum | earl | West | F |
+| 42 Vepar | duke | East | F |
+| 45 Vine | king/earl | North, "under Egyn, King of the North" | F |
+| 47 Vual | duke | West, "under Paymon, king of the West" | F |
+| 51 Balam | king | West | F |
+| 56 Gremory | duke | as "Gamor", "under Amamion kinge of the Sowth" | A |
+| 57 Osé | **president** | South | F |
+| 61 Zagan | king/**president** | West | F |
+| 68 Belial | king | West | F |
+| 69 Decarabia | marquis | South (Cambra, "under Amaymon in the South") | F |
+| 70 Seere | prince | "under Amaymon, king of ye East" | S |
+
+- **No quarter or king found** for the Presidents Buer, Glasya-Labolas, Haagenti, Caim, Amy and Valac, nor for Botis and Marax (president and earl). Checked: Weyer (whole text), Peterson's Sloane 3825 footnotes, `offices.htm` (Sloane 3853, Wellcome 110, Ad. 36674). Glasya-Labolas appears as "Glolas" (Sloane 3853) and "Gloolas" (F) without a king. A first search snippet seemed to put Glolas under Oriens; the text shows that sentence belongs to Ad. 36674's Scor, Algor and Sefon.
+- **The two king-sets disagree on names.** F and A pair quarters with Oriens E, Paymon W, Amaymon **S**, Egyn N. Weyer ch. III, the `goetia` set, has Amaymon **E**, Gorson S, Zymymar N, Goap W. So "under Amamion kinge of the Sowth" (A, for Foras and Gremory) names a king whom Weyer and Sloane 3825 put in the East.
+- Not yet searched: Rudd's Goetia (Harley 6483), the complete Folger transcription, Wellcome 110 beyond fol. 32r.

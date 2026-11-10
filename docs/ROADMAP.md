@@ -28,7 +28,7 @@ Write a normative specification (`docs/spec/`) covering the whole language, not 
 - Static semantics: scopes, name resolution, the type system, which errors are compile-time.
 - Dynamic semantics: evaluation order, the effect model, failure behaviour.
 - The authority model in prose: origin, jurisdiction, capability derivation, examination, commit, release.
-- A provenance register (`docs/spec/provenance.md`) that labels every cosmological element as either **historical tradition**, with its source, or **original to ARS MAGNA**.
+- A provenance register (`docs/spec/provenance.md`) that labels every cosmological element as either **historical tradition**, with its source, or **original to Annulus**.
 
 Exit criteria: spec reviewed and approved by the language owner; every decision in section 4 of the audit settled.
 
@@ -43,7 +43,7 @@ Exit criteria: spec reviewed and approved by the language owner; every decision 
 - A binary bytecode format: magic number, format version, constant pool, function table, code, source-position table.
 - A bytecode verifier that rejects malformed or unsafe code before execution.
 - Jumps, call frames, return.
-- `ars-magna build` (source → bytecode file) and `ars-magna run` (bytecode or source).
+- `annulus build` (source → bytecode file) and `annulus run` (bytecode or source).
 - Fuel (an instruction budget) so execution is bounded and deterministic.
 - Identical bytecode from identical source on both platforms, tested.
 

@@ -1,4 +1,4 @@
-# ARS MAGNA
+# Annulus
 
 A programming language with a Solomonic cosmological and computational foundation, implemented natively in Rust.
 
@@ -14,7 +14,7 @@ MANIFEST result;
 ```
 
 ```text
-$ ars-magna examples/first_light.ars
+$ annulus examples/first_light.ars
 35
 ```
 
@@ -26,7 +26,7 @@ Requires Rust 1.97.0. With `rustup` installed, the pinned version is selected au
 cargo build --release --locked
 ```
 
-The binary is `target/release/ars-magna` (Linux) or `target\release\ars-magna.exe` (Windows).
+The binary is `target/release/annulus` (Linux) or `target\release\annulus.exe` (Windows).
 
 ## Test
 
@@ -37,16 +37,16 @@ cargo test --locked
 ## Run
 
 ```sh
-ars-magna examples/first_light.ars
-ars-magna --version
+annulus examples/first_light.ars
+annulus --version
 ```
 
 ## Release binaries
 
 CI builds and smoke-tests both platform binaries, each with a SHA-256 checksum:
 
-- `ars-magna-windows-x86_64.exe`
-- `ars-magna-linux-x86_64` (requires glibc 2.34 or newer)
+- `annulus-windows-x86_64.exe`
+- `annulus-linux-x86_64` (requires glibc 2.34 or newer)
 
 ## Documentation
 

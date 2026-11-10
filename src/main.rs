@@ -4,9 +4,9 @@ use std::io::{self, BufWriter, Write};
 use std::process::ExitCode;
 use std::thread;
 
-use ars_magna::{run_source, RunError, EXECUTION_STACK_BYTES};
+use annulus::{run_source, RunError, EXECUTION_STACK_BYTES};
 
-const USAGE: &str = "usage: ars-magna <source.ars>\n       ars-magna --version";
+const USAGE: &str = "usage: annulus <source.ars>\n       annulus --version";
 const EXIT_PROGRAM_FAILURE: u8 = 1;
 const EXIT_USAGE: u8 = 2;
 
@@ -14,7 +14,7 @@ fn main() -> ExitCode {
     let arguments: Vec<String> = env::args().skip(1).collect();
     match arguments.as_slice() {
         [flag] if flag == "--version" => {
-            print_line(&format!("ars-magna {}", env!("CARGO_PKG_VERSION")))
+            print_line(&format!("annulus {}", env!("CARGO_PKG_VERSION")))
         }
         [flag] if flag == "--help" || flag == "-h" => print_line(USAGE),
         [path] if !path.starts_with('-') => run_file(path),
@@ -34,7 +34,7 @@ fn run_file(path: &str) -> ExitCode {
         }
     };
     let execution = thread::Builder::new()
-        .name("ars-magna".into())
+        .name("annulus".into())
         .stack_size(EXECUTION_STACK_BYTES)
         .spawn(move || {
             let stdout = io::stdout();

@@ -1,4 +1,4 @@
-# ARS MAGNA language specification — v0.2.1 (as implemented)
+# Annulus language specification — v0.2.1 (as implemented)
 
 Status: **descriptive**. This document records exactly what the v0.2.1 implementation does. It is not the design of the full language; milestone 2 replaces it with a normative specification. Every rule here is covered by a test.
 
@@ -106,9 +106,9 @@ Output already written before a runtime error is kept.
 ## 7. Command line
 
 ```text
-ars-magna <source.ars>     run a program
-ars-magna --version        print the version
-ars-magna --help           print usage
+annulus <source.ars>     run a program
+annulus --version        print the version
+annulus --help           print usage
 ```
 
 | Exit status | Meaning |

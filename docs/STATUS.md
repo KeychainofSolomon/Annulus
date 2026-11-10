@@ -1,6 +1,6 @@
 # Implementation status — v0.2.1
 
-ARS MAGNA v0.2.1 is a small expression language with immutable bindings and output. It is **not** yet the language described in the engineering handoff.
+Annulus v0.2.1 is a small expression language with immutable bindings and output. It is **not** yet the language described in the engineering handoff.
 
 ## Implemented and tested
 
@@ -25,8 +25,8 @@ ARS MAGNA v0.2.1 is a small expression language with immutable bindings and outp
 
 | Binary | State |
 |---|---|
-| `ars-magna-linux-x86_64` | Built and verified for this release (requires glibc 2.34+) |
-| `ars-magna-windows-x86_64.exe` | **Not built.** No Windows toolchain is available in the environment used for this milestone. The CI workflow builds it on a Windows runner. |
+| `annulus-linux-x86_64` | Built and verified for this release (requires glibc 2.34+) |
+| `annulus-windows-x86_64.exe` | **Not built.** No Windows toolchain is available in the environment used for this milestone. The CI workflow builds it on a Windows runner. |
 
 ## Not implemented
 

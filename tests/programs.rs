@@ -2,7 +2,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-const BINARY: &str = env!("CARGO_BIN_EXE_ars-magna");
+const BINARY: &str = env!("CARGO_BIN_EXE_annulus");
 
 struct Expectation {
     stdout: String,

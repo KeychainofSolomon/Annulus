@@ -1,10 +1,10 @@
 use std::process::{Command, Stdio};
 use std::thread;
 
-use ars_magna::parser::MAX_EXPRESSION_DEPTH;
-use ars_magna::{run_source, Phase, RunError, EXECUTION_STACK_BYTES};
+use annulus::parser::MAX_EXPRESSION_DEPTH;
+use annulus::{run_source, Phase, RunError, EXECUTION_STACK_BYTES};
 
-const BINARY: &str = env!("CARGO_BIN_EXE_ars-magna");
+const BINARY: &str = env!("CARGO_BIN_EXE_annulus");
 
 fn run(arguments: &[&str]) -> std::process::Output {
     Command::new(BINARY)
@@ -19,7 +19,7 @@ fn version_flag_prints_the_package_version() {
     assert!(output.status.success());
     assert_eq!(
         String::from_utf8_lossy(&output.stdout),
-        format!("ars-magna {}\n", env!("CARGO_PKG_VERSION"))
+        format!("annulus {}\n", env!("CARGO_PKG_VERSION"))
     );
 }
 
@@ -27,7 +27,7 @@ fn version_flag_prints_the_package_version() {
 fn missing_arguments_print_usage_with_status_two() {
     let output = run(&[]);
     assert_eq!(output.status.code(), Some(2));
-    assert!(String::from_utf8_lossy(&output.stderr).starts_with("usage: ars-magna"));
+    assert!(String::from_utf8_lossy(&output.stderr).starts_with("usage: annulus"));
 }
 
 #[test]
@@ -47,7 +47,7 @@ fn unreadable_file_is_reported_with_status_one() {
 #[cfg(unix)]
 #[test]
 fn closed_output_ends_quietly() {
-    let directory = std::env::temp_dir().join(format!("ars-magna-pipe-{}", std::process::id()));
+    let directory = std::env::temp_dir().join(format!("annulus-pipe-{}", std::process::id()));
     std::fs::create_dir_all(&directory).expect("temporary directory");
     let source = directory.join("many.ars");
     std::fs::write(&source, "PRINT 1;\n".repeat(200_000)).expect("write program");
@@ -109,7 +109,7 @@ fn hostile_operator_chain_is_rejected_within_the_execution_stack() {
 
 #[test]
 fn binary_rejects_hostile_nesting_without_crashing() {
-    let directory = std::env::temp_dir().join(format!("ars-magna-deep-{}", std::process::id()));
+    let directory = std::env::temp_dir().join(format!("annulus-deep-{}", std::process::id()));
     std::fs::create_dir_all(&directory).expect("temporary directory");
     let source = directory.join("deep.ars");
     let depth = 200_000;

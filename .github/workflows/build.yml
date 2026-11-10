@@ -48,7 +48,7 @@ jobs:
         working-directory: first
       - run: cargo build --locked --release
         working-directory: second
-      - run: cmp first/target/release/ars-magna second/target/release/ars-magna
+      - run: cmp first/target/release/annulus second/target/release/annulus
 
   package:
     needs: [verify, reproducibility]
@@ -57,12 +57,12 @@ jobs:
         include:
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            built: ars-magna.exe
-            artifact: ars-magna-windows-x86_64.exe
+            built: annulus.exe
+            artifact: annulus-windows-x86_64.exe
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            built: ars-magna
-            artifact: ars-magna-linux-x86_64
+            built: annulus
+            artifact: annulus-linux-x86_64
     runs-on: ${{ matrix.os }}
     defaults:
       run:

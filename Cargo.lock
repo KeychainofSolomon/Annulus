@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "ars-magna"
+name = "annulus"
 version = "0.2.1"

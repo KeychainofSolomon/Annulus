@@ -1,17 +1,17 @@
 [package]
-name = "ars-magna"
+name = "annulus"
 version = "0.2.1"
 edition = "2021"
 rust-version = "1.97.0"
-description = "Reference implementation of the ARS MAGNA programming language"
+description = "Reference implementation of the Annulus programming language"
 publish = false
 
 [lib]
-name = "ars_magna"
+name = "annulus"
 path = "src/lib.rs"
 
 [[bin]]
-name = "ars-magna"
+name = "annulus"
 path = "src/main.rs"
 
 [dependencies]

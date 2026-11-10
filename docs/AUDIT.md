@@ -1,7 +1,7 @@
 # Audit of the supplied v0.2 source
 
 Date: 2026-11-10
-Subject: `ars-magna-native-v0.2-source.zip` (6 files, 247 lines of Rust)
+Subject: `annulus-native-v0.2-source.zip` (6 files, 247 lines of Rust)
 Toolchain used: Rust 1.97.0, Linux x86-64
 
 The original v0.2 tree is preserved as the first commit of this repository, so every finding below can be checked against it.
@@ -38,7 +38,7 @@ Severity: **High** = crash or corrupt behaviour on reachable input. **Medium** =
 |---|---|---|---|---|
 | D1 | High | Unbounded recursion: deeply nested parentheses or unary minus overflow the native stack and abort the process | 200 000 nested `(` → `fatal runtime error: stack overflow`, exit 134 | Fixed: expression depth limit (256) enforced during parsing; interpreter runs on a dedicated 16 MiB stack so the limit holds on every platform and build mode |
 | D2 | High | Long operator chains build arbitrarily deep left-nested trees; compiling or dropping them recurses without bound | Derived from the structure of `compile_expr`; same crash class as D1 | Fixed: tree depth is tracked per node and bounded by the same limit |
-| D3 | High | Writing to a closed output (for example piping into `head`) panics, and with `panic = "abort"` aborts with exit 134 | `ars-magna many.ars \| head -1` → panic message, exit 134 | Fixed: output errors are values; a closed pipe ends execution quietly with exit 0 |
+| D3 | High | Writing to a closed output (for example piping into `head`) panics, and with `panic = "abort"` aborts with exit 134 | `annulus many.ars \| head -1` → panic message, exit 134 | Fixed: output errors are values; a closed pipe ends execution quietly with exit 0 |
 | D4 | Medium | Undeclared names and redeclarations are detected only while running, after earlier statements have already produced output | `PRINT "before"; PRINT nope;` prints `before` then fails | Fixed: names are resolved at compile time; nothing runs if any name is wrong |
 | D5 | Medium | Error messages carry no file, line or column, and show internal debug names | `let x = 5;` → `expected Semicolon, found Ident("x")` | Fixed: every diagnostic has `file:line:column`, a phase (`syntax`, `name`, `runtime`, `internal`), readable token names and, where useful, a hint |
 | D6 | Medium | The NUL character is used as the end-of-input sentinel, so a literal NUL byte silently ends the program | `PRINT 1;\0PRINT 2;` prints only `1`, exit 0 | Fixed: end of input is represented explicitly; NUL is reported as `unexpected character U+0000` |

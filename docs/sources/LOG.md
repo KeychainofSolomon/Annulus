@@ -293,3 +293,8 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **Modern decks:** derived from the above.
 
 **Consequence for Annulus:** the most authentic "seal" of angel n is its Hebrew name (and verse), which is Rudd's form. A drawn sigil can be DERIVED from the name by Agrippa's documented method (III.30), labelled as derived. That is a deterministic function of the name, the same pattern as deriving a key from a spirit's number.
+- 2026-11-10, **Amy (58)**: our Sloane 3825 microfilm (117L) shows the seal under a blot. Peterson's Goetia (esotericarchives.com/solomon/goetia.htm), transcribed from Sl. 3825, which he studied first-hand at the BM, nevertheless SHOWS a seal for Amy: gifs/g58.jpg.
+  - His footnote 68 adds gifs/g58b.jpg from **Sloane 2731** (begun 18 Jan 1686) to make sense of "the attempted corrections".
+  - So the "blot" is probably the scribe's own correction, and the seal may be legible in the original or in Peterson's reading.
+  - **Under the within-one-work rule:** use Sloane 3825 as read by Peterson. Sloane 2731 is the next-oldest witness of the Goetia, held in reserve.
+  - **TODO:** the owner to save g58.jpg and g58b.jpg; they can't be reached from this workspace.

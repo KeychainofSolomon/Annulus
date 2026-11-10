@@ -120,3 +120,21 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - Status: the **oldest witness** for the Olympic spirits; it supersedes graveworm and Twilit Grotto.
 - 2026-11-10 | Sloane 3853 date | article "Necromancing Theurgic Magic: A Reappraisal of the Liber iuratus Extracts…", *Magic, Ritual, and Witchcraft* (journal; the owner's PDF) | **first part of Sloane 3853 dated to the second half of the 16th century** (from its two scribes' textual references); a composite Latin/English miscellany with *Liber iuratus* extracts and a reference to the Schemhamphoras in the Sigillum Dei ring | article (scholarly) | still to check: whether ff. 257–258 (the spirit list) carry seals; the owner would need scans of Sloane 3853
 - 2026-11-10 | *Liber iuratus* | Joseph H. Peterson, *The Sworn Book of Honorius* (Ibis, 2016), © Peterson; the owner's PDF, 338 pages | Latin/English edition. Book I: "Composition of the Seal of God" (Sigillum Dei). Manuscripts discussed: **Sloane 313** (Book of Honorius; per Peterson, its seal drawing does not match the text's description), **Sloane 3854** (complete text; Peterson discusses dating), plus Royal 17 A XLII (16th-c. English); a later Sigillum appears in *La Véritable Magie Noire* (1750) | copyrighted edition; reference only | open: which manuscript holds the oldest Sigillum Dei that agrees with the text? Get scans of Sloane 3854 and Sloane 313 seal folios. Read Peterson's introduction on dating (the 14th-century date is questioned)
+
+## Rudd's spirit–angel pairing (Harley 6483), received 2026-11-10
+
+- **Source:** the owner's Occultist Explorer file `rudd/72-seals-and-angels.md`.
+- **The pairing:** Goetia spirit n is bound by Shem angel n, through the 72 quinances of the zodiac. Thomas Rudd, Harley 6483, via Skinner & Rankine, *The Goetia of Dr Rudd* (2007).
+- **Standing:** Rudd's Goetia is a separate work, so the pairing stands as Rudd's tradition, attributed. Sloane 3825's Goetia has no pairing, so nothing conflicts.
+- **Name forms in the file are not the authority for Annulus:**
+  - The demon names are from de Laurence (1916). Annulus uses Sloane 3825's forms: Gamigin, Valefar, Procel, Gemory, Valac, Flauros, Cimeies and so on. The keys are derived by number, so changing the names breaks nothing.
+  - The angel names are in the 19th-century Lenain spelling. Rudd's own spellings are in Harley 6482 (McLean): Vehujah, Ieliel, Sirael and so on.
+- **Open: order conflict at 5–7.**
+  - Rudd's own Harley 6482 list runs 5 Lelahel, 6 Achajah, 7 Mahasiah.
+  - The file uses the common order: 5 Mahasiah, 6 Lelahel, 7 Achaiah.
+  - So under Rudd's 6482 order, Marbas (5) would take Lelahel, not Mahasiah.
+  - Check which order Harley 6483 itself uses.
+- **Open: doublets in 6482.** It has Hahajah at both 12 and 24, and Michael at both 42 and 48. The file distinguishes them (Hahaiah/Haheuiah, Mikael/Mihael).
+- **Open:** verify the pairing against a facsimile of Harley 6483.
+- **Open:** collate against Sloane 3825 frame 41L, a 72-name table not yet transcribed.
+- **Note:** the *Testament of Solomon* question ("by what angel thou art frustrated") comes from a separate, much older work with its own, different demon–angel pairs. Using it as the motif is fine; its pairs are not Rudd's.

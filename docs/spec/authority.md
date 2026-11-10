@@ -193,8 +193,8 @@ The names in the form are references to Constitution entries (section 2.3).
 8.2 **The invocation steps:**
 1. The Operator declares intent.
 2. The Circle is closed.
-3. The spirit is invoked into its Triangle.
-4. The spirit receives the operative seals for the declared office.
+3. The Operator inscribes the spirit's operative seal (section 7).
+4. The spirit is invoked into its Triangle, bound by that seal, for the declared office.
 5. The spirit proposes effects.
 6. The paired angel examines them (section 10).
 7. The proposal is judged (section 11).
@@ -221,9 +221,9 @@ The names in the form are references to Constitution entries (section 2.3).
 
 | Operation | Effect | Source |
 |---|---|---|
-| `LICENSE_TO_DEPART` | orderly completion; temporary capabilities revoked | 1446 p216 L; Arbatel XXI, "vade in pace ad ordines tuos"; Goetia licence |
-| `DISMISS` | ends the invocation without completion; uncommitted effects are discarded | [Architecture §12] |
-| `BANISH` | forced termination: capabilities revoked, child tasks terminated, uncommitted effects discarded, results quarantined in the **Vessel** | fire curse (1446 p215 R); "Spirits chaine" (Sloane 3825); the Brass Vessel (Sloane 3825) |
+| `VADE IN PACE` (licence to depart) | orderly completion; temporary capabilities revoked | 1446 p216 L; Arbatel XXI, "vade in pace ad ordines tuos"; Goetia licence |
+| `DIMITTE` (dismiss) | ends the invocation without completion; uncommitted effects are discarded | [Architecture §12] |
+| `RELEGA` (banish) | forced termination: capabilities revoked, child tasks terminated, uncommitted effects discarded, results quarantined in the **Vessel** | fire curse (1446 p215 R); "Spirits chaine" (Sloane 3825); the Brass Vessel (Sloane 3825) |
 
 **[O]** the Vessel is the quarantine store named after Solomon's brass vessel.
 
@@ -290,7 +290,6 @@ Every grant, inscription, invocation, examination, verdict, judgement and releas
 
 ## 15. Open items
 
-- **Keywords:** Latin, English or mixed (the owner to decide).
 - **Transcriptions from Sloane 3825:** the seal metals and binding hours by rank (Observations), frame 41L (the 72 angel names: if the *Janua* and Rudd count as one work, 41L decides the spellings), and frame 40 (the angels of the lunar mansions).
 - **The `heptameron` rite:** verify the sigils against an early printing; Tuesday's angel is Samael.
 - **Amy's seal:** compare with Peterson's g58.jpg.

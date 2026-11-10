@@ -1,0 +1,3 @@
+SIT a = VERUM;
+SIT b = NON a VEL a ET FALSUM;
+MANIFESTA 42 == 42;

@@ -1,0 +1,5 @@
+FACULTAS {
+    liber "tempestas.txt" scribere;
+    consola "" scribere legere;
+}
+MANIFESTA 1;

@@ -1,0 +1,5 @@
+FORMA punctum { x: NUMERUS, y: NUMERUS }
+OPUS move(p: punctum, d: SERIES[NUMERUS]) -> NIHIL {
+    p.x = p.x + d[0];
+    p.y = p.y + d[1];
+}

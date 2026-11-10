@@ -54,6 +54,12 @@ The governing document is the owner's "Definitive Architecture and Engineering H
 - `DIMITTE` (dismiss) and `RELEGA` (banish) are kept.
 - The "Definitive Architecture" re-attachment is not needed.
 
+## Spec progress (step 3)
+
+- Part 1 `authority.md`, Part 2 `grammar.md`, Part 3 `static.md`: draft 1 each, awaiting the owner's approval.
+- The grammar is LL(1). `tools/grammar_check.py` checks it against `tests/grammar/` (57 programs) and runs in CI.
+- Next: Part 4, dynamic semantics (evaluation order, effects, budgets, failure classes, what `TENTA` catches).
+
 ## Still open: ask the owner
 
 - Seal artwork: the 1904 plates (with lettered double rings) or Sloane 3825's bare sigils. His fidelity rule points to Sloane 3825.

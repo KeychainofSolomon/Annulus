@@ -1,0 +1,7 @@
+SIT MUTABILIS i = 0;
+DUM i < 10 {
+    i = i + 1;
+    SI i % 2 == 0 { PERGE; }
+    SI i > 7 { DESINE; }
+}
+MANIFESTA i;

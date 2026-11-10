@@ -1,0 +1,5 @@
+SIT MUTABILIS summa = 0;
+PER n IN [1, 2, 3] {
+    summa = summa + n * 7;
+}
+MANIFESTA summa;

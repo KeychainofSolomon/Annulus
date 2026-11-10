@@ -1,0 +1,4 @@
+SIT x = 7;
+SIT y = 5;
+SIT result = x * y;
+MANIFESTA result;

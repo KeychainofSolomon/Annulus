@@ -1,0 +1,2 @@
+SIT n = 3;
+SI n < 0 { MANIFESTA "minor"; } ALITER SI n == 0 { MANIFESTA "nihil"; } ALITER { MANIFESTA "maior"; }

@@ -1,0 +1,4 @@
+OPUS quadratum(n: NUMERUS) -> NUMERUS {
+    REDDE n * n;
+}
+MANIFESTA quadratum(12);

@@ -1,0 +1,17 @@
+FACULTAS {
+    liber "tempestas.txt" scribere;
+    atramentum "comes" 1;
+}
+
+CIRCULUS RITU goetia {
+    INTENTIO "record the coming storm";
+    SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
+    SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
+    SIT propositum = PETE furfur("tempestas.txt");
+    SIT iudicium = EXAMINA propositum;
+    SI iudicium == PARADISUS {
+        VADE IN PACE furfur;
+    } ALITER {
+        RELEGA furfur;
+    }
+}

@@ -1,0 +1,6 @@
+CIRCULUS RITU rudd {
+    INTENTIO "x";
+    SIT f = INVOCA furfur AD OFFICIUM tempestas;
+    SIT p = PETE f();
+    SI EXAMINA p == PARADISUS { VADE IN PACE f; } ALITER SI EXAMINA p == PURGATORIUM { DIMITTE f; } ALITER { RELEGA f; }
+}

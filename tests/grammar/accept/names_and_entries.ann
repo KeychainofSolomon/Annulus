@@ -1,0 +1,4 @@
+SIT n = NOMEN "אגלא";
+SIT s = SIGILLUM SPIRITUS 34;
+SIT a = ANGELUS 34;
+SIT t = SIGILLUM furfur;

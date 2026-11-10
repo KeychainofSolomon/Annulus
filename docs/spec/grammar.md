@@ -30,6 +30,13 @@ operator    = "+" | "-" | "*" | "/" | "%" | "=" | "==" | "!=" | "<" | "<=" | ">"
 punctuation = "(" | ")" | "{" | "}" | "[" | "]" | "," | ";" | "." ;
 ```
 
+**Words:** a word is a maximal run of ASCII letters, digits and `_`. The whole word must be exactly one token:
+- all digits: an integer;
+- all uppercase letters and `_`: a keyword;
+- a lowercase letter, then lowercase letters, digits and `_`: an identifier.
+
+Any other word (`Furfur`, `xSIT`, `7y`) is a lexical error. So a keyword can never hide inside a name.
+
 **Casing is a rule, not a convention:**
 - All-uppercase words are keywords.
 - Lowercase words are identifiers.
@@ -39,11 +46,13 @@ punctuation = "(" | ")" | "{" | "}" | "[" | "]" | "," | ";" | "." ;
 
 **Strings:**
 - Strings may contain any Unicode text, including Hebrew. Divine names and angel names are written in their own script (§5.4).
-- `\u{…}` escapes take a hexadecimal code point.
+- `\u{…}` takes 1 to 6 hexadecimal digits. The value must be a Unicode scalar value: at most 10FFFF, and not D800–DFFF.
+- A string cannot cross a line break; write `\n` instead.
 
 **Integers:**
 - Integer literals are decimal and must fit the integer type (§6).
 - Roman numerals are not literals.
+- The reserved keywords of §3.2 are lexical errors until a later part gives them meaning.
 
 **No comments:** Annulus has no comment syntax (ruling: zero annotations in programs). `//` lexes as two `/` operators and is then a syntax error.
 
@@ -86,7 +95,7 @@ All [O].
 | `PETE` | "ask" | puts a request to an invoked spirit and yields a proposal | [O] |
 | `SIGILLUM` | "seal" | a seal, in exemplar form by default | [S] "his seal or Character", the Goetia |
 | `INSCRIBE` … `ATRAMENTO` | "write … with ink" | makes a seal operative (`authority.md` §7.1) | [S] ink, pen and ink (Mathers II.14); the operative Seal (*Liber iuratus*) |
-| `ATRAMENTUM` | "ink" | the ink type | [S] |
+| `ATRAMENTUM` | "ink" | the ink type; `ATRAMENTUM "classis"` draws raw ink from the faculty | [S] |
 | `CONSECRA` | "consecrate" | lifts taint after independent validation (§7.4) | [S] the consecration of the ink (*Liber iuratus* CXXXVII) |
 | `EXAMINA` | "examine" | submits a proposal to its fixed examiner, then to judgement | [S] the examination; [O] the mechanism |
 | `PARADISUS` / `PURGATORIUM` / `INFERNUS` | the three destinations | values of a judgement (`authority.md` §11) | [O] the mapping; the names follow the Architecture |
@@ -103,7 +112,7 @@ All [O].
 ```ebnf
 program        = [ faculty ] , { item } ;
 faculty        = "FACULTAS" , "{" , { grant } , "}" ;
-grant          = identifier , string , { identifier } , ";" ;   (* e.g. liber "data.txt" legere; *)
+grant          = identifier , string , { identifier } , [ integer ] , ";" ;   (* liber "data.txt" legere; atramentum "comes" 1; *)
 item           = function | form | module | statement ;
 
 module         = "LIBER" , path , ";" | "ADHIBE" , path , ";" ;
@@ -118,12 +127,11 @@ type           = "NUMERUS" | "VERITAS" | "VERBUM" | "NIHIL" | "ATRAMENTUM"
                | "SERIES" , "[" , type , "]" | identifier ;
 
 block          = "{" , { statement } , "}" ;
-statement      = declaration | assignment | output | conditional | loop | iteration
+statement      = declaration | output | conditional | loop | iteration
                | "DESINE" , ";" | "PERGE" , ";" | return | attempt | circle
-               | release | expression , ";" ;
+               | release | simple ;
+simple         = expression , [ "=" , expression ] , ";" ;      (* assignment if "=" *)
 declaration    = "SIT" , [ "MUTABILIS" ] , identifier , [ ":" , type ] , "=" , expression , ";" ;
-assignment     = place , "=" , expression , ";" ;
-place          = identifier , { "." , identifier | "[" , expression , "]" } ;
 output         = "MANIFESTA" , expression , ";" ;
 conditional    = "SI" , expression , block , [ "ALITER" , ( conditional | block ) ] ;
 loop           = "DUM" , expression , block ;
@@ -141,7 +149,9 @@ conjunction    = comparison , { "ET" , comparison } ;
 comparison     = sum , [ ( "==" | "!=" | "<" | "<=" | ">" | ">=" ) , sum ] ;
 sum            = product , { ( "+" | "-" ) , product } ;
 product        = unary , { ( "*" | "/" | "%" ) , unary } ;
-unary          = ( "-" | "NON" ) , unary | postfix ;
+unary          = ( "-" | "NON" | "CONSECRA" | "EXAMINA" ) , unary
+               | "INSCRIBE" , unary , "ATRAMENTO" , unary
+               | postfix ;
 postfix        = primary , { "(" , [ arguments ] , ")" | "." , identifier | "[" , expression , "]" } ;
 arguments      = expression , { "," , expression } ;
 primary        = integer | string | "VERUM" | "FALSUM" | "NIHIL"
@@ -149,14 +159,11 @@ primary        = integer | string | "VERUM" | "FALSUM" | "NIHIL"
                | identifier | "(" , expression , ")" | sequence | rite_expression ;
 sequence       = "[" , [ arguments ] , "]" ;
 
-rite_expression = invocation | request | inscription | consecration | examination
-                | seal | name | entry ;
+rite_expression = invocation | request | seal | ink | name | entry ;
 invocation     = "INVOCA" , entity , "AD" , "OFFICIUM" , identifier ;
-request        = "PETE" , expression , "(" , [ arguments ] , ")" ;
-inscription    = "INSCRIBE" , expression , "ATRAMENTO" , expression ;
-consecration   = "CONSECRA" , expression ;
-examination    = "EXAMINA" , expression ;
+request        = "PETE" , identifier , "(" , [ arguments ] , ")" ;
 seal           = "SIGILLUM" , entity ;
+ink            = "ATRAMENTUM" , string ;                 (* draws raw ink of that class *)
 name           = "NOMEN" , string ;
 entity         = identifier | entry ;
 entry          = ( "SPIRITUS" | "ANGELUS" ) , integer ;
@@ -165,14 +172,21 @@ entry          = ( "SPIRITUS" | "ANGELUS" ) , integer ;
 **Notes:**
 - Comparing values of different types (e.g. `7 == "7"`) is a type error, caught before the program runs (ruled 2026-11-10).
 - Type labels are required on `OPUS` parameters and results, and on `FORMA` fields; elsewhere they are optional. Type labels are syntax, not annotations (ruled 2026-11-10).
+- **One reading only.** Every choice in this grammar is decided by the next token alone (LL(1)). Three rules make that true:
+  1. An assignment is parsed as an expression followed by `=`. Its left side must then be a *place*: a variable, a field (`a.b`) or an element (`a[i]`). Anything else on the left is a syntax error.
+  2. `PETE` takes a plain name: `PETE furfur("x")`. Otherwise its argument list would be read as an ordinary function call.
+  3. `CONSECRA`, `EXAMINA` and `INSCRIBE … ATRAMENTO …` bind as tightly as `NON`. So `EXAMINA p == PARADISUS` means `(EXAMINA p) == PARADISUS`.
+
+  The reference recognizer `tools/grammar_check.py` implements exactly this grammar and runs the test programs in `tests/grammar/`.
+- The smallest `NUMERUS`, −9223372036854775808, cannot be written as a literal, because its digits overflow before the minus applies. Write it as `-9223372036854775807 - 1`.
 - Comparison does not chain: `a < b < c` is a syntax error.
-- The precedence, from loosest to tightest binding: `VEL`, `ET`, comparison, `+ -`, `* / %`, unary `- NON`, postfix.
+- The precedence, from loosest to tightest binding: `VEL`, `ET`, comparison, `+ -`, `* / %`, prefix (`-`, `NON`, `CONSECRA`, `EXAMINA`, `INSCRIBE`), postfix.
 - `CIRCULUS` blocks may nest. An inner Circle MUST NOT widen its outer Circle's permissions (static semantics, Part 3).
 - Rite expressions are valid only inside a `CIRCULUS`. That check is static, not syntactic.
 
 ## 5. Static meaning of the rite syntax (summary)
 
-Full detail comes in Part 3. In summary:
+The full rules are in Part 3, `static.md`. In summary:
 
 1. **`entity`** resolves through the Constitution's registers, by number or by label, within the Circle's rite. An unknown name is a compile-time error. `furfur` and `SPIRITUS 34` are the same entity.
 2. **`AD OFFICIUM` office** must be one of the spirit's offices in that rite. A spirit asked for anything else is a compile-time error (law OFFICE).
@@ -199,6 +213,7 @@ The Constitution supplies further types: invocation, proposal and destination.
 ```
 FACULTAS {
     liber "tempestas.txt" scribere;
+    atramentum "comes" 1;
 }
 
 SIT septem = 7;
@@ -210,8 +225,8 @@ MANIFESTA summa;
 
 CIRCULUS RITU goetia {
     INTENTIO "record the coming storm";
+    SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
     SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
-    SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA atramentum_licitum;
     SIT propositum = PETE furfur("tempestas.txt");
     SIT iudicium = EXAMINA propositum;
     SI iudicium == PARADISUS {
@@ -222,7 +237,7 @@ CIRCULUS RITU goetia {
 }
 ```
 
-**Open in this example:** the actual offices of each spirit, written as computational jobs (Furfur's office here is a placeholder), and the way ink is drawn from the faculty (`atramentum_licitum`). Both belong to Part 3.
+**Open in this example:** Furfur's office (`tempestas`) is a placeholder until the offices register exists (`static.md` §7). Furfur is an Earl, so his seal takes the Earl's ink class, `"comes"`.
 
 ## 8. Migration from v0.2.1
 

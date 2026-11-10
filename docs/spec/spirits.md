@@ -125,4 +125,4 @@ Beleth is the model case: if he will not enter the triangle, "rehearse the Bonds
 
 6.2 **Harmful kinds stay harmful.** `DISCORDIA`, `EVERSIO`, `TEMPESTAS`, `NEX`, `MORBUS`, `FURTUM` and `MENS` are real, destructive computer work: deletion, termination, corruption, disruption. They act only on what the faculty grants and only after examination. They are not softened: a spirit invoked for `NEX` really ends tasks.
 
-6.3 **Offices the computer cannot hold.** Some offices have no honest computer analogue: making men "to live long", "invincible", "beloved", of "good name". The register keeps them, marked `NULLUM`. Invoking a spirit for them is an error (law OFFICE): the office exists in the tradition, but Annulus does not pretend to perform it.
+6.3 **Offices the computer cannot hold.** Some offices have no honest computer analogue: giving a "good name" (Forneus), making a man "live long" (Foras), giving the "Ring of Virtues" and making one "invincible" (Asmoday). The register keeps them, marked `NULLUM`. Invoking a spirit for them is an error (law OFFICE): the office exists in the tradition, but Annulus does not pretend to perform it.

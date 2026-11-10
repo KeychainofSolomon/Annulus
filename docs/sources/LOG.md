@@ -181,3 +181,27 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - מבה at 14 (Mebahel) and 55 (Mebahiah).
 
 **The angel seals:** Harley 6483 draws a circle for each of the 72 angels beside each demon seal. Each circle carries the angel's versicle (Latin psalm) and Hebrew name; the manuscript doesn't say whether it was meant as the reverse of the lamen. The designs themselves still need Skinner & Rankine's edition or BL images.
+
+## Lineage of the angel seals (researched 2026-11-10)
+
+**Toz Graecus Latin manuscripts: 72 pentacles WITHOUT angel names.** All in Paris, BnF:
+- Lat. 15127, 17th c.: pentacles with no descriptions; Peterson says few resemble the Colorno/Mathers ones.
+- Lat. 14075, 17th c.
+- Lat. 18510, undated, before 1870: 74 pentacles.
+
+**French "Secret des Secrets / Véritable Grimoire" group, 18th c.: the same pentacles WITH an angel name on each.**
+- Copies: Wellcome 4662 and 4664, Arsenal 2350 and 2493, RSL 210 N 37.
+- **So Wellcome 4662 is not a faulty copy.** It is a typical member of the later, labelled branch. Under the within-one-work rule, the angel labels are a later addition: they stand, labelled as later, because the older Latin witnesses are silent and nothing conflicts.
+
+**Individual pentacles are much older than the labels.** Larkfall's blog post "Of Signs and Seals" (2015) shows two Arsenal 2350 angel pentacles (pp. 401, 403) are garbled seals found in:
+- Folger V.b.26 (1570s-80s);
+- Scot (1584);
+- Sloane 3824 (1650s, Rudd circle).
+
+  Compare 1446 P3 (the Agla permutations) against Wellcome 4662. The pentacles are recycled stock.
+
+**Ambelain's well-known angel sigils** come from Arsenal 2495 (d'Argenson, 18th c.) via Lenain. That is a separate set, and Ambelain himself later called its attribution to the 72 incorrect.
+
+**The oldest seals made for the 72 angels themselves are Rudd's** (Harley 6483, a 1712-13 copy of mid-17th-c. Rudd material): a circle with the Hebrew name and the psalm versicle.
+
+**Leads:** check whether Gallica has Lat. 15127, 14075 and 18510 online; get Harley 6483 images or Skinner & Rankine's edition.

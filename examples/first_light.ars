@@ -1,0 +1,4 @@
+LET x = 7;
+LET y = 5;
+LET result = x * y;
+MANIFEST result;

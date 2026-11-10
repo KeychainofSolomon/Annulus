@@ -1,0 +1,3 @@
+LET threshold = 42;
+LET answer = threshold == 42;
+MANIFEST answer;

@@ -41,3 +41,15 @@ Format: `date | question | source | what it gives | certainty | open lead`
   - The 44-pentacle set appears only in later manuscripts.
   - For Annulus this is a fidelity decision for the owner: the 1446 set (oldest), or the 44 (later, with manuscript sources for 16).
 - **Next step:** transcribe p. 195 and p. 196 at 200 dpi; check pp. 228, 242 and 246.
+
+## Older than Sloane 3825? (2026-11-10)
+
+- **Searched:** 1 web search, 2 fetches. The Wikipedia fetch was blocked; the kiwix mirror worked.
+- **Liber Officiorum Spirituum:** the lost original source of Weyer and the Goetia. Derived copies survive in the Sloane and Folger collections (shelfmarks not given). Seals: unknown.
+- **From prior knowledge, not yet verified:**
+  - Weyer, *Pseudomonarchia daemonum* (1577): 69 spirits, no seals.
+  - Scot's English version (1584): no seals.
+  - *Livre des Esperitz* (Trinity College Cambridge O.8.29): 47 spirits.
+  - **Folger V.b.26** (c. 1577–83, "Book of Oberon"): spirit catalogues with drawings.
+- **Lead:** Folger V.b.26 is the most likely pre-Sloane-3825 witness with spirit seals. The Folger has a digital collection (LUNA); the owner would attach page images.
+- **Dead end:** en.wikipedia.org is not on the WebFetch allowlist; use mirrors.

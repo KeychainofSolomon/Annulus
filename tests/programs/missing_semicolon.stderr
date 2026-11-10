@@ -1,1 +1,1 @@
-missing_semicolon.ars:2:1: syntax error: expected `;` after the declaration, found declaration keyword
+missing_semicolon.ann:2:1: syntax error: expected `;` after the declaration, found declaration keyword

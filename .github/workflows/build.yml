@@ -78,8 +78,8 @@ jobs:
           mkdir dist
           cp "target/${{ matrix.target }}/release/${{ matrix.built }}" "dist/${{ matrix.artifact }}"
           ./dist/${{ matrix.artifact }} --version
-          ./dist/${{ matrix.artifact }} examples/first_light.ars | diff - examples/first_light.stdout
-          ./dist/${{ matrix.artifact }} examples/logic.ars | diff - examples/logic.stdout
+          ./dist/${{ matrix.artifact }} examples/first_light.ann | diff - examples/first_light.stdout
+          ./dist/${{ matrix.artifact }} examples/logic.ann | diff - examples/logic.stdout
           cd dist && sha256sum "${{ matrix.artifact }}" > "${{ matrix.artifact }}.sha256"
       - uses: actions/upload-artifact@v4
         with:

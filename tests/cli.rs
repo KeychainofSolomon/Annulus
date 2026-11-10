@@ -38,10 +38,10 @@ fn unknown_flags_print_usage_with_status_two() {
 
 #[test]
 fn unreadable_file_is_reported_with_status_one() {
-    let output = run(&["definitely-missing.ars"]);
+    let output = run(&["definitely-missing.ann"]);
     assert_eq!(output.status.code(), Some(1));
     assert!(String::from_utf8_lossy(&output.stderr)
-        .starts_with("error: cannot read definitely-missing.ars"));
+        .starts_with("error: cannot read definitely-missing.ann"));
 }
 
 #[cfg(unix)]
@@ -49,7 +49,7 @@ fn unreadable_file_is_reported_with_status_one() {
 fn closed_output_ends_quietly() {
     let directory = std::env::temp_dir().join(format!("annulus-pipe-{}", std::process::id()));
     std::fs::create_dir_all(&directory).expect("temporary directory");
-    let source = directory.join("many.ars");
+    let source = directory.join("many.ann");
     std::fs::write(&source, "PRINT 1;\n".repeat(200_000)).expect("write program");
     let mut child = Command::new(BINARY)
         .arg(&source)
@@ -111,7 +111,7 @@ fn hostile_operator_chain_is_rejected_within_the_execution_stack() {
 fn binary_rejects_hostile_nesting_without_crashing() {
     let directory = std::env::temp_dir().join(format!("annulus-deep-{}", std::process::id()));
     std::fs::create_dir_all(&directory).expect("temporary directory");
-    let source = directory.join("deep.ars");
+    let source = directory.join("deep.ann");
     let depth = 200_000;
     std::fs::write(
         &source,

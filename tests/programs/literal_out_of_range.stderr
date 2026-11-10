@@ -1,1 +1,1 @@
-literal_out_of_range.ars:1:7: syntax error: integer literal `9223372036854775808` is out of range
+literal_out_of_range.ann:1:7: syntax error: integer literal `9223372036854775808` is out of range

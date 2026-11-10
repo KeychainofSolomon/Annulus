@@ -1,1 +1,1 @@
-type_error.ars:1:11: runtime error: operator `+` requires integer operands, found string and string
+type_error.ann:1:11: runtime error: operator `+` requires integer operands, found string and string

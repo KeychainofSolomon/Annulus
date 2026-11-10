@@ -10,7 +10,7 @@ The owner. Writes the design handoffs himself.
 
 A real programming language whose authority and execution model is the Solomonic framework: circles, spirits, angelic examination, licence to depart and banishment, mapped onto capability security, sandboxing and transactional effects.
 
-The governing document is the owner's "Definitive Architecture and Engineering Handoff", 18 sections. **Ask him to re-attach it.** Key points:
+The governing document is the owner's "Definitive Architecture and Engineering Handoff", 18 sections. He has ruled that re-attaching it is not needed. Key points:
 - The language is implemented in Rust, but Rust must not leak into the language.
 - Bytecode and VM are the reference execution model; a native x86-64 backend comes later.
 - Eight foundational laws: ORIGIN, SOVEREIGNTY, DECLARATION, OFFICE, CONTAINMENT, EXAMINATION, RELEASE, JUDGEMENT.
@@ -21,7 +21,7 @@ The governing document is the owner's "Definitive Architecture and Engineering H
 
 ## Decisions the owner has made
 
-1. **Name: Annulus**, for the Ring of Solomon. The rename is **not yet applied** in the code: the crate, binaries and `.ars` extension still say ars-magna.
+1. **Name: Annulus**, for the Ring of Solomon. Applied in the code. File extension `.ann` (ruled 2026-11-10).
 2. **Zero annotations in Annulus programs.** No comment syntax exists; the lexer rejects it.
 3. **"Fully obfuscated, like the real world until you look closer."** Agreed design:
    - opaque surface, fully lawful depth;
@@ -43,15 +43,20 @@ The governing document is the owner's "Definitive Architecture and Engineering H
    - Disagreements between sources are kept, with attribution.
    - Inventions are always labelled as original.
 
+## Rulings of 2026-11-10 ("use the most intuitive option")
+
+- Keywords: all Latin, uppercase (see `docs/spec/grammar.md`). The duplicate spellings are dropped.
+- Mixed-type equality is a type error.
+- Type labels are syntax, not annotations: required on function interfaces and record fields, optional elsewhere.
+- Pentacles: the 1446 Key's set is the foundation; Mathers' 44 are later additions where they don't conflict, each labelled. 1446 wins where they disagree.
+- Licence: public domain (the Unlicense). Anyone may use the code; no credit needed.
+- File extension: `.ann`.
+- `DIMITTE` (dismiss) and `RELEGA` (banish) are kept.
+- The "Definitive Architecture" re-attachment is not needed.
+
 ## Still open: ask the owner
 
-- Keyword language (English, Latin or mixed) and casing; whether to keep the duplicate spellings `LET`/`DECLARE` and `PRINT`/`MANIFEST`.
-- Mixed-type equality: keep `false`, or make it a type error? Recommendation: type error.
-- Proposed meaning of the final destinations: PARADISE = fully examined and committed; PURGATORY = held for re-examination; HELL = banished and quarantined. Awaiting approval.
-- Licence for the project.
 - Seal artwork: the 1904 plates (with lettered double rings) or Sloane 3825's bare sigils. His fidelity rule points to Sloane 3825.
-- Do type declarations count as forbidden "annotations"? Recommendation: required on public interfaces.
-- What Annulus is ultimately for: real programs, a working model of Solomonic magic, or his Mage setting. Asked twice; no answer yet.
 - How the 72 spirits' offices map to computational jobs. His Occultist Explorer project already gave all 72 real functions; it may be reusable.
 
 ## State of the code (v0.2.1, Milestone 1 complete)

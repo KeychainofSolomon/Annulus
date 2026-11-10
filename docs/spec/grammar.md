@@ -8,7 +8,7 @@ Provenance tags follow `authority.md` §0:
 
 ## 1. Source text
 
-- **Encoding:** a program is one UTF-8 file, with the extension `.ars`. Invalid UTF-8 is rejected before lexing.
+- **Encoding:** a program is one UTF-8 file, with the extension `.ann` (ruled 2026-11-10). Invalid UTF-8 is rejected before lexing.
 - **Line endings:** LF and CRLF are both accepted.
 - **Whitespace:** Unicode `White_Space` separates tokens and is otherwise ignored.
 - **Positions:** reported as `line:column` (1-based, counted in Unicode scalar values).
@@ -17,7 +17,6 @@ Provenance tags follow `authority.md` §0:
 
 ```ebnf
 token       = keyword | identifier | integer | string | operator | punctuation ;
-comment     = "//" , { any character except line break } ;      (* ignored *)
 identifier  = lower , { lower | digit | "_" } ;                    (* not a keyword *)
 keyword     = upper , { upper | "_" } ;                            (* must be in §3 *)
 lower       = "a".."z" ;
@@ -45,6 +44,8 @@ punctuation = "(" | ")" | "{" | "}" | "[" | "]" | "," | ";" | "." ;
 **Integers:**
 - Integer literals are decimal and must fit the integer type (§6).
 - Roman numerals are not literals.
+
+**No comments:** Annulus has no comment syntax (ruling: zero annotations in programs). `//` lexes as two `/` operators and is then a syntax error.
 
 **Matching:** the longest operator wins: `==` before `=`, `->` before `-`, `<=` before `<`.
 
@@ -90,8 +91,8 @@ All [O].
 | `EXAMINA` | "examine" | submits a proposal to its fixed examiner, then to judgement | [S] the examination; [O] the mechanism |
 | `PARADISUS` / `PURGATORIUM` / `INFERNUS` | the three destinations | values of a judgement (`authority.md` §11) | [O] the mapping; the names follow the Architecture |
 | `VADE IN PACE` | "go in peace" | licence to depart | [S] Arbatel Aph. XXI, "vade in pace ad ordines tuos" |
-| `DIMITTE` | "send away" | dismiss | [O] |
-| `RELEGA` | "banish" | banish; results go to the Vessel | [O] word; [S] act: the fire curse (BnF 1524 p215) |
+| `DIMITTE` | "send away" | dismiss | [O] (kept, ruled 2026-11-10) |
+| `RELEGA` | "banish" | banish; results go to the Vessel | [O] word (kept, ruled 2026-11-10); [S] act: the fire curse (BnF 1524 p215) |
 | `NOMEN` | "name" | references a divine name in the Constitution | [S] binding "by" the names |
 | `SPIRITUS` / `ANGELUS` | "spirit" / "angel" | register types; also refer to an entry by number, e.g. `SPIRITUS 34` | [O] |
 
@@ -162,6 +163,8 @@ entry          = ( "SPIRITUS" | "ANGELUS" ) , integer ;
 ```
 
 **Notes:**
+- Comparing values of different types (e.g. `7 == "7"`) is a type error, caught before the program runs (ruled 2026-11-10).
+- Type labels are required on `OPUS` parameters and results, and on `FORMA` fields; elsewhere they are optional. Type labels are syntax, not annotations (ruled 2026-11-10).
 - Comparison does not chain: `a < b < c` is a syntax error.
 - The precedence, from loosest to tightest binding: `VEL`, `ET`, comparison, `+ -`, `* / %`, unary `- NON`, postfix.
 - `CIRCULUS` blocks may nest. An inner Circle MUST NOT widen its outer Circle's permissions (static semantics, Part 3).

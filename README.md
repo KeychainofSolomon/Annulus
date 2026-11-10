@@ -14,7 +14,7 @@ MANIFEST result;
 ```
 
 ```text
-$ annulus examples/first_light.ars
+$ annulus examples/first_light.ann
 35
 ```
 
@@ -37,7 +37,7 @@ cargo test --locked
 ## Run
 
 ```sh
-annulus examples/first_light.ars
+annulus examples/first_light.ann
 annulus --version
 ```
 
@@ -60,3 +60,7 @@ CI builds and smoke-tests both platform binaries, each with a SHA-256 checksum:
 | [`docs/STATUS.md`](docs/STATUS.md) | Implemented and unimplemented features |
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Milestones and open design decisions |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history |
+
+## Licence
+
+Public domain (see `UNLICENSE`). Anyone may use, change or sell this code for any purpose; no credit is needed.

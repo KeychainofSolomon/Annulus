@@ -67,3 +67,8 @@ Format: `date | question | source | what it gives | certainty | open lead`
 - **Its seals and figures belong to its own material:** Oberyon and his followers, Bilgall, Ascariell, planetary characters, talismans.
 - **Conclusion:** no earlier witness of the Goetic seals here. Sloane 3825 remains the oldest seal source found.
 - **New leads (spirit catalogues):** Sloane 3853, ff. 257–258; Wellcome MS 110, f. 32. These are possibly older spirit lists, with seals unknown.
+- 2026-11-10 | date of Wellcome MS 110 | wellcomecollection.org/works/jaunz2nx | **late 16th century**, Latin and English
+  - Contents: *Ars notoria* (English, incomplete), *Vincula*, pseudo-Bacon *Thesaurus spirituum*, extracts from the *Offitium spirituum*, many rough pen drawings of figures, diagrams and **sigils**.
+  - **Digitised: 256 images, Public Domain Mark.**
+  - Certainty: catalogue record.
+  - Open lead: view f. 32 and the sigil pages to check for early versions of the Goetic seals. The owner attaches images from the Wellcome viewer.

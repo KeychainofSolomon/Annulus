@@ -247,7 +247,7 @@ def P6b (M : Core U) : Prop :=
 def NoIntrusion (x : Exn U) : Prop :=
   ∀ k a c d, k < x.len → x.lb k ≠ .intrude a c d
 
-/-- P9, replay, over a functional rite. README, finding 14: intrusions excluded. -/
+/-- P9, replay, over a functional rite. README, finding 11: intrusions excluded. -/
 def P9 (M : Core U) (R : Rite U) : Prop :=
   ∀ prog, M.lang.WellTyped prog →
     ∀ x y, Run M R.toRel prog x → Run M R.toRel prog y →

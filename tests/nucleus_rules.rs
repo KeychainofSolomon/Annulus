@@ -900,6 +900,10 @@ fn with_archive_reserved() -> State {
         wand(),
         &[Cap::new("archive.txt", Perm::Scribere)],
     );
+    s.world.insert(
+        "archive.txt".to_string(),
+        ("vetus".to_string(), Mark::Outside),
+    );
     s.launch().unwrap();
     s
 }
@@ -965,7 +969,7 @@ fn an_angel_does_not_examine_its_own_work() {
         op(&mut s, |s| s.examine(&rite, p)).unwrap(),
         WorkOutcome::Suspensum
     );
-    assert!(!s.world.contains_key("archive.txt"));
+    assert_eq!(s.world["archive.txt"].0, "vetus");
 }
 
 #[test]
@@ -1117,4 +1121,41 @@ fn a_clean_halt_dismisses_nothing() {
     op(&mut s, |s| s.close_circle()).expect("close");
     op(&mut s, |s| s.halt()).expect("halt");
     assert_eq!(s.audit.entries().last(), Some(&Label::Halt(Vec::new())));
+}
+
+#[test]
+fn a_helper_is_held_to_its_own_narrower_set() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, inv) = circle_and(&mut s, &rite, MARBAS);
+    op(&mut s, |s| {
+        s.request(
+            &rite,
+            Addressee::Spirit(inv),
+            &form("scribe", &["notes.txt"]),
+        )
+    })
+    .unwrap();
+    let worker = s.invs[&inv].main;
+    s.schedule(worker).unwrap();
+    s.turn(
+        &rite,
+        worker,
+        Outcome::Obsequium,
+        Contrib::Spawn(700, BTreeSet::new()),
+        false,
+    )
+    .unwrap();
+    s.schedule(700).unwrap();
+    let r = s.turn(
+        &rite,
+        700,
+        Outcome::Obsequium,
+        Contrib::Effects(vec![effect(Verb::Scribe, "notes.txt", "x")]),
+        false,
+    );
+    assert!(
+        matches!(r, Err(Refusal::NotEnabled(_))),
+        "the request may write notes.txt, but this helper was handed nothing"
+    );
 }

@@ -36,6 +36,7 @@ structure Universe where
   killOutcome : Outcome → Prop
   highConsequence : Verb → Prop
   creates : Verb → Prop
+  writes : Verb → Prop
   denial : FailClass
   angelic : Seal → Prop
 

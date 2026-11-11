@@ -428,10 +428,34 @@ fn shax_stealing_waits_for_the_second_key() {
 }
 
 #[test]
-fn a_mixed_rank_earl_keeps_the_earls_condition() {
+fn a_president_earl_beside_another_spirit_is_refused() {
     let src = r#"FACULTAS {
-    atramentum "comes" 1;
+    liber "turris.txt" creare;
     atramentum "marchio" 1;
+    atramentum "comes" 1;
+}
+CIRCULUS RITU goetia {
+    INTENTIO "a marquis, then botis";
+    SIT s1 = INSCRIBE SIGILLUM sabnock ATRAMENTO CONSECRA ATRAMENTUM "marchio";
+    SIT s2 = INSCRIBE SIGILLUM botis ATRAMENTO CONSECRA ATRAMENTUM "comes";
+    SIT a = INVOCA sabnock AD OFFICIUM aedificatio;
+    SIT b = INVOCA botis AD OFFICIUM praesentia;
+    VADE IN PACE b;
+    VADE IN PACE a;
+}
+"#;
+    let e = obedient(src, &[]);
+    assert_eq!(
+        e.class, 2,
+        "neither of Botis's windows is open beside another spirit"
+    );
+    theorems(&e.state);
+}
+
+#[test]
+fn a_marquis_earl_may_come_as_a_marquis() {
+    let src = r#"FACULTAS {
+    atramentum "marchio" 2;
 }
 CIRCULUS RITU goetia {
     INTENTIO "two at once";
@@ -444,9 +468,21 @@ CIRCULUS RITU goetia {
 }
 "#;
     let e = obedient(src, &[]);
-    assert_eq!(
-        e.class, 2,
-        "Ronove is marquis and earl: no other invocation may be open"
+    assert_eq!(e.class, 0, "{:?}", e.message);
+    theorems(&e.state);
+}
+
+#[test]
+fn a_write_cannot_create_a_missing_file() {
+    let src = rite_with(
+        "    liber \"a.txt\" legere;\n    liber \"b.txt\" legere;\n    liber \"c.txt\" scribere;\n",
+        "marchio",
+        "amon",
+        "concordia",
+        "\"a.txt\", \"b.txt\", \"c.txt\"",
     );
+    let e = obedient(&src, &[("a.txt", "unus"), ("b.txt", "duo")]);
+    assert_eq!(e.output, vec!["IRRITUM"], "{:?}", e.message);
+    assert!(!e.state.world.contains_key("c.txt"));
     theorems(&e.state);
 }

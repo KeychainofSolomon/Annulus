@@ -231,16 +231,22 @@ impl State {
                 return self.deny("an act of the rite on a spirit who is not here");
             }
         }
-        if !rite.admit_act(self, act) {
-            return self.deny("the rite refuses this act");
-        }
         if let Some(class) = act.ink() {
-            match self.ink_left.get_mut(class) {
-                Some(left) if *left > 0 => *left -= 1,
-                _ => return self.deny("no ink of this class is left for the offering"),
+            if !self.ink_left.get(class).is_some_and(|left| *left > 0) {
+                return self.deny("no ink of this class is left for the offering");
             }
         }
-        self.record(Label::Act(act.clone(), circle));
+        if !rite.admit_act(self, act) {
+            let dismissed = self.open_invocations();
+            self.record(Label::Act(act.clone(), circle, false, dismissed));
+            let at = self.audit.len();
+            self.end_run(Ending::Failure(DENIAL, at));
+            return Err(Refusal::Denied("the rite refuses this act"));
+        }
+        if let Some(left) = act.ink().and_then(|class| self.ink_left.get_mut(class)) {
+            *left -= 1;
+        }
+        self.record(Label::Act(act.clone(), circle, true, Vec::new()));
         self.done();
         Ok(())
     }
@@ -250,15 +256,33 @@ impl State {
         let Some(&circle) = self.circles.last() else {
             return self.deny("INSCRIBE outside a Circle");
         };
-        if !rite.ink_fits(self, seal, class) {
-            return self.deny("this ink is not the seal's class");
+        if !self.ink_left.get(class).is_some_and(|left| *left > 0) {
+            return self.deny("no ink of this class is left in the faculty");
         }
-        match self.ink_left.get_mut(class) {
-            Some(left) if *left > 0 => *left -= 1,
-            _ => return self.deny("no ink of this class is left in the faculty"),
+        if !rite.ink_fits(self, seal, class) {
+            let dismissed = self.open_invocations();
+            self.record(Label::Inscribe(
+                seal.clone(),
+                class.to_string(),
+                circle,
+                false,
+                dismissed,
+            ));
+            let at = self.audit.len();
+            self.end_run(Ending::Failure(DENIAL, at));
+            return Err(Refusal::Denied("the rite refuses this ink for this seal"));
+        }
+        if let Some(left) = self.ink_left.get_mut(class) {
+            *left -= 1;
         }
         self.inscribed.insert((seal.clone(), circle));
-        self.record(Label::Inscribe(seal.clone(), class.to_string(), circle));
+        self.record(Label::Inscribe(
+            seal.clone(),
+            class.to_string(),
+            circle,
+            true,
+            Vec::new(),
+        ));
         self.done();
         Ok(())
     }

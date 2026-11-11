@@ -253,8 +253,8 @@ pub enum Label {
     Launch(Vec<(Place, String, Mark)>),
     OpenC(CircleId),
     CloseC(CircleId),
-    Inscribe(Seal, String, CircleId),
-    Act(RiteAct, CircleId),
+    Inscribe(Seal, String, CircleId, bool, Vec<InvId>),
+    Act(RiteAct, CircleId, bool, Vec<InvId>),
     Invoke(InvId, Seal, CircleId, WorkerId, bool, Vec<InvId>),
     Request(
         ReqId,

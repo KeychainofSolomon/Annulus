@@ -64,7 +64,7 @@ def usesInv (σ : State U) : Label U → List U.Inv
   | .request _ _ (.spirit i) _ _ _ => [i]
   | .release i _ => [i]
   | .relegate i => [i]
-  | .act a _ => (U.actInv a).toList
+  | .act a _ _ _ => (U.actInv a).toList
   | .turn w _ _ _ => parentOf σ w
   | .kill w _ _ => parentOf σ w
   | .examine p _ _ => invOfProp σ p
@@ -92,13 +92,17 @@ def P3 (M : Core U) (R : RelRite U) : Prop :=
 def TerminalAt (x : Exn U) (n : Nat) (i : U.Inv) : Prop :=
   Live (x.st n) i ∧ ¬ Live (x.st (n + 1)) i
 
-/-- §9.2: use of Hold(i). -/
+/-- §9.2: use of Hold(i): a commit through its handed pairs, a turn or a kill of one of its
+workers, a message to it, an examination of its proposals, and an act of the rite on it
+(an offering spends ink drawn for it). Seals are not in Hold(i): by ruling R1 (a) a seal
+serves its whole Circle (third outside review, A2). -/
 def UsesHold (σ : State U) (i : U.Inv) : Label U → Prop
   | .commit p es .done => invOfProp σ p = [i] ∨ i ∈ invTargets es
   | .turn w _ _ _ => parentOf σ w = [i]
   | .kill w _ _ => parentOf σ w = [i]
   | .request _ _ (.spirit j) _ _ _ => j = i
   | .examine p _ _ => invOfProp σ p = [i]
+  | .act a _ _ _ => U.actInv a = some i
   | _ => False
 
 /-- P4, release: in every complete run, every invocation has exactly one terminal step, and
@@ -143,14 +147,25 @@ inductive Choice (U : Universe) where
   | will (w : U.Worker) (o : U.Outcome)
   | kill (w : U.Worker) (o : U.Outcome)
   | admit (i : U.Inv) (b : Bool)
+  | answer (a : Act U) (b : Bool)
+  | legions (w : U.Worker) (n : Nat)
   | sig (q : U.Req) (asked : Power U → Prop)
   | exam (p : U.Pid) (a : ExamAns U) (v : Verdict)
   | valid (v : U.Value) (k : Option U.ValidatorId)
   | intrude (a : U.Seal) (c : U.Circle)
 
+def legionsOf (w : U.Worker) : Contrib U → List (Choice U)
+  | .spawn _ _ n => [.legions w n]
+  | _ => []
+
+/-- Every answer of the rite that decides which step is taken (third outside review, A1):
+admission of invocations, inscriptions and acts, signatures, examiners, verdicts and
+counterbalances (in `ExamAns`), the legions bound (carried by a spawn), and validators. -/
 def choiceOf : Label U → List (Choice U)
   | .schedule w => [.sched w]
-  | .turn w o _ _ => [.will w o]
+  | .turn w o c _ => .will w o :: legionsOf w c
+  | .inscribe s k _ b _ => [.answer (.inscribe s k) b]
+  | .act a _ b _ => [.answer (.rite a) b]
   | .kill w o _ => [.kill w o]
   | .invoke i _ _ _ b _ => [.admit i b]
   | .request q _ _ _ _ asked => [.sig q asked]

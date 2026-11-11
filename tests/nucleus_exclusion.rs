@@ -451,7 +451,7 @@ fn every_act_of_the_rite_not_expressly_lawful_is_excluded() {
                 );
                 let recorded = s.audit.entries()[before..]
                     .iter()
-                    .filter(|l| matches!(l, Label::Act(..)))
+                    .filter(|l| matches!(l, Label::Act(_, _, true, _)))
                     .count();
                 if lawful {
                     assert_eq!(recorded, 1, "a lawful act is recorded once");
@@ -484,6 +484,10 @@ fn only_the_operator_acts_and_the_rite_may_refuse() {
         .entries()
         .iter()
         .any(|l| matches!(l, Label::Act(..))));
+    assert!(
+        s.running(),
+        "an act out of turn is not enabled, and is no step"
+    );
     struct No;
     impl Rite for No {
         fn admit(&self, _: &State, _: &Seal, _: CircleId) -> bool {
@@ -524,5 +528,171 @@ fn only_the_operator_acts_and_the_rite_may_refuse() {
     assert_eq!(
         s.ink_left["comes"], before,
         "a refused offering costs nothing"
+    );
+}
+
+struct Peeks;
+
+impl Peeks {
+    fn secret(s: &State) -> bool {
+        s.world
+            .get(PLACE)
+            .is_some_and(|(d, m)| *m == Mark::Quarantined && d == "ita")
+    }
+}
+
+impl Rite for Peeks {
+    fn admit(&self, _: &State, _: &Seal, _: CircleId) -> bool {
+        true
+    }
+    fn signature(&self, _: &State, _: &ReqForm) -> BTreeSet<Cap> {
+        BTreeSet::new()
+    }
+    fn examiner(&self, _: &State, _: Pid) -> Option<Seal> {
+        Some(ANGEL.to_string())
+    }
+    fn verdict(&self, _: &State, _: Pid, _: &Seal) -> Verdict {
+        Verdict::Approve
+    }
+    fn counterbalance(&self, _: &State, _: Pid) -> Verdict {
+        Verdict::Approve
+    }
+    fn ink_fits(&self, s: &State, _: &Seal, _: &str) -> bool {
+        Peeks::secret(s)
+    }
+    fn admit_act(&self, s: &State, _: &RiteAct) -> bool {
+        Peeks::secret(s)
+    }
+    fn legions(&self, _: &State, _: InvId) -> usize {
+        1
+    }
+    fn will_open(&self, _: &State, _: WorkerId, _: Outcome) -> bool {
+        true
+    }
+    fn validator(&self, _: &State, _: ValueId) -> Option<ValidatorId> {
+        None
+    }
+}
+
+fn hidden(word: &str, ink: u64) -> State {
+    let mut s = state(true, &[], &[], ink);
+    s.world
+        .insert(PLACE.to_string(), (word.to_string(), Mark::Quarantined));
+    s
+}
+
+fn diverge(a: &State, b: &State) -> (Label, Label) {
+    let (x, y) = (a.audit.entries(), b.audit.entries());
+    let k = x
+        .iter()
+        .zip(y)
+        .position(|(l, m)| l != m)
+        .expect("the runs diverge");
+    (x[k].clone(), y[k].clone())
+}
+
+#[test]
+fn a_rite_answer_that_peeks_at_quarantine_is_on_the_record() {
+    let mut runs = Vec::new();
+    for word in ["ita", "non"] {
+        let mut s = hidden(word, 2);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        let _ = op(&mut s, |s| s.inscribe(&Peeks, &SPIRIT.to_string(), "comes"));
+        runs.push(s);
+    }
+    match diverge(&runs[0], &runs[1]) {
+        (Label::Inscribe(s1, k1, c1, true, _), Label::Inscribe(s2, k2, c2, false, _)) => {
+            assert_eq!(
+                (s1, k1, c1),
+                (s2, k2, c2),
+                "the same inscription, answered apart"
+            );
+        }
+        other => panic!("the rite's answer to an inscription is not recorded: {other:?}"),
+    }
+
+    let mut runs = Vec::new();
+    for word in ["ita", "non"] {
+        let mut s = hidden(word, 2);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        let _ = op(&mut s, |s| {
+            s.act(&Peeks, &RiteAct::Gere(Instrument::Anulum))
+        });
+        runs.push(s);
+    }
+    match diverge(&runs[0], &runs[1]) {
+        (Label::Act(a1, c1, true, _), Label::Act(a2, c2, false, _)) => {
+            assert_eq!((a1, c1), (a2, c2), "the same act, answered apart");
+        }
+        other => panic!("the rite's answer to an act is not recorded: {other:?}"),
+    }
+}
+
+#[test]
+fn a_refusal_by_the_rite_ends_the_run_and_dismisses_every_open_invocation() {
+    let rite = yes(Vec::new());
+    let mut s = hidden("non", 3);
+    let inv = spirit(&mut s, &rite);
+    assert!(op(&mut s, |s| s.act(&Peeks, &RiteAct::Appella(inv))).is_err());
+    assert!(!s.running());
+    assert!(matches!(
+        s.audit.entries().iter().rev().find(|l| matches!(l, Label::Act(..))),
+        Some(Label::Act(RiteAct::Appella(i), _, false, ds)) if *i == inv && ds == &vec![inv]
+    ));
+}
+
+#[test]
+fn the_rite_is_asked_only_after_the_core_s_own_conditions() {
+    struct Counts(std::cell::Cell<u32>);
+    impl Rite for Counts {
+        fn admit(&self, _: &State, _: &Seal, _: CircleId) -> bool {
+            true
+        }
+        fn signature(&self, _: &State, _: &ReqForm) -> BTreeSet<Cap> {
+            BTreeSet::new()
+        }
+        fn examiner(&self, _: &State, _: Pid) -> Option<Seal> {
+            None
+        }
+        fn verdict(&self, _: &State, _: Pid, _: &Seal) -> Verdict {
+            Verdict::Reject
+        }
+        fn counterbalance(&self, _: &State, _: Pid) -> Verdict {
+            Verdict::Reject
+        }
+        fn ink_fits(&self, _: &State, _: &Seal, _: &str) -> bool {
+            self.0.set(self.0.get() + 1);
+            true
+        }
+        fn admit_act(&self, _: &State, _: &RiteAct) -> bool {
+            self.0.set(self.0.get() + 1);
+            true
+        }
+        fn legions(&self, _: &State, _: InvId) -> usize {
+            0
+        }
+        fn will_open(&self, _: &State, _: WorkerId, _: Outcome) -> bool {
+            false
+        }
+        fn validator(&self, _: &State, _: ValueId) -> Option<ValidatorId> {
+            None
+        }
+    }
+    let asked = Counts(std::cell::Cell::new(0));
+    let mut s = state(true, &[], &[], 0);
+    op(&mut s, |s| s.open_circle()).unwrap();
+    assert!(op(&mut s, |s| s.inscribe(&asked, &SPIRIT.to_string(), "comes")).is_err());
+    let mut t = state(true, &[], &[], 1);
+    op(&mut t, |s| s.open_circle()).unwrap();
+    assert!(op(&mut t, |s| s.act(&asked, &RiteAct::Appella(9999))).is_err());
+    let mut u = state(true, &[], &[], 1);
+    let inv = spirit(&mut u, &yes(Vec::new()));
+    assert!(op(&mut u, |s| s
+        .act(&asked, &RiteAct::Offer(inv, "comes".into())))
+    .is_err());
+    assert_eq!(
+        asked.0.get(),
+        0,
+        "no ink, no spirit: the rite is never asked"
     );
 }

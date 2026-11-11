@@ -401,9 +401,9 @@ def Denied (M : Core U) (R : RelRite U) (σ : State U) : Prop :=
   | .openC c _ => Label.openC c ∈ σ.audit
   | .closeC _ => σ.circles = []
   | .invoke i _ w _ _ => σ.circles = [] ∨ σ.invs i ≠ none ∨ σ.workers w ≠ none
-  | .inscribe s k _ => σ.circles = [] ∨ σ.inkLeft k = 0 ∨ R.admit σ (.inscribe s k) false
+  | .inscribe _ k _ => σ.circles = [] ∨ σ.inkLeft k = 0
   | .act a _ =>
-      σ.circles = [] ∨ R.admit σ (.rite a) false ∨
+      σ.circles = [] ∨
       (∃ i, U.actInv a = some i ∧ ¬ ∃ inst, σ.invs i = some inst ∧ inst.status = .live ∧
         inst.circle ∈ σ.circles) ∨
       (∃ k, U.actInk a = some k ∧ σ.inkLeft k = 0)

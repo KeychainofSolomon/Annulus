@@ -140,7 +140,7 @@ A proposal in `RATUM` or `IRRITUM` cannot be examined again; trying is a denial.
 
 | Act | Effect |
 |---|---|
-| `VADE IN PACE` | orderly end: temporary capabilities revoked; any proposal still in `SUSPENSUM` is discarded and recorded |
+| `VADE IN PACE` | orderly end: temporary capabilities revoked; any proposal unfinished or still `SUSPENSUM` is abandoned, its record sealed in the Vessel (`core.md` §9.2) |
 | `DIMITTE` | the same, with the invocation recorded as ended without completion |
 | `RELEGA` | forced end: sub-tasks ended, every held proposal sealed in the Vessel |
 

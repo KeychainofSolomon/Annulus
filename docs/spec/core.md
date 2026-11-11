@@ -23,7 +23,7 @@ The core is these nine things and nothing else:
 | C5 | **The Triangle and the handed set**: a spirit holds exactly what its request handed it (`offices.md` §3), its helpers a subset of that (`offices.md` §4) | `authority.md` §6.4; `offices.md` §3–4 |
 | C6 | **Commits**: only the runtime performs effects; all at once or not at all; nothing commits without a verdict from an examiner other than its author, and an outcome from the judgement step | `authority.md` §3 (EXAMINATION, JUDGEMENT), §11; `dynamic.md` §6 |
 | C7 | **Release**: every invocation ends exactly once; its capabilities are revoked; seals in its ink lapse | `static.md` §4.11; `dynamic.md` §7 |
-| C8 | **The three stores**: the audit (append-only, written by the runtime), the Vessel (never opened for use) and the Index of the proscribed (persists across runs) | `dynamic.md` §9; `authority.md` §6.2a |
+| C8 | **The three stores**: the audit (append-only, written by the runtime), the Vessel (never opened for use) and the Index of the proscribed; the Index and the Vessel persist across runs | `dynamic.md` §9; `authority.md` §6.2a |
 | C9 | **The Operator's discipline over grants**: no widening while any spirit is invoked; consequential acts only outside the session; doubt holds; two keys; the wand signs every grant and every second key (`operator.md` §8) | `operator.md` §1, §4, §5 |
 
 The core also owns the **mechanics** that the rite fills with content:
@@ -165,7 +165,7 @@ The definitions the proof of §8 rests on. Step 3 writes the transition rules ou
 - **the proposals:** for each, its author, its content (a response, or its list of **pending effects**, with any certificate or resolution map), and its status, *pending* or *judged d* with *d* one of `RATUM`, `SUSPENSUM`, `IRRITUM`;
 - **the world:** the content and the mark of every place the faculty names, that is, the granted files as the run sees them. Nothing outside *G* is part of the state, because no transition can read or write it;
 - **the marks** λ(*v*) of every value (§9.3);
-- **the stores:** the audit *A*, a sequence; the Index *X*, a hash-chained log; the Vessel *V*;
+- **the stores:** the audit *A*, a sequence; the Index *X*, a hash-chained log; the Vessel *V*, a hash-chained log kept per installation like the Index (ruling 2026-11-11), whose root is checked at `launch`;
 - **the scheduler:** in simulated mode, its position in the entropy stream, the simulated clock and the order of turns chosen so far; in real-agent mode, the record of the actual order of turns, which is an input the run does not control (`concurrency.md` §4);
 - **the store of grave grants:** one-use grave consecrations confirmed outside any run (§9.3c), each spent or unspent, in a hash-chained log;
 - **the store of sealed petitions** (ruling 2026-11-11): approved work awaiting the second key, by the fingerprint of its exact effects; the Operator's confirmations of them; and their spending. A hash-chained log, checked at `launch` like the Index;

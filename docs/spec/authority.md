@@ -186,6 +186,8 @@ The ban **persists across runs**. Each later launch refuses those identities at 
 
 **Why lifting stays possible:** an attacker could present someone else's identity in order to have them proscribed. Lifting is therefore kept, as the one remedy against being framed. Detection itself is never weakened.
 
+**The Vessel is kept, one per installation** (ruling 2026-11-11). Like the Index, it persists across runs, is only appended to, and is chained by hash so that tampering fails `launch` (`proscription.md` §3.2). It is the evidence of what was attempted, and nothing is ever removed from it.
+
 **The Vessel is never opened for use.** What is sealed in it is never released, committed, run or reused, by anyone, the Operator included. The Operator may *read* it, to learn what was attempted; reading changes nothing. [S: Sloane 3825 f113, the warning: the Babylonians broke the vessel "hoping to find great treasure", and the spirits fled to their former places, save Belial, who "entered into a certain Image". O: read-only access.]
 
 Invited agents keep the rule of §11 for what they do through their invocation: their work may be made `IRRITUM`, and their release stays the Operator's act. An invited agent that attempts to reach a Circle where it holds no open invocation, or acts after its release, is an intruder there (ruling 2026-11-11, `core.md` §9.2).

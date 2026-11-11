@@ -63,7 +63,7 @@ Each is a reading of the spec where it was silent. The auditor should check each
 7. **Only the spirit's own worker may finish a request**, not a helper.
 8. **The program performs no writes of its own**; its only touches are reads. All writes are commits.
 9. **The program sees only the places it may read** (`visibleWorld`). The marks of computed values are joined by the core from the inputs the language reports (`Made.ins`, `Made.places`); that the report is honest is part of what a model of `static.md` must supply.
-10. **Not modelled:** what an effect writes (effects carry no data); `carries` growing beyond the author; the signature's list of allowed verbs and a counterbalance's veto of a single effect (both only restrict, so leaving them out makes the model more permissive, not less safe); `GERE VIRGAM`; the clock, ink per invocation and escalation as values that change. Forced releases and abandonments are recorded inside the label of the step that forces them, not as records of their own.
+10. **Not modelled:** what an effect writes (effects carry no data); `carries` growing beyond the author; the signature's list of allowed verbs and a counterbalance's veto of a single effect (both only restrict, so leaving them out makes the model more permissive, not less safe); `GERE VIRGAM`; the clock, ink per invocation and escalation as values that change. Forced releases and abandonments are recorded inside the label of the step that forces them, not as records of their own. The Vessel is a set that only grows and is carried from run to run in the initial state; its hash chain and root check (`core.md` §9.1) are not modelled.
 
 ## What formalising found, and how it was settled
 

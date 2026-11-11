@@ -94,7 +94,7 @@ A program cannot declare, assign or shadow a register label (`authority.md` §2.
 
 These rules are checked before the program runs. Where a law can only be checked while running (budgets, time windows, verdicts), Part 4 covers it.
 
-4.1 **CONTAINMENT and SOVEREIGNTY: rite operations stay inside a Circle.** `GERE`, `OFFER`, `CONSTRINGE`, `APPELLA`, `VETA`, `INVOCA`, `PETE`, `SIGILLUM`, `ATRAMENTUM`, `CONSECRA`, `INSCRIBE`, `EXAMINA`, `VADE IN PACE`, `DIMITTE` and `RELEGA` are errors outside a `CIRCULUS` block. So are the expressions that produce Circle-bound values: `NOMEN`, `SPIRITUS` and `ANGELUS` (audit 2026-11-11). Outside a Circle there is no rite in which an entry could resolve (§4.3), and §4.7 binds entries and divine names to their Circle. A function body counts as outside unless the operation is in a Circle inside that body. [S: the operator works only within the circle.]
+4.1 **CONTAINMENT and SOVEREIGNTY: rite operations stay inside a Circle.** `GERE`, `OFFER`, `CONSTRINGE`, `APPELLA`, `VETA`, `INVOCA`, `PETE`, `SIGILLUM`, `ATRAMENTUM`, `CONSECRA`, `INSCRIBE`, `EXAMINA`, `RESPONSUM`, `VADE IN PACE`, `DIMITTE` and `RELEGA` are errors outside a `CIRCULUS` block. So are the expressions that produce Circle-bound values: `NOMEN`, `SPIRITUS` and `ANGELUS` (audit 2026-11-11). Outside a Circle there is no rite in which an entry could resolve (§4.3), and §4.7 binds entries and divine names to their Circle. A function body counts as outside unless the operation is in a Circle inside that body. [S: the operator works only within the circle.]
 
 4.2 **The rite must exist.** `RITU` names one of the rites in `authority.md` §4.1. The intention string MUST NOT be empty. [O]
 
@@ -118,7 +118,7 @@ An entry outside the range, a label not in the rite's register, or a reference t
 
 4.5b **The kings.** `INVOCA REGEM r` names a king of the Circle's rite (`docs/registers/reges.md`). It is defined for `goetia`; in other rites it is an error (A3). It yields `NIHIL`: the king does not appear, and nothing is released. [S: the kings "are not to be called forth except it be upon Great Occasions; but are to be Invocated and Commanded to send" (G).]
 
-**`rudd` (open, audit 2026-11-11):** Rudd's Goetia is a separate work (`provenance.md`), so it cannot silently inherit the Goetia's kings. Until Rudd's own four kings are established from Harley 6483, or the owner rules that the `goetia` readings apply, `INVOCA REGEM` under `rudd` is provisional, and a pure President under `rudd` follows this provisional reading.
+**`rudd` (open, audit 2026-11-11):** Rudd's Goetia is a separate work (`provenance.md`), so it cannot silently inherit the Goetia's kings. By ruling 2026-11-11, `INVOCA REGEM` under `rudd` stays provisional until Harley 6483 is read for Rudd's own kings. Until then, a pure President under `rudd` follows the provisional reading.
 
 **A President needs his king.** `INVOCA` of a spirit whose only rank is President requires `INVOCA REGEM` of the king he obeys, earlier in the same Circle, on every path (A13). [S: Weyer ch. III, "non potest constringi, nisi rex cui paret, invocaretur", ruling 2026-11-10.] The king a spirit obeys is **the `goetia` king of his quarter** (ruling 2026-11-10): the quarter is the direction the witnesses give for the spirit (`goetia.md`), and the king is Weyer's for that quarter (`reges.md`). A President whose quarter is not stated cannot be invoked (A13). Presidents with a quarter: Gaap and Marbas (East, Amaymon); Foras, Malphas and Osé (South, Gorson); Zagan (West, Goap). Spirits of two ranks are not bound by this rule when invoked within their other rank's hours.
 
@@ -140,17 +140,25 @@ Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
 
 4.9 **DECLARATION: the faculty.**
 - `ATRAMENTUM "classis"` requires a grant `atramentum "classis" n;` in the `FACULTAS` block.
-- Any other external effect requires a grant of its kind. The only kinds so far are `liber` (a file: `legere` to read, `scribere` to write) and `atramentum`. The standard library that performs file work will be specified with its grants.
+- Any other external effect requires a grant of its kind. The kinds so far (ruling 2026-11-11 for the last three items):
+  - `liber`: a file, with `legere` (read), `scribere` (write), `creare` (create) and `delere` (delete);
+  - `atramentum`: ink;
+  - `historia "prior" legere`: the history of the previous run (`offices.md` §2.2a);
+  - `familiaris "programma" liberare`: freeing a familiar from that program (`offices.md` §4.6).
+
+  Every request needs its grants checked against the office signatures (`offices.md` §3.2). The standard library that performs file work will be specified with its grants.
 - `MANIFESTA` needs no grant: the console is part of the default faculty.
 - The same grant MUST NOT appear twice. Unknown grant kinds or permissions are errors.
 - Whether the budget suffices is checked while running, because loops make it unknowable beforehand.
 - The binding hours and the Moon's age (`authority.md` §8.3) are checked while running, against the clock.
 
-4.10 **EXAMINATION and JUDGEMENT.** `EXAMINA p` requires a proposal. It performs two separate acts of the Constitution, in order (ruling pending, audit 2026-11-11):
+4.10 **EXAMINATION and JUDGEMENT.** `EXAMINA p` requires a proposal. It performs two separate acts of the Constitution, in order (ruling 2026-11-11, after the audit):
 1. **Examination** (`authority.md` §10): the fixed examiner gives a **verdict**, `APPROVE`, `HOLD` or `REJECT`. The verdict is recorded in the audit. It is not a program value and has no type a program can hold.
 2. **Judgement** (`authority.md` §11): the Constitution's judgement step assigns the **destination** from the verdict (`dynamic.md` §6.1). The destination is the value of `EXAMINA p`.
 
-The examiner is not written and cannot be: the Constitution's pairing decides it (`authority.md` §10). No agent and no program performs either act. There is no expression that produces a destination except `EXAMINA` and the three literals, and a literal destination cannot commit anything: it is only a value to compare with.
+The examiner is not written and cannot be: the Constitution's pairing decides it (`authority.md` §10). No agent and no program performs either act.
+
+4.10a **RESPONSUM** (ruling 2026-11-11). `RESPONSUM p` reads the answer of a proposal `p` whose office gives a response (`offices.md` §1.4). Otherwise it is an error (A5). It has type `VERBUM`, and the value is **tainted** (`authority.md` §7.4; taint on plain values: roadmap item 4). It is a rite operation, so only inside a Circle (§4.1). It succeeds only if `p` was judged `PARADISUS`. Before that, or after any other destination, it is a class 2 denial. Authority failures cannot be caught (§3.11), so no program can quietly read a held or condemned answer. There is no expression that produces a destination except `EXAMINA` and the three literals, and a literal destination cannot commit anything: it is only a value to compare with.
 
 4.11 **RELEASE: every invocation ends.** For each variable holding an invocation:
 - on **every path** through the Circle, it MUST be released exactly once, by `VADE IN PACE`, `DIMITTE` or `RELEGA`, before the Circle closes;
@@ -205,7 +213,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 
 - **Signatures for `PETE`:** drafted in `offices.md`; its §7 lists what waits for the owner.
 - **Mixed ranks:** which ink class a spirit of two ranks takes.
-- **Rudd's kings** (audit 2026-11-11): establish from Harley 6483 whether Rudd gives the four kings, or have the owner rule that the `goetia` readings apply (§4.5b). Then add `rudd` entries to `reges.json`.
+- **Rudd's kings** (audit 2026-11-11; ruling 2026-11-11: wait for the manuscript): establish from Harley 6483 whether Rudd gives the four kings (§4.5b). Then add `rudd` entries to `reges.json`.
 - **Registers for `clavicula`, `iuratus` and `janua`.**
 - **Modules (`LIBER`, `ADHIBE`):** how files are found and what a module exports; deferred to the part on the standard library.
 - **Destination as a written type:** for passing destinations to functions, a type name is needed. The proposal is `DESTINATIO`.

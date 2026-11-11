@@ -167,7 +167,7 @@ Beleth is the model case: if he will not enter the triangle, "rehearse the Bonds
 | `CONCORDIA` | reconciles friends and foes; causes love | merges, links and resolves conflicts between records |
 | `DISCORDIA` | sows discord, hatred, battles | creates conflict and contention: splits, races, load |
 | `DIGNITATES` | gives, confirms or takes away dignities and prelacies | **proposes** role and privilege changes; never grants them (axiom 1.2) |
-| `FAMILIARES` | gives good familiars; frees familiars from other magicians | starts helper tasks, capped by legions; adopts tasks from other programs |
+| `FAMILIARES` | gives good familiars; frees familiars from other magicians | starts helper tasks, capped by legions; frees helpers from other invocations, or from another program only under the launching person's oversight (`offices.md` §4.6) |
 | `VECTIO` | carries men or things from place to place | moves or copies data between locations |
 | `FURTUM` | steals treasure; brings back thief and goods | takes data out of a place / detects and reverses unauthorized taking |
 | `INVISIBILITAS` | makes a man go invisible | conceals data: a **veiled** effect, bat's-blood ink (`authority.md` §7.5) |

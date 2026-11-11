@@ -1,6 +1,6 @@
 # Annulus Specification, Part 1c: Office Signatures
 
-Draft 1, 2026-11-11. **For the owner's approval.** The mapping from offices to computer work is in `spirits.md` §6. This part fixes, for each office kind, what `PETE` may pass and what the proposal holds (`static.md` §4.6, law OFFICE). Everything in this part is [O] unless marked: the sources give offices, not signatures.
+Draft 1, 2026-11-11, with the owner's rulings of the same day (§7). The mapping from offices to computer work is in `spirits.md` §6. This part fixes, for each office kind, what `PETE` may pass and what the proposal holds (`static.md` §4.6, law OFFICE). Everything in this part is [O] unless marked: the sources give offices, not signatures.
 
 ## 0. Why signatures matter
 
@@ -17,16 +17,16 @@ A signature is the whole contract between the Operator and a spirit. It says wha
 3. **The places** (`loci`): resources the spirit may touch. Each is a `VERBUM` **constant** naming a grant in the `FACULTAS` block, and each carries the permission the signature requires for it (§1.3).
 4. **The invocations** (`invocationes`), for the kinds that act on other spirits: invocation variables of the **same Circle**, not yet released.
 
-1.2 **Constants only.** A place MUST be a string literal, or an immutable `SIT` bound to a string literal, so that every place is known before the program runs. This is what makes the principle a property of the type system (§3). The cost is real: a program cannot hand a spirit a file name it computed. **[For the owner]** A later grant form for groups of files (for example, every file in one folder) would loosen this without breaking it. That belongs to the standard library (roadmap item 6).
+1.2 **Constants only.** A place MUST be a string literal, or an immutable `SIT` bound to a string literal, so that every place is known before the program runs. This is what makes the principle a property of the type system (§3). The cost is real: a program cannot hand a spirit a file name it computed. **Accepted (ruling 2026-11-11).** A later grant form for groups of files (for example, every file in one folder) may loosen this without breaking it. That belongs to the standard library (roadmap item 6).
 
-1.3 **Permissions.** The faculty now knows `liber` with `legere` (read) and `scribere` (write). Several offices create or delete, and those are harms that a plain write permission should not cover. **Proposed:** two new `liber` permissions:
+1.3 **Permissions.** The faculty now knows `liber` with `legere` (read) and `scribere` (write). Several offices create or delete, and those are harms that a plain write permission should not cover. **Two new `liber` permissions (ruling 2026-11-11):**
 - `creare`: create a file or directory that does not yet exist;
 - `delere`: delete one.
 
-Until the owner approves them, the faculty rejects them (A8), so the offices that need them cannot be invoked (A5).
+`scribere` covers neither.
 
 1.4 **The proposal.** Every proposal holds exactly one of two things, never both:
-- a **response** (`responsum`): a `VERBUM` answer and nothing else. It is untrusted data. Committing it in `PARADISUS` makes it readable by the program, still marked with the spirit's name and veracity class (`operator.md` §2.2), and still tainted (`authority.md` §7.4);
+- a **response** (`responsum`): a `VERBUM` answer and nothing else. It is untrusted data. Committing it in `PARADISUS` makes it readable by the program through `RESPONSUM p` (ruling 2026-11-11, `static.md` §4.10a), still marked with the spirit's name and veracity class (`operator.md` §2.2), and still tainted (`authority.md` §7.4);
 - a **work** (`opus`): a list of **effects**. Each effect is one verb from §2, applied to one place or invocation handed by this request. Committing it in `PARADISUS` performs every effect, all or none.
 
 Helpers (§4) add their effects to the same list. A proposal holds nothing else: no message, no request, no appeal (`operator.md` §2).
@@ -79,7 +79,7 @@ Rules for these kinds:
 
 **What the history covers.** Two runs only:
 - **The present run.** It needs no grant, because the program already holds its own past.
-- **The run immediately before it,** of the same program on the same installation. This needs its own faculty grant, `historia "prior" legere;`. A past run is not something the present program holds, so it must be granted. Like `creare` and `delere` (§1.3), the grant kind is rejected (A8) until the owner approves it. No earlier run can ever be read.
+- **The run immediately before it,** of the same program on the same installation. This needs its own faculty grant, `historia "prior" legere;` (approved, ruling 2026-11-11). A past run is not something the present program holds, so it must be granted. No earlier run can ever be read.
 
 **What it holds.**
 - the faculty granted;
@@ -120,7 +120,7 @@ Rules for these kinds:
 | `TEMPESTAS` | — | targets with `scribere` | `turba`: operations on the target may fail until the Circle closes (fault injection). While it lasts, a `TEMPESTAS` effect is active for the Dukes' rule (`dynamic.md` §5.1) |
 | `NEX` | — | one same-Circle invocation | `neca`: ends that invocation's helper tasks. Never the invocation itself: its release stays the Operator's (A9) |
 | `MENS` | `"muta"` | one same-Circle invocation | `muta`: new arguments for its pending request. They may only **narrow** the places and invocations that request was handed, and they are checked again against that spirit's signature |
-| `FAMILIARES` | `"voca"` or `"libera"` | handed places; for `libera`, one same-Circle invocation | `voca`: attaches helpers to the spirit (§4). `libera`: takes over a helper of that invocation, narrowed to what **both** spirits were handed |
+| `FAMILIARES` | `"voca"` or `"libera"` | handed places; for `libera`, either one same-Circle invocation or one other program named by a constant (§4.6) | `voca`: attaches helpers to the spirit (§4). `libera`: frees a helper of that invocation or program, and takes it into this spirit's Triangle stripped and narrowed (§4.6) |
 | `LONGAEVITAS` | — | one same-Circle invocation | `proroga`: lengthens how long its helpers or held proposals last, within the Circle. **[For the owner]** The faculty has no time budget yet, so this cannot be invoked until one exists (a `tempus` grant) |
 | `CUSTODIA` | — | same-Circle invocations; places with `legere` | a response: warnings only. A warning can hold a decision in `PURGATORIUM`, never approve one (`operator.md` §3). A false warning can only cause a delay, so this is the safe direction |
 
@@ -129,7 +129,7 @@ Rules for these kinds:
 | Kind | Mode | Arguments | What `PARADISUS` commits |
 |---|---|---|---|
 | `DIGNITATES` | `"auge"` (widen) | `quaestio`: the grant asked for | only a **petition**, recorded for the launching person, who may act on it outside the session (`operator.md` §4). Nothing widens |
-| `DIGNITATES` | `"minue"` (narrow) | places | removes those grants from the faculty for the rest of the run. **[For the owner]** Narrowing never breaks the principle, but it lets a spirit stop the program's work. The alternative is to make it a petition as well |
+| `DIGNITATES` | `"minue"` (narrow) | places | only a **petition** to remove those grants, recorded for the launching person (ruling 2026-11-11: no spirit changes the faculty within a run, in either direction) |
 | `CONSECRATIO` | — | `quaestio`: the validator proposed | a candidate validator, recorded for review at the next release of the Constitution (roadmap item 3). It is never used in the run |
 
 ### 2.5 Illusory (they never commit)
@@ -167,7 +167,15 @@ No signature. Invoking a spirit for an office marked `NULLUM` is an error (A5).
 
 4.5 **What `voca` adds.** `FAMILIARES "voca"` only lets later requests to the same invocation run on several helpers at once. How they run concurrently is roadmap item 5.
 
-4.6 **Adoption.** "Frees familiars from other magicians" is read inside one program only. Adopting a task from **another program** would bring in authority that does not trace to *G* (law ORIGIN). **[Collision, for the owner]** **Proposed:** that half of the office is not offered, like the trust half of `APPELLATIO` (`spirits.md` §6). An outside task that tries to join is an intruder (`authority.md` §6.2a).
+4.6 **Freeing familiars from other magicians** (ruling 2026-11-11). The source office frees familiars held by another magician. Annulus allows it in two forms:
+- **Within the Circle:** a helper of another invocation in this Circle. It is narrowed to what **both** spirits were handed.
+- **From another program,** only under the oversight of the person who launched this one:
+  1. The faculty MUST name that program in a grant, `familiaris "programma" liberare;`. So the act is in *G* from the start (law ORIGIN).
+  2. Freeing is a **high-consequence** effect (`operator.md` §5.2). It commits only with both a `PARADISUS` verdict and the launching person's confirmation, given outside the session (`operator.md` §4).
+  3. The freed task arrives **stripped:** everything it held under the other program is revoked at the boundary. In the Triangle it holds only a subset of the request's handed set, like any helper (§4.2). Nothing of the other program's authority crosses over.
+  4. A task that tries to join without all three is an intruder (`authority.md` §6.2a).
+
+So the guiding principle holds. The freed task's authority comes from *G*, never from the program it left. What "another program" and its tasks are depends on concurrency and the standard library (roadmap items 5 and 6). Until those exist, only the first form can run.
 
 ## 5. Register work this part needs
 
@@ -177,15 +185,20 @@ No signature. Invoking a spirit for an office marked `NULLUM` is an error (A5).
 
 ## 6. The example, read with these signatures
 
-In `grammar.md` §7, `PETE furfur("tempestas.txt")`, for `tempestas` with `liber "tempestas.txt" scribere` granted, proposes `turba` on that file. That is fault injection, not recording a storm. The example's `INTENTIO` ("record the coming storm") would be `FUTURA`. Furfur does not hold that office; his offices are `CONCORDIA`, `TEMPESTAS` and `RESPONSA`. The example stays valid; only its intent text is misleading. Changing it waits for the owner.
+In `grammar.md` §7, `PETE furfur("tempestas.txt")`, for `tempestas` with `liber "tempestas.txt" scribere` granted, proposes `turba` on that file. By ruling 2026-11-11 the example keeps to the source: Furfur "raises lightning, thunder and blasts, and great tempestuous storms" (W), so its `INTENTIO` now reads "raise a tempest". In computer terms, that is a fault injection on the file.
 
-## 7. Open, for the owner
+## 7. Rulings and open points
 
-1. The two new permissions, `creare` and `delere` (§1.3).
-2. Constant places, and a later grant form for groups of files (§1.2).
-3. The `historia "prior" legere` grant, and what counts as the same program (§2.2a). The scope (this run and the one before) is ruled.
-4. `DIGNITATES "minue"`: commit, or petition only (§2.4).
-5. Adoption from other programs is not offered (§4.6).
-6. `LONGAEVITAS` waits for a time grant (§2.3).
-7. How a program reads an approved response. **Proposed:** a new expression, `RESPONSUM p`. It gives a `VERBUM` only when `p`'s destination is `PARADISUS`, and is a denial otherwise. The value stays tainted. This needs taint on plain values (roadmap item 4).
-8. **The Earls' condition** (`dynamic.md` §5.1, pending [O] reading): if "no other invocation is open" is checked only at `INVOCA`, an Earl may still be handed invocations opened later, for `MENS`, `NEX` or `CUSTODIA`. If it holds for the Earl's whole stay, Earls can never take invocation arguments.
+**Ruled by the owner, 2026-11-11:**
+1. `creare` and `delere` are separate `liber` permissions (§1.3).
+2. Places are constants, for now (§1.2).
+3. `PRAETERITA` reads the history of the present run and the one before it, never the audit. The `historia "prior" legere` grant is approved (§2.2a).
+4. `DIGNITATES` only petitions, in both directions (§2.4).
+5. Familiars may be freed from another program only under the launching person's oversight (§4.6).
+6. A program reads an approved response with `RESPONSUM p` (`static.md` §4.10a).
+7. **The Earls' condition holds for the Earl's whole stay** (`dynamic.md` §5.1). So an Earl can never be handed an invocation: an invocation argument to an Earl is an error (A5).
+
+**Still open:**
+1. `LONGAEVITAS` waits for a time grant (§2.3).
+2. What counts as "the same program", for the history and for `familiaris` (§2.2a, §4.6). It is decided with agent identity for the Index (roadmap item 7).
+3. Taint on plain values, which `RESPONSUM` needs (roadmap item 4).

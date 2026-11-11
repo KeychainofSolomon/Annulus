@@ -98,6 +98,7 @@ All [O].
 | `ATRAMENTUM` | "ink" | the ink type; `ATRAMENTUM "classis"` draws raw ink from the faculty | [S] |
 | `CONSECRA` | "consecrate" | lifts taint after independent validation (§7.4) | [S] the consecration of the ink (*Liber iuratus* CXXXVII) |
 | `EXAMINA` | "examine" | submits a proposal to its fixed examiner, then to judgement | [S] the examination; [O] the mechanism |
+| `RESPONSUM` | "answer" | reads a spirit's answer once its proposal is in `PARADISUS` (`static.md` §4.10a) | [O] |
 | `PARADISUS` / `PURGATORIUM` / `INFERNUS` | the three destinations | values of a judgement (`authority.md` §11) | [O] the mapping; the names follow the Architecture |
 | `VADE IN PACE` | "go in peace" | licence to depart | [S] Arbatel Aph. XXI, "vade in pace ad ordines tuos" |
 | `DIMITTE` | "send away" | dismiss | [O] (kept, ruled 2026-11-10) |
@@ -169,7 +170,7 @@ conjunction    = comparison , { "ET" , comparison } ;
 comparison     = sum , [ ( "==" | "!=" | "<" | "<=" | ">" | ">=" ) , sum ] ;
 sum            = product , { ( "+" | "-" ) , product } ;
 product        = unary , { ( "*" | "/" | "%" ) , unary } ;
-unary          = ( "-" | "NON" | "CONSECRA" | "EXAMINA" ) , unary
+unary          = ( "-" | "NON" | "CONSECRA" | "EXAMINA" | "RESPONSUM" ) , unary
                | "INSCRIBE" , unary , "ATRAMENTO" , unary
                | postfix ;
 postfix        = primary , { "(" , [ arguments ] , ")" | "." , identifier | "[" , expression , "]" } ;
@@ -244,7 +245,7 @@ PER n IN [1, 2, 3] {
 MANIFESTA summa;
 
 CIRCULUS RITU goetia {
-    INTENTIO "record the coming storm";
+    INTENTIO "raise a tempest";
     SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
     SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
     SIT propositum = PETE furfur("tempestas.txt");
@@ -257,7 +258,7 @@ CIRCULUS RITU goetia {
 }
 ```
 
-**Open in this example:** Furfur's office (`tempestas`) is a placeholder until the offices register exists (`static.md` §7). Furfur is an Earl, so his seal takes the Earl's ink class, `"comes"`.
+**Reading:** Furfur raises storms (W). Under his signature this is `turba`, a fault injection on the granted file (`offices.md` §2.3, §6). Furfur is an Earl, so his seal takes the Earl's ink class, `"comes"`.
 
 ## 8. Migration from v0.2.1
 

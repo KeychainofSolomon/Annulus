@@ -42,7 +42,7 @@ Nothing is reported as built or tested unless it was.
    - the bytecode verifier (step 7) must reject anything that breaks it;
    - a machine-checked proof over a formal model of the typing rules, plus Andras's `probatio`, must show it (step 3).
 9. **The GPT audit:** received 2026-11-11 and folded in (`docs/AUDIT_SPEC_1.md`): four findings fixed, one (Rudd's kings) open for a source check or the owner's ruling. The auditor recommends a second audit before approval.
-10. **The owner's approval** of the whole, including the [O] readings of the Earls' and Dukes' conditions (`dynamic.md` §5.1).
+10. **The owner's approval** of the whole. The Earls' and Dukes' readings are ruled (2026-11-11), as are the eight points of `offices.md` §7.
 
 **Exit criterion:** the owner approves the specification.
 

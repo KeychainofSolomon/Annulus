@@ -8,6 +8,7 @@ This part says what happens **while a program runs**. A program reaches this poi
 
 1.1 **The launch command** names the program and, optionally:
 - the place (`--locus LAT,LON`), needed for sunrise, noon and sunset (§6);
+- the sky at the place (`--caelum serenum` for clear, `--caelum turbidum` for not clear), as the launching person observes it; needed only for Dukes (§5.1);
 - a fixed clock (`--hora` with a date and time), for reproducible runs and tests;
 - an entropy seed (`--semen`), to replay a recorded run exactly (§5.4);
 - the audit file (`--acta`; default: the program's name with `.acta` added).
@@ -72,8 +73,8 @@ Escalation step 4 for a spirit whose king is not stated is recorded as skipped: 
 | sunrise, noon, sunset, dawn | computed for the declared place and date |
 | twilight | civil twilight. [O: the sources do not define it] |
 | the Moon's age 2, 4, 6, 8, 10, 12, 14 | whole days since the astronomical new moon |
-| Earls: "in woods or places where men resort not, or where no noise is" | **[O, for approval]** no other invocation is open in the program |
-| Dukes: "in clear weather" | **[O, for approval]** no `TEMPESTAS` effect is active |
+| Earls: "in woods or places where men resort not, or where no noise is" | no other invocation is open in the program, **for the Earl's whole stay** (ruling 2026-11-11). An Earl is refused while another invocation is open, and every other `INVOCA` is refused while an Earl is invoked. [O: "no noise" read as no other invocation] |
+| Dukes: "in clear weather" | **the real weather** (ruling 2026-11-11: most authentic). The sky at the declared place must be declared clear at launch (`--caelum serenum`, §1.1), **and** no `TEMPESTAS` effect may be active, since a storm a spirit raises is a storm. If the sky is undeclared, the Duke is refused: doubt holds (`operator.md` §5.1). The weather can only refuse a Duke, never grant anything, so a wrong declaration cannot widen any authority. A weather grant read from the network may later replace the declaration (roadmap item 6) |
 | Presidents, at any hour (Weyer, ruling 2026-11-10) | refused unless the king he obeys is invoked, and always at nightfall. A pure President is refused unless `INVOCA REGEM` of his king came first in the Circle. His king is the `goetia` king of his stated quarter (`static.md` §4.5b, ruling 2026-11-10): Gaap and Marbas (East, Amaymon); Foras, Malphas and Osé (South, Gorson); Zagan (West, Goap). A President whose quarter is not stated cannot be invoked (A13). See `docs/registers/reges.md` |
 
 A spirit of two ranks may be invoked when **either** rank's window is open. [O; the mixed-rank question stays open]

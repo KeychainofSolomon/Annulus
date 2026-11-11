@@ -267,12 +267,9 @@ Discussed with the owner, not built:
   - **Office signatures**, `docs/spec/offices.md` (Part 1c, draft 1): every office kind's arguments, proposal and check, and the containment argument for helper tasks (proof obligation 1). Its §7 lists eight points for the owner.
   - **Ruled by the owner:** `PRAETERITA` reads a **history** of the present run and the one before it, never the audit (`offices.md` §2.2a). The earlier run needs a `historia "prior" legere` grant, still to be approved.
   - **The GPT audit**, folded in: `docs/AUDIT_SPEC_1.md`. Four findings fixed, Rudd's kings left open.
-- **Pending from the owner:**
-  - approval of the spec, and of `offices.md` §7;
-  - the ruling that `EXAMINA` is examination then judgement, returning only the destination (`static.md` §4.10);
-  - Rudd's kings (`static.md` §4.5b);
-  - the [O] readings of the Earls' and Dukes' conditions (`dynamic.md` §5.1; see also `offices.md` §7.8).
+- **Ruled by the owner this session** (all written in): `EXAMINA` is examination then judgement, returning only the destination; Rudd's kings wait for Harley 6483; `creare`/`delere` permissions; constant places; `DIGNITATES` petitions only; familiars freed from another program only under the launcher's oversight; `historia "prior" legere`; `RESPONSUM p` (added to the grammar, the checker and three tests); Earls' condition for the whole stay; Dukes need real clear weather (`--caelum serenum`) and no active storm; the grammar example now "raise a tempest". The owner's guide for readings: **the most authentic option that does not compromise the Solomonic principle**.
+- **Pending from the owner:** approval of the whole spec, after a second audit (the auditor recommends one).
 - **Next in step 1:** the two-layer split (roadmap item 2), then the rest of the list. The auditor recommends a second audit before approval.
 - **Standing instruction from the owner (2026-11-11):** say so plainly, and early, when the project reaches a point where it would pay to bring the core up to standard before building more on it, so it never ends in spaghetti. Watch for: the same rule written in two places, the two parsers (`tools/grammar_check.py` and the Rust one) drifting apart, and new features built on unapproved spec. **Known now:** the Rust prototype implements none of the spec. It should be replaced (step 2) once the spec is approved, never extended.
 - **Data scripts:** the registers' JSON is the source of truth. Edit the JSON, then run `python3 tools/build_register.py`; CI checks that the generated `.md` files match.
-- **Tests:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (prototype, 50 tests); `python3 tools/grammar_check.py tests/grammar` (64 programs).
+- **Tests:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (prototype, 50 tests); `python3 tools/grammar_check.py tests/grammar` (67 programs).

@@ -6,7 +6,7 @@ KEYWORDS = {
     "OPUS", "REDDE", "FORMA", "LIBER", "ADHIBE", "TENTA", "CAPE", "ET", "VEL", "NON",
     "VERUM", "FALSUM", "NIHIL", "NUMERUS", "VERITAS", "VERBUM", "SERIES",
     "FACULTAS", "CIRCULUS", "RITU", "INTENTIO", "INVOCA", "AD", "OFFICIUM", "PETE",
-    "SIGILLUM", "INSCRIBE", "ATRAMENTO", "ATRAMENTUM", "CONSECRA", "EXAMINA",
+    "SIGILLUM", "INSCRIBE", "ATRAMENTO", "ATRAMENTUM", "CONSECRA", "EXAMINA", "RESPONSUM",
     "PARADISUS", "PURGATORIUM", "INFERNUS", "VADE", "PACE", "DIMITTE", "RELEGA",
     "NOMEN", "SPIRITUS", "ANGELUS",
     "GERE", "ANULUM", "VIRGAM", "HEXAGRAMMUM", "PENTAGRAMMUM", "OFFER", "CONSTRINGE", "APPELLA", "VETA", "REGEM",
@@ -365,7 +365,7 @@ class Parser:
         return place
 
     def unary(self):
-        if self.at("-") or self.at("NON") or self.at("CONSECRA") or self.at("EXAMINA"):
+        if self.at("-") or self.at("NON") or self.at("CONSECRA") or self.at("EXAMINA") or self.at("RESPONSUM"):
             self.pos += 1
             self.unary()
             return False

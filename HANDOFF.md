@@ -343,3 +343,18 @@ Discussed with the owner, not built:
 - **Drift watch (standing instruction):** there are now two parsers, Python and Rust, plus the old prototype's. They agree on all 69 programs today, but nothing in CI compares their rejection positions. When 2c adds the command line, add a CI step that runs both and diffs. The prototype (`src/lexer.rs`, `parser.rs`, `compiler.rs`, `vm.rs`, …) still uses the English keywords; it is removed in 2d.
 - **Next: 2c**, the evaluator (driving `nucleus` one Operator step at a time, as `Lang.next` does), the `goetia` rite as data, the test wand and the command line, so `annulus` runs the Furfur example.
 - **Ruled by the owner (2026-11-11, 20:00):** the label reading stands (lowercase, `-` as `_`, unique aliases count), and Beleth, Berith, Astaroth and the pure Presidents stay refused (A11, A13) until the apparatus and the kings are built. **N5 ruled (20:26): a spirit's name belongs to the spirit.** No program name may be spelled as any register label; `static.md` §2.1 amended, examples renamed to `vocatus`, recorded in `CHANGELOG.md`, checked (test `n5_…`).
+
+## 2c, first half (2026-11-11, night)
+
+- **Runs end to end, in memory:** `lingua::run_source` parses, checks, launches the nucleus with the test wand and runs. `src/ritus.rs` is the `goetia` rite; `src/lingua/exsequi.rs` the evaluator. Tests: `tests/lingua_run.rs` (14). 151 tests in all, debug and release.
+- **The will (simulated):** OBSEQUIUM, MORA (one idle turn, then the work), PARS always open; MENDACIUM for `MENDAX`, and for `COACTUS` unless his condition is the triangle (so Furfur, Shax, Haures cannot lie, `dynamic.md` §5.3); MALITIA unless `FIDUS` or no malice recorded. `--sors` forces an outcome only where it is open. Renamed the nucleus's `Obedientia` to `Obsequium`, the spec's word.
+- **Examination in `goetia`:** by `constitutio:angelicus`, the Constitution's angelic examiner (`authority.md` §10.2); Rudd's angel-per-spirit pairing is for `rudd`. The simulated verdict reads the drawn outcomes that examination can see: MALITIA and a false account of work → REJECT, PARS → HOLD; a well-formed lie in a telling office passes, as §6.3 says it must.
+- **Runtime conditions enforced:** the Earl's stay (no other invocation open, either way), Dukes refused while the sky is undeclared, Presidents refused (no kings yet). Ink budgets per class; running out is a class 2 denial.
+- **A consecration the validator refuses is a class 2 denial** [reading, to confirm]. The checker already let the value steer, so it cannot be left quarantined.
+- **Gaps, to tell the owner:**
+  - **RECUSATIO is closed** for now: the escalation (`spirits.md` §5) is not built.
+  - **Hours and the Moon are not checked** (out of the subset by the approved plan).
+  - **Ink acts are not in the audit:** the core has no label for a draw, a consecration of ink or an inscription. Adding one is a **core** change (`authority.md` §2.5: proof, attack tests, audit).
+  - **`TEMPESTAS`** commits an unchanged write; the storm itself (fault injection) waits for the file library.
+  - **`DIMITTE`** is recorded as an ordinary release; the core has no separate label.
+- **Next:** the command line (`annulus` running a `.annulus` file with `--virga-probationis`, `--semen`, `--sors`, `--responsa`), the stores and audit written to disk and checked at launch, granted files read from and written to disk with their marks. Then 2d.

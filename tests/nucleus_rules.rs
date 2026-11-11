@@ -182,7 +182,7 @@ fn op<T>(s: &mut State, f: impl FnOnce(&mut State) -> Step<T>) -> Step<T> {
 fn spirit_turn(s: &mut State, rite: &TestRite, inv: InvId, contrib: Contrib, finish: bool) {
     let worker = s.invs[&inv].main;
     s.schedule(worker).expect("schedule the spirit");
-    s.turn(rite, worker, Outcome::Obedientia, contrib, finish)
+    s.turn(rite, worker, Outcome::Obsequium, contrib, finish)
         .expect("turn");
 }
 
@@ -770,7 +770,7 @@ fn helpers_hold_only_what_their_request_was_handed() {
     let r = s.turn(
         &rite,
         worker,
-        Outcome::Obedientia,
+        Outcome::Obsequium,
         Contrib::Spawn(700, wider),
         false,
     );
@@ -781,7 +781,7 @@ fn helpers_hold_only_what_their_request_was_handed() {
     s.turn(
         &rite,
         worker,
-        Outcome::Obedientia,
+        Outcome::Obsequium,
         Contrib::Spawn(701, within),
         false,
     )
@@ -925,7 +925,7 @@ fn an_angel_uses_a_reserved_grant_at_the_operators_petition() {
     s.turn(
         &rite,
         worker,
-        Outcome::Obedientia,
+        Outcome::Obsequium,
         Contrib::Effects(vec![effect(Verb::Scribe, "archive.txt", "kept")]),
         true,
     )
@@ -956,7 +956,7 @@ fn an_angel_does_not_examine_its_own_work() {
     s.turn(
         &rite,
         worker,
-        Outcome::Obedientia,
+        Outcome::Obsequium,
         Contrib::Effects(vec![effect(Verb::Scribe, "archive.txt", "kept")]),
         true,
     )

@@ -193,7 +193,7 @@ pub enum Contrib {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Outcome {
-    Obedientia,
+    Obsequium,
     Pars,
     Mora,
     Recusatio,

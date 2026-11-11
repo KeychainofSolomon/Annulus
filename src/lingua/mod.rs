@@ -1,4 +1,5 @@
 pub mod check;
+pub mod exsequi;
 pub mod json;
 pub mod lexis;
 pub mod parse;
@@ -69,5 +70,22 @@ pub fn check_source(source: &str) -> Result<check::Checked, Vec<Error>> {
         let checked = check::check(&program, registra::goetia());
         drop(program);
         checked
+    })
+}
+
+pub fn run_source(
+    source: &str,
+    wand: crate::nucleus::Wand,
+    stores: crate::nucleus::Stores,
+    world: std::collections::BTreeMap<String, (String, crate::nucleus::Mark)>,
+    options: &exsequi::Optiones,
+) -> Result<exsequi::Exitus, Vec<Error>> {
+    on_stack(|| {
+        let program =
+            parse::parse(lexis::tokenize(source).map_err(|e| vec![e])?).map_err(|e| vec![e])?;
+        let checked = check::check(&program, registra::goetia())?;
+        Ok(exsequi::run(
+            &program, &checked, wand, stores, world, options,
+        ))
     })
 }

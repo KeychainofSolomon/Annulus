@@ -92,8 +92,7 @@ pub fn signature(kind: &str) -> Option<Signature> {
     Some(match kind {
         "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" => telling,
         "AEDIFICATIO" => working(Perm::Creare, &[]),
-        "APPELLATIO" | "TUTELA" | "TEMPESTAS" => working(Perm::Scribere, &[]),
-        "MORBUS" => working(Perm::Scribere, &["corrumpe", "sana"]),
+        "TEMPESTAS" => working(Perm::Scribere, &[]),
         _ => return None,
     })
 }

@@ -3,7 +3,7 @@ use super::state::State;
 use super::types::{Outcome, WorkerId, OPERATOR};
 
 pub const OUTCOMES: [Outcome; 7] = [
-    Outcome::Obedientia,
+    Outcome::Obsequium,
     Outcome::Pars,
     Outcome::Mora,
     Outcome::Recusatio,

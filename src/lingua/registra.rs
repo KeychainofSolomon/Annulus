@@ -39,6 +39,10 @@ pub struct Spirit {
     pub label: String,
     pub ranks: Vec<String>,
     pub offices: Vec<String>,
+    pub legions: u32,
+    pub veracity: String,
+    pub veracity_condition: String,
+    pub malice: usize,
 }
 
 impl Spirit {
@@ -161,12 +165,23 @@ pub fn load(rite: &'static str, source: &str) -> Result<Register, String> {
                 owners.push(n);
             }
         }
+        let text = |key: &str| {
+            entry
+                .get(key)
+                .and_then(Json::text)
+                .unwrap_or("")
+                .to_string()
+        };
         spirits.push(Spirit {
             n,
             name,
             label,
             ranks,
             offices,
+            legions: entry.get("legions").and_then(Json::number).unwrap_or(1.0) as u32,
+            veracity: text("veracity"),
+            veracity_condition: text("veracity_condition"),
+            malice: entry.get("malice").map(Json::list).unwrap_or(&[]).len(),
         });
     }
     let mut labels = BTreeMap::new();

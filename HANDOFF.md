@@ -324,5 +324,5 @@ Discussed with the owner, not built:
 - **Read:** this file's last sections, `docs/STEP2_PLAN.md` (approved by the owner, 2026-11-11 16:41: the test wand, the subset, the Furfur and working-spirit example), `docs/spec/core.md` §3 and §9, and `formal/Annulus/Step.lean`.
 - **Do:** milestone 2a, the **core** module in Rust: one function per transition rule of `Step.lean`, named after it, with a test for each and the property checks (P1, P2, P4, P7, damnation law) over every audit. No comments in the source.
 - **Build and test:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (the pinned 1.97.0 cannot download here; the local stable is 1.97.0). Push to `KeychainofSolomon/Annulus` (private); GitHub runs `build` (Rust, Windows and Linux) and `lean`. Read results with `env -u GH_TOKEN gh run list -R KeychainofSolomon/Annulus`. Both are green as of this handoff.
-- **Commits** are authored as `Solomon <KeychainofSolomon@users.noreply.github.com>` (set in the repo's git config); keep it so. Never put the owner's name or email in the history.
+- **Commits** are authored as `Solomon <KeychainofSolomon@users.noreply.github.com>`. After cloning, first run `git config user.name Solomon` and `git config user.email KeychainofSolomon@users.noreply.github.com`. Never put the owner's name or email in the history.
 

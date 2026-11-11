@@ -41,15 +41,28 @@ pub enum Verb {
     Scribe,
     Crea,
     Dele,
+    Exscribe,
+    Transfer,
+    Coniunge,
+    Scinde,
+    Aufer,
 }
 
 impl Verb {
     pub fn needs(self) -> Perm {
         match self {
-            Verb::Scribe => Perm::Scribere,
-            Verb::Crea => Perm::Creare,
-            Verb::Dele => Perm::Delere,
+            Verb::Scribe | Verb::Coniunge => Perm::Scribere,
+            Verb::Crea | Verb::Exscribe | Verb::Transfer | Verb::Scinde => Perm::Creare,
+            Verb::Dele | Verb::Aufer => Perm::Delere,
         }
+    }
+
+    pub fn creates(self) -> bool {
+        self.needs() == Perm::Creare
+    }
+
+    pub fn removes(self) -> bool {
+        self.needs() == Perm::Delere
     }
 }
 
@@ -234,10 +247,10 @@ pub enum Label {
     Launch(Vec<(Place, String, Mark)>),
     OpenC(CircleId),
     CloseC(CircleId),
-    Invoke(InvId, Seal, CircleId, WorkerId, bool, u64),
+    Invoke(InvId, Seal, CircleId, WorkerId, bool, u64, Vec<InvId>),
     Request(ReqId, Pid, Addressee, WorkerId, Vec<Cap>),
     Turn(WorkerId, Outcome, Contrib, bool),
-    Kill(WorkerId, Outcome),
+    Kill(WorkerId, Outcome, Vec<InvId>),
     Examine(Pid, ExamAns, Verdict),
     Judge(Pid, WorkOutcome),
     Commit(Pid, Vec<Effect>, CommitResult),
@@ -246,8 +259,8 @@ pub enum Label {
     Relegate(InvId),
     Intrude(Seal, Seal, CircleId, String),
     Compute(Vec<Place>, Vec<ValueId>),
-    Halt,
-    Fail(u8),
+    Halt(Vec<InvId>),
+    Fail(u8, Vec<InvId>),
     Schedule(WorkerId),
 }
 

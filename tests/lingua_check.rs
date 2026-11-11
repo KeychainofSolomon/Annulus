@@ -42,7 +42,11 @@ fn telling(body: &str) -> String {
 #[test]
 fn the_grammar_example_waits_only_for_the_tempest() {
     let found = codes(include_str!("grammar/accept/full_rite.annulus"));
-    assert_eq!(found, vec!["X1"], "only the office TEMPESTAS is outside the subset");
+    assert_eq!(
+        found,
+        vec!["X1"],
+        "only the office TEMPESTAS is outside the subset"
+    );
 }
 
 #[test]
@@ -386,4 +390,18 @@ fn a14_a_chain_of_assignments_cannot_launder_quarantine() {
         &telling("    SIT MUTABILIS a = \"\";\n    SIT MUTABILIS b = \"\";\n    SIT MUTABILIS c = \"\";\n    SIT MUTABILIS d = \"\";\n    DUM a == \"\" {\n        a = b;\n        b = c;\n        c = d;\n        d = RESPONSUM p;\n    }"),
         "A14",
     );
+}
+
+#[test]
+fn a5_working_offices_check_each_place_by_its_role() {
+    let base = "FACULTAS {\n    liber \"a.txt\" legere;\n    liber \"b.txt\" creare;\n    atramentum \"princeps\" 1;\n}\nCIRCULUS RITU goetia {\n    INTENTIO \"x\";\n    SIT s = INSCRIBE SIGILLUM seere ATRAMENTO CONSECRA ATRAMENTUM \"princeps\";\n    SIT v = INVOCA seere AD OFFICIUM vectio;\n";
+    lawful(&format!(
+        "{base}    SIT p = PETE v(\"exscribe\", \"a.txt\", \"b.txt\");\n    VADE IN PACE v;\n}}\n"
+    ));
+    refused(&format!("{base}    SIT p = PETE v(\"transfer\", \"a.txt\", \"b.txt\");\n    VADE IN PACE v;\n}}\n"), "A8");
+    refused(
+        &format!("{base}    SIT p = PETE v(\"exscribe\", \"a.txt\");\n    VADE IN PACE v;\n}}\n"),
+        "A5",
+    );
+    refused(&format!("{base}    SIT p = PETE v(\"rapere\", \"a.txt\", \"b.txt\");\n    VADE IN PACE v;\n}}\n"), "A5");
 }

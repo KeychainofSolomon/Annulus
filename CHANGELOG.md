@@ -9,7 +9,15 @@
 - **`TEMPESTAS` is outside the step-2 subset** until the storm (fault injection) exists; it used to commit an unchanged write, a false record.
 - **A spirit's name belongs to the spirit** (`static.md` §2.1, error N5). No program name may be spelled as any label of a register entry, in any recorded spelling, even if the program never refers to that entry. Reason: §2.1 allowed `SIT furfur = INVOCA furfur …` while N5 forbade declaring a register label; the owner chose N5, which keeps `authority.md` §2.3 (no program shadows a Constitution entry). The grammar example and five grammar test programs now name the invocation `vocatus`.
 
+### Core changes (the owner's request, 2026-11-11; under the interim rule they still need an independent audit)
+- **Every record that ends a run names the invocations it dismissed**, newest first (`dynamic.md` §3.1): `Halt`, `Fail`, `Kill` and a refused `Invoke` carry the list. Lean: the same labels carry `ds`, with `Dismissed σ ds` (each open invocation exactly once).
+- **A verb that creates may only create** (`offices.md` §1.3; second outside review, finding 1): the commit re-check voids a `creare` effect on a place that already exists. Lean: a new clause of `Recheck` and the universe field `creates`.
+- **Five more effect verbs:** `exscribe` (copy into a new place), `transfer` (arrive in a new place), `coniunge` (merge into a target), `scinde` (split into new copies), `aufer` (remove the source of a theft; high-consequence with `dele`). Offices now running: `VECTIO` (`"transfer"`, `"exscribe"`), `CONCORDIA` (first source wins every conflict, `offices.md` §2.3a.6), `DISCORDIA`, `EVERSIO`, `FURTUM` (`"aufer"`). Moves, destruction and theft wait for the second key.
+
 ### Fixed
+- **Mixed ranks** (second review, finding 2): a spirit of two ranks keeps the Earl's and the Duke's conditions if either rank has them.
+- **Ink totals** can no longer overflow (finding 7).
+- The office signatures moved to their own module, `src/officia.rs`, shared by the checker and the rite (the rite no longer depends on the checker).
 - **A hole in the quarantine check**, found by an outside review: loop bodies were checked twice, so a chain of three or more assignments could carry a spirit's words into a loop condition. Loops are now checked until no mark changes.
 
 ### Added

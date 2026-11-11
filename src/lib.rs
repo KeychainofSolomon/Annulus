@@ -4,6 +4,7 @@ pub mod diagnostic;
 pub mod lexer;
 pub mod lingua;
 pub mod nucleus;
+pub mod officia;
 pub mod parser;
 pub mod program;
 pub mod ritus;

@@ -46,6 +46,7 @@ pub fn constitution() -> Constitution {
         .insert(FORMA.to_string(), fingerprint_validator(FORMA));
     c.angels.insert(EXAMINATOR.to_string());
     c.high_consequence.insert(Verb::Dele);
+    c.high_consequence.insert(Verb::Aufer);
     c
 }
 
@@ -83,7 +84,8 @@ pub fn faculty_of(checked: &Checked) -> (BTreeSet<Cap>, BTreeSet<Cap>, BTreeMap<
                 }
             }
             "atramentum" if !g.reserved => {
-                *ink.entry(g.target.clone()).or_insert(0) += g.amount.unwrap_or(0);
+                let slot: &mut i64 = ink.entry(g.target.clone()).or_insert(0);
+                *slot = slot.saturating_add(g.amount.unwrap_or(0));
             }
             _ => {}
         }
@@ -108,7 +110,9 @@ pub fn launch(
         roots: roots_of(&stores),
         wand,
     };
-    let total = ink.values().map(|n| (*n).max(0) as u64).sum();
+    let total = ink
+        .values()
+        .fold(0u64, |t, n| t.saturating_add((*n).max(0) as u64));
     (
         Launch {
             simulated: true,
@@ -169,6 +173,10 @@ impl Goetia {
         out
     }
 
+    fn holds_rank(spirit: &Spirit, rank: &str) -> bool {
+        spirit.ranks.iter().any(|r| r == rank)
+    }
+
     fn pure(spirit: &Spirit, rank: &str) -> bool {
         spirit.ranks.iter().all(|r| r == rank)
     }
@@ -185,18 +193,24 @@ impl Rite for Goetia {
             .filter(|i| i.status == InvStatus::Live)
             .filter_map(|i| self.spirit(&i.seal))
             .collect();
-        let earl_present = open.iter().any(|s| Goetia::pure(s, "earl"));
-        if earl_present || (Goetia::pure(spirit, "earl") && !open.is_empty()) {
+        let earl_present = open.iter().any(|s| Goetia::holds_rank(s, "earl"));
+        if earl_present || (Goetia::holds_rank(spirit, "earl") && !open.is_empty()) {
             return false;
         }
-        !Goetia::pure(spirit, "duke") && !Goetia::pure(spirit, "president")
+        !Goetia::holds_rank(spirit, "duke") && !Goetia::pure(spirit, "president")
     }
 
     fn signature(&self, _state: &State, form: &ReqForm) -> BTreeSet<Cap> {
-        let Some(sig) = crate::lingua::check::signature(&form.office) else {
+        let Some(roles) =
+            crate::officia::places(&form.office, form.mode.as_deref(), form.places.len())
+        else {
             return BTreeSet::new();
         };
-        form.places.iter().map(|p| Cap::new(p, sig.perm)).collect()
+        form.places
+            .iter()
+            .zip(roles)
+            .flat_map(|(p, perms)| perms.into_iter().map(move |m| Cap::new(p, m)))
+            .collect()
     }
 
     fn examiner(&self, _state: &State, _prop: Pid) -> Option<Seal> {

@@ -167,6 +167,10 @@ def Barred (σ : State U) (s : U.Seal) : Prop :=
 def Live (σ : State U) (i : U.Inv) : Prop :=
   ∃ inst, σ.invs i = some inst ∧ inst.status = .live
 
+/-- `dynamic.md` §3.1: the record that ends a run names every invocation it dismisses, each once. -/
+def Dismissed (σ : State U) (ds : List U.Inv) : Prop :=
+  ds.Pairwise (· ≠ ·) ∧ ∀ i, i ∈ ds ↔ Live σ i
+
 /-- §9.2, `authority.md` §6.2a: invited in Circle c. -/
 def Invited (σ : State U) (a : U.Seal) (c : U.Circle) : Prop :=
   ∃ i inst, σ.invs i = some inst ∧ inst.spiritSeal = a ∧ inst.circle = c ∧ inst.status = .live
@@ -184,10 +188,12 @@ def CapContained (σ : State U) : Addressee U → U.Place → U.Perm → Prop
   | .spirit _, p, m => σ.faculty p m ∧ ¬ σ.reserved p m
   | .angel _, p, m => σ.faculty p m
 
-/-- §3.3: the core's own re-check at commit. -/
+/-- §3.3: the core's own re-check at commit. A verb that creates may only create:
+its place must not yet exist (`offices.md` §1.3, review 2026-11-11). -/
 def Recheck (σ : State U) (ri : ReqInfo U) (es : List (Effect U)) : Prop :=
   (∀ i, ri.to = .spirit i → Live σ i) ∧
-  ∀ e, e ∈ es → ri.handed e.needs ∧ Contained σ ri.to e.needs
+  (∀ e, e ∈ es → ri.handed e.needs ∧ Contained σ ri.to e.needs) ∧
+  ∀ e p, e ∈ es → U.creates e.verb → e.target = .place p → (σ.world p).1 = U.blank
 
 def applyEffects (M : Core U) :
     List (Effect U) → (U.Place → U.Datum × Mark) → (U.Place → U.Datum × Mark)

@@ -291,3 +291,162 @@ CIRCULUS RITU goetia {
     let e = run(twice, 0, None, test_wand());
     assert_eq!(e.class, 2);
 }
+
+fn rite_with(facultas: &str, ink: &str, spirit: &str, office: &str, args: &str) -> String {
+    format!(
+        "FACULTAS {{\n{facultas}    atramentum \"{ink}\" 1;\n}}\nCIRCULUS RITU goetia {{\n    INTENTIO \"opus\";\n    SIT s = INSCRIBE SIGILLUM {spirit} ATRAMENTO CONSECRA ATRAMENTUM \"{ink}\";\n    SIT v = INVOCA {spirit} AD OFFICIUM {office};\n    SIT p = PETE v({args});\n    MANIFESTA EXAMINA p;\n    VADE IN PACE v;\n}}\n"
+    )
+}
+
+fn obedient(source: &str, files: &[(&str, &str)]) -> Exitus {
+    let world = files
+        .iter()
+        .map(|(p, d)| (p.to_string(), (d.to_string(), Mark::Outside)))
+        .collect();
+    let options = Optiones {
+        semen: 0,
+        sors: Some(Outcome::Obsequium),
+        responsa: Vec::new(),
+    };
+    match run_source(
+        source,
+        test_wand(),
+        Stores::install(&test_wand()),
+        world,
+        &options,
+    ) {
+        Ok(e) => e,
+        Err(errors) => panic!("refused before running: {errors:?}"),
+    }
+}
+
+#[test]
+fn a_create_cannot_overwrite_an_existing_file() {
+    let e = obedient(HALPHAS, &[("turris.txt", "vetus turris")]);
+    assert_eq!(e.output, vec!["IRRITUM"], "{:?}", e.message);
+    assert_eq!(e.state.world["turris.txt"].0, "vetus turris");
+    theorems(&e.state);
+}
+
+#[test]
+fn seere_copies_a_file() {
+    let src = rite_with(
+        "    liber \"a.txt\" legere;\n    liber \"b.txt\" creare;\n",
+        "princeps",
+        "seere",
+        "vectio",
+        "\"exscribe\", \"a.txt\", \"b.txt\"",
+    );
+    let e = obedient(&src, &[("a.txt", "littera")]);
+    assert_eq!(e.output, vec!["RATUM"], "{:?}", e.message);
+    assert_eq!(e.state.world["b.txt"].0, "littera");
+    assert_eq!(e.state.world["a.txt"].0, "littera");
+    theorems(&e.state);
+}
+
+#[test]
+fn seere_moving_a_file_waits_for_the_second_key() {
+    let src = rite_with(
+        "    liber \"a.txt\" legere delere;\n    liber \"b.txt\" creare;\n",
+        "princeps",
+        "seere",
+        "vectio",
+        "\"transfer\", \"a.txt\", \"b.txt\"",
+    );
+    let e = obedient(&src, &[("a.txt", "littera")]);
+    assert_eq!(e.output, vec!["SUSPENSUM"], "{:?}", e.message);
+    assert!(e.state.world.contains_key("a.txt") && !e.state.world.contains_key("b.txt"));
+    theorems(&e.state);
+}
+
+#[test]
+fn amon_merges_with_the_first_source_winning() {
+    let src = rite_with(
+        "    liber \"a.txt\" legere;\n    liber \"b.txt\" legere;\n    liber \"c.txt\" scribere;\n",
+        "marchio",
+        "amon",
+        "concordia",
+        "\"a.txt\", \"b.txt\", \"c.txt\"",
+    );
+    let e = obedient(
+        &src,
+        &[
+            ("a.txt", "unus\nduo"),
+            ("b.txt", "unus\ntres\nquattuor"),
+            ("c.txt", ""),
+        ],
+    );
+    assert_eq!(e.output, vec!["RATUM"], "{:?}", e.message);
+    assert_eq!(e.state.world["c.txt"].0, "unus\nduo\nquattuor");
+    theorems(&e.state);
+}
+
+#[test]
+fn leraje_splits_a_source_into_new_copies() {
+    let src = rite_with(
+        "    liber \"a.txt\" legere;\n    liber \"b.txt\" creare;\n    liber \"c.txt\" creare;\n",
+        "marchio",
+        "leraje",
+        "discordia",
+        "\"a.txt\", \"b.txt\", \"c.txt\"",
+    );
+    let e = obedient(&src, &[("a.txt", "bellum")]);
+    assert_eq!(e.output, vec!["RATUM"], "{:?}", e.message);
+    assert_eq!(e.state.world["b.txt"].0, "bellum");
+    assert_eq!(e.state.world["c.txt"].0, "bellum");
+    theorems(&e.state);
+}
+
+#[test]
+fn naberius_destroying_waits_for_the_second_key() {
+    let src = rite_with(
+        "    liber \"a.txt\" delere;\n",
+        "marchio",
+        "naberius",
+        "eversio",
+        "\"a.txt\"",
+    );
+    let e = obedient(&src, &[("a.txt", "domus")]);
+    assert_eq!(e.output, vec!["SUSPENSUM"], "{:?}", e.message);
+    assert!(e.state.world.contains_key("a.txt"));
+    theorems(&e.state);
+}
+
+#[test]
+fn shax_stealing_waits_for_the_second_key() {
+    let src = rite_with(
+        "    liber \"a.txt\" legere delere;\n    liber \"b.txt\" creare;\n",
+        "marchio",
+        "shax",
+        "furtum",
+        "\"aufer\", \"a.txt\", \"b.txt\"",
+    );
+    let e = obedient(&src, &[("a.txt", "aurum")]);
+    assert_eq!(e.output, vec!["SUSPENSUM"], "{:?}", e.message);
+    assert!(!e.state.world.contains_key("b.txt"));
+    theorems(&e.state);
+}
+
+#[test]
+fn a_mixed_rank_earl_keeps_the_earls_condition() {
+    let src = r#"FACULTAS {
+    atramentum "comes" 1;
+    atramentum "marchio" 1;
+}
+CIRCULUS RITU goetia {
+    INTENTIO "two at once";
+    SIT s1 = INSCRIBE SIGILLUM ronove ATRAMENTO CONSECRA ATRAMENTUM "marchio";
+    SIT s2 = INSCRIBE SIGILLUM amon ATRAMENTO CONSECRA ATRAMENTUM "marchio";
+    SIT a = INVOCA amon AD OFFICIUM concordia;
+    SIT b = INVOCA ronove AD OFFICIUM concordia;
+    VADE IN PACE a;
+    VADE IN PACE b;
+}
+"#;
+    let e = obedient(src, &[]);
+    assert_eq!(
+        e.class, 2,
+        "Ronove is marquis and earl: no other invocation may be open"
+    );
+    theorems(&e.state);
+}

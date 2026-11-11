@@ -65,7 +65,7 @@ def usesInv (σ : State U) : Label U → List U.Inv
   | .release i _ => [i]
   | .relegate i => [i]
   | .turn w _ _ _ => parentOf σ w
-  | .kill w _ => parentOf σ w
+  | .kill w _ _ => parentOf σ w
   | .examine p _ _ => invOfProp σ p
   | .commit p es .done => invOfProp σ p ++ invTargets es
   | .commit p _ _ => invOfProp σ p
@@ -95,7 +95,7 @@ def TerminalAt (x : Exn U) (n : Nat) (i : U.Inv) : Prop :=
 def UsesHold (σ : State U) (i : U.Inv) : Label U → Prop
   | .commit p es .done => invOfProp σ p = [i] ∨ i ∈ invTargets es
   | .turn w _ _ _ => parentOf σ w = [i]
-  | .kill w _ => parentOf σ w = [i]
+  | .kill w _ _ => parentOf σ w = [i]
   | .request _ _ (.spirit j) _ _ _ => j = i
   | .examine p _ _ => invOfProp σ p = [i]
   | _ => False
@@ -150,8 +150,8 @@ inductive Choice (U : Universe) where
 def choiceOf : Label U → List (Choice U)
   | .schedule w => [.sched w]
   | .turn w o _ _ => [.will w o]
-  | .kill w o => [.kill w o]
-  | .invoke i _ _ _ b n => [.admit i b n]
+  | .kill w o _ => [.kill w o]
+  | .invoke i _ _ _ b n _ => [.admit i b n]
   | .request q _ _ _ _ asked => [.sig q asked]
   | .examine p a v => [.exam p a v]
   | .consecrate v k _ => [.valid v k]
@@ -226,7 +226,7 @@ def AtLeastAsStrict (R' R : RelRite U) : Prop :=
 def agentOf : Label U → List (Label U)
   | .schedule w => [.schedule w]
   | .turn w o c fin => [.turn w o c fin]
-  | .kill w o => [.kill w o]
+  | .kill w o ds => [.kill w o ds]
   | .intrude a a' c d => [.intrude a a' c d]
   | _ => []
 

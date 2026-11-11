@@ -35,6 +35,7 @@ structure Universe where
   blank : Datum
   killOutcome : Outcome → Prop
   highConsequence : Verb → Prop
+  creates : Verb → Prop
   denial : FailClass
   angelic : Seal → Prop
 
@@ -199,8 +200,8 @@ inductive CommitResult where
 
 inductive StepOut (U : Universe) where
   | go (ds : List U.Decision) (reads : List U.Place)
-  | halt
-  | fail (k : U.FailClass)
+  | halt (dismissed : List U.Inv)
+  | fail (k : U.FailClass) (dismissed : List U.Inv)
 
 /-- §9.4: how a run ends. -/
 inductive Ending (U : Universe) where
@@ -241,10 +242,11 @@ inductive Label (U : Universe) where
   | openC (c : U.Circle)
   | closeC (c : U.Circle)
   | invoke (i : U.Inv) (s : U.Seal) (c : U.Circle) (w : U.Worker) (admitted : Bool) (ink : Nat)
+      (dismissed : List U.Inv)
   | request (q : U.Req) (p : U.Pid) (to : Addressee U) (f : U.ReqForm) (w : U.Worker)
       (asked : Power U → Prop)
   | turn (w : U.Worker) (o : U.Outcome) (c : Contrib U) (finish : Bool)
-  | kill (w : U.Worker) (o : U.Outcome)
+  | kill (w : U.Worker) (o : U.Outcome) (dismissed : List U.Inv)
   | examine (p : U.Pid) (a : ExamAns U) (v : Verdict)
   | judge (p : U.Pid) (d : WorkOutcome)
   | commit (p : U.Pid) (es : List (Effect U)) (r : CommitResult)

@@ -529,6 +529,8 @@ fn forced(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome) -> Exi
     .unwrap_or_else(|e| panic!("refused before running: {e:?}"))
 }
 
+type Case<'a> = (&'a str, &'a str, &'a [(&'a str, &'a str)]);
+
 #[test]
 fn examination_scorecard() {
     let asmoday = rite_with(
@@ -552,7 +554,7 @@ fn examination_scorecard() {
         "discordia",
         "\"a.txt\", \"b.txt\", \"c.txt\"",
     );
-    let cases: [(&str, &str, &[(&str, &str)]); 4] = [
+    let cases: [Case; 4] = [
         ("Furfur, telling", FURFUR, &[("chronica.txt", "annales")]),
         ("Asmoday, telling", &asmoday, &[("chronica.txt", "annales")]),
         ("Sabnock, building", &sabnock, &[]),

@@ -513,10 +513,15 @@ impl<'r> Checker<'r> {
             Stmt::Dum { cond, body, pos } => {
                 let before = self.flow.clone();
                 let existing = self.vars.len();
-                for _ in 0..2 {
+                loop {
+                    let marks: Vec<Mark> = self.vars.iter().map(|v| v.mark).collect();
                     self.flow = before.clone();
                     self.condition(cond, "DUM");
                     self.block(body);
+                    let settled = self.vars.iter().zip(&marks).all(|(v, m)| v.mark == *m);
+                    if settled {
+                        break;
+                    }
                 }
                 let after = std::mem::replace(&mut self.flow, before.clone());
                 for v in after.released.difference(&before.released) {

@@ -378,3 +378,11 @@ fn every_accepted_grammar_program_is_checked_without_panic() {
         let _ = check_source(&text);
     }
 }
+
+#[test]
+fn a14_a_chain_of_assignments_cannot_launder_quarantine() {
+    refused(
+        &telling("    SIT MUTABILIS a = \"\";\n    SIT MUTABILIS b = \"\";\n    SIT MUTABILIS c = \"\";\n    SIT MUTABILIS d = \"\";\n    DUM a == \"\" {\n        a = b;\n        b = c;\n        c = d;\n        d = RESPONSUM p;\n    }"),
+        "A14",
+    );
+}

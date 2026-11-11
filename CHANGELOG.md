@@ -14,6 +14,11 @@
 - **A verb that creates may only create** (`offices.md` §1.3; second outside review, finding 1): the commit re-check voids a `creare` effect on a place that already exists. Lean: a new clause of `Recheck` and the universe field `creates`.
 - **Five more effect verbs:** `exscribe` (copy into a new place), `transfer` (arrive in a new place), `coniunge` (merge into a target), `scinde` (split into new copies), `aufer` (remove the source of a theft; high-consequence with `dele`). Offices now running: `VECTIO` (`"transfer"`, `"exscribe"`), `CONCORDIA` (first source wins every conflict, `offices.md` §2.3a.6), `DISCORDIA`, `EVERSIO`, `FURTUM` (`"aufer"`). Moves, destruction and theft wait for the second key.
 
+### Core changes from the second review's findings file (2026-11-11; audit owed under the interim rule)
+- **A write needs an existing place** (F1's other half): the commit re-check voids a `scribere` effect on a place that does not exist. Lean: a fourth clause of `Recheck`, universe field `writes`.
+- **A helper is held to its own handed set** (F4, ruling R2 option (a), as `offices.md` §4.2 already says): a helper's effects must lie within what it was handed, checked at its turn. Lean: `ContribOK` for `.effects`.
+- **Mixed ranks follow `dynamic.md` §5.1 as written** (F2, R3 option (a)): a spirit is admitted when any of its ranks' conditions holds; an Earl admitted only as an Earl (with no other open rank) keeps the others out. Replaces tonight's stricter reading.
+
 ### Fixed
 - **Mixed ranks** (second review, finding 2): a spirit of two ranks keeps the Earl's and the Duke's conditions if either rank has them.
 - **Ink totals** can no longer overflow (finding 7).

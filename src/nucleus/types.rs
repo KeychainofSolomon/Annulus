@@ -61,6 +61,10 @@ impl Verb {
         self.needs() == Perm::Creare
     }
 
+    pub fn writes(self) -> bool {
+        self.needs() == Perm::Scribere
+    }
+
     pub fn removes(self) -> bool {
         self.needs() == Perm::Delere
     }

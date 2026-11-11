@@ -173,12 +173,12 @@ impl Goetia {
         out
     }
 
-    fn holds_rank(spirit: &Spirit, rank: &str) -> bool {
-        spirit.ranks.iter().any(|r| r == rank)
-    }
-
-    fn pure(spirit: &Spirit, rank: &str) -> bool {
-        spirit.ranks.iter().all(|r| r == rank)
+    fn bound_as_earl(spirit: &Spirit) -> bool {
+        spirit.ranks.iter().any(|r| r == "earl")
+            && spirit
+                .ranks
+                .iter()
+                .all(|r| matches!(r.as_str(), "earl" | "duke" | "president"))
     }
 }
 
@@ -193,11 +193,14 @@ impl Rite for Goetia {
             .filter(|i| i.status == InvStatus::Live)
             .filter_map(|i| self.spirit(&i.seal))
             .collect();
-        let earl_present = open.iter().any(|s| Goetia::holds_rank(s, "earl"));
-        if earl_present || (Goetia::holds_rank(spirit, "earl") && !open.is_empty()) {
+        if open.iter().any(|s| Goetia::bound_as_earl(s)) {
             return false;
         }
-        !Goetia::holds_rank(spirit, "duke") && !Goetia::pure(spirit, "president")
+        spirit.ranks.iter().any(|rank| match rank.as_str() {
+            "earl" => open.is_empty(),
+            "duke" | "president" => false,
+            _ => true,
+        })
     }
 
     fn signature(&self, _state: &State, form: &ReqForm) -> BTreeSet<Cap> {

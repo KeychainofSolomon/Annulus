@@ -188,12 +188,14 @@ def CapContained (σ : State U) : Addressee U → U.Place → U.Perm → Prop
   | .spirit _, p, m => σ.faculty p m ∧ ¬ σ.reserved p m
   | .angel _, p, m => σ.faculty p m
 
-/-- §3.3: the core's own re-check at commit. A verb that creates may only create:
-its place must not yet exist (`offices.md` §1.3, review 2026-11-11). -/
+/-- §3.3: the core's own re-check at commit. A verb that creates may only create, and a
+verb that writes may only write: `creare` needs a place that does not yet exist, `scribere`
+one that does (`offices.md` §1.3, review 2026-11-11). -/
 def Recheck (σ : State U) (ri : ReqInfo U) (es : List (Effect U)) : Prop :=
   (∀ i, ri.to = .spirit i → Live σ i) ∧
   (∀ e, e ∈ es → ri.handed e.needs ∧ Contained σ ri.to e.needs) ∧
-  ∀ e p, e ∈ es → U.creates e.verb → e.target = .place p → (σ.world p).1 = U.blank
+  (∀ e p, e ∈ es → U.creates e.verb → e.target = .place p → (σ.world p).1 = U.blank) ∧
+  ∀ e p, e ∈ es → U.writes e.verb → e.target = .place p → (σ.world p).1 ≠ U.blank
 
 def applyEffects (M : Core U) :
     List (Effect U) → (U.Place → U.Datum × Mark) → (U.Place → U.Datum × Mark)
@@ -311,7 +313,9 @@ def spawnHelper (σ : State U) (w' : U.Worker) (h : Power U → Prop) (wi : WInf
 def ContribOK (R : RelRite U) (σ : State U) (wi : WInfo U) (ri : ReqInfo U) (pi : PInfo U) :
     Contrib U → Prop
   | .respond v _ => pi.content = .empty ∧ σ.data v = none ∧ σ.origin v = none
-  | .effects _ => pi.content = .empty ∨ ∃ es, pi.content = .work es
+  | .effects es =>
+      (pi.content = .empty ∨ ∃ es', pi.content = .work es') ∧
+      (wi.isHelper = true → ∀ e, e ∈ es → wi.handed e.needs)
   | .spawn w' h n =>
       σ.workers w' = none ∧
       (∃ i inst, wi.parent = some i ∧ σ.invs i = some inst ∧ R.bound σ (.legions i) n ∧

@@ -306,7 +306,10 @@ impl State {
             Contrib::Respond(v, _) => {
                 prop.content == Content::Empty && !self.values.contains_key(v)
             }
-            Contrib::Effects(_) => matches!(prop.content, Content::Empty | Content::Work(_)),
+            Contrib::Effects(es) => {
+                matches!(prop.content, Content::Empty | Content::Work(_))
+                    && (!worker.helper || es.iter().all(|e| worker.handed.contains(&e.needs())))
+            }
             Contrib::Spawn(w, handed) => {
                 let Some(inv) = worker.parent else {
                     return false;
@@ -506,6 +509,7 @@ impl State {
             req.handed.contains(&e.needs())
                 && self.contained(&req.to, &e.needs())
                 && !(e.verb.creates() && self.world.contains_key(&e.place))
+                && !(e.verb.writes() && !self.world.contains_key(&e.place))
         })
     }
 

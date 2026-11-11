@@ -68,7 +68,7 @@ pub fn no_wand() -> Wand {
     }
 }
 
-pub fn faculty_of(checked: &Checked) -> (BTreeSet<Cap>, BTreeSet<Cap>, BTreeMap<String, i64>) {
+pub fn faculty_of(checked: &Checked) -> (BTreeSet<Cap>, BTreeSet<Cap>, BTreeMap<String, u64>) {
     let mut faculty = BTreeSet::new();
     let mut reserved = BTreeSet::new();
     let mut ink = BTreeMap::new();
@@ -84,8 +84,8 @@ pub fn faculty_of(checked: &Checked) -> (BTreeSet<Cap>, BTreeSet<Cap>, BTreeMap<
                 }
             }
             "atramentum" if !g.reserved => {
-                let slot: &mut i64 = ink.entry(g.target.clone()).or_insert(0);
-                *slot = slot.saturating_add(g.amount.unwrap_or(0));
+                let slot: &mut u64 = ink.entry(g.target.clone()).or_insert(0);
+                *slot = slot.saturating_add(g.amount.unwrap_or(0).max(0) as u64);
             }
             _ => {}
         }
@@ -98,7 +98,7 @@ pub fn launch(
     wand: Wand,
     stores: Stores,
     world: BTreeMap<Place, (String, Mark)>,
-) -> (Launch, BTreeMap<String, i64>) {
+) -> Launch {
     let constitution = constitution();
     let (faculty, reserved, ink) = faculty_of(checked);
     let owner = test_wand().fingerprint;
@@ -110,22 +110,16 @@ pub fn launch(
         roots: roots_of(&stores),
         wand,
     };
-    let total = ink
-        .values()
-        .fold(0u64, |t, n| t.saturating_add((*n).max(0) as u64));
-    (
-        Launch {
-            simulated: true,
-            constitution,
-            auth,
-            faculty,
-            reserved,
-            ink: total,
-            world,
-            stores,
-        },
+    Launch {
+        simulated: true,
+        constitution,
+        auth,
+        faculty,
+        reserved,
         ink,
-    )
+        world,
+        stores,
+    }
 }
 
 fn roots_of(stores: &Stores) -> Roots {
@@ -254,8 +248,13 @@ impl Rite for Goetia {
         Verdict::Approve
     }
 
-    fn ink_cost(&self, _state: &State, _seal: &Seal) -> u64 {
-        1
+    fn ink_fits(&self, _state: &State, seal: &Seal, class: &str) -> bool {
+        self.spirit(seal).is_some_and(|spirit| {
+            spirit
+                .ranks
+                .iter()
+                .any(|r| crate::lingua::registra::rank_ink(r) == Some(class))
+        })
     }
 
     fn legions(&self, state: &State, inv: InvId) -> usize {

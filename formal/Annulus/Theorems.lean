@@ -141,7 +141,7 @@ inductive Choice (U : Universe) where
   | sched (w : U.Worker)
   | will (w : U.Worker) (o : U.Outcome)
   | kill (w : U.Worker) (o : U.Outcome)
-  | admit (i : U.Inv) (b : Bool) (n : Nat)
+  | admit (i : U.Inv) (b : Bool)
   | sig (q : U.Req) (asked : Power U → Prop)
   | exam (p : U.Pid) (a : ExamAns U) (v : Verdict)
   | valid (v : U.Value) (k : Option U.ValidatorId)
@@ -151,7 +151,7 @@ def choiceOf : Label U → List (Choice U)
   | .schedule w => [.sched w]
   | .turn w o _ _ => [.will w o]
   | .kill w o _ => [.kill w o]
-  | .invoke i _ _ _ b n _ => [.admit i b n]
+  | .invoke i _ _ _ b _ => [.admit i b]
   | .request q _ _ _ _ asked => [.sig q asked]
   | .examine p a v => [.exam p a v]
   | .consecrate v k _ => [.valid v k]

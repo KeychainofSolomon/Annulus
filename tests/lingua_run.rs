@@ -284,8 +284,8 @@ fn ink_runs_out() {
 }
 CIRCULUS RITU goetia {
     INTENTIO "x";
-    SIT a = ATRAMENTUM "comes";
-    SIT b = ATRAMENTUM "comes";
+    SIT a = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
+    SIT b = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM "comes";
 }
 "#;
     let e = run(twice, 0, None, test_wand());
@@ -484,5 +484,27 @@ fn a_write_cannot_create_a_missing_file() {
     let e = obedient(&src, &[("a.txt", "unus"), ("b.txt", "duo")]);
     assert_eq!(e.output, vec!["IRRITUM"], "{:?}", e.message);
     assert!(!e.state.world.contains_key("c.txt"));
+    theorems(&e.state);
+}
+
+#[test]
+fn one_seal_serves_two_invocations_in_its_circle() {
+    let src = r#"FACULTAS {
+    atramentum "comes" 1;
+    atramentum "marchio" 1;
+}
+CIRCULUS RITU goetia {
+    INTENTIO "one seal twice";
+    SIT s = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
+    SIT a = INVOCA furfur AD OFFICIUM responsa;
+    VADE IN PACE a;
+    SIT b = INVOCA furfur AD OFFICIUM responsa;
+    VADE IN PACE b;
+}
+"#;
+    let e = obedient(src, &[]);
+    assert_eq!(e.class, 0, "{:?}", e.message);
+    assert_eq!(e.state.ink_left["comes"], 0);
+    assert_eq!(e.state.ink_left["marchio"], 1, "no other class pays");
     theorems(&e.state);
 }

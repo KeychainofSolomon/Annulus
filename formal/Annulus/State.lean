@@ -12,7 +12,6 @@ structure Inst (U : Universe) where
   spiritSeal : U.Seal
   circle : U.Circle
   status : InvStatus
-  ink : Nat
   escalation : Nat
   main : U.Worker
   helpers : List U.Worker
@@ -80,7 +79,8 @@ structure State (U : Universe) where
   auth : Auth U
   faculty : U.Place → U.Perm → Prop
   reserved : U.Place → U.Perm → Prop
-  inkLeft : Nat
+  inkLeft : U.InkClass → Nat
+  inscribed : U.Seal → U.Circle → Prop
   circles : List U.Circle
   circleRite : U.Circle → U.CircleRite
   exec : U.Worker → U.Exec
@@ -399,6 +399,7 @@ def Denied (M : Core U) (R : RelRite U) (σ : State U) : Prop :=
   | .openC c _ => Label.openC c ∈ σ.audit
   | .closeC _ => σ.circles = []
   | .invoke i _ w _ _ => σ.circles = [] ∨ σ.invs i ≠ none ∨ σ.workers w ≠ none
+  | .inscribe s k _ => σ.circles = [] ∨ σ.inkLeft k = 0 ∨ R.admit σ (.inscribe s k) false
   | .request to f q p w _ => σ.reqs q ≠ none ∨ σ.props p ≠ none ∨ RequestBad R σ f w to
   | .examine p _ =>
       ∀ pi, σ.props p = some pi →

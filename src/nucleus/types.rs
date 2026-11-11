@@ -251,7 +251,8 @@ pub enum Label {
     Launch(Vec<(Place, String, Mark)>),
     OpenC(CircleId),
     CloseC(CircleId),
-    Invoke(InvId, Seal, CircleId, WorkerId, bool, u64, Vec<InvId>),
+    Inscribe(Seal, String, CircleId),
+    Invoke(InvId, Seal, CircleId, WorkerId, bool, Vec<InvId>),
     Request(ReqId, Pid, Addressee, WorkerId, Vec<Cap>),
     Turn(WorkerId, Outcome, Contrib, bool),
     Kill(WorkerId, Outcome, Vec<InvId>),
@@ -302,7 +303,6 @@ pub struct Inst {
     pub seal: Seal,
     pub circle: CircleId,
     pub status: InvStatus,
-    pub ink: u64,
     pub main: WorkerId,
     pub helpers: Vec<WorkerId>,
 }

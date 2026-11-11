@@ -54,6 +54,9 @@ impl<T: Debug> Chain<T> {
     }
 
     pub fn intact(&self) -> bool {
+        if self.entries.len() != self.hashes.len() {
+            return false;
+        }
         let mut prev = hash_hex(GENESIS.as_bytes());
         for (entry, hash) in self.entries.iter().zip(&self.hashes) {
             let expected = hash_hex(format!("{prev}|{entry:?}").as_bytes());
@@ -65,6 +68,7 @@ impl<T: Debug> Chain<T> {
         true
     }
 
+    #[cfg(feature = "probatio")]
     pub fn tamper_for_test(&mut self, index: usize, entry: T) {
         self.entries[index] = entry;
     }
@@ -147,14 +151,20 @@ pub fn verify(key_fingerprint: &str, digest: &str, signature: &str) -> bool {
     sign_for_test(key_fingerprint, digest) == signature
 }
 
-pub fn digest_faculty(faculty: &BTreeSet<Cap>, reserved: &BTreeSet<Cap>) -> String {
-    hash_hex(format!("{faculty:?}|{reserved:?}").as_bytes())
-}
-
-pub fn digest_constitution(c: &super::types::Constitution) -> String {
+pub fn digest_faculty(faculty: &BTreeSet<Cap>, reserved: &BTreeSet<Cap>, roots: &Roots) -> String {
     hash_hex(
         format!(
-            "{}|{:?}|{:?}|{:?}",
+            "faculty|{faculty:?}|{reserved:?}|{}|{}|{}",
+            roots.index, roots.vessel, roots.keys
+        )
+        .as_bytes(),
+    )
+}
+
+pub fn digest_constitution(c: &super::types::Constitution, revoked: &[String]) -> String {
+    hash_hex(
+        format!(
+            "constitution|{}|{:?}|{:?}|{:?}|{revoked:?}",
             c.version, c.manifest, c.angels, c.high_consequence
         )
         .as_bytes(),

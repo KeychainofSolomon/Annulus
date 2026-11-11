@@ -1,6 +1,6 @@
 use std::env;
 use std::fs;
-use std::io::{self, BufWriter, Write};
+use std::io::{self, BufWriter, Read, Write};
 use std::process::ExitCode;
 use std::thread;
 
@@ -25,9 +25,24 @@ fn main() -> ExitCode {
     }
 }
 
+fn read_bounded(path: &str) -> io::Result<Option<String>> {
+    let mut source = String::new();
+    fs::File::open(path)?
+        .take(annulus::lingua::lexis::MAX_SOURCE_BYTES as u64 + 1)
+        .read_to_string(&mut source)?;
+    Ok((source.len() <= annulus::lingua::lexis::MAX_SOURCE_BYTES).then_some(source))
+}
+
 fn run_file(path: &str) -> ExitCode {
-    let source = match fs::read_to_string(path) {
-        Ok(source) => source,
+    let source = match read_bounded(path) {
+        Ok(Some(source)) => source,
+        Ok(None) => {
+            report(&format!(
+                "error: {path} is larger than {} bytes",
+                annulus::lingua::lexis::MAX_SOURCE_BYTES
+            ));
+            return ExitCode::from(EXIT_PROGRAM_FAILURE);
+        }
         Err(error) => {
             report(&format!("error: cannot read {path}: {error}"));
             return ExitCode::from(EXIT_PROGRAM_FAILURE);

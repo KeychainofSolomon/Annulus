@@ -411,5 +411,6 @@ Discussed with the owner, not built:
 ## No presumption, and deception (2026-11-11, 23:20)
 
 - `authority.md` §1.7: ten presumptions denied to every being. Silence in the sources is not honesty (TACITUS may lie). Only closed-list validators consecrate (`ita_non`); `forma` is gone. 195 tests.
+- **Before real agents (step 4):** make the core's `State` fields private behind read-only views (fourth outside review, D4). In simulated mode `ritus::launch` signs the roots of the stores it is given; a real launch must take them from the last run's signed record, never recompute them.
 - **Deception threats still open:** lies in answers pass examination until constraints exist (the apparatus); test-wand signatures are forgeable (real wand); seals are claimed, not proven, until the step-4 handshake.
 - **Step 4 design note (the owner's friend):** a trust handshake before any agent's work: seal, name-challenge (`APPELLA`, "Art thou …?"), oath by the Divine Names, and a written proof record the **core** verifies. Never run a script an agent supplies.

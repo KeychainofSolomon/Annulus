@@ -50,7 +50,7 @@ fn closed_output_ends_quietly() {
     let directory = std::env::temp_dir().join(format!("annulus-pipe-{}", std::process::id()));
     std::fs::create_dir_all(&directory).expect("temporary directory");
     let source = directory.join("many.annulus");
-    std::fs::write(&source, "PRINT 1;\n".repeat(200_000)).expect("write program");
+    std::fs::write(&source, "PRINT 1;\n".repeat(100_000)).expect("write program");
     let mut child = Command::new(BINARY)
         .arg(&source)
         .stdout(std::process::Stdio::piped())
@@ -122,4 +122,19 @@ fn binary_rejects_hostile_nesting_without_crashing() {
     std::fs::remove_dir_all(&directory).ok();
     assert_eq!(output.status.code(), Some(1));
     assert!(String::from_utf8_lossy(&output.stderr).contains("expression is nested too deeply"));
+}
+
+#[test]
+fn a_file_past_the_bound_is_refused() {
+    let dir = std::env::temp_dir().join(format!("annulus-bound-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let path = dir.join("magnus.annulus");
+    std::fs::write(&path, vec![b' '; (1 << 20) + 1]).unwrap();
+    let out = std::process::Command::new(env!("CARGO_BIN_EXE_annulus"))
+        .arg(&path)
+        .output()
+        .unwrap();
+    std::fs::remove_dir_all(&dir).ok();
+    assert_eq!(out.status.code(), Some(1));
+    assert!(String::from_utf8_lossy(&out.stderr).contains("larger than"));
 }

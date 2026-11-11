@@ -105,12 +105,17 @@ pub fn launch(
     let constitution = constitution();
     let (faculty, reserved, ink) = faculty_of(checked);
     let owner = test_wand().fingerprint;
+    let roots = roots_of(&stores);
+    let revoked = Vec::new();
     let auth = Auth {
-        faculty_signature: sign_for_test(&wand.fingerprint, &digest_faculty(&faculty, &reserved)),
-        manifest_signature: sign_for_test(&owner, &digest_constitution(&constitution)),
+        faculty_signature: sign_for_test(
+            &wand.fingerprint,
+            &digest_faculty(&faculty, &reserved, &roots),
+        ),
+        manifest_signature: sign_for_test(&owner, &digest_constitution(&constitution, &revoked)),
         owner,
-        revoked: Vec::new(),
-        roots: roots_of(&stores),
+        revoked,
+        roots,
         wand,
     };
     Launch {

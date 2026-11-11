@@ -331,8 +331,11 @@ structure Mech (U : Universe) where
   chainKeys : List (KeyEntry U) → U.Hash
   fpEffects : List (Effect U) → U.Hash
   verify : U.Hash → U.Hash → U.Hash → Prop
-  digestFaculty : (U.Place → U.Perm → Prop) → (U.Place → U.Perm → Prop) → U.Hash
-  digestManifest : (U.ValidatorId → Option U.Hash) → U.Hash
+  /-- Fourth outside review: the wand signs the faculty together with the store roots, and
+  the owner signs the manifest together with the revocations. -/
+  digestFaculty : (U.Place → U.Perm → Prop) → (U.Place → U.Perm → Prop) →
+    U.Hash → U.Hash → U.Hash → U.Hash
+  digestManifest : (U.ValidatorId → Option U.Hash) → List U.Hash → U.Hash
   resembles : List (IxEntry U) → U.Seal → List (Label U) → Prop
   runValidator : U.Code → U.Datum → Option (Label U) → Nat → Option Bool
   apply : Effect U → U.Datum → U.Datum

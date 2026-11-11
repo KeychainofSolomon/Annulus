@@ -34,6 +34,32 @@ Annulus is both a programming language and a simulation of the Solomonic traditi
 1.4 **No self-minted ink.** No entity MAY mint ink (section 7) from its own budget to empower its own seals.
 - [O] The sources contain no pact signed in the magician's own blood. Blood ink is always animal blood, consecrated before use (*Liber iuratus* ch. CXXXVII; Mathers II.16). Annulus reads that absence as the axiom in material form. This reading is interpretive.
 
+1.5 **No amplification: the guiding principle** (ruling 2026-11-11). *The type system makes it impossible to construct a program whose authority exceeds the authority granted to it, including through multiple levels of delegation.*
+
+Stated precisely: let *G* be the faculty granted at launch. For every program that passes Part 3, and every run of it:
+- every capability ever exercised is one that *G* contains;
+- every delegated capability (a seal handed to a spirit, a helper task started by a spirit, an inner Circle, a function call) is contained in the capability it was delegated from;
+- containment composes, so authority at depth *n* is contained in authority at depth *n − 1*, and so in *G*.
+
+This is a property **of the type system**, checked before the program runs. It is not a runtime hope. Every rule in this specification MUST preserve it. A rule that cannot be shown to preserve it is a defect, whatever its source. Where tradition and the principle collide, the conflict is raised with the owner, never silently resolved.
+
+**How the rules already serve it:**
+
+| Rule | How it narrows authority |
+|---|---|
+| Faculty (§2.4) | the single root: nothing exists outside *G* |
+| No self-granting, approval or minting (§1.2–1.4) | no entity adds authority from itself |
+| Rite values bound to their Circle (`static.md` §4.7) | capabilities cannot leak sideways through functions, sequences or outer variables |
+| Inner Circles only narrow (`static.md` §4.12) | nesting never widens |
+| Legion cap (`dynamic.md` §8) | a spirit's helpers are bounded in number |
+| `DIGNITATES` proposes only; `TUTELA` and `LONGAEVITAS` never exceed the faculty (`spirits.md` §6) | offices that sound like grants are proposals bounded by *G* |
+| Intruders hold nothing (§6.2a) | authority cannot enter from outside |
+
+**Proof obligations, still open:**
+1. **Helper tasks.** Each spirit's helper tasks (`FAMILIARES`, and the sub-tasks of any office) MUST hold only capabilities contained in the seals given to that spirit. The office signatures (`static.md` §7) must be written to make this checkable.
+2. **The Constitution's own acts.** Consecration, examination, the invocation of a king and the escalation steps are the Constitution's acts, not the program's. They MUST spend only what *G* provides (ink, time) and grant nothing beyond it.
+3. **A machine-checked proof.** The principle MUST be proven over a formal model of Part 3's typing rules, and tested by Andras's `probatio` against the real runtime (roadmap: EXAMINATIO).
+
 ## 2. The Constitution (the Absolute)
 
 2.1 **The root of trust.** The Absolute is represented by the **Constitution**: a fixed body of law and registers, built into each release of the language. [Architecture §4] It MUST NOT be an executable object, a user, an administrator or a superuser. It never runs, never signs anything at runtime, and cannot be logged into.

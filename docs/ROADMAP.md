@@ -41,6 +41,11 @@ Nothing is reported as built or tested unless it was.
 4. **Syntax in EBNF**, in the same file (draft 1). Checked LL(1): every choice is decided by the next token. The reference recognizer `tools/grammar_check.py` runs the accept/reject programs in `tests/grammar/`, and CI runs it.
 5. **Static semantics:** scopes, name resolution, types, and authority analysis. File: `docs/spec/static.md` (draft 1).
 6. **Dynamic semantics:** evaluation order, the effect model, failure classes. File: `docs/spec/dynamic.md` (draft 1).
+7. **The guiding principle, no amplification** (`authority.md` §1.5): no program's authority can exceed its grant, at any depth of delegation. Its proof obligations bind every later step:
+   - the office signatures must make helper tasks checkable;
+   - the type checker (step 5 of the 18) must enforce the principle;
+   - the bytecode verifier (step 7) must reject anything that breaks it;
+   - a machine-checked proof over a formal model of the typing rules, plus Andras's `probatio` against the runtime, must show it before the authority subsystems (steps 11-13) are called done.
 
 **Exit criterion:** the owner approves the specification.
 

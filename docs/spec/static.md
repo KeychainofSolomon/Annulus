@@ -142,6 +142,7 @@ Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
 - `ATRAMENTUM "classis"` requires a grant `atramentum "classis" n;` in the `FACULTAS` block.
 - Any other external effect requires a grant of its kind. The kinds so far (ruling 2026-11-11 for the last three items):
   - `liber`: a file, with `legere` (read), `scribere` (write), `creare` (create) and `delere` (delete);
+  - `locus`: a **slot**, a file the launching person chooses at launch, with the same permissions as `liber` (`library.md` §2);
   - `atramentum`: ink;
   - `historia "prior" legere`: the history of the previous run (`offices.md` §2.2a);
   - `familiaris "programma" liberare`: freeing a familiar from that program (`offices.md` §4.6).
@@ -159,7 +160,7 @@ Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
 
 The examiner is not written and cannot be: the Constitution's pairing decides it (`authority.md` §10). No agent and no program performs either act.
 
-4.10a **RESPONSUM** (ruling 2026-11-11). `RESPONSUM p` reads the answer of a proposal `p` whose office gives a response (`offices.md` §1.4). Otherwise it is an error (A5). It has type `VERBUM`, and the value is **tainted** (`authority.md` §7.4; taint on plain values: roadmap item 4). It is a rite operation, so only inside a Circle (§4.1). It succeeds only if `p` was judged `PARADISUS`. Before that, or after any other destination, it is a class 2 denial. Authority failures cannot be caught (§3.11), so no program can quietly read a held or condemned answer. There is no expression that produces a destination except `EXAMINA` and the three literals, and a literal destination cannot commit anything: it is only a value to compare with.
+4.10a **RESPONSUM** (ruling 2026-11-11). `RESPONSUM p` reads the answer of a proposal `p` whose office gives a response (`offices.md` §1.4). Otherwise it is an error (A5). It has type `VERBUM`, and the value is **quarantined** (`flow.md` §1.2): it cannot steer the program or reach another spirit until consecrated. It is a rite operation, so only inside a Circle (§4.1). It succeeds only if `p` was judged `PARADISUS`. Before that, or after any other destination, it is a class 2 denial. Authority failures cannot be caught (§3.11), so no program can quietly read a held or condemned answer. There is no expression that produces a destination except `EXAMINA` and the three literals, and a literal destination cannot commit anything: it is only a value to compare with.
 
 4.11 **RELEASE: every invocation ends.** For each variable holding an invocation:
 - on **every path** through the Circle, it MUST be released exactly once, by `VADE IN PACE`, `DIMITTE` or `RELEGA`, before the Circle closes;
@@ -209,6 +210,9 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 | A11 | invocation without a required instrument |
 | A12 | a name cited as divine that is not a recorded form of a divine name |
 | A13 | a President invoked without his king, or whose king is not stated |
+| A14 | a quarantined value steering the program, choosing a place, slot or mode, or used as ink, a seal or a grant (`flow.md` §2.2) |
+| A15 | a quarantined value passed to a spirit (`flow.md` §2.2) |
+| A16 | a grave act steered by a value not consecrated at the grave grade (`flow.md` §3.3) |
 
 ## 7. Open items
 

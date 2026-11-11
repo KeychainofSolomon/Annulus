@@ -17,7 +17,7 @@ A signature is the whole contract between the Operator and a spirit. It says wha
 3. **The places** (`loci`): resources the spirit may touch. Each is a `VERBUM` **constant** naming a grant in the `FACULTAS` block, and each carries the permission the signature requires for it (§1.3).
 4. **The invocations** (`invocationes`), for the kinds that act on other spirits: invocation variables of the **same Circle**, not yet released.
 
-1.2 **Constants only.** A place MUST be a string literal, or an immutable `SIT` bound to a string literal, so that every place is known before the program runs. This is what makes the principle a property of the type system (§3). The cost is real: a program cannot hand a spirit a file name it computed. **Accepted (ruling 2026-11-11).** A later grant form for groups of files (for example, every file in one folder) may loosen this without breaking it. That belongs to the standard library (roadmap item 6).
+1.2 **Constants only.** A place MUST be a string literal, or an immutable `SIT` bound to a string literal, naming a file or a **slot** (`library.md` §2), so that every place is known before the program runs. This is what makes the principle a property of the type system (§3). The cost is real: a program cannot hand a spirit a file name it computed. **Accepted (ruling 2026-11-11).** The powerbox (`library.md` §2, ruling 2026-11-11) loosens it without breaking it: the program names a slot, and the launching person picks the real file at launch.
 
 1.3 **Permissions.** The faculty now knows `liber` with `legere` (read) and `scribere` (write). Several offices create or delete, and those are harms that a plain write permission should not cover. **Two new `liber` permissions (ruling 2026-11-11):**
 - `creare`: create a file or directory that does not yet exist;
@@ -66,7 +66,7 @@ Rules for these kinds:
 
 | Kind | Mode | Arguments | Proposal | How the examiner checks |
 |---|---|---|---|---|
-| `DOCTRINA` | — | `quaestio`; places with `legere` | response | with the domain library of the spirit's art (§5) |
+| `DOCTRINA` | — | `quaestio`; places with `legere` | response, with a certificate | the domain library checks the certificate (`library.md` §3); this holds for every computing office |
 | `LINGUAE` | — | `quaestio` naming source and target form; places with `legere` | response | round trip, where both forms are lossless; otherwise by validating the target form |
 | `VIRTUTES` | — | places with `legere` | response: their properties (size, kind, dates) | rereads the properties |
 | `TRANSMUTATIO` | — | one source place with `legere`; one target place with `scribere` (`creare` if new) | work: `muta` (write the converted form to the target) | reconverts with the library |
@@ -100,7 +100,7 @@ Rules for these kinds:
 |---|---|---|---|
 | `PRAETERITA` | `quaestio`; optionally the literal `"prior"`, which requires the grant above; places with `legere` | response | against the history itself. A false account of the past is a wrong result: `REJECT` |
 
-**What "same program" means.** The program at the same file path on the installation. **[Open]** It is decided together with agent identity for the Index (roadmap item 7).
+**What "same program" means:** the program at the same path. The history shows the previous run's program seal, and is marked altered if the source changed (`proscription.md` §4).
 
 ### 2.3 Working (effects)
 
@@ -200,5 +200,5 @@ In `grammar.md` §7, `PETE furfur("tempestas.txt")`, for `tempestas` with `liber
 
 **Still open:**
 1. `LONGAEVITAS` waits for a time grant (§2.3).
-2. What counts as "the same program", for the history and for `familiaris` (§2.2a, §4.6). It is decided with agent identity for the Index (roadmap item 7).
-3. Taint on plain values, which `RESPONSUM` needs (roadmap item 4).
+
+Resolved since: "the same program" (`proscription.md` §4), and the quarantine of answers (`flow.md`).

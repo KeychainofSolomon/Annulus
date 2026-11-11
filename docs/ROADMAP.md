@@ -32,10 +32,10 @@ Nothing is reported as built or tested unless it was.
 1. **Office signatures:** for each office kind (`spirits.md` §6), what `PETE` passes and what the proposal holds. **Drafted 2026-11-11** in `docs/spec/offices.md` (Part 1c), with the containment argument for helper tasks (§3–4); its §7 lists eight points for the owner.
 2. **The two-layer split** (drafted 2026-11-11, `docs/spec/core.md`, Part 0; two collisions for the owner in its §6): a small **core** (capabilities, the grant, no amplification, the Circle boundary, commits, audit, Vessel, Index) that is proven, separate from the **rite layer** (registers, offices, hours, seals, ink, apparatus), which is data and policy judged by the source rule. Tradition decides what the rite means; the core decides what is possible.
 3. **Amendment procedure** (drafted 2026-11-11, `authority.md` §2.5): the Constitution is versioned; changes come only through reviewed releases; every program records the Constitution version it ran under. The sources check the rite layer's fidelity; proof and attack testing check the core's safety.
-4. **Information flow:** rules beyond taint, including when tainted data may be released; no ambient authority anywhere in the standard library.
-5. **Concurrency semantics.**
-6. **Standard library** for files and the network, with its grants.
-7. **Persistent proscription details:** agent identity, storage of the Index, and how an entry is lifted.
+4. **Information flow:** **Drafted 2026-11-11 in `docs/spec/flow.md`.** rules beyond taint, including when tainted data may be released; no ambient authority anywhere in the standard library.
+5. **Concurrency semantics.** **Drafted 2026-11-11 in `docs/spec/concurrency.md`.**
+6. **Standard library** **Drafted 2026-11-11 in `docs/spec/library.md`.** for files and the network, with its grants.
+7. **Persistent proscription details:** **Drafted 2026-11-11 in `docs/spec/proscription.md`.** agent identity, storage of the Index, and how an entry is lifted.
 8. **The guiding principle** (`authority.md` §1.5, ruling 2026-11-11): no program's authority can exceed its grant, at any depth of delegation. Its proof obligations bind later steps:
    - the office signatures must make helper tasks checkable;
    - the type checker (step 2) must enforce the principle;

@@ -1,0 +1,38 @@
+GitHub Actions, workflow 'lean', run 43038653193, commit 5f1a802a98c1e889da0bc5f30b1b40123e3e01d3
+
+﻿2026-11-11T14:27:36.7094475Z ##[group]Run lake build
+2026-11-11T14:27:36.7095581Z lake build
+2026-11-11T14:27:36.7157544Z shell: /usr/bin/bash -e {0}
+2026-11-11T14:27:36.7158644Z ##[endgroup]
+2026-11-11T14:27:37.3299215Z info: downloading https://releases.lean-lang.org/lean4/v4.19.0/lean-4.19.0-linux.tar.zst
+2026-11-11T14:27:40.1207795Z info: installing /home/runner/.elan/toolchains/leanprover--lean4---v4.19.0
+2026-11-11T14:27:45.0946443Z info: annulus-formal: no previous manifest, creating one from scratch
+2026-11-11T14:27:45.0948024Z info: toolchain not updated; already up-to-date
+2026-11-11T14:27:46.8020478Z ✔ [2/7] Built Annulus.Basic
+2026-11-11T14:27:48.0050805Z ✔ [3/7] Built Annulus.State
+2026-11-11T14:27:48.8058659Z ✔ [4/7] Built Annulus.Step
+2026-11-11T14:27:49.4056850Z ✔ [5/7] Built Annulus.Theorems
+2026-11-11T14:27:49.6059163Z ✔ [6/7] Built Annulus
+2026-11-11T14:27:49.6067570Z Build completed successfully.
+﻿2026-11-11T14:27:49.6143936Z ##[group]Run if grep -rnE '\bsorry\b|\btheorem\b|\baxiom\b' Annulus; then
+2026-11-11T14:27:49.6144528Z if grep -rnE '\bsorry\b|\btheorem\b|\baxiom\b' Annulus; then
+2026-11-11T14:27:49.6144975Z   echo "The model must state, not prove or assume"; exit 1
+2026-11-11T14:27:49.6145315Z fi
+2026-11-11T14:27:49.6197064Z shell: /usr/bin/bash -e {0}
+2026-11-11T14:27:49.6197378Z ##[endgroup]
+﻿2026-11-11T14:27:49.6511035Z Post job cleanup.
+2026-11-11T14:27:49.7477506Z [command]/usr/bin/git version
+2026-11-11T14:27:49.7545659Z git version 2.56.0
+2026-11-11T14:27:49.7620131Z Temporarily overriding HOME='/home/runner/work/_temp/ae4701fe-de23-4f47-9cda-748cc8ad228a' before making global git config changes
+2026-11-11T14:27:49.7637685Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-11T14:27:49.7657650Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Annulus/Annulus
+2026-11-11T14:27:49.7729720Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-11T14:27:49.7748661Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-11T14:27:49.8338824Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-11T14:27:49.8354750Z http.https://github.com/.extraheader
+2026-11-11T14:27:49.8407668Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-11T14:27:49.8540440Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-11T14:27:49.8915300Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-11T14:27:49.8957396Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+﻿2026-11-11T14:27:49.9403636Z Cleaning up orphan processes
+2026-11-11T14:27:49.9913305Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

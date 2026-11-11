@@ -1,25 +1,24 @@
-# Audit brief: Annulus specification, re-audit of the formal security boundary
+# Audit brief: the Lean model of the Annulus core
 
-You are re-auditing one part of the Annulus specification: **the formal security boundary**, after the third audit's ten findings were fixed. Find errors; do not rewrite. The audits and their dispositions are in `docs/AUDIT_SPEC_1.md` to `docs/AUDIT_SPEC_4.md`. Everything outside the scope below has been audited twice; do not report on it.
+You are auditing `formal/`, a Lean 4 model of `docs/spec/core.md` §9, against the specification. Find errors; do not rewrite. The model states P1–P9; it proves nothing, and you should not try to prove anything. Judge whether the Lean says what the spec says, and whether each statement is one that could be proved.
 
-**Status to keep in mind:** the theorems (now named **P1–P9**; they were T1–T9) are specified for proof, not proved. No security theorem is yet established; the machine-checked proof is roadmap step 3. Judge whether they are stated precisely enough to prove, not whether they are true.
+**Before you start:** the model must type-check (`lake build` in `formal/`). If it does not, report the errors and stop.
 
-**Rulings to respect** (the owner, 2026-11-11): intruders, and only intruders, are damned irreversibly, by the recorded fact of intrusion and by seal only; P6 is split into rite-parametric safety and trace inclusion for relational rites; grave grants are one-use; each validator's work limit is fixed in its Constitution entry.
+**Read first:** `formal/README.md`, especially "Modelling choices" and "What formalising found". Those findings are known; do not report them again, but do report if one is wrong.
 
 ## Scope
 
-1. `docs/spec/core.md` in full, especially §3.1, §8 and §9 (the state, transitions and agent states, marks, validators, examiners, grave consecration, non-interference, the rite and P6, the preconditions).
-2. Its cross-references, only as far as needed to check them: `flow.md`; `offices.md` §1, §3, §4; `authority.md` §1.5, §2.5, §6.2a, §11, §12.1a; `operator.md` §4, §5, §8; `concurrency.md`; `proscription.md`; `static.md` §3.3 and §6 (A14–A16).
+1. `formal/Annulus/*.lean` in full.
+2. `docs/spec/core.md` §3.1, §8 and §9, as the reference. Other spec files only where `core.md` points to them.
 
 ## Check
 
-1. Has each of the third audit's ten findings been resolved, without creating new contradictions?
-2. Completeness of the state (§9.1): can anything that affects a run's next step lie outside it?
-3. The interface (§3.1): can any rite answer, validator, examiner, agent or library grant authority, skip examination, or lower a mark other than through §9.3a or §9.3c?
-4. Each theorem: stated over defined objects, with the precondition §9.6 gives it, and free of hidden assumptions about the rite, the will, proposal content or the order of turns?
-5. Damnation: consistent everywhere it is used, irreversible, entered only by the recorded fact of intrusion?
-6. Cross-references: every reference in the scope points to a section that says what is claimed.
+1. **Fidelity.** Does each transition rule in `Step.lean` have the enabling condition and effect §9.2–9.3c give it? Is anything in the spec missing from the model, or in the model without a source in the spec or the modelling choices?
+2. **The state.** Can anything that affects the next step lie outside `State`? Is any field never read or never written, and does that matter?
+3. **The interface.** Does the rite (`RelRite`) reach the core only through the questions of §3.1, and can any answer grant authority, skip examination or lower a mark other than through the consecration steps?
+4. **The statements.** Is each `Pn` over the right objects, with the precondition of §9.6 and no more? Is any vacuous (true because a hypothesis can never hold) or trivially false?
+5. **Proof readiness.** Which statements depend on the abstract language (`Lang`)? Is the split claimed in the README (P3 and P5 need the typing rules, the rest do not) right?
 
 ## Report format
 
-A table with the columns: file and section | problem | evidence | severity (high/medium/low) | suggested fix.
+A table with the columns: file and definition | problem | evidence | severity (high/medium/low) | suggested fix.

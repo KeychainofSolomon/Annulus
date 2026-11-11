@@ -292,3 +292,15 @@ Discussed with the owner, not built:
 - **Standing instruction from the owner (2026-11-11):** say so plainly, and early, when the project reaches a point where it would pay to bring the core up to standard before building more on it, so it never ends in spaghetti. Watch for: the same rule written in two places, the two parsers (`tools/grammar_check.py` and the Rust one) drifting apart, and new features built on unapproved spec. **Known now:** the Rust prototype implements none of the spec. It should be replaced (step 2) once the spec is approved, never extended.
 - **Data scripts:** the registers' JSON is the source of truth. Edit the JSON, then run `python3 tools/build_register.py`; CI checks that the generated `.md` files match.
 - **Tests:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (prototype, 50 tests); `python3 tools/grammar_check.py tests/grammar` (69 programs).
+
+## Next session: start here (2026-11-11, third session)
+
+- **Done:** the core's formal model in Lean 4, `formal/` (draft 1): the state, 27 transition rules, marks, validators, examiners, grave grants, the Index, and P1–P9 plus the damnation law **stated** as Lean propositions. No proofs. Plain Lean core, no Mathlib, toolchain `v4.19.0`.
+- **Not yet type-checked.** The session had no Lean and no shell on the owner's PC. First step: the owner opens `formal/` in VS Code with the "Lean 4" extension (steps in `formal/README.md`), and the next session fixes whatever is underlined.
+- **Formalising found 15 problems in the spec** (`formal/README.md`, last table). Two need the owner's ruling:
+  - **Finding 1, high:** P5 as stated in §9.4 is false. Committed effects are proposal content and are in the observation; verdicts depend on content but are assumed equal. Proposed: count examination as declassification (verdicts and committed effect lists go into D), or narrow the observation to the program's own acts.
+  - **Finding 4, high:** `intrude`'s condition also catches an *invited* agent that attempts delivery into another Circle, or after its release, contradicting "invited agents are never damned". Ruling needed: is that intrusion?
+  - The rest (two-key commits have no store, commit must follow judge, angels' work has no life, run endings, the wand during `GERE VIRGAM`, suspicion in the state, P9's preconditions, …) are spec fixes with a suggested fix each.
+- **Then:** fold the fixes into `core.md`, update the Lean to match, audit the Lean against the spec (`AUDIT_BRIEF.md` is rewritten for that), and the owner's approval ends step 1.
+- **Watch (standing instruction):** the Lean model and `core.md` §9 now state the same rules in two places. Treat `core.md` as normative and change both together; say so if they drift.
+

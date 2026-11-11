@@ -51,7 +51,7 @@ The register gives each spirit one veracity class. The class names are [O]; the 
 
 A lie takes one of two forms, depending on the kind of office. [O: the mechanism.]
 
-1. **Lies of information.** These arise in the offices that tell: `PRAESENTIA`, `FUTURA`, `RESPONSA`, `OCCULTA`, `THESAURI`, `AMISSA`. The true answer is replaced by a different well-formed value of the same type, drawn like any choice of the will (`dynamic.md` §5.4). Nothing in its form betrays it, so examination cannot catch it. Only constraint closes it, as in the sources.
+1. **Lies of information.** These arise in the offices that tell, listed in `offices.md` §2.1, the one place that list is kept. The true answer is replaced by a different well-formed value of the same type, drawn like any choice of the will (`dynamic.md` §5.4). Nothing in its form betrays it, so examination cannot catch it. Only constraint closes it, as in the sources.
 2. **Lies of work.** These arise in every other office. A lie can only be a false account of what the proposal does. The examiner inspects the proposal's actual effects, so the false account is caught: `REJECT`, and the proposal goes to `INFERNUS`.
 
 ### 3.2 Belial and Berith

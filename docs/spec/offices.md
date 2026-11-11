@@ -137,7 +137,7 @@ Rules for these kinds:
 | Kind | Mode | Arguments | Proposal |
 |---|---|---|---|
 | `ILLUSIO` | — | `quaestio` (the work to simulate); places with `legere` only | response: what the places would hold afterwards. Never written. Spends `"vespertilio"` |
-| `PROBATIO` | — | names of the program's own `OPUS` functions (`static.md` §4.5a) | response: Andras's report of the failures found in **copies** (`spirits.md` §4.5). Spends `"vespertilio"` |
+| `PROBATIO` | — | names of the program's own functions, as `VERBUM` literals; each MUST name an `OPUS` of the program (A5) | response: Andras's report of the failures found in **copies** (`spirits.md` §4.5). Spends `"vespertilio"` |
 
 ### 2.6 `NULLUM`
 

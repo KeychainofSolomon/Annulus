@@ -52,11 +52,15 @@ CI builds and smoke-tests both platform binaries, each with a SHA-256 checksum:
 
 | Document | Contents |
 |---|---|
-| [`docs/SPEC.md`](docs/SPEC.md) | The language exactly as implemented |
+| [`docs/PROTOTYPE.md`](docs/PROTOTYPE.md) | The old v0.2.1 prototype, exactly as implemented. **Not** the specification |
 | [`docs/spec/authority.md`](docs/spec/authority.md) | Normative draft: the authority model (constitution, laws, rites, seals and ink, examination, judgement) |
 | [`docs/spec/provenance.md`](docs/spec/provenance.md) | The source-precedence rule and the dated register of witnesses |
 | [`docs/spec/grammar.md`](docs/spec/grammar.md) | Lexical grammar, the Latin keyword table and the EBNF syntax (draft 1) |
 | [`docs/spec/spirits.md`](docs/spec/spirits.md) | The spirits: offices as computer work, will, malice, counterbalances and wards (draft 1) |
+| [`docs/spec/operator.md`](docs/spec/operator.md) | The discipline of the Operator (Part 1b, draft 1) |
+| [`docs/spec/offices.md`](docs/spec/offices.md) | Office signatures: what each office is handed and gives back (Part 1c, draft 1) |
+| [`docs/spec/static.md`](docs/spec/static.md) | Static semantics: scopes, types, authority analysis, error codes (draft 1) |
+| [`docs/spec/dynamic.md`](docs/spec/dynamic.md) | Dynamic semantics: launch, invocation, the will, examination, release, audit (draft 1) |
 | [`docs/registers/goetia.md`](docs/registers/goetia.md) | The register of the 72 spirits, generated from `goetia.json` |
 | [`docs/registers/nomina.md`](docs/registers/nomina.md) | Divine and sacred names from the Circle, figures and conjuration of Sloane 3825 |
 | [`docs/registers/reges.md`](docs/registers/reges.md) | The four kings of the quarters, per rite |

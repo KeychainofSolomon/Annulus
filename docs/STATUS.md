@@ -1,13 +1,13 @@
 # Implementation status — v0.2.1
 
-Annulus v0.2.1 is a small expression language with immutable bindings and output. It is **not** yet the language described in the engineering handoff.
+**The specification and the code are at different stages.** The specification (`docs/spec/`, eight files in draft) is being completed under roadmap step 1. The code is still the v0.2.1 prototype: a small expression language with English keywords, immutable bindings and output, described in `docs/PROTOTYPE.md`. It implements none of the specification. Roadmap step 2 (the minimal interpreter) replaces it.
 
 ## Implemented and tested
 
 | Feature | Notes |
 |---|---|
-| Lexer with line and column tracking | Section 2 of `SPEC.md` |
-| Parser with precedence, associativity and a nesting limit | Section 3 of `SPEC.md` |
+| Lexer with line and column tracking | Section 2 of `PROTOTYPE.md` |
+| Parser with precedence, associativity and a nesting limit | Section 3 of `PROTOTYPE.md` |
 | Immutable declarations, resolved at compile time | `LET` / `DECLARE` |
 | Output | `MANIFEST` / `PRINT` |
 | Values: 64-bit integer, boolean, string | |
@@ -32,9 +32,10 @@ Annulus v0.2.1 is a small expression language with immutable bindings and output
 
 | Area (handoff section) | State |
 |---|---|
-| Formal normative specification (12, step 2) | Not started; `SPEC.md` describes v0.2.1 only |
+| Formal normative specification (12, step 2) | **In draft:** eight files in `docs/spec/`, plus the registers; awaiting the owner's approval (roadmap step 1) |
 | Serialised, versioned bytecode format and verifier (12, step 4) | Not started |
-| Comments, string escapes | Not started |
+| Comments | **Ruled out:** Annulus has no comment syntax (the owner's ruling) |
+| String escapes | Specified (`grammar.md` §2); not in the prototype |
 | Types beyond integer, boolean, string; composite types (10) | Not started |
 | Static type checking (10) | Not started |
 | Functions and procedures (10) | Not started |

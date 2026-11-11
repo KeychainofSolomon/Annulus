@@ -1,4 +1,6 @@
-# Annulus language specification — v0.2.1 (as implemented)
+# The v0.2.1 prototype (as implemented)
+
+**This is not the Annulus specification.** The specification is in `docs/spec/`. This file describes the old prototype, which still uses English keywords and has no rite. Roadmap step 2 (the minimal interpreter) replaces both the prototype and this file.
 
 Status: **descriptive**. This document records exactly what the v0.2.1 implementation does. It is not the design of the full language; milestone 2 replaces it with a normative specification. Every rule here is covered by a test.
 

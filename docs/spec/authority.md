@@ -188,13 +188,16 @@ The ban **persists across runs**. Each later launch refuses those identities at 
 
 **The Vessel is kept, one per installation** (ruling 2026-11-11). Like the Index, it persists across runs, is only appended to, and is chained by hash so that tampering fails `launch` (`proscription.md` §3.2). It is the evidence of what was attempted, and nothing is ever removed from it.
 
-**The Vessel's first two records** (ruling 2026-11-11). Every installation's Vessel begins with its history, in the order the source gives:
-1. **The sealing:** Solomon shuts the 72 spirits with their legions in the brass vessel, seals it with his seal and casts it into the lake (Sloane 3825 f113).
-2. **The breaking**, afterwards: the Babylonians break the vessel hoping for treasure; the spirits flee to their former places, save Belial, who enters an image (same source).
+**The Vessel's first three records** (rulings 2026-11-11). Every installation's Vessel begins with its history, in the order the sources give:
+1. **The sealing:** Solomon shuts the spirits with their legions in a **glass** vessel and seals it; it is cast into a very great **well** in Babylon (Weyer, *Pseudomonarchia daemonum* §23, 1577: *proiectos in Babilone in puteum grandem valde*; the glass vessel, *in vase vitreo*, per Peterson's edition).
+2. **The breaking**, afterwards: the Babylonians, hoping for treasure, uncover the vessel and break it (*detegeruntque & confregere vas*); the spirits return to their former places, save Belial, who enters a certain image and gives answers to those who sacrifice to him (*ingressus quoddam simulachrum*) (Weyer §23).
+3. **The making of this vessel**, once per installation: a new vessel, made after the pattern of Solomon's, closed with the Operator's own seal and signed with the wand's master secret (`operator.md` §8). From then on it holds what this installation seals.
 
-Each is dated only as the source dates it: the breaking comes after the sealing, and no year is claimed. Both are fixed text in the Constitution, signed with each release (§2.5). They hold no spirit, no capability and nothing that can run; the chain of every installation's Vessel starts from them, so altering either fails `launch`. The second record is why the spirits can be invoked at all: they are no longer in the vessel. [S: Sloane 3825 f113. O: the records as the chain's start.]
+Each is dated only as the sources date it: the breaking comes after the sealing, and no year is claimed. The first two are fixed text in the Constitution, signed with each release (§2.5); the third is written when the installation is set up. They hold no spirit, no capability and nothing that can run; the chain of every installation's Vessel starts from them, so altering any fails `launch`. The second record is why the spirits can be invoked at all: they are no longer in the vessel.
 
-**The Vessel is never opened for use.** What is sealed in it is never released, committed, run or reused, by anyone, the Operator included. The Operator may *read* it, to learn what was attempted; reading changes nothing. [S: Sloane 3825 f113, the warning: the Babylonians broke the vessel "hoping to find great treasure", and the spirits fled to their former places, save Belial, who "entered into a certain Image". O: read-only access.]
+**Where the witnesses differ** (the owner's rule: the older witness wins). Weyer (1577) has a glass vessel cast into a great well; Scot's English (1584) and Sloane 3825 (ff. 110v–111r, 17th century) have a vessel "of Brasse" cast into "a deep lake or hole". Peterson judges Scot's "brasen" an error. The Babylonians and Belial's image are in both. Sloane 3825 also gives the figure of the vessel (f113v: "The fforme of the brasse vessel that Salomon shut Those spirits In") and the secret seal that closed it, which the magician makes himself (f113r, "on a Tuesday or Saturday night at 12 of the Clock"); the vessel itself he is not told to make. So the third record is original [O], and its seal follows f113r [S].
+
+**The Vessel is never opened for use.** What is sealed in it is never released, committed, run or reused, by anyone, the Operator included. The Operator may *read* it, to learn what was attempted; reading changes nothing. [S: Weyer §23; Sloane 3825 ff. 110v–111r, the warning: the Babylonians broke the vessel "suspecting to find a great Treasure", and the spirits fled, save Belial, who entered "Into a certaine Image". O: read-only access.]
 
 Invited agents keep the rule of §11 for what they do through their invocation: their work may be made `IRRITUM`, and their release stays the Operator's act. An invited agent that attempts to reach a Circle where it holds no open invocation, or acts after its release, is an intruder there (ruling 2026-11-11, `core.md` §9.2).
 
@@ -325,7 +328,7 @@ The names in the form are references to Constitution entries (section 2.3).
 | `DIMITTE` (dismiss) | ends the invocation without completion; uncommitted effects are discarded | [Architecture §12] |
 | `RELEGA` (banish) | forced termination: capabilities revoked, child tasks terminated, uncommitted effects discarded, results quarantined in the **Vessel** | fire curse (1446 p215 R); "Spirits chaine" (Sloane 3825); the Brass Vessel (Sloane 3825) |
 
-**[O]** the Vessel is the quarantine store named after Solomon's brass vessel.
+**[O]** the Vessel is the quarantine store named after Solomon's vessel: glass in Weyer, brass in Sloane 3825 (§6.2a).
 
 **[S]** Every invocation MUST end in one of these three; RELEASE is enforced by the ink budget.
 

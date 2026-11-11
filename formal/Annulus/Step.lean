@@ -13,7 +13,9 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
   | launch {σ : State U}
       (hp : σ.phase = .preLaunch)
       (hc : LaunchChecks M σ) :
-      CoreStep M R σ (.launch (fun p => M.mech.fpDatum (σ.world p).1))
+      CoreStep M R σ
+        (.launch (fun p =>
+          if (∃ m, σ.faculty p m) then some (M.mech.fpDatum (σ.world p).1, (σ.world p).2) else none))
         { σ with
           phase := .running,
           faculty := if σ.auth.wandPresent = true then σ.faculty else (fun _ _ => False),
@@ -22,7 +24,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
   | openC {σ : State U} {c : U.Circle} {e : U.Exec}
       (hw : σ.sched.current = some U.operator)
       (hi : instrOf M σ = .openC c e)
-      (hc : ¬ c ∈ σ.circles) :
+      (hc : ¬ Label.openC c ∈ σ.audit) :
       CoreStep M R σ (.openC c)
         { σ with
           circles := c :: σ.circles,
@@ -66,10 +68,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (ha : R.admit σ (.invoke s c) b)
       (hb : R.bound σ (.ink s) n)
       (hr : b = false ∨ Barred σ s ∨ σ.inkLeft < n) :
-      CoreStep M R σ (.invoke i s c w b n)
-        { σ with
-          exec := upd σ.exec U.operator no,
-          sched := idle σ.sched }
+      CoreStep M R σ (.invoke i s c w b n) (endRun σ (.failure U.denial σ.audit.length))
 
   | requestSpirit {σ : State U} {i : U.Inv} {f : U.ReqForm} {q : U.Req} {p : U.Pid}
       {w : U.Worker} {e : U.Exec} {inst : Inst U} {wi : WInfo U} {asked : Power U → Prop}
@@ -144,8 +143,8 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hadm : e ≠ pi.author ∧ ¬ e ∈ pi.carries)
       (hv : R.verdict σ p e v0)
       (hcb : R.counterbalance σ p cb) :
-      CoreStep M R σ (.examine p (.examined e v0 cb) (finalVerdict σ pi v0 cb))
-        { σ with sched := idle σ.sched }
+      CoreStep M R σ (.examine p (.examined e v0 cb) (finalVerdict M σ pi v0 cb))
+        { σ with index := noteSuspicion M σ pi.author, sched := idle σ.sched }
 
   | examineNone {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
       {ea : Option U.Seal}
@@ -156,7 +155,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (he : R.examiner σ p ea)
       (hno : ea = none ∨ ∃ e, ea = some e ∧ (e = pi.author ∨ e ∈ pi.carries)) :
       CoreStep M R σ (.examine p (.noExaminer ea) .hold)
-        { σ with sched := idle σ.sched }
+        { σ with index := noteSuspicion M σ pi.author, sched := idle σ.sched }
 
   | judge {σ : State U} {p : U.Pid} {a : ExamAns U} {v : Verdict}
       {k : Destination → U.Exec} {pi : PInfo U}
@@ -165,30 +164,57 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hp : σ.props p = some pi) :
       CoreStep M R σ (.judge p v.dest) (afterJudge σ p pi v.dest k)
 
-  | commitDone {σ : State U} {p : U.Pid} {pi : PInfo U} {ri : ReqInfo U}
+  | commitDone {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+      {ri : ReqInfo U}
       (hl : σ.audit.getLast? = some (.judge p .paradisus))
+      (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
       (hr : σ.reqs pi.req = some ri)
       (hok : Recheck σ ri (effectsOf pi.content))
       (hhc : ∀ e, e ∈ effectsOf pi.content → ¬ U.highConsequence e.verb) :
-      CoreStep M R σ (.commit p (effectsOf pi.content) .done) (afterCommit M σ pi)
+      CoreStep M R σ (.commit p (effectsOf pi.content) .done)
+        { (afterCommit M σ pi) with exec := upd σ.exec U.operator (k .paradisus) }
 
-  | commitOutside {σ : State U} {p : U.Pid} {pi : PInfo U} {ri : ReqInfo U}
+  | commitKeyed {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+      {ri : ReqInfo U} {n : Nat}
       (hl : σ.audit.getLast? = some (.judge p .paradisus))
+      (hi : instrOf M σ = .examine p k)
+      (hp : σ.props p = some pi)
+      (hr : σ.reqs pi.req = some ri)
+      (hok : Recheck σ ri (effectsOf pi.content))
+      (hhc : ∃ e, e ∈ effectsOf pi.content ∧ U.highConsequence e.verb)
+      (hkey : KeyConfirmed M σ (effectsOf pi.content) n) :
+      CoreStep M R σ (.commit p (effectsOf pi.content) .done)
+        { (afterCommit M σ pi) with
+          keys := σ.keys ++ [.spend n],
+          exec := upd σ.exec U.operator (k .paradisus) }
+
+  | commitOutside {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+      {ri : ReqInfo U}
+      (hl : σ.audit.getLast? = some (.judge p .paradisus))
+      (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
       (hr : σ.reqs pi.req = some ri)
       (hno : ¬ Recheck σ ri (effectsOf pi.content)) :
       CoreStep M R σ (.commit p (effectsOf pi.content) .outside)
         { (setStatus σ p pi .infernus) with
-          vessel := (fun s => σ.vessel s ∨ s = .content pi.content) }
+          vessel := (fun s => σ.vessel s ∨ s = .content pi.content),
+          workers := endHelpersOf σ p,
+          exec := upd σ.exec U.operator (k .infernus) }
 
-  | commitAwait {σ : State U} {p : U.Pid} {pi : PInfo U} {ri : ReqInfo U}
+  | commitAwait {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+      {ri : ReqInfo U}
       (hl : σ.audit.getLast? = some (.judge p .paradisus))
+      (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
       (hr : σ.reqs pi.req = some ri)
       (hok : Recheck σ ri (effectsOf pi.content))
-      (hhc : ∃ e, e ∈ effectsOf pi.content ∧ U.highConsequence e.verb) :
-      CoreStep M R σ (.commit p (effectsOf pi.content) .awaitsKey) (setStatus σ p pi .purgatorium)
+      (hhc : ∃ e, e ∈ effectsOf pi.content ∧ U.highConsequence e.verb)
+      (hnokey : ¬ ∃ n, KeyConfirmed M σ (effectsOf pi.content) n) :
+      CoreStep M R σ (.commit p (effectsOf pi.content) .awaitsKey)
+        { (setStatus σ p pi .purgatorium) with
+          keys := σ.keys ++ [.petition (M.mech.fpEffects (effectsOf pi.content))],
+          exec := upd σ.exec U.operator (k .purgatorium) }
 
   | consecrateOk {σ : State U} {v : U.Value} {k : Bool → U.Exec} {kid : U.ValidatorId}
       {val : Validator U} {d : U.Datum}
@@ -274,8 +300,8 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hc : c ∈ σ.circles)
       (hn : ¬ Invited σ a c) :
       CoreStep M R σ (.intrude a c d)
-        { σ with
-          vessel := (fun s => σ.vessel s ∨ s = .datum d),
+        { (terminate σ (fun _ inst => inst.spiritSeal = a) .relegated) with
+          vessel := (fun s => termVessel σ (fun _ inst => inst.spiritSeal = a) s ∨ s = .datum d),
           index := σ.index ++ [.damn a] }
 
   | compute {σ : State U} {e : U.Exec} {ds : List U.Decision} {rs : List U.Place}
@@ -299,6 +325,11 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hw : σ.sched.current = some U.operator)
       (hi : instrOf M σ = .fail k) :
       CoreStep M R σ (.step (.fail k)) (endRun σ (.failure k σ.audit.length))
+
+  | deny {σ : State U}
+      (hw : σ.sched.current = some U.operator)
+      (hd : Denied M R σ) :
+      CoreStep M R σ (.step (.fail U.denial)) (endRun σ (.failure U.denial σ.audit.length))
 
   | schedule {σ : State U} {w : U.Worker}
       (hn : σ.sched.current = none)
@@ -361,15 +392,6 @@ def Run (M : Core U) (R : RelRite U) (prog : M.lang.Program) (x : Exn U) : Prop 
   ∀ k, k < x.len → Step M R (x.st k) (x.lb k) (x.st (k + 1))
 
 def Complete (x : Exn U) : Prop := ∃ e, x.final.phase = .ended e
-
-structure InfExn (U : Universe) where
-  st : Nat → State U
-  lb : Nat → Label U
-
-def InfExn.take (y : InfExn U) (n : Nat) : Exn U := ⟨n, y.st, y.lb⟩
-
-def InfRun (M : Core U) (R : RelRite U) (prog : M.lang.Program) (y : InfExn U) : Prop :=
-  ∀ n, 0 < n → Run M R prog (y.take n)
 
 def Reachable (M : Core U) (R : RelRite U) (σ : State U) : Prop :=
   ∃ prog x, M.lang.WellTyped prog ∧ Run M R prog x ∧ x.final = σ

@@ -67,7 +67,8 @@ def usesInv (σ : State U) : Label U → List U.Inv
   | .turn w _ _ _ => parentOf σ w
   | .kill w _ => parentOf σ w
   | .examine p _ _ => invOfProp σ p
-  | .commit p es _ => invOfProp σ p ++ invTargets es
+  | .commit p es .done => invOfProp σ p ++ invTargets es
+  | .commit p _ _ => invOfProp σ p
   | _ => []
 
 /-- P3, Circle containment: a step uses an invocation only while its Circle is open. -/
@@ -84,6 +85,7 @@ def UsesHold (σ : State U) (i : U.Inv) : Label U → Prop
   | .turn w _ _ _ => parentOf σ w = [i]
   | .kill w _ => parentOf σ w = [i]
   | .request _ _ (.spirit j) _ _ _ => j = i
+  | .examine p _ _ => invOfProp σ p = [i]
   | _ => False
 
 /-- P4, release: in every complete run, every invocation has exactly one terminal step, and
@@ -204,12 +206,12 @@ def P8 (M : Core U) (R : RelRite U) : Prop :=
   (∀ σ f σ', Step M R σ (.launch f) σ' → σ.auth.wandPresent = false →
     ∀ p m, ¬ σ'.faculty p m) ∧
   (∀ σ p a v σ', Reachable M R σ → Step M R σ (.examine p a v) σ' →
-    ((∃ e, a = .noExaminer e) ∨ (∃ pi, σ.props p = some pi ∧ Suspected σ pi.author)) →
+    ((∃ e, a = .noExaminer e) ∨ (∃ pi, σ.props p = some pi ∧ Doubtful M σ pi.author)) →
     v = .hold)
 
 /-- P6(a), rite-parametric safety. -/
 def P6a (M : Core U) : Prop :=
-  ∀ R : RelRite U, P1 M R ∧ P2 M R ∧ P3 M R ∧ P4 M R ∧ P5 M R ∧ P7 M R ∧ P8 M R
+  ∀ R : RelRite U, R.Total → P1 M R ∧ P2 M R ∧ P3 M R ∧ P4 M R ∧ P5 M R ∧ P7 M R ∧ P8 M R
 
 /-- §9.5: R' is at least as strict as R. -/
 def AtLeastAsStrict (R' R : RelRite U) : Prop :=
@@ -239,7 +241,7 @@ def Exn.commits (x : Exn U) : List (Label U) := concatAll (x.labels.map commitOf
 
 /-- P6(b), trace inclusion for relational rites. -/
 def P6b (M : Core U) : Prop :=
-  ∀ R R' : RelRite U, AtLeastAsStrict R' R →
+  ∀ R R' : RelRite U, R'.Total → AtLeastAsStrict R' R →
     ∀ prog x', M.lang.WellTyped prog → Run M R' prog x' →
       ∃ x, Run M R prog x ∧ x.st 0 = x'.st 0 ∧ x.agentChoices = x'.agentChoices ∧
         x.obs = x'.obs ∧ x.commits = x'.commits
@@ -255,16 +257,18 @@ def P9 (M : Core U) (R : Rite U) : Prop :=
       Compat x.final.audit y.final.audit ∧
       (Complete x → Complete y → x.final.audit = y.final.audit)
 
-/-- §9.2, damnation: only `intrude` changes the Index in a run, only by appending a
-damnation, and *damnatus* is never left. -/
+/-- §9.2, damnation: in a run the Index changes only by `intrude` appending a damnation,
+or by examination appending a suspicion; and *damnatus* is never left. -/
 def DamnationLaw (M : Core U) (R : RelRite U) : Prop :=
   ∀ σ l σ', Reachable M R σ → Step M R σ l σ' →
-    (σ'.index = σ.index ∨ ∃ a c d, l = .intrude a c d ∧ σ'.index = σ.index ++ [.damn a]) ∧
+    (σ'.index = σ.index ∨
+      (∃ a c d, l = .intrude a c d ∧ σ'.index = σ.index ++ [.damn a]) ∨
+      (∃ p an v s, l = .examine p an v ∧ σ'.index = σ.index ++ [.suspect s])) ∧
     (∀ s, standing σ.index s = .damnatus → standing σ'.index s = .damnatus)
 
 /-- The whole of §8, for one model of the language and mechanics. -/
 def AllObligations (M : Core U) : Prop :=
-  P6a M ∧ P6b M ∧ (∀ R : Rite U, P9 M R) ∧ (∀ R : RelRite U, DamnationLaw M R)
+  P6a M ∧ P6b M ∧ (∀ R : Rite U, P9 M R) ∧ (∀ R : RelRite U, R.Total → DamnationLaw M R)
 
 end Annulus
 

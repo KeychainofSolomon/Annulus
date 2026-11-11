@@ -35,6 +35,7 @@ structure Universe where
   blank : Datum
   killOutcome : Outcome → Prop
   highConsequence : Verb → Prop
+  denial : FailClass
 
 def upd {α β : Type} (f : α → β) (a : α) (b : β) : α → β :=
   fun x => if x = a then b else f x
@@ -68,10 +69,6 @@ def Mark.join (a b : Mark) : Mark := if a.rank ≤ b.rank then b else a
 def joinAll : List Mark → Mark
   | [] => .clean
   | a :: as => a.join (joinAll as)
-
-def Mark.MaySteer (m : Mark) : Prop := m ≠ .quarantined
-
-def Mark.MaySteerGrave (m : Mark) : Prop := m.rank < Mark.consecrated.rank
 
 inductive Verdict where
   | approve
@@ -109,6 +106,13 @@ inductive PStatus where
 def Unjudged : PStatus → Prop
   | .pending => True
   | .complete => True
+  | _ => False
+
+/-- Ruling 2026-11-11: held work does not outlive its invocation. -/
+def Lingers : PStatus → Prop
+  | .pending => True
+  | .complete => True
+  | .judged .purgatorium => True
   | _ => False
 
 /-- §9.2, an invocation's life. -/
@@ -226,7 +230,7 @@ inductive Instr (U : Universe) where
 
 /-- §9.2: the transitions. Each label is also the audit record of its step. -/
 inductive Label (U : Universe) where
-  | launch (fp : U.Place → U.Hash)
+  | launch (fp : U.Place → Option (U.Hash × Mark))
   | openC (c : U.Circle)
   | closeC (c : U.Circle)
   | invoke (i : U.Inv) (s : U.Seal) (c : U.Circle) (w : U.Worker) (admitted : Bool) (ink : Nat)
@@ -265,6 +269,12 @@ inductive IxEntry (U : Universe) where
   | suspect (s : U.Seal)
   | clear (s : U.Seal)
 
+/-- Ruling 2026-11-11: sealed petitions for the second key, append-only. -/
+inductive KeyEntry (U : Universe) where
+  | petition (fp : U.Hash)
+  | confirmed (fp : U.Hash)
+  | spend (n : Nat)
+
 /-- §9.3c: the store of grave grants, append-only. -/
 inductive GraveEntry (U : Universe) where
   | grant (fv fo fk : U.Hash)
@@ -296,6 +306,9 @@ structure Mech (U : Universe) where
   fpCode : U.Code → U.Hash
   chainIx : List (IxEntry U) → U.Hash
   chainGrave : List (GraveEntry U) → U.Hash
+  chainKeys : List (KeyEntry U) → U.Hash
+  fpEffects : List (Effect U) → U.Hash
+  resembles : List (IxEntry U) → U.Seal → List (Label U) → Prop
   runValidator : U.Code → U.Datum → Option (Label U) → Nat → Option Bool
   apply : Effect U → U.Datum → U.Datum
 

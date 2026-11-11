@@ -62,6 +62,7 @@ structure Auth (U : Universe) where
   manifestSigned : Prop
   indexRoot : U.Hash
   graveRoot : U.Hash
+  keysRoot : U.Hash
 
 structure Sched (U : Universe) where
   current : Option U.Worker
@@ -94,6 +95,7 @@ structure State (U : Universe) where
   index : List (IxEntry U)
   vessel : Sealed U → Prop
   grave : List (GraveEntry U)
+  keys : List (KeyEntry U)
   sched : Sched U
 
 /-- The simulated will and scheduler (`dynamic.md` §5.6, `concurrency.md` §4). -/
@@ -141,10 +143,21 @@ def Rite.toRel (R : Rite U) : RelRite U where
 
 def idle (s : Sched U) : Sched U := { s with current := none }
 
+/-- The program sees only the places it may read. -/
+def visibleWorld (σ : State U) (p : U.Place) : U.Datum × Mark :=
+  if σ.faculty p U.read ∧ ¬ σ.reserved p U.read then σ.world p else (U.blank, Mark.clean)
+
 def instrOf (M : Core U) (σ : State U) : Instr U :=
-  M.lang.next (σ.exec U.operator) σ.data σ.mark σ.world
+  M.lang.next (σ.exec U.operator) σ.data σ.mark (visibleWorld σ)
 
 def Suspected (σ : State U) (s : U.Seal) : Prop := standing σ.index s = .suspected
+
+/-- Ruling 2026-11-11: suspicion is entered in the Index, at examination. -/
+def NewlySuspect (M : Core U) (σ : State U) (s : U.Seal) : Prop :=
+  standing σ.index s = .unknown ∧ M.mech.resembles σ.index s σ.audit
+
+def noteSuspicion (M : Core U) (σ : State U) (s : U.Seal) : List (IxEntry U) :=
+  if NewlySuspect M σ s then σ.index ++ [.suspect s] else σ.index
 
 def Barred (σ : State U) (s : U.Seal) : Prop :=
   standing σ.index s = .proscribed ∨ standing σ.index s = .damnatus
@@ -169,15 +182,6 @@ def CapContained (σ : State U) : Addressee U → U.Place → U.Perm → Prop
   | .spirit _, p, m => σ.faculty p m ∧ ¬ σ.reserved p m
   | .angel _, p, m => σ.faculty p m
 
-/-- §3.1 C5: what a worker holds now. -/
-def held (σ : State U) (w : U.Worker) (r : Power U) : Prop :=
-  match σ.workers w with
-  | none => False
-  | some wi =>
-      if wi.isHelper = true then wi.handed r
-      else ∃ q ri pi, σ.reqs q = some ri ∧ ri.worker = w ∧ ri.handed r ∧
-        σ.props ri.prop = some pi ∧ Unjudged pi.status
-
 /-- §3.3: the core's own re-check at commit. -/
 def Recheck (σ : State U) (ri : ReqInfo U) (es : List (Effect U)) : Prop :=
   (∀ i, ri.to = .spirit i → Live σ i) ∧
@@ -197,8 +201,12 @@ def accepts (M : Core U) (val : Validator U) (d : U.Datum) (o : Option (Label U)
   | some true => true
   | _ => false
 
-def finalVerdict (σ : State U) (pi : PInfo U) (v0 cb : Verdict) : Verdict :=
-  if Suspected σ pi.author then .hold else v0.meet cb
+/-- §9.6 P8: doubt. -/
+def Doubtful (M : Core U) (σ : State U) (s : U.Seal) : Prop :=
+  Suspected σ s ∨ Barred σ s ∨ NewlySuspect M σ s
+
+def finalVerdict (M : Core U) (σ : State U) (pi : PInfo U) (v0 cb : Verdict) : Verdict :=
+  if Doubtful M σ pi.author then .hold else v0.meet cb
 
 def madeMark (σ : State U) (m : Made U) : Mark :=
   joinAll (m.ins.map σ.mark ++ m.places.map (fun p => (σ.world p).2) ++
@@ -234,11 +242,11 @@ def termWorkers (σ : State U) (P : U.Inv → Inst U → Prop) (w : U.Worker) : 
 def termProps (σ : State U) (P : U.Inv → Inst U → Prop) (p : U.Pid) : Option (PInfo U) :=
   match σ.props p with
   | some pi =>
-      if Unjudged pi.status ∧ OfInv σ P pi then some { pi with status := .abandoned } else some pi
+      if Lingers pi.status ∧ OfInv σ P pi then some { pi with status := .abandoned } else some pi
   | none => none
 
 def termVessel (σ : State U) (P : U.Inv → Inst U → Prop) (s : Sealed U) : Prop :=
-  σ.vessel s ∨ ∃ p pi, σ.props p = some pi ∧ Unjudged pi.status ∧ OfInv σ P pi ∧
+  σ.vessel s ∨ ∃ p pi, σ.props p = some pi ∧ Lingers pi.status ∧ OfInv σ P pi ∧
     s = .content pi.content
 
 /-- §9.2: the terminal step of every live invocation satisfying P. -/
@@ -255,11 +263,11 @@ def IsAngelWork (σ : State U) (pi : PInfo U) : Prop :=
 def abandonAngelProps (σ : State U) (p : U.Pid) : Option (PInfo U) :=
   match σ.props p with
   | some pi =>
-      if Unjudged pi.status ∧ IsAngelWork σ pi then some { pi with status := .abandoned } else some pi
+      if Lingers pi.status ∧ IsAngelWork σ pi then some { pi with status := .abandoned } else some pi
   | none => none
 
 def abandonAngelVessel (σ : State U) (s : Sealed U) : Prop :=
-  σ.vessel s ∨ ∃ p pi, σ.props p = some pi ∧ Unjudged pi.status ∧ IsAngelWork σ pi ∧
+  σ.vessel s ∨ ∃ p pi, σ.props p = some pi ∧ Lingers pi.status ∧ IsAngelWork σ pi ∧
     s = .content pi.content
 
 /-- §9.2: the end of a run forces every terminal step, and abandons angels' unjudged work. -/
@@ -329,7 +337,9 @@ def afterJudge (σ : State U) (p : U.Pid) (pi : PInfo U) (d : Destination)
     { σ with
       props := upd σ.props p (some { pi with status := .judged d }),
       exec := upd σ.exec U.operator (k d) }
-  if d = .infernus then
+  if d = .paradisus then
+    { σ with props := upd σ.props p (some { pi with status := .judged d }) }
+  else if d = .infernus then
     { σa with
       vessel := (fun s => σa.vessel s ∨ s = .content pi.content),
       workers := endHelpersOf σa p }
@@ -348,6 +358,48 @@ def afterCommit (M : Core U) (σ : State U) (pi : PInfo U) : State U :=
 def setStatus (σ : State U) (p : U.Pid) (pi : PInfo U) (d : Destination) : State U :=
   { σ with props := upd σ.props p (some { pi with status := .judged d }) }
 
+/-- Ruling 2026-11-11: a confirmed, unspent sealed petition for exactly this work. -/
+def KeyConfirmed (M : Core U) (σ : State U) (es : List (Effect U)) (n : Nat) : Prop :=
+  σ.keys[n]? = some (.confirmed (M.mech.fpEffects es)) ∧ ¬ (KeyEntry.spend n) ∈ σ.keys
+
+/-- A request the core must deny. -/
+def RequestBad (R : RelRite U) (σ : State U) (f : U.ReqForm) (w : U.Worker) :
+    Addressee U → Prop
+  | .spirit i =>
+      ¬ (∃ inst, σ.invs i = some inst ∧ inst.status = .live ∧ inst.circle ∈ σ.circles) ∨
+      ∃ asked, R.signature σ f asked ∧ ∃ r, asked r ∧ ¬ Contained σ (.spirit i) r
+  | .angel a =>
+      σ.workers w ≠ none ∨
+      ∃ asked, R.signature σ f asked ∧ ∃ r, asked r ∧ ¬ Contained σ (.angel a) r
+
+/-- `dynamic.md` §3, §6.2: what the program asks for and cannot have is a denial (class 2). -/
+def Denied (M : Core U) (R : RelRite U) (σ : State U) : Prop :=
+  match instrOf M σ with
+  | .openC c _ => Label.openC c ∈ σ.audit
+  | .closeC _ => σ.circles = []
+  | .invoke i _ w _ _ => σ.circles = [] ∨ σ.invs i ≠ none ∨ σ.workers w ≠ none
+  | .request to f q p w _ => σ.reqs q ≠ none ∨ σ.props p ≠ none ∨ RequestBad R σ f w to
+  | .examine p _ =>
+      ∀ pi, σ.props p = some pi →
+        ¬ (pi.status = .pending ∨ pi.status = .complete ∨ pi.status = .judged .purgatorium)
+  | .release i _ => σ.invs i = none
+  | .relegate i _ => ¬ Live σ i
+  | .compute _ _ rs made =>
+      (∃ p, p ∈ rs ∧ ¬ (σ.faculty p U.read ∧ ¬ σ.reserved p U.read)) ∨
+      (∃ m, m ∈ made ∧ (σ.data m.v ≠ none ∨ σ.origin m.v ≠ none ∨ ∃ p, p ∈ m.places ∧ ¬ p ∈ rs))
+  | _ => False
+
+/-- §9.5: a relational rite gives at least one answer to every question. -/
+def RelRite.Total (R : RelRite U) : Prop :=
+  (∀ σ a, ∃ b, R.admit σ a b) ∧
+  (∀ σ f, ∃ h, R.signature σ f h) ∧
+  (∀ σ p, ∃ e, R.examiner σ p e) ∧
+  (∀ σ p e, ∃ v, R.verdict σ p e v) ∧
+  (∀ σ p, ∃ v, R.counterbalance σ p v) ∧
+  (∀ σ b, ∃ n, R.bound σ b n) ∧
+  (∀ σ w, ∃ o, R.willOpen σ w o) ∧
+  (∀ σ v, ∃ k, R.validator σ v k)
+
 def Blocked (M : Core U) (σ : State U) : Prop :=
   ∃ p k pi, instrOf M σ = .examine p k ∧ σ.props p = some pi ∧ pi.status = .pending
 
@@ -364,6 +416,8 @@ def LaunchChecks (M : Core U) (σ : State U) : Prop :=
     σ.constitution.manifest k = some (M.mech.fpCode val.code)) ∧
   M.mech.chainIx σ.index = σ.auth.indexRoot ∧
   M.mech.chainGrave σ.grave = σ.auth.graveRoot ∧
+  M.mech.chainKeys σ.keys = σ.auth.keysRoot ∧
+  σ.auth.wandLock ≠ .master ∧
   (σ.auth.wandPresent = true → ¬ σ.auth.wandFp ∈ σ.auth.revoked ∧ σ.auth.facultySigned)
 
 def GraveMatch (M : Core U) (σ : State U) (v : U.Value) (g : Nat) (kid : Option U.ValidatorId) :

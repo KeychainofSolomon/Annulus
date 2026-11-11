@@ -1,4 +1,4 @@
-use std::process::{Command, Stdio};
+use std::process::Command;
 use std::thread;
 
 use annulus::parser::MAX_EXPRESSION_DEPTH;
@@ -53,8 +53,8 @@ fn closed_output_ends_quietly() {
     std::fs::write(&source, "PRINT 1;\n".repeat(200_000)).expect("write program");
     let mut child = Command::new(BINARY)
         .arg(&source)
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
+        .stdout(std::process::Stdio::piped())
+        .stderr(std::process::Stdio::piped())
         .spawn()
         .expect("binary should start");
     drop(child.stdout.take());

@@ -196,7 +196,7 @@ The Dominations invocation is the most legible and shows the structure every Key
 | The Trinity shown only through names and seals (frame 8) | THE ABSOLUTE is never an object: programs refer to it only by name and seal, never hold or call it |
 | Nine Keys, one per order and heaven | the typed hierarchy of ANGELICUS: order, heaven, planet, sephirah, choir, rulers |
 | Divine name and attribute per heaven (El / Hesed) | the root of every ORIGIN chain |
-| "From the Superiour to the Inferiour" | authority can only be derived downward: *nulla potestas sibi ipsi oritur* |
+| "From the Superiour to the Inferiour" | authority can only be derived downward: *nulla potestas a se ipsa oritur* |
 | Several names for one angel; "or" versus "&" | an identity with aliases (IDENTITAS), distinct from co-rulers |
 | Two-sided seals: order on the left, individual on the right | an order-level seal and a personal seal: authority of the office versus identity of the officer |
 | "Generall & respective offices" | each angel holds its order's office plus its own (OFFICIUM) |

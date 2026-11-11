@@ -104,7 +104,7 @@ All [O].
 | `DIMITTE` | "send away" | dismiss | [O] (kept, ruled 2026-11-10) |
 | `RELEGA` | "banish" | banish; results go to the Vessel | [O] word (kept, ruled 2026-11-10); [S] act: the fire curse (BnF 1524 p215) |
 | `NOMEN` | "name" | references a divine name in the Constitution | [S] binding "by" the names |
-| `SPIRITUS` / `ANGELUS` | "spirit" / "angel" | register types; also refer to an entry by number, e.g. `SPIRITUS 34` | [O] |
+| `SPIRITUS` / `ANGELUS` | "spirit" / "angel" | register types; also refer to an entry by number, declined by its place: nominative `SPIRITUS 34` / `ANGELUS 34` alone, accusative `INVOCA SPIRITUM 34` / `ANGELUM 34`, genitive `SIGILLUM SPIRITUS 34` / `SIGILLUM ANGELI 34` (amended 2026-11-11, as `GERE ANULUM` and `INVOCA REGEM` already are) | [O] |
 
 ### 3.3 The apparatus (inside a Circle)
 
@@ -181,13 +181,14 @@ primary        = integer | string | "VERUM" | "FALSUM" | "NIHIL"
 sequence       = "[" , [ arguments ] , "]" ;
 
 rite_expression = invocation | request | seal | ink | name | entry ;
-invocation     = "INVOCA" , ( "REGEM" , identifier | entity , "AD" , "OFFICIUM" , identifier ) ;
+invocation     = "INVOCA" , ( "REGEM" , identifier | object , "AD" , "OFFICIUM" , identifier ) ;
 request        = "PETE" , identifier , "(" , [ arguments ] , ")" ;
-seal           = "SIGILLUM" , entity ;
+seal           = "SIGILLUM" , owner ;
 ink            = "ATRAMENTUM" , string ;                 (* draws raw ink of that class *)
 name           = "NOMEN" , string ;
-entity         = identifier | entry ;
-entry          = ( "SPIRITUS" | "ANGELUS" ) , integer ;
+entry          = ( "SPIRITUS" | "ANGELUS" ) , integer ;                      (* nominative *)
+object         = identifier | ( "SPIRITUM" | "ANGELUM" ) , integer ;       (* accusative, after INVOCA *)
+owner          = identifier | ( "SPIRITUS" | "ANGELI" ) , integer ;        (* genitive, after SIGILLUM *)
 ```
 
 **Notes:**

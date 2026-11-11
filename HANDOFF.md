@@ -306,6 +306,9 @@ Discussed with the owner, not built:
 - **Watch (standing instruction):** the Lean model and `core.md` §9 now state the same rules in two places. Treat `core.md` as normative and change both together; say so if they drift.
 - **Ruled by the owner (2026-11-11, later):** P5, **judgement releases** (verdicts, destinations and commits go into D); intrusion, **an invited agent outside its open invocation in that Circle is an intruder, damned**. Both written into `core.md` §9 and `authority.md` §6.2a, §11, with the other formalisation fixes; the Lean model matches and CI passes. Still open: the store for second-key confirmations, and where suspicion is recorded during a run (`formal/README.md`, findings 3 and 10).
 - **Next:** the Lean audit (`AUDIT_BRIEF.md`), then findings 3 and 10, then the owner's approval of step 1.
-- **Ruled by the owner (2026-11-11, 15:15), not yet written into the spec:** findings 3 and 10.
+- **Ruled by the owner (2026-11-11, 15:15), now written into `core.md` §9 and the Lean:** findings 3 and 10.
   - **Two keys: sealed petition.** At the end of the run, approved work awaiting the second key is sealed as a petition: the fingerprint of its exact effects. The owner confirms it with the wand outside the session; a later run may commit that exact work once (a one-use grant, stored like grave grants).
   - **Suspicion: appended to the Index.** A second step that may change the Index during a run, `suspect`, appends *suspected* for the seal; it persists across runs until the owner clears it outside a session.
+- **Lean audit 1 done (2026-11-11):** an independent Claude agent; 14 findings, all confirmed, all settled (`formal/README.md`, "The Lean audit"). The owner ruled: **damnation casts out everywhere** (every open invocation of that seal relegated) and **held work is abandoned when its spirit is released**. P3 was false as stated (a failed commit counted its targets); fixed. Denials now end the run, as `dynamic.md` §3 says. CI passes.
+- **Next:** a second Lean audit by a different AI (the owner pastes `AUDIT_BRIEF.md`, `docs/spec/core.md` and `formal/` into ChatGPT or Gemini), then the owner's approval ends step 1.
+

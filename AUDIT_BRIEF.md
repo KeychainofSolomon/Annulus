@@ -4,7 +4,7 @@ You are auditing `formal/`, a Lean 4 model of `docs/spec/core.md` §9, against t
 
 **Before you start:** the model must type-check (`lake build` in `formal/`). If it does not, report the errors and stop.
 
-**Read first:** `formal/README.md`, especially "Modelling choices" and "What formalising found". Those findings are known; do not report them again, but do report if one is wrong.
+**Read first:** `formal/README.md`, especially "Modelling choices", "What formalising found" and "The Lean audit". Those findings (1–16 and A1–A14) are known and settled; do not report them again, but do report if one is wrong or wrongly settled. This is the second audit of the model; the first was by a Claude agent, so look especially for what such an auditor might share Claude's blind spots on.
 
 ## Scope
 

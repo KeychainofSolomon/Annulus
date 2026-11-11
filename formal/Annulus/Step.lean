@@ -134,6 +134,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hr : σ.reqs pi.req = some ri)
       (ho : R.willOpen σ w o)
       (hk : ¬ U.killOutcome o)
+      (hang : ∀ a, wi.owner = some (.angel a) → U.angelOpen o)
       (hsim : σ.mode = .simulated → o = M.sim.will σ w ∧ (c, fin) = M.sim.turn σ w)
       (hfin : fin = true → wi.isHelper = false)
       (hc : ContribOK R σ wi ri pi c) :

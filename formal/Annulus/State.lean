@@ -188,14 +188,16 @@ def CapContained (σ : State U) : Addressee U → U.Place → U.Perm → Prop
   | .spirit _, p, m => σ.faculty p m ∧ ¬ σ.reserved p m
   | .angel _, p, m => σ.faculty p m
 
-/-- §3.3: the core's own re-check at commit. A verb that creates may only create, and a
-verb that writes may only write: `creare` needs a place that does not yet exist, `scribere`
-one that does (`offices.md` §1.3, review 2026-11-11). -/
+/-- §3.3: the core's own re-check at commit. A verb that creates may only create, a verb
+that writes may only write, and a verb that removes may only remove: `creare` needs a place
+that does not yet exist, `scribere` and `delere` one that does (`offices.md` §1.3; review and
+the technicality filter, 2026-11-11). -/
 def Recheck (σ : State U) (ri : ReqInfo U) (es : List (Effect U)) : Prop :=
   (∀ i, ri.to = .spirit i → Live σ i) ∧
   (∀ e, e ∈ es → ri.handed e.needs ∧ Contained σ ri.to e.needs) ∧
   (∀ e p, e ∈ es → U.creates e.verb → e.target = .place p → (σ.world p).1 = U.blank) ∧
-  ∀ e p, e ∈ es → U.writes e.verb → e.target = .place p → (σ.world p).1 ≠ U.blank
+  (∀ e p, e ∈ es → U.writes e.verb → e.target = .place p → (σ.world p).1 ≠ U.blank) ∧
+  ∀ e p, e ∈ es → U.removes e.verb → e.target = .place p → (σ.world p).1 ≠ U.blank
 
 def applyEffects (M : Core U) :
     List (Effect U) → (U.Place → U.Datum × Mark) → (U.Place → U.Datum × Mark)

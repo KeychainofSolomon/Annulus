@@ -370,7 +370,7 @@ def Initial (M : Core U) (prog : M.lang.Program) (σ : State U) : Prop :=
   (∀ i, σ.invs i = none) ∧
   (∀ q, σ.reqs q = none) ∧
   (∀ p, σ.props p = none) ∧
-  (∀ v, σ.data v = none ∧ σ.origin v = none) ∧
+  (∀ v, σ.data v = none ∧ σ.origin v = none ∧ σ.valueCircle v = none) ∧
   σ.sched.current = none ∧
   σ.sched.order = []
 

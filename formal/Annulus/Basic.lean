@@ -44,6 +44,11 @@ def IsPre {α : Type} (a b : List α) : Prop := ∃ t, a ++ t = b
 
 def Compat {α : Type} (a b : List α) : Prop := IsPre a b ∨ IsPre b a
 
+def firstSome {α : Type} : List (Option α) → Option α
+  | [] => none
+  | some a :: _ => some a
+  | none :: rest => firstSome rest
+
 def concatAll {α : Type} : List (List α) → List α
   | [] => []
   | l :: ls => l ++ concatAll ls
@@ -212,6 +217,7 @@ structure Made (U : Universe) where
   d : U.Datum
   ins : List U.Value
   places : List U.Place
+  rite : Bool
 
 /-- What the Operator's worker does next, as its program decides. -/
 inductive Instr (U : Universe) where
@@ -308,6 +314,9 @@ structure Mech (U : Universe) where
   chainGrave : List (GraveEntry U) → U.Hash
   chainKeys : List (KeyEntry U) → U.Hash
   fpEffects : List (Effect U) → U.Hash
+  verify : U.Hash → U.Hash → U.Hash → Prop
+  digestFaculty : (U.Place → U.Perm → Prop) → (U.Place → U.Perm → Prop) → U.Hash
+  digestManifest : (U.ValidatorId → Option U.Hash) → U.Hash
   resembles : List (IxEntry U) → U.Seal → List (Label U) → Prop
   runValidator : U.Code → U.Datum → Option (Label U) → Nat → Option Bool
   apply : Effect U → U.Datum → U.Datum

@@ -71,17 +71,29 @@ def usesInv (σ : State U) : Label U → List U.Inv
   | .commit p _ _ => invOfProp σ p
   | _ => []
 
-/-- P3, Circle containment: a step uses an invocation only while its Circle is open. -/
+/-- The values a step uses. -/
+def usesVal (M : Core U) (σ : State U) : Label U → List U.Value
+  | .step (.go _ _) =>
+      (match instrOf M σ with
+       | .compute _ _ _ made => concatAll (made.map (fun m => m.ins))
+       | _ => [])
+  | .consecrate v _ _ => [v]
+  | .consecrateGrave v _ _ _ => [v]
+  | _ => []
+
+/-- P3, Circle containment: a step uses an invocation, a proposal or a Circle-bound value
+only while its Circle is open. -/
 def P3 (M : Core U) (R : RelRite U) : Prop :=
   ∀ σ l σ', Reachable M R σ → Step M R σ l σ' →
-    ∀ i, i ∈ usesInv σ l → ∃ inst, σ.invs i = some inst ∧ inst.circle ∈ σ.circles
+    (∀ i, i ∈ usesInv σ l → ∃ inst, σ.invs i = some inst ∧ inst.circle ∈ σ.circles) ∧
+    (∀ v c, v ∈ usesVal M σ l → σ.valueCircle v = some c → c ∈ σ.circles)
 
 def TerminalAt (x : Exn U) (n : Nat) (i : U.Inv) : Prop :=
   Live (x.st n) i ∧ ¬ Live (x.st (n + 1)) i
 
 /-- §9.2: use of Hold(i). -/
 def UsesHold (σ : State U) (i : U.Inv) : Label U → Prop
-  | .commit p _ .done => invOfProp σ p = [i]
+  | .commit p es .done => invOfProp σ p = [i] ∨ i ∈ invTargets es
   | .turn w _ _ _ => parentOf σ w = [i]
   | .kill w _ => parentOf σ w = [i]
   | .request _ _ (.spirit j) _ _ _ => j = i
@@ -124,23 +136,10 @@ def endObs : Phase U → List (Obs U)
 def Exn.obs (x : Exn U) : List (Obs U) :=
   concatAll (x.labels.map obsOf) ++ endObs x.final.phase
 
-/-- What a proposal's content does not include: the shape of a turn, without its data. -/
-inductive Shape (U : Universe) where
-  | respond (v : U.Value)
-  | effects
-  | spawn (w : U.Worker) (h : Power U → Prop) (n : Nat)
-  | idle
-
-def Contrib.shape : Contrib U → Shape U
-  | .respond v _ => .respond v
-  | .effects _ => .effects
-  | .spawn w h n => .spawn w h n
-  | .idle => .idle
-
 /-- The choices P5 holds fixed: schedule, will, rite answers, intrusions. -/
 inductive Choice (U : Universe) where
   | sched (w : U.Worker)
-  | will (w : U.Worker) (o : U.Outcome) (s : Shape U) (finish : Bool)
+  | will (w : U.Worker) (o : U.Outcome)
   | kill (w : U.Worker) (o : U.Outcome)
   | admit (i : U.Inv) (b : Bool) (n : Nat)
   | sig (q : U.Req) (asked : Power U → Prop)
@@ -150,7 +149,7 @@ inductive Choice (U : Universe) where
 
 def choiceOf : Label U → List (Choice U)
   | .schedule w => [.sched w]
-  | .turn w o c fin => [.will w o c.shape fin]
+  | .turn w o _ _ => [.will w o]
   | .kill w o => [.kill w o]
   | .invoke i _ _ _ b n => [.admit i b n]
   | .request q _ _ _ _ asked => [.sig q asked]
@@ -249,7 +248,8 @@ def P6b (M : Core U) : Prop :=
 def NoIntrusion (x : Exn U) : Prop :=
   ∀ k a c d, k < x.len → x.lb k ≠ .intrude a c d
 
-/-- P9, replay, over a functional rite. README, finding 11: intrusions excluded. -/
+/-- P9, replay, over a functional rite. README, finding 11: intrusions excluded. Complete
+runs give equal audits; unfinished runs give audits of which one extends the other. -/
 def P9 (M : Core U) (R : Rite U) : Prop :=
   ∀ prog, M.lang.WellTyped prog →
     ∀ x y, Run M R.toRel prog x → Run M R.toRel prog y →

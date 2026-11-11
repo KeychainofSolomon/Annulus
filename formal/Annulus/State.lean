@@ -58,8 +58,9 @@ structure Auth (U : Universe) where
   wandPresent : Bool
   wandLock : WandLock
   revoked : List U.Hash
-  facultySigned : Prop
-  manifestSigned : Prop
+  facultySig : U.Hash
+  ownerFp : U.Hash
+  manifestSig : U.Hash
   indexRoot : U.Hash
   graveRoot : U.Hash
   keysRoot : U.Hash
@@ -90,6 +91,7 @@ structure State (U : Universe) where
   world : U.Place → U.Datum × Mark
   data : U.Value → Option U.Datum
   mark : U.Value → Mark
+  valueCircle : U.Value → Option U.Circle
   origin : U.Value → Option (Label U)
   audit : List (Label U)
   index : List (IxEntry U)
@@ -214,10 +216,15 @@ def madeMark (σ : State U) (m : Made U) : Mark :=
      | [] => []
      | _ => [Mark.outside]))
 
+/-- `static.md` §4.7: a rite value, or one computed from one, is bound to its Circle. -/
+def madeCircle (σ : State U) (m : Made U) : Option U.Circle :=
+  if m.rite = true then σ.circles.head? else firstSome (m.ins.map σ.valueCircle)
+
 def addMade (l : Label U) (σ : State U) (m : Made U) : State U :=
   { σ with
     data := upd σ.data m.v (some m.d),
     mark := upd σ.mark m.v (madeMark σ m),
+    valueCircle := upd σ.valueCircle m.v (madeCircle σ m),
     origin := upd σ.origin m.v (some l) }
 
 /-- Proposals belonging to invocations that satisfy P. -/
@@ -411,14 +418,16 @@ def Eligible (M : Core U) (σ : State U) (w : U.Worker) : Prop :=
 
 /-- §9.1, §9.3a, §9.3c, `proscription.md` §3.2: what `launch` checks. -/
 def LaunchChecks (M : Core U) (σ : State U) : Prop :=
-  σ.auth.manifestSigned ∧
+  M.mech.verify σ.auth.ownerFp (M.mech.digestManifest σ.constitution.manifest) σ.auth.manifestSig ∧
+  ¬ σ.auth.ownerFp ∈ σ.auth.revoked ∧
   (∀ k val, σ.constitution.validators k = some val →
     σ.constitution.manifest k = some (M.mech.fpCode val.code)) ∧
   M.mech.chainIx σ.index = σ.auth.indexRoot ∧
   M.mech.chainGrave σ.grave = σ.auth.graveRoot ∧
   M.mech.chainKeys σ.keys = σ.auth.keysRoot ∧
   σ.auth.wandLock ≠ .master ∧
-  (σ.auth.wandPresent = true → ¬ σ.auth.wandFp ∈ σ.auth.revoked ∧ σ.auth.facultySigned)
+  (σ.auth.wandPresent = true → ¬ σ.auth.wandFp ∈ σ.auth.revoked ∧
+    M.mech.verify σ.auth.wandFp (M.mech.digestFaculty σ.faculty σ.reserved) σ.auth.facultySig)
 
 def GraveMatch (M : Core U) (σ : State U) (v : U.Value) (g : Nat) (kid : Option U.ValidatorId) :
     Prop :=

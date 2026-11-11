@@ -4,7 +4,7 @@ Written 2026-11-10 for the next Claude session. Read this first, then `docs/STAT
 
 ## The person
 
-The owner. Writes the design handoffs himself.
+The owner writes the design handoffs himself. **Privacy rule (the owner, 2026-11-11):** never write the owner's name or any personal detail about him (background, experience, devices, location) in this repository, its commit messages or anything else on GitHub. Refer to him only as "the owner".
 
 ## The project
 

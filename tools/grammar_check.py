@@ -8,7 +8,7 @@ KEYWORDS = {
     "FACULTAS", "CIRCULUS", "RITU", "INTENTIO", "INVOCA", "AD", "OFFICIUM", "PETE",
     "SIGILLUM", "INSCRIBE", "ATRAMENTO", "ATRAMENTUM", "CONSECRA", "EXAMINA", "RESPONSUM",
     "RATUM", "SUSPENSUM", "IRRITUM", "VADE", "PACE", "DIMITTE", "RELEGA",
-    "NOMEN", "SPIRITUS", "ANGELUS",
+    "NOMEN", "SPIRITUS", "ANGELUS", "SPIRITUM", "ANGELUM", "ANGELI",
     "GERE", "ANULUM", "VIRGAM", "HEXAGRAMMUM", "PENTAGRAMMUM", "OFFER", "CONSTRINGE", "APPELLA", "VETA", "REGEM",
     "HORA", "DIES", "ADVOCA", "TRIANGULUM", "VAS",
 }
@@ -419,7 +419,7 @@ class Parser:
             if self.accept("REGEM"):
                 self.expect_kind("identifier")
                 return False
-            self.entity()
+            self.entity(("SPIRITUM", "ANGELUM"))
             self.expect("AD")
             self.expect("OFFICIUM")
             self.expect_kind("identifier")
@@ -430,7 +430,7 @@ class Parser:
             self.arguments_until(")")
             return False
         if self.accept("SIGILLUM"):
-            self.entity()
+            self.entity(("SPIRITUS", "ANGELI"))
             return False
         if self.accept("ATRAMENTUM"):
             self.expect_kind("string")
@@ -439,14 +439,16 @@ class Parser:
             self.expect_kind("string")
             return False
         if self.at("SPIRITUS") or self.at("ANGELUS"):
-            self.entity()
+            self.entity(("SPIRITUS", "ANGELUS"))
             return False
         self.fail("expected an expression")
 
-    def entity(self):
-        if self.at("SPIRITUS") or self.at("ANGELUS"):
+    def entity(self, forms):
+        if any(self.at(f) for f in forms):
             self.pos += 1
             self.expect_kind("integer")
+        elif self.at_kind("keyword"):
+            self.fail(f"expected a name, {forms[0]} or {forms[1]}")
         else:
             self.expect_kind("identifier")
 
@@ -456,28 +458,48 @@ def check(text):
     parser.program()
 
 
-def main(directory):
+def outcome(text):
+    try:
+        check(text)
+        return None
+    except GrammarError as error:
+        where = str(error).split(":", 1)[0].strip("()").split(",")
+        return [int(where[0]), int(where[1])]
+
+
+def main(directory, write=None):
     root = pathlib.Path(directory)
     failures = 0
     total = 0
+    record = {}
     for expected in ("accept", "reject"):
         for path in sorted((root / expected).glob("*.annulus")):
             total += 1
             try:
                 check(path.read_text(encoding="utf-8"))
-                outcome, detail = "accept", ""
+                outcome_, detail = "accept", ""
             except GrammarError as error:
-                outcome, detail = "reject", str(error)
-            if outcome != expected:
+                outcome_, detail = "reject", str(error)
+            record[f"{expected}/{path.name}"] = outcome(path.read_text(encoding="utf-8"))
+            if outcome_ != expected:
                 failures += 1
-                print(f"FAIL {expected}/{path.name}: got {outcome} {detail}")
+                print(f"FAIL {expected}/{path.name}: got {outcome_} {detail}")
             elif expected == "reject":
                 print(f"ok   reject/{path.name}: {detail}")
             else:
                 print(f"ok   accept/{path.name}")
     print(f"{total - failures} of {total} as expected")
+    if write:
+        import json
+        pathlib.Path(write).write_text(json.dumps(record, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     return 1 if failures else 0
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1] if len(sys.argv) > 1 else "tests/grammar"))
+    args = sys.argv[1:]
+    write = None
+    if "--write" in args:
+        i = args.index("--write")
+        write = args[i + 1]
+        del args[i:i + 2]
+    sys.exit(main(args[0] if args else "tests/grammar", write))

@@ -11,7 +11,7 @@ CIRCULUS RITU rudd {
     INTENTIO "find where dividere fails";
     GERE PENTAGRAMMUM;
     SIT sigillum = INSCRIBE SIGILLUM andras ATRAMENTO CONSECRA ATRAMENTUM "marchio";
-    SIT vocatus = INVOCA SPIRITUS 63 AD OFFICIUM probatio;
+    SIT vocatus = INVOCA SPIRITUM 63 AD OFFICIUM probatio;
     SIT relatio = PETE vocatus("dividere");
     SIT iudicium = EXAMINA relatio;
     SI iudicium == RATUM { VADE IN PACE vocatus; } ALITER { RELEGA vocatus; }

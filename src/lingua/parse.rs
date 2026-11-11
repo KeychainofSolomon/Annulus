@@ -620,13 +620,16 @@ impl Parser {
         Ok(args)
     }
 
-    fn entity(&mut self) -> Parsed<Entity> {
+    fn entity(&mut self, spirit: &str, angel: &str) -> Parsed<Entity> {
         let pos = self.pos();
-        if self.accept("SPIRITUS") {
+        if self.accept(spirit) {
             return Ok(Entity::Spiritus(self.integer()?, pos));
         }
-        if self.accept("ANGELUS") {
+        if self.accept(angel) {
             return Ok(Entity::Angelus(self.integer()?, pos));
+        }
+        if matches!(self.peek().kind, Kind::Keyword(_)) {
+            return self.fail(&format!("expected a name, {spirit} or {angel}"));
         }
         let (name, pos) = self.identifier()?;
         Ok(Entity::Label(name, pos))
@@ -674,7 +677,7 @@ impl Parser {
             if self.accept("REGEM") {
                 return Ok(Expr::InvocaRegem(self.identifier()?.0, pos));
             }
-            let entity = self.entity()?;
+            let entity = self.entity("SPIRITUM", "ANGELUM")?;
             self.expect("AD")?;
             self.expect("OFFICIUM")?;
             let (office, _) = self.identifier()?;
@@ -687,7 +690,7 @@ impl Parser {
             return Ok(Expr::Pete(name, args, pos));
         }
         if self.accept("SIGILLUM") {
-            return Ok(Expr::Sigillum(self.entity()?, pos));
+            return Ok(Expr::Sigillum(self.entity("SPIRITUS", "ANGELI")?, pos));
         }
         if self.accept("ATRAMENTUM") {
             return Ok(Expr::Atramentum(self.text()?, pos));
@@ -696,7 +699,7 @@ impl Parser {
             return Ok(Expr::Nomen(self.text()?, pos));
         }
         if self.is("SPIRITUS") || self.is("ANGELUS") {
-            return Ok(Expr::Entry(self.entity()?));
+            return Ok(Expr::Entry(self.entity("SPIRITUS", "ANGELUS")?));
         }
         self.fail("expected an expression")
     }

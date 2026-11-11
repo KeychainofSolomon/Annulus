@@ -31,7 +31,7 @@ jobs:
       - run: cargo clippy --locked --all-targets -- -D warnings
       - run: cargo test --locked
       - run: cargo test --locked --release
-      - run: python3 -I tools/grammar_check.py tests/grammar
+      - run: python3 -I tools/grammar_check.py tests/grammar --write tests/grammar/positions.json && git diff --exit-code tests/grammar/positions.json
       - run: python3 -I tools/build_register.py && git diff --exit-code docs/registers/
 
   reproducibility:

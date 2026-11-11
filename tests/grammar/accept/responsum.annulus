@@ -1,6 +1,6 @@
 CIRCULUS RITU goetia {
     INTENTIO "ask of the storm";
-    SIT vocatus = INVOCA SPIRITUS 34 AD OFFICIUM responsa;
+    SIT vocatus = INVOCA SPIRITUM 34 AD OFFICIUM responsa;
     SIT p = PETE vocatus("quid est tempestas");
     SI EXAMINA p == RATUM {
         MANIFESTA RESPONSUM p;

@@ -1,0 +1,202 @@
+{
+ "accept/andras_probatio.annulus": null,
+ "accept/angelic_grant.annulus": null,
+ "accept/apparatus.annulus": null,
+ "accept/assignment_places.annulus": null,
+ "accept/attempt.annulus": null,
+ "accept/else_if.annulus": null,
+ "accept/empty.annulus": null,
+ "accept/escape_maximum.annulus": null,
+ "accept/examination_precedence.annulus": null,
+ "accept/expression_statement.annulus": null,
+ "accept/faculty.annulus": null,
+ "accept/first_light.annulus": null,
+ "accept/form_and_fields.annulus": null,
+ "accept/full_rite.annulus": null,
+ "accept/function.annulus": null,
+ "accept/function_no_result.annulus": null,
+ "accept/iteration.annulus": null,
+ "accept/king.annulus": null,
+ "accept/logic.annulus": null,
+ "accept/modules.annulus": null,
+ "accept/mutable_loop.annulus": null,
+ "accept/names_and_entries.annulus": null,
+ "accept/negative_minimum.annulus": null,
+ "accept/nested_circles.annulus": null,
+ "accept/responsum.annulus": null,
+ "accept/slot_grant.annulus": null,
+ "accept/typed_declaration.annulus": null,
+ "accept/unary_chain.annulus": null,
+ "reject/aliter_without_block.annulus": [
+  1,
+  21
+ ],
+ "reject/assign_to_call.annulus": [
+  1,
+  8
+ ],
+ "reject/assign_to_literal.annulus": [
+  1,
+  5
+ ],
+ "reject/assign_to_sum.annulus": [
+  1,
+  9
+ ],
+ "reject/bad_escape.annulus": [
+  1,
+  9
+ ],
+ "reject/bare_brace_block.annulus": [
+  1,
+  1
+ ],
+ "reject/chained_comparison.annulus": [
+  1,
+  17
+ ],
+ "reject/circle_without_intent.annulus": [
+  2,
+  5
+ ],
+ "reject/circle_without_rite.annulus": [
+  1,
+  10
+ ],
+ "reject/comment_hash.annulus": [
+  1,
+  1
+ ],
+ "reject/comment_slashes.annulus": [
+  1,
+  1
+ ],
+ "reject/constringe_without_nomen.annulus": [
+  3,
+  27
+ ],
+ "reject/digit_glued_to_name.annulus": [
+  1,
+  9
+ ],
+ "reject/entry_without_number.annulus": [
+  1,
+  17
+ ],
+ "reject/escape_beyond_unicode.annulus": [
+  1,
+  9
+ ],
+ "reject/escape_surrogate.annulus": [
+  1,
+  9
+ ],
+ "reject/examiner_chosen.annulus": [
+  1,
+  19
+ ],
+ "reject/faculty_after_code.annulus": [
+  2,
+  1
+ ],
+ "reject/gere_expression.annulus": [
+  3,
+  10
+ ],
+ "reject/grant_two_budgets.annulus": [
+  1,
+  33
+ ],
+ "reject/ink_without_string.annulus": [
+  1,
+  20
+ ],
+ "reject/inscribe_without_ink.annulus": [
+  1,
+  33
+ ],
+ "reject/integer_overflow.annulus": [
+  1,
+  9
+ ],
+ "reject/invoke_nominative.annulus": [
+  1,
+  16
+ ],
+ "reject/invoke_without_office.annulus": [
+  1,
+  22
+ ],
+ "reject/keyword_glued_to_name.annulus": [
+  1,
+  5
+ ],
+ "reject/king_without_name.annulus": [
+  3,
+  17
+ ],
+ "reject/missing_semicolon.annulus": [
+  2,
+  1
+ ],
+ "reject/mixed_case_word.annulus": [
+  1,
+  5
+ ],
+ "reject/old_keyword_let.annulus": [
+  1,
+  1
+ ],
+ "reject/pete_with_expression.annulus": [
+  1,
+  14
+ ],
+ "reject/reserved_keyword.annulus": [
+  1,
+  1
+ ],
+ "reject/responsum_as_name.annulus": [
+  1,
+  5
+ ],
+ "reject/responsum_without_operand.annulus": [
+  1,
+  18
+ ],
+ "reject/seal_accusative.annulus": [
+  1,
+  18
+ ],
+ "reject/string_across_lines.annulus": [
+  1,
+  9
+ ],
+ "reject/unclosed_block.annulus": [
+  2,
+  1
+ ],
+ "reject/unknown_instrument.annulus": [
+  3,
+  10
+ ],
+ "reject/unknown_keyword.annulus": [
+  1,
+  9
+ ],
+ "reject/unterminated_string.annulus": [
+  1,
+  9
+ ],
+ "reject/untyped_field.annulus": [
+  1,
+  19
+ ],
+ "reject/untyped_parameter.annulus": [
+  1,
+  9
+ ],
+ "reject/vade_without_pace.annulus": [
+  1,
+  9
+ ]
+}

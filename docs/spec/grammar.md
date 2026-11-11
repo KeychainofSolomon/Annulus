@@ -247,7 +247,7 @@ MANIFESTA summa;
 CIRCULUS RITU goetia {
     INTENTIO "raise a tempest";
     SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
-    SIT vocatus = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
+    SIT vocatus = INVOCA SPIRITUM 34 AD OFFICIUM tempestas;
     SIT propositum = PETE vocatus("tempestas.txt");
     SIT iudicium = EXAMINA propositum;
     SI iudicium == RATUM {

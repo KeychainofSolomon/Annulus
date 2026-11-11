@@ -12,7 +12,7 @@ const FURFUR: &str = r#"FACULTAS {
 CIRCULUS RITU goetia {
     INTENTIO "ask of the storm";
     SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
-    SIT vocatus = INVOCA SPIRITUS 34 AD OFFICIUM responsa;
+    SIT vocatus = INVOCA SPIRITUM 34 AD OFFICIUM responsa;
     SIT propositum = PETE vocatus("quid est tempestas", "chronica.txt");
     SIT iudicium = EXAMINA propositum;
     MANIFESTA iudicium;

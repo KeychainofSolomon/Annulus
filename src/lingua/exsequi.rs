@@ -41,7 +41,7 @@ struct Text {
 #[derive(Clone, Debug)]
 enum V {
     Num(i64),
-    Bool(bool),
+    Bool(bool, Mark),
     Text(Text),
     Nil,
     Outcome(WorkOutcome),
@@ -331,11 +331,21 @@ impl<'p> Run<'p> {
         result
     }
 
-    fn truth(&mut self, e: &Expr) -> Go<bool> {
+    fn truth(&mut self, e: &Expr) -> Go<(bool, Mark)> {
         match self.expr(e)? {
-            V::Bool(b) => Ok(b),
+            V::Bool(b, m) => Ok((b, m)),
             _ => Err(Halt::Denial("a condition is not VERITAS".into())),
         }
+    }
+
+    fn condition(&mut self, e: &Expr) -> Go<bool> {
+        let (b, mark) = self.truth(e)?;
+        if mark == Mark::Quarantined {
+            return Err(Halt::Denial(
+                "a spirit's words would steer the program before consecration".into(),
+            ));
+        }
+        Ok(b)
     }
 
     fn inv_of(&mut self, e: &Expr) -> Go<InvId> {
@@ -366,7 +376,7 @@ impl<'p> Run<'p> {
                 otherwise,
                 ..
             } => {
-                if self.truth(cond)? {
+                if self.condition(cond)? {
                     self.block(then)
                 } else if let Some(o) = otherwise {
                     self.block(o)
@@ -375,7 +385,7 @@ impl<'p> Run<'p> {
                 }
             }
             Stmt::Dum { cond, body, .. } => {
-                while self.truth(cond)? {
+                while self.condition(cond)? {
                     self.block(body)?;
                 }
                 Ok(())
@@ -406,8 +416,8 @@ impl<'p> Run<'p> {
     fn show(&self, v: &V) -> String {
         match v {
             V::Num(n) => n.to_string(),
-            V::Bool(true) => "VERUM".into(),
-            V::Bool(false) => "FALSUM".into(),
+            V::Bool(true, _) => "VERUM".into(),
+            V::Bool(false, _) => "FALSUM".into(),
             V::Nil => "NIHIL".into(),
             V::Outcome(WorkOutcome::Ratum) => "RATUM".into(),
             V::Outcome(WorkOutcome::Suspensum) => "SUSPENSUM".into(),
@@ -480,7 +490,7 @@ impl<'p> Run<'p> {
                 id: None,
                 origin: None,
             })),
-            Expr::Truth(b, _) => Ok(V::Bool(*b)),
+            Expr::Truth(b, _) => Ok(V::Bool(*b, Mark::Clean)),
             Expr::Nihil(_) => Ok(V::Nil),
             Expr::Outcome(j, _) => Ok(V::Outcome(match j {
                 Judged::Ratum => WorkOutcome::Ratum,
@@ -576,11 +586,12 @@ impl<'p> Run<'p> {
 
     fn binary(&mut self, op: Binary, l: &Expr, r: &Expr) -> Go<V> {
         if matches!(op, Binary::Et | Binary::Vel) {
-            let a = self.truth(l)?;
+            let (a, ma) = self.truth(l)?;
             if (op == Binary::Et && !a) || (op == Binary::Vel && a) {
-                return Ok(V::Bool(a));
+                return Ok(V::Bool(a, ma));
             }
-            return Ok(V::Bool(self.truth(r)?));
+            let (b, mb) = self.truth(r)?;
+            return Ok(V::Bool(b, ma.join(mb)));
         }
         let a = self.expr(l)?;
         let b = self.expr(r)?;
@@ -616,20 +627,24 @@ impl<'p> Run<'p> {
                     _ => None,
                 };
                 let equal = match (&a, &b) {
-                    (V::Bool(x), V::Bool(y)) => x == y,
+                    (V::Bool(x, _), V::Bool(y, _)) => x == y,
                     (V::Nil, V::Nil) => true,
                     (V::Outcome(x), V::Outcome(y)) => x == y,
                     _ => ord == Some(std::cmp::Ordering::Equal),
                 };
-                Ok(V::Bool(match (op, ord) {
-                    (Binary::Eq, _) => equal,
-                    (Binary::Ne, _) => !equal,
-                    (Binary::Lt, Some(o)) => o.is_lt(),
-                    (Binary::Le, Some(o)) => o.is_le(),
-                    (Binary::Gt, Some(o)) => o.is_gt(),
-                    (Binary::Ge, Some(o)) => o.is_ge(),
-                    _ => return Err(Halt::Denial("an operator on the wrong values".into())),
-                }))
+                let mark = mark_of(&a).join(mark_of(&b));
+                Ok(V::Bool(
+                    match (op, ord) {
+                        (Binary::Eq, _) => equal,
+                        (Binary::Ne, _) => !equal,
+                        (Binary::Lt, Some(o)) => o.is_lt(),
+                        (Binary::Le, Some(o)) => o.is_le(),
+                        (Binary::Gt, Some(o)) => o.is_gt(),
+                        (Binary::Ge, Some(o)) => o.is_ge(),
+                        _ => return Err(Halt::Denial("an operator on the wrong values".into())),
+                    },
+                    mark,
+                ))
             }
             _ => Err(Halt::Denial("an operator on the wrong values".into())),
         }
@@ -642,7 +657,7 @@ impl<'p> Run<'p> {
                 .checked_neg()
                 .map(V::Num)
                 .ok_or_else(|| Halt::Computation("NUMERUS overflow".into())),
-            (Unary::Non, V::Bool(b)) => Ok(V::Bool(!b)),
+            (Unary::Non, V::Bool(b, m)) => Ok(V::Bool(!b, m)),
             (Unary::Consecra, V::Ink(class)) => Ok(V::Ink(class)),
             (Unary::Consecra, V::Text(t)) => {
                 let Some(id) = t.id.filter(|_| t.mark == Mark::Quarantined) else {
@@ -699,5 +714,13 @@ impl<'p> Run<'p> {
             }
             _ => Err(Halt::Denial("an operator on the wrong values".into())),
         }
+    }
+}
+
+fn mark_of(v: &V) -> Mark {
+    match v {
+        V::Text(t) => t.mark,
+        V::Bool(_, m) => *m,
+        _ => Mark::Clean,
     }
 }

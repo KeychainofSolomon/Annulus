@@ -25,7 +25,7 @@ fn refused(source: &str, code: &str) {
     );
 }
 
-const FACULTAS: &str = "FACULTAS {\n    liber \"tempestas.txt\" scribere;\n    liber \"liber.txt\" legere;\n    atramentum \"comes\" 2;\n}\n";
+const FACULTAS: &str = "FACULTAS {\n    liber \"tempestas.txt\" scribere;\n    liber \"turris.txt\" creare;\n    liber \"liber.txt\" legere;\n    atramentum \"comes\" 2;\n}\n";
 
 fn rite(body: &str) -> String {
     format!(
@@ -35,13 +35,14 @@ fn rite(body: &str) -> String {
 
 fn telling(body: &str) -> String {
     rite(&format!(
-        "    SIT vocatus = INVOCA SPIRITUS 34 AD OFFICIUM responsa;\n    SIT p = PETE vocatus(\"quid est tempestas\", \"liber.txt\");\n{body}\n    VADE IN PACE vocatus;"
+        "    SIT vocatus = INVOCA SPIRITUM 34 AD OFFICIUM responsa;\n    SIT p = PETE vocatus(\"quid est tempestas\", \"liber.txt\");\n{body}\n    VADE IN PACE vocatus;"
     ))
 }
 
 #[test]
-fn the_grammar_example_is_lawful() {
-    lawful(include_str!("grammar/accept/full_rite.annulus"));
+fn the_grammar_example_waits_only_for_the_tempest() {
+    let found = codes(include_str!("grammar/accept/full_rite.annulus"));
+    assert_eq!(found, vec!["X1"], "only the office TEMPESTAS is outside the subset");
 }
 
 #[test]
@@ -83,7 +84,7 @@ fn a5_question_of_the_wrong_type() {
 #[test]
 fn a5_place_not_a_constant() {
     refused(
-        &rite("    SIT MUTABILIS locus = \"tempestas.txt\";\n    SIT f = INVOCA furfur AD OFFICIUM tempestas;\n    SIT p = PETE f(locus);\n    VADE IN PACE f;"),
+        &rite("    SIT s2 = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT MUTABILIS locus = \"turris.txt\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;\n    SIT p = PETE f(locus);\n    VADE IN PACE f;"),
         "A5",
     );
 }
@@ -91,7 +92,7 @@ fn a5_place_not_a_constant() {
 #[test]
 fn a5_working_office_needs_a_place() {
     refused(
-        &rite("    SIT f = INVOCA furfur AD OFFICIUM tempestas;\n    SIT p = PETE f();\n    VADE IN PACE f;"),
+        &rite("    SIT s2 = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;\n    SIT p = PETE f();\n    VADE IN PACE f;"),
         "A5",
     );
 }
@@ -99,7 +100,7 @@ fn a5_working_office_needs_a_place() {
 #[test]
 fn a5_responsum_of_work() {
     refused(
-        &rite("    SIT f = INVOCA furfur AD OFFICIUM tempestas;\n    SIT p = PETE f(\"tempestas.txt\");\n    SIT r = RESPONSUM p;\n    VADE IN PACE f;"),
+        &rite("    SIT s2 = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;\n    SIT p = PETE f(\"turris.txt\");\n    SIT r = RESPONSUM p;\n    VADE IN PACE f;"),
         "A5",
     );
 }
@@ -107,7 +108,7 @@ fn a5_responsum_of_work() {
 #[test]
 fn a5_place_reserved_for_angels() {
     refused(
-        "FACULTAS {\n    liber \"vetus.txt\" scribere angelis;\n    atramentum \"comes\" 1;\n}\nCIRCULUS RITU goetia {\n    INTENTIO \"x\";\n    SIT s = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA furfur AD OFFICIUM tempestas;\n    SIT p = PETE f(\"vetus.txt\");\n    VADE IN PACE f;\n}\n",
+        "FACULTAS {\n    liber \"vetus.txt\" creare angelis;\n    atramentum \"comes\" 1;\n}\nCIRCULUS RITU goetia {\n    INTENTIO \"x\";\n    SIT s = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;\n    SIT p = PETE f(\"vetus.txt\");\n    VADE IN PACE f;\n}\n",
         "A5",
     );
 }
@@ -204,7 +205,7 @@ fn a8_ink_not_granted() {
 #[test]
 fn a8_place_not_granted() {
     refused(
-        &rite("    SIT f = INVOCA furfur AD OFFICIUM tempestas;\n    SIT p = PETE f(\"alius.txt\");\n    VADE IN PACE f;"),
+        &rite("    SIT s2 = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;\n    SIT p = PETE f(\"alius.txt\");\n    VADE IN PACE f;"),
         "A8",
     );
 }
@@ -212,7 +213,7 @@ fn a8_place_not_granted() {
 #[test]
 fn a8_permission_missing() {
     refused(
-        &rite("    SIT f = INVOCA furfur AD OFFICIUM tempestas;\n    SIT p = PETE f(\"liber.txt\");\n    VADE IN PACE f;"),
+        &rite("    SIT s2 = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;\n    SIT p = PETE f(\"liber.txt\");\n    VADE IN PACE f;"),
         "A8",
     );
 }
@@ -231,7 +232,7 @@ fn a8_faculty_errors() {
 #[test]
 fn a9_not_released() {
     refused(
-        &rite("    SIT f = INVOCA furfur AD OFFICIUM tempestas;"),
+        &rite("    SIT s2 = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;"),
         "A9",
     );
 }
@@ -249,7 +250,7 @@ fn a9_released_twice() {
 #[test]
 fn a9_used_after_release() {
     refused(
-        &rite("    SIT f = INVOCA furfur AD OFFICIUM tempestas;\n    DIMITTE f;\n    SIT p = PETE f(\"tempestas.txt\");"),
+        &rite("    SIT s2 = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;\n    DIMITTE f;\n    SIT p = PETE f(\"turris.txt\");"),
         "A9",
     );
 }
@@ -257,7 +258,7 @@ fn a9_used_after_release() {
 #[test]
 fn a9_released_on_one_path() {
     refused(
-        &rite("    SIT f = INVOCA furfur AD OFFICIUM tempestas;\n    SI VERUM {\n        VADE IN PACE f;\n    }"),
+        &rite("    SIT s2 = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM \"comes\";\n    SIT f = INVOCA halphas AD OFFICIUM aedificatio;\n    SI VERUM {\n        VADE IN PACE f;\n    }"),
         "A9",
     );
 }

@@ -124,3 +124,27 @@ C = core, R = rite, C+R = core mechanics with rite content.
 | | §3.2–3.3, §4 | R |
 | `provenance.md` | all | R |
 | `docs/registers/` | all | R |
+
+## 8. Proof obligations (roadmap step 1, item 8)
+
+These are the theorems the core MUST be shown to satisfy. Each holds for **every** well-typed program, every faculty *G*, every rite (through the interface of §3.1 only), every draw of the will and every order of turns (`concurrency.md`). [O]
+
+| # | Theorem | In plain words |
+|---|---|---|
+| T1 | **Containment.** Every effect committed in a run belongs to the handed set of the request that proposed it, and every such pair is in *G* and not reserved for angels. Every effect an angel commits is in *G*. | no program, spirit or helper exceeds the grant, at any depth (the guiding principle, `authority.md` §1.5) |
+| T2 | **No self-approval.** Every commit is preceded by a verdict from an examiner other than its author, and a destination from the judgement step. | nobody approves their own work |
+| T3 | **Circle containment.** No rite value is used outside the Circle it came from. | the boundary holds |
+| T4 | **Release.** Every invocation ends exactly once; after that, nothing it held is used. | nothing lingers, nothing is reused |
+| T5 | **Quarantine (non-interference).** What a run decides, and which places it touches, do not depend on any spirit's words that were not consecrated. | spirits cannot steer the Operator |
+| T6 | **Monotonicity.** Adding restrictions to a rite only removes runs, and T1–T5 hold for every rite. | tradition can never make Annulus less safe |
+| T7 | **Audit.** Every grant, invocation, verdict, judgement, commit and release appears in the audit, in order, and the audit is only appended to. | everything is on the record |
+| T8 | **Fail closed.** Without the wand the faculty is empty; with a tampered Index the runtime does not launch; under doubt the verdict is `HOLD`. | when unsure, nothing happens |
+| T9 | **Replay.** In simulated mode, the same program, Constitution version, seed, clock, place, sky and script give the same audit. | every test can be repeated exactly |
+
+**Who discharges them, step by step:**
+- **Step 2, the interpreter:** the type checker enforces T1's static part, T3 and T5 (labels, `flow.md`). The runtime enforces the rest, and the core re-checks T1 at every commit (§3.3). The core is built first, as its own module, reached only through §3.1.
+- **Step 3, demonstrating enforcement:** a **machine-checked proof** of T1–T6 over a formal model of the core and the typing rules, in a proof assistant (for example Lean 4). Plus attack tests: Andras's `probatio`, hostile simulated runs (`--sors MALITIA`, `--sors MENDACIUM`), and exhaustive exploration of every turn order for small programs (deterministic simulation, `concurrency.md` §4).
+- **Step 4, real agents:** red-team tests of T5 with real AI agents attempting prompt injection through their answers.
+- **Step 6, testing the Operator's discipline:** T8, and `operator.md` §7.
+- **Step 7, the bytecode verifier:** it re-establishes T1, T3 and T5 on compiled code, so that bytecode not produced by the checker cannot break them. [Parallel: the Java bytecode verifier.]
+- **Step 9, the native backend:** each compilation is checked to preserve the bytecode's behaviour (translation validation), so that T1–T9 carry over.

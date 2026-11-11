@@ -394,4 +394,5 @@ Discussed with the owner, not built:
 ## The honest examiner (2026-11-11, 22:40)
 
 - Done: the angel judges only the proposal, the request's form and the world (`ritus.rs` `verdict`, `officia::expected`); the will is a test scorecard (`examination_scorecard`). This was next-step 1 of the outside review. 174 tests.
-- **Next, in order:** attack tests with a rite that says yes to everything (one per question of `core.md` §3.1); spirit-specific malice (each spirit's recorded harm, not a stock one); the escalation, so RECUSATIO can open; real validators (F5) before step 4; then the second half of 2c (command line, stores on disk). An independent audit of tonight's core changes is still owed.
+- **Attack tests done** (`tests/nucleus_attacks.rs`, 12, a rite that says yes to everything): all held; they found that the core did not require an angelic examiner, now fixed in Rust and Lean. 186 tests.
+- **Next, in order:** spirit-specific malice (each spirit's recorded harm, not a stock one); the escalation, so RECUSATIO can open; real validators (F5) before step 4; then the second half of 2c (command line, stores on disk). An independent audit of tonight's core changes is still owed.

@@ -466,7 +466,7 @@ impl State {
         }
         let examiner = rite.examiner(self, prop);
         let (answer, verdict) = match &examiner {
-            Some(e) if *e != p.author && !p.carries.contains(e) => {
+            Some(e) if *e != p.author && !p.carries.contains(e) && self.angelic(e) => {
                 let v0 = rite.verdict(self, prop, e);
                 let cb = rite.counterbalance(self, prop);
                 let v = if suspect || self.doubtful(&p.author) {

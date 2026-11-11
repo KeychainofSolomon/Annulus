@@ -2,7 +2,11 @@
 
 **The specification and the code are at different stages.** The specification (`docs/spec/`, thirteen files in draft) is being completed under roadmap step 1. The code is still the v0.2.1 prototype: a small expression language with English keywords, immutable bindings and output, described in `docs/PROTOTYPE.md`. It implements none of the specification. Roadmap step 2 (the minimal interpreter) replaces it.
 
-## Implemented and tested
+## Step 2 in progress: the nucleus
+
+`src/nucleus/` is the new core, built from `docs/spec/core.md` §9 and `formal/Annulus/Step.lean`: the state, one method per transition rule, the commit re-check, marks, release and abandonment, the Index, the Vessel (with its three first records), sealed petitions, the hash-chained audit, launch checks with a **test wand** (`sign_for_test`; never valid for a real installation), and SHA-256 written in-house (the project has no outside dependencies). 31 tests in `tests/nucleus_rules.rs`, each checking P1, P2, P4, P7 and the damnation law over its audit, including hostile spirits (overreach, forged seals, intrusion, injected words). Not yet reachable from the command line; the prototype below is still what `annulus` runs.
+
+## Implemented and tested (v0.2.1 prototype)
 
 | Feature | Notes |
 |---|---|

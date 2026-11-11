@@ -133,3 +133,7 @@ Work is never sent to Heaven, Purgatory or Hell. A judged proposal is `RATUM` (r
 ## For step 3
 
 Prove `AllObligations M` for every `M` whose `Lang` is a model of `static.md`. Before then: the owner's approval of step 1.
+
+## Correspondence note: the angels (2026-11-11)
+
+`U.angelic` is a fixed part of the universe, so the model assumes the list of angels cannot change. The implementation keeps the list in the Constitution and makes the assumption true by signature: `digest_constitution` covers the version, the validators' manifest, the angels and the high-consequence verbs, and launch refuses a Constitution the owner's wand did not sign.

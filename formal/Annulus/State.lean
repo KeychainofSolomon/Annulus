@@ -162,7 +162,7 @@ def noteSuspicion (M : Core U) (σ : State U) (s : U.Seal) : List (IxEntry U) :=
   if NewlySuspect M σ s then σ.index ++ [.suspect s] else σ.index
 
 def Barred (σ : State U) (s : U.Seal) : Prop :=
-  standing σ.index s = .proscribed ∨ standing σ.index s = .damnatus
+  ¬ U.angelic s ∧ (standing σ.index s = .proscribed ∨ standing σ.index s = .damnatus)
 
 def Live (σ : State U) (i : U.Inv) : Prop :=
   ∃ inst, σ.invs i = some inst ∧ inst.status = .live
@@ -390,7 +390,7 @@ def RequestBad (R : RelRite U) (σ : State U) (f : U.ReqForm) (w : U.Worker) :
       ¬ (∃ inst, σ.invs i = some inst ∧ inst.status = .live ∧ inst.circle ∈ σ.circles) ∨
       ∃ asked, R.signature σ f asked ∧ ∃ r, asked r ∧ ¬ Contained σ (.spirit i) r
   | .angel a =>
-      σ.workers w ≠ none ∨
+      ¬ U.angelic a ∨ σ.workers w ≠ none ∨
       ∃ asked, R.signature σ f asked ∧ ∃ r, asked r ∧ ¬ Contained σ (.angel a) r
 
 /-- `dynamic.md` §3, §6.2: what the program asks for and cannot have is a denial (class 2). -/

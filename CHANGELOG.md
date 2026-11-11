@@ -14,6 +14,12 @@
 - **A verb that creates may only create** (`offices.md` §1.3; second outside review, finding 1): the commit re-check voids a `creare` effect on a place that already exists. Lean: a new clause of `Recheck` and the universe field `creates`.
 - **Five more effect verbs:** `exscribe` (copy into a new place), `transfer` (arrive in a new place), `coniunge` (merge into a target), `scinde` (split into new copies), `aufer` (remove the source of a theft; high-consequence with `dele`). Offices now running: `VECTIO` (`"transfer"`, `"exscribe"`), `CONCORDIA` (first source wins every conflict, `offices.md` §2.3a.6), `DISCORDIA`, `EVERSIO`, `FURTUM` (`"aufer"`). Moves, destruction and theft wait for the second key.
 
+### Angel audit (the owner's request, 2026-11-11; core changes, audit owed)
+- **The owner's signature now covers the whole Constitution**: its version, the validators, **the list of angels** and the high-consequence verbs (`digest_constitution`). Before, only the validators were signed, so a tampered list could have promoted a spirit to angel (examining work, never damned, using reserved grants). In Lean the angels are fixed in the universe (`U.angelic`); the signature is what makes the implementation match that assumption.
+- **The core refuses to invoke an angel** (`authority.md` §6.5: no Triangle for angels); before, only the checker's A4 did. Lean: `invokeOk` requires `¬ U.angelic s`.
+- **Lean drift fixed:** `requestAngel` now requires `U.angelic a` (Rust already did), and `Barred` exempts angels as Rust's `standing` does.
+- Two new attacks: a spirit smuggled into the list of angels refuses the launch; an always-yes rite cannot put an angel in a Triangle. Both checked by weakening the rule and seeing the attack fail.
+
 ### Attack tests with a rite that says yes to everything (`tests/nucleus_attacks.rs`)
 - Twelve attacks, one or more per question of `core.md` §3.1: admission, signature, examiner, verdict, counterbalance, legions, the will, the validator and ink. Every one is refused, held or voided, and no file changes.
 - **Found and fixed (core change, audit owed):** neither the core nor the Lean model required the examiner to be one of the Constitution's angels; a rite could name a spirit as examiner and approve his work. Now any examiner who is not an angel counts as none, and the work is held (`authority.md` §10). Lean: `examineBy` requires `U.angelic e`, `examineNone` covers the rest. Checked by removing the rule: the attack then fails.

@@ -36,6 +36,7 @@ structure Universe where
   killOutcome : Outcome → Prop
   highConsequence : Verb → Prop
   denial : FailClass
+  angelic : Seal → Prop
 
 def upd {α β : Type} (f : α → β) (a : α) (b : β) : α → β :=
   fun x => if x = a then b else f x
@@ -89,22 +90,22 @@ def Verdict.rank : Verdict → Nat
 /-- §3.1: counterbalances can only lower a verdict. -/
 def Verdict.meet (a b : Verdict) : Verdict := if a.rank ≤ b.rank then a else b
 
-inductive Destination where
-  | paradisus
-  | purgatorium
-  | infernus
+inductive WorkOutcome where
+  | ratum
+  | suspensum
+  | irritum
   deriving DecidableEq, Repr
 
-def Verdict.dest : Verdict → Destination
-  | .approve => .paradisus
-  | .hold => .purgatorium
-  | .reject => .infernus
+def Verdict.dest : Verdict → WorkOutcome
+  | .approve => .ratum
+  | .hold => .suspensum
+  | .reject => .irritum
 
 /-- §9.2, a proposal's life. -/
 inductive PStatus where
   | pending
   | complete
-  | judged (d : Destination)
+  | judged (d : WorkOutcome)
   | abandoned
   deriving DecidableEq, Repr
 
@@ -117,7 +118,7 @@ def Unjudged : PStatus → Prop
 def Lingers : PStatus → Prop
   | .pending => True
   | .complete => True
-  | .judged .purgatorium => True
+  | .judged .suspensum => True
   | _ => False
 
 /-- §9.2, an invocation's life. -/
@@ -226,7 +227,7 @@ inductive Instr (U : Universe) where
   | closeC (e : U.Exec)
   | invoke (i : U.Inv) (s : U.Seal) (w : U.Worker) (ok no : U.Exec)
   | request (to : Addressee U) (f : U.ReqForm) (q : U.Req) (p : U.Pid) (w : U.Worker) (e : U.Exec)
-  | examine (p : U.Pid) (k : Destination → U.Exec)
+  | examine (p : U.Pid) (k : WorkOutcome → U.Exec)
   | consecrate (v : U.Value) (k : Bool → U.Exec)
   | consecrateGrave (v : U.Value) (g : Nat) (k : Bool → U.Exec)
   | release (i : U.Inv) (e : U.Exec)
@@ -245,7 +246,7 @@ inductive Label (U : Universe) where
   | turn (w : U.Worker) (o : U.Outcome) (c : Contrib U) (finish : Bool)
   | kill (w : U.Worker) (o : U.Outcome)
   | examine (p : U.Pid) (a : ExamAns U) (v : Verdict)
-  | judge (p : U.Pid) (d : Destination)
+  | judge (p : U.Pid) (d : WorkOutcome)
   | commit (p : U.Pid) (es : List (Effect U)) (r : CommitResult)
   | consecrate (v : U.Value) (k : Option U.ValidatorId) (accepted : Bool)
   | consecrateGrave (v : U.Value) (g : Nat) (k : Option U.ValidatorId) (accepted : Bool)

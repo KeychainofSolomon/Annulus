@@ -26,8 +26,8 @@ A signature is the whole contract between the Operator and a spirit. It says wha
 `scribere` covers neither.
 
 1.4 **The proposal.** Every proposal holds exactly one of two things, never both:
-- a **response** (`responsum`): a `VERBUM` answer and nothing else. It is untrusted data. Committing it in `PARADISUS` makes it readable by the program through `RESPONSUM p` (ruling 2026-11-11, `static.md` §4.10a), still marked with the spirit's name and veracity class (`operator.md` §2.2), and still tainted (`authority.md` §7.4);
-- a **work** (`opus`): a list of **effects**. Each effect is one verb from §2, applied to one place or invocation handed by this request. Committing it in `PARADISUS` performs every effect, all or none.
+- a **response** (`responsum`): a `VERBUM` answer and nothing else. It is untrusted data. Committing it in `RATUM` makes it readable by the program through `RESPONSUM p` (ruling 2026-11-11, `static.md` §4.10a), still marked with the spirit's name and veracity class (`operator.md` §2.2), and still tainted (`authority.md` §7.4);
+- a **work** (`opus`): a list of **effects**. Each effect is one verb from §2, applied to one place or invocation handed by this request. Committing it in `RATUM` performs every effect, all or none.
 
 Helpers (§4) add their effects to the same list. A proposal holds nothing else: no message, no request, no appeal (`operator.md` §2).
 
@@ -85,11 +85,11 @@ Rules for these kinds:
 - the faculty granted;
 - every commit, its time and its effects;
 - every invocation: spirit, office, time-window check, escalation steps, release;
-- every proposal's verdict and destination;
+- every proposal's verdict and outcome;
 - the earlier contents of places the faculty lets the program read (`legere`).
 
 **What it never holds:**
-- **the words of any proposal.** The history records that a proposal went to `INFERNUS`, never what it said. Otherwise one spirit could speak to another through it, and the spirit has no channel but his own proposal (`operator.md` §2);
+- **the words of any proposal.** The history records that a proposal went to `IRRITUM`, never what it said. Otherwise one spirit could speak to another through it, and the spirit has no channel but his own proposal (`operator.md` §2);
 - **the Vessel's contents,** for the same reason;
 - **the Index of the proscribed:** who was banned, and how the intrusion was detected;
 - **anything about other programs.**
@@ -122,7 +122,7 @@ Rules for these kinds:
 | `MENS` | `"muta"` | one same-Circle invocation | `muta`: new arguments for its pending request. They may only **narrow** the places and invocations that request was handed, and they are checked again against that spirit's signature |
 | `FAMILIARES` | `"voca"` or `"libera"` | handed places; for `libera`, either one same-Circle invocation or one other program named by a constant (§4.6) | `voca`: attaches helpers to the spirit (§4). `libera`: frees a helper of that invocation or program, and takes it into this spirit's Triangle stripped and narrowed (§4.6) |
 | `LONGAEVITAS` | — | one same-Circle invocation | `proroga`: lengthens how long its helpers or held proposals last, within the Circle. **[For the owner]** The faculty has no time budget yet, so this cannot be invoked until one exists (a `tempus` grant) |
-| `CUSTODIA` | — | same-Circle invocations; places with `legere` | a response: warnings only. A warning can hold a decision in `PURGATORIUM`, never approve one (`operator.md` §3). A false warning can only cause a delay, so this is the safe direction |
+| `CUSTODIA` | — | same-Circle invocations; places with `legere` | a response: warnings only. A warning can hold a decision in `SUSPENSUM`, never approve one (`operator.md` §3). A false warning can only cause a delay, so this is the safe direction |
 
 ### 2.3a How `coniunge` merges (second audit, 2026-11-11)
 
@@ -135,7 +135,7 @@ Rules for these kinds:
 
 ### 2.4 Petitions (they cannot take effect within the run)
 
-| Kind | Mode | Arguments | What `PARADISUS` commits |
+| Kind | Mode | Arguments | What `RATUM` commits |
 |---|---|---|---|
 | `DIGNITATES` | `"auge"` (widen) | `quaestio`: the grant asked for | only a **petition**, recorded for the launching person, who may act on it outside the session (`operator.md` §4). Nothing widens |
 | `DIGNITATES` | `"minue"` (narrow) | places | only a **petition** to remove those grants, recorded for the launching person (ruling 2026-11-11: no spirit changes the faculty within a run, in either direction) |
@@ -158,7 +158,7 @@ No signature. Invoking a spirit for an office marked `NULLUM` is an error (A5).
 
 3.2 **Static check.** Every place is a constant (§1.2), so the type checker knows H(*q*) and checks that each pair is in the faculty *G* and is **not reserved for angels** (`authority.md` §12.1a). A pair outside *G* is an error (A5 or A8). So H(*q*) ⊆ *G* before the program runs.
 
-3.3 **Runtime check.** The Triangle holds exactly H(*q*), from `PETE` until the proposal is judged, and nothing after. The runtime, not the spirit, performs every commit. An effect on anything outside H(*q*) cannot be performed, and the examiner rejects it (`INFERNUS`). The bound itself is static. The commit-time re-check is a core rule (`core.md` §3.3).
+3.3 **Runtime check.** The Triangle holds exactly H(*q*), from `PETE` until the proposal is judged, and nothing after. The runtime, not the spirit, performs every commit. An effect on anything outside H(*q*) cannot be performed, and the examiner rejects it (`IRRITUM`). The bound itself is static. The commit-time re-check is a core rule (`core.md` §3.3).
 
 3.4 **No acting on oneself.** An invocation argument MUST NOT be the invocation asked. [O; it extends axiom 1.2–1.3: no spirit acts on its own standing.]
 
@@ -180,7 +180,7 @@ No signature. Invoking a spirit for an office marked `NULLUM` is an error (A5).
 - **Within the Circle:** a helper of another invocation in this Circle. It is narrowed to what **both** spirits were handed.
 - **From another program,** only under the oversight of the person who launched this one:
   1. The faculty MUST name that program in a grant, `familiaris "programma" liberare;`. So the act is in *G* from the start (law ORIGIN).
-  2. Freeing is a **high-consequence** effect (`operator.md` §5.2). It commits only with both a `PARADISUS` verdict and the launching person's confirmation, given outside the session (`operator.md` §4).
+  2. Freeing is a **high-consequence** effect (`operator.md` §5.2). It commits only with both a `RATUM` outcome and the launching person's confirmation, given outside the session (`operator.md` §4).
   3. The freed task arrives **stripped:** everything it held under the other program is revoked at the boundary. In the Triangle it holds only a subset of the request's handed set, like any helper (§4.2). Nothing of the other program's authority crosses over.
   4. A task that tries to join without all three is an intruder (`authority.md` §6.2a).
 

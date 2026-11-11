@@ -18,7 +18,7 @@ Any change gives a new seal. A new seal starts **unknown**: never trusted becaus
 
 2.3 **How they combine.** The seal comes first, as the owner ruled:
 - **The seal matches a damned or proscribed entry:** the agent is refused at the entrance (`authority.md` §6.2a) and recorded.
-- **The seal is new, but its actions match a mark:** it is **suspected**, entered in the Index by the examination step (`core.md` §9.2, ruling 2026-11-11). It is not proscribed, because a resemblance is not a verdict. Every proposal it makes is held in `PURGATORIUM`, never approved, and the audit tells the launching person. Doubt holds (`operator.md` §5.1). Only the owner can proscribe it, outside a session, or clear the suspicion.
+- **The seal is new, but its actions match a mark:** it is **suspected**, entered in the Index by the examination step (`core.md` §9.2, ruling 2026-11-11). It is not proscribed, because a resemblance is not a verdict. Every proposal it makes is held in `SUSPENSUM`, never approved, and the audit tells the launching person. Doubt holds (`operator.md` §5.1). Only the owner can proscribe it, outside a session, or clear the suspicion.
 
 ## 3. The Index is an append-only log (ruling 2026-11-11)
 

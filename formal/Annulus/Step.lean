@@ -133,12 +133,12 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hsim : σ.mode = .simulated → o = M.sim.will σ w) :
       CoreStep M R σ (.kill w o) (endRun σ .killed)
 
-  | examineBy {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+  | examineBy {σ : State U} {p : U.Pid} {k : WorkOutcome → U.Exec} {pi : PInfo U}
       {e : U.Seal} {v0 cb : Verdict}
       (hw : σ.sched.current = some U.operator)
       (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
-      (hst : pi.status = .complete ∨ pi.status = .judged .purgatorium)
+      (hst : pi.status = .complete ∨ pi.status = .judged .suspensum)
       (he : R.examiner σ p (some e))
       (hadm : e ≠ pi.author ∧ ¬ e ∈ pi.carries)
       (hv : R.verdict σ p e v0)
@@ -146,38 +146,38 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       CoreStep M R σ (.examine p (.examined e v0 cb) (finalVerdict M σ pi v0 cb))
         { σ with index := noteSuspicion M σ pi.author, sched := idle σ.sched }
 
-  | examineNone {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+  | examineNone {σ : State U} {p : U.Pid} {k : WorkOutcome → U.Exec} {pi : PInfo U}
       {ea : Option U.Seal}
       (hw : σ.sched.current = some U.operator)
       (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
-      (hst : pi.status = .complete ∨ pi.status = .judged .purgatorium)
+      (hst : pi.status = .complete ∨ pi.status = .judged .suspensum)
       (he : R.examiner σ p ea)
       (hno : ea = none ∨ ∃ e, ea = some e ∧ (e = pi.author ∨ e ∈ pi.carries)) :
       CoreStep M R σ (.examine p (.noExaminer ea) .hold)
         { σ with index := noteSuspicion M σ pi.author, sched := idle σ.sched }
 
   | judge {σ : State U} {p : U.Pid} {a : ExamAns U} {v : Verdict}
-      {k : Destination → U.Exec} {pi : PInfo U}
+      {k : WorkOutcome → U.Exec} {pi : PInfo U}
       (hl : σ.audit.getLast? = some (.examine p a v))
       (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi) :
       CoreStep M R σ (.judge p v.dest) (afterJudge σ p pi v.dest k)
 
-  | commitDone {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+  | commitDone {σ : State U} {p : U.Pid} {k : WorkOutcome → U.Exec} {pi : PInfo U}
       {ri : ReqInfo U}
-      (hl : σ.audit.getLast? = some (.judge p .paradisus))
+      (hl : σ.audit.getLast? = some (.judge p .ratum))
       (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
       (hr : σ.reqs pi.req = some ri)
       (hok : Recheck σ ri (effectsOf pi.content))
       (hhc : ∀ e, e ∈ effectsOf pi.content → ¬ U.highConsequence e.verb) :
       CoreStep M R σ (.commit p (effectsOf pi.content) .done)
-        { (afterCommit M σ pi) with exec := upd σ.exec U.operator (k .paradisus) }
+        { (afterCommit M σ pi) with exec := upd σ.exec U.operator (k .ratum) }
 
-  | commitKeyed {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+  | commitKeyed {σ : State U} {p : U.Pid} {k : WorkOutcome → U.Exec} {pi : PInfo U}
       {ri : ReqInfo U} {n : Nat}
-      (hl : σ.audit.getLast? = some (.judge p .paradisus))
+      (hl : σ.audit.getLast? = some (.judge p .ratum))
       (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
       (hr : σ.reqs pi.req = some ri)
@@ -187,24 +187,24 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       CoreStep M R σ (.commit p (effectsOf pi.content) .done)
         { (afterCommit M σ pi) with
           keys := σ.keys ++ [.spend n],
-          exec := upd σ.exec U.operator (k .paradisus) }
+          exec := upd σ.exec U.operator (k .ratum) }
 
-  | commitOutside {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+  | commitOutside {σ : State U} {p : U.Pid} {k : WorkOutcome → U.Exec} {pi : PInfo U}
       {ri : ReqInfo U}
-      (hl : σ.audit.getLast? = some (.judge p .paradisus))
+      (hl : σ.audit.getLast? = some (.judge p .ratum))
       (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
       (hr : σ.reqs pi.req = some ri)
       (hno : ¬ Recheck σ ri (effectsOf pi.content)) :
       CoreStep M R σ (.commit p (effectsOf pi.content) .outside)
-        { (setStatus σ p pi .infernus) with
+        { (setStatus σ p pi .irritum) with
           vessel := (fun s => σ.vessel s ∨ s = .content pi.content),
           workers := endHelpersOf σ p,
-          exec := upd σ.exec U.operator (k .infernus) }
+          exec := upd σ.exec U.operator (k .irritum) }
 
-  | commitAwait {σ : State U} {p : U.Pid} {k : Destination → U.Exec} {pi : PInfo U}
+  | commitAwait {σ : State U} {p : U.Pid} {k : WorkOutcome → U.Exec} {pi : PInfo U}
       {ri : ReqInfo U}
-      (hl : σ.audit.getLast? = some (.judge p .paradisus))
+      (hl : σ.audit.getLast? = some (.judge p .ratum))
       (hi : instrOf M σ = .examine p k)
       (hp : σ.props p = some pi)
       (hr : σ.reqs pi.req = some ri)
@@ -212,9 +212,9 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hhc : ∃ e, e ∈ effectsOf pi.content ∧ U.highConsequence e.verb)
       (hnokey : ¬ ∃ n, KeyConfirmed M σ (effectsOf pi.content) n) :
       CoreStep M R σ (.commit p (effectsOf pi.content) .awaitsKey)
-        { (setStatus σ p pi .purgatorium) with
+        { (setStatus σ p pi .suspensum) with
           keys := σ.keys ++ [.petition (M.mech.fpEffects (effectsOf pi.content))],
-          exec := upd σ.exec U.operator (k .purgatorium) }
+          exec := upd σ.exec U.operator (k .suspensum) }
 
   | consecrateOk {σ : State U} {v : U.Value} {k : Bool → U.Exec} {kid : U.ValidatorId}
       {val : Validator U} {d : U.Datum}
@@ -302,7 +302,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       CoreStep M R σ (.intrude a c d)
         { (terminate σ (fun _ inst => inst.spiritSeal = a) .relegated) with
           vessel := (fun s => termVessel σ (fun _ inst => inst.spiritSeal = a) s ∨ s = .datum d),
-          index := σ.index ++ [.damn a] }
+          index := damnIfMortal a σ.index }
 
   | compute {σ : State U} {e : U.Exec} {ds : List U.Decision} {rs : List U.Place}
       {made : List (Made U)}
@@ -348,7 +348,7 @@ def JudgeOwed (σ : State U) : Prop :=
 
 /-- Modelling choice (see README): `commit` immediately follows a `judge` to PARADISUS. -/
 def CommitOwed (σ : State U) : Prop :=
-  ∃ p, σ.audit.getLast? = some (Label.judge p .paradisus)
+  ∃ p, σ.audit.getLast? = some (Label.judge p .ratum)
 
 /-- §9.2: one atomic transition, with its audit record appended. -/
 def Step (M : Core U) (R : RelRite U) (σ : State U) (l : Label U) (σ' : State U) : Prop :=

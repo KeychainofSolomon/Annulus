@@ -9,7 +9,7 @@ CIRCULUS RITU goetia {
     SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
     SIT propositum = PETE furfur("tempestas.txt");
     SIT iudicium = EXAMINA propositum;
-    SI iudicium == PARADISUS {
+    SI iudicium == RATUM {
         VADE IN PACE furfur;
     } ALITER {
         RELEGA furfur;

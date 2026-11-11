@@ -43,13 +43,13 @@ A program cannot declare, assign or shadow a register label (`authority.md` §2.
 
 3.2 **Plain types:** `NUMERUS`, `VERITAS`, `VERBUM`, `NIHIL`, `SERIES[T]`, and each declared `FORMA`.
 
-3.3 **Rite types.** The Constitution supplies these types. Except for the destination, a program can never write their names: it can only receive them from the rite.
+3.3 **Rite types.** The Constitution supplies these types. Except for the outcome, a program can never write their names: it can only receive them from the rite.
 
 | Type | Produced by | Notes |
 |---|---|---|
 | invocation | `INVOCA` | a spirit in its Triangle |
 | proposal | `PETE` | untrusted output of a spirit |
-| destination | the judgement step inside `EXAMINA` (§4.10); the literals `PARADISUS`, `PURGATORIUM`, `INFERNUS` | a plain value; may leave the Circle |
+| outcome | the judgement step inside `EXAMINA` (§4.10); the literals `RATUM`, `SUSPENSUM`, `IRRITUM` | a plain value; may leave the Circle |
 | seal (exemplar) | `SIGILLUM e` | data; grants nothing |
 | seal (operative) | `INSCRIBE … ATRAMENTO …` | a capability |
 | ink (raw) | `ATRAMENTUM "classis"` | drawn from the faculty; not yet usable |
@@ -70,7 +70,7 @@ A program cannot declare, assign or shadow a register label (`authority.md` §2.
 | `ET VEL` | `VERITAS`, `VERITAS` | `VERITAS` |
 | `NON` | `VERITAS` | `VERITAS` |
 
-3.5 **Equality (ruling 2026-11-10).** Comparing values of different types is an error. Equality is defined for the plain types (sequences and forms compare element by element) and for destinations and entries. It is **not** defined for invocations, proposals, seals, ink or divine names: capabilities are used, not compared.
+3.5 **Equality (ruling 2026-11-10).** Comparing values of different types is an error. Equality is defined for the plain types (sequences and forms compare element by element) and for outcomes and entries. It is **not** defined for invocations, proposals, seals, ink or divine names: capabilities are used, not compared.
 
 3.6 **No hidden truth.** Conditions of `SI` and `DUM` MUST be `VERITAS`. A number or a string is never "true".
 
@@ -85,9 +85,9 @@ A program cannot declare, assign or shadow a register label (`authority.md` §2.
 3.9 **Functions.**
 - A call has exactly as many arguments as the function has parameters, each of the parameter's type.
 - A function with a result type MUST end in `REDDE value` on every path. A function without one returns `NIHIL`, and `REDDE value` inside it is an error.
-- Rite types other than destination cannot be parameters or results (§4.7).
+- Rite types other than outcome cannot be parameters or results (§4.7).
 
-3.10 **Output.** `MANIFESTA` accepts the plain types, destinations, entries (shown as their number and label) and exemplar seals (shown in their revealed reading). Other rite values cannot be shown. [O]
+3.10 **Output.** `MANIFESTA` accepts the plain types, outcomes, entries (shown as their number and label) and exemplar seals (shown in their revealed reading). Other rite values cannot be shown. [O]
 
 3.11 **Errors caught by `CAPE`.** The `CAPE` variable has type `VERBUM`: the error's message. Which failures `TENTA` can catch is set in Part 4. Authority failures will not be catchable, so a denial can never be quietly swallowed.
 
@@ -130,7 +130,7 @@ An entry outside the range, a label not in the rite's register, or a reference t
 - stored in a sequence or form;
 - passed to, or returned from, a function.
 
-Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
+Outcomes are plain values and may leave. [O; enforces SOVEREIGNTY.]
 
 4.8 **Seals and ink.**
 - `INSCRIBE s ATRAMENTO a`: `s` MUST be an exemplar seal and `a` MUST be consecrated ink.
@@ -157,11 +157,11 @@ Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
 
 4.10 **EXAMINATION and JUDGEMENT.** `EXAMINA p` requires a proposal. It performs two separate acts of the Constitution, in order (ruling 2026-11-11, after the audit):
 1. **Examination** (`authority.md` §10): the fixed examiner gives a **verdict**, `APPROVE`, `HOLD` or `REJECT`. The verdict is recorded in the audit. It is not a program value and has no type a program can hold.
-2. **Judgement** (`authority.md` §11): the Constitution's judgement step assigns the **destination** from the verdict (`dynamic.md` §6.1). The destination is the value of `EXAMINA p`.
+2. **Judgement** (`authority.md` §11): the Constitution's judgement step assigns the **outcome** from the verdict (`dynamic.md` §6.1). The outcome is the value of `EXAMINA p`.
 
 The examiner is not written and cannot be: the Constitution's pairing decides it (`authority.md` §10). No agent and no program performs either act.
 
-4.10a **RESPONSUM** (ruling 2026-11-11). `RESPONSUM p` reads the answer of a proposal `p` whose office gives a response (`offices.md` §1.4). Otherwise it is an error (A5). It has type `VERBUM`, and the value is **quarantined** (`flow.md` §1.2): it cannot steer the program or reach another spirit until consecrated. It is a rite operation, so only inside a Circle (§4.1). It succeeds only if `p` was judged `PARADISUS`. Before that, or after any other destination, it is a class 2 denial. Authority failures cannot be caught (§3.11), so no program can quietly read a held or condemned answer. There is no expression that produces a destination except `EXAMINA` and the three literals, and a literal destination cannot commit anything: it is only a value to compare with.
+4.10a **RESPONSUM** (ruling 2026-11-11). `RESPONSUM p` reads the answer of a proposal `p` whose office gives a response (`offices.md` §1.4). Otherwise it is an error (A5). It has type `VERBUM`, and the value is **quarantined** (`flow.md` §1.2): it cannot steer the program or reach another spirit until consecrated. It is a rite operation, so only inside a Circle (§4.1). It succeeds only if `p` was judged `RATUM`. Before that, or after any other outcome, it is a class 2 denial. Authority failures cannot be caught (§3.11), so no program can quietly read a held or condemned answer. There is no expression that produces an outcome except `EXAMINA` and the three literals, and a literal outcome cannot commit anything: it is only a value to compare with.
 
 4.11 **RELEASE: every invocation ends.** For each variable holding an invocation:
 - on **every path** through the Circle, it MUST be released exactly once, by `VADE IN PACE`, `DIMITTE` or `RELEGA`, before the Circle closes;
@@ -222,4 +222,4 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 - **Rudd's kings** (audit 2026-11-11; ruling 2026-11-11: wait for the manuscript): establish from Harley 6483 whether Rudd gives the four kings (§4.5b). Then add `rudd` entries to `reges.json`.
 - **Registers for `clavicula`, `iuratus` and `janua`.**
 - **Modules (`LIBER`, `ADHIBE`):** how files are found and what a module exports; deferred to the part on the standard library.
-- **Destination as a written type:** for passing destinations to functions, a type name is needed. The proposal is `DESTINATIO`.
+- **Outcome as a written type:** for passing outcomes to functions, a type name is needed. The proposal is `DESTINATIO`.

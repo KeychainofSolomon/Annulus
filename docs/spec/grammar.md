@@ -98,8 +98,8 @@ All [O].
 | `ATRAMENTUM` | "ink" | the ink type; `ATRAMENTUM "classis"` draws raw ink from the faculty | [S] |
 | `CONSECRA` | "consecrate" | lifts taint after independent validation (§7.4) | [S] the consecration of the ink (*Liber iuratus* CXXXVII) |
 | `EXAMINA` | "examine" | submits a proposal to its fixed examiner, then to judgement | [S] the examination; [O] the mechanism |
-| `RESPONSUM` | "answer" | reads a spirit's answer once its proposal is in `PARADISUS` (`static.md` §4.10a) | [O] |
-| `PARADISUS` / `PURGATORIUM` / `INFERNUS` | the three destinations | values of a judgement (`authority.md` §11) | [O] the mapping; the names follow the Architecture |
+| `RESPONSUM` | "answer" | reads a spirit's answer once its proposal is in `RATUM` (`static.md` §4.10a) | [O] |
+| `RATUM` / `SUSPENSUM` / `IRRITUM` | "ratified" / "suspended" / "void" | the three outcomes of judged work (`authority.md` §11.2) | [O] ruling 2026-11-11: Paradise, Purgatory and Hell are for beings only (§11.2a) |
 | `VADE IN PACE` | "go in peace" | licence to depart | [S] Arbatel Aph. XXI, "vade in pace ad ordines tuos" |
 | `DIMITTE` | "send away" | dismiss | [O] (kept, ruled 2026-11-10) |
 | `RELEGA` | "banish" | banish; results go to the Vessel | [O] word (kept, ruled 2026-11-10); [S] act: the fire curse (BnF 1524 p215) |
@@ -176,7 +176,7 @@ unary          = ( "-" | "NON" | "CONSECRA" | "EXAMINA" | "RESPONSUM" ) , unary
 postfix        = primary , { "(" , [ arguments ] , ")" | "." , identifier | "[" , expression , "]" } ;
 arguments      = expression , { "," , expression } ;
 primary        = integer | string | "VERUM" | "FALSUM" | "NIHIL"
-               | "PARADISUS" | "PURGATORIUM" | "INFERNUS"
+               | "RATUM" | "SUSPENSUM" | "IRRITUM"
                | identifier | "(" , expression , ")" | sequence | rite_expression ;
 sequence       = "[" , [ arguments ] , "]" ;
 
@@ -196,7 +196,7 @@ entry          = ( "SPIRITUS" | "ANGELUS" ) , integer ;
 - **One reading only.** Every choice in this grammar is decided by the next token alone (LL(1)). Three rules make that true:
   1. An assignment is parsed as an expression followed by `=`. Its left side must then be a *place*: a variable, a field (`a.b`) or an element (`a[i]`). Anything else on the left is a syntax error.
   2. `PETE` takes a plain name: `PETE furfur("x")`. Otherwise its argument list would be read as an ordinary function call.
-  3. `CONSECRA`, `EXAMINA` and `INSCRIBE … ATRAMENTO …` bind as tightly as `NON`. So `EXAMINA p == PARADISUS` means `(EXAMINA p) == PARADISUS`.
+  3. `CONSECRA`, `EXAMINA` and `INSCRIBE … ATRAMENTO …` bind as tightly as `NON`. So `EXAMINA p == RATUM` means `(EXAMINA p) == RATUM`.
 
   The reference recognizer `tools/grammar_check.py` is hand-written to follow this grammar, and runs the test programs in `tests/grammar/`. **It checks examples, not the LL(1) property itself** (second audit, 2026-11-11). An independent check, computing FIRST and FOLLOW sets from the EBNF above and comparing the parser mechanically against it, is a task for step 2.
 - The smallest `NUMERUS`, −9223372036854775808, cannot be written as a literal, because its digits overflow before the minus applies. Write it as `-9223372036854775807 - 1`.
@@ -211,7 +211,7 @@ The full rules are in Part 3, `static.md`. In summary:
 
 1. **`entity`** resolves through the Constitution's registers, by number or by label, within the Circle's rite. An unknown name is a compile-time error. `furfur` and `SPIRITUS 34` are the same entity.
 2. **`AD OFFICIUM` office** must be one of the spirit's offices in that rite. A spirit asked for anything else is a compile-time error (law OFFICE).
-3. **`EXAMINA p`** sends `p` to the examiner fixed by the Constitution (Rudd's angel *n* for spirit *n* in `rudd`). The examiner gives a verdict; the Constitution's judgement step then assigns the destination, which is the value of `EXAMINA p` (`static.md` §4.10). There is no syntax for choosing an examiner or a judge.
+3. **`EXAMINA p`** sends `p` to the examiner fixed by the Constitution (Rudd's angel *n* for spirit *n* in `rudd`). The examiner gives a verdict; the Constitution's judgement step then assigns the outcome, which is the value of `EXAMINA p` (`static.md` §4.10). There is no syntax for choosing an examiner or a judge.
 4. **`NOMEN "…"`** must match exactly one recorded form of a divine name (kind `deus`) in `docs/registers/nomina.md`, for example `NOMEN "AGLA"` or `NOMEN "Tetragrammaton"`.
 
 ## 6. Built-in types (summary)
@@ -227,7 +227,7 @@ The full rules are in Part 3, `static.md`. In summary:
 | `SIGILLUM` | a seal, in exemplar or operative form |
 | `SPIRITUS`, `ANGELUS` | register entries |
 
-The Constitution supplies further types: invocation, proposal and destination.
+The Constitution supplies further types: invocation, proposal and outcome.
 
 ## 7. Example
 
@@ -250,7 +250,7 @@ CIRCULUS RITU goetia {
     SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
     SIT propositum = PETE furfur("tempestas.txt");
     SIT iudicium = EXAMINA propositum;
-    SI iudicium == PARADISUS {
+    SI iudicium == RATUM {
         VADE IN PACE furfur;
     } ALITER {
         RELEGA furfur;

@@ -52,7 +52,7 @@ Nothing is reported as built or tested unless it was.
 ## Specification parts written so far
 
 0. **The core and the rite layer:** what is proven and what is judged by the sources, the interface between them, and a map of every section. File: `docs/spec/core.md` (Part 0, draft 1).
-1. **Authority model:** the constitution, the axiom, the eight laws, seals and ink, registers, examination, destinations. File: `docs/spec/authority.md`.
+1. **Authority model:** the constitution, the axiom, the eight laws, seals and ink, registers, examination, outcomes. File: `docs/spec/authority.md`.
 2. **Provenance register:** the source-precedence rule, plus a sourced or original label on every element. File: `docs/spec/provenance.md`.
 3. **Lexical grammar:** literals, the keyword set and casing; no comment syntax. Keywords are all Latin (ruled 2026-11-10). File: `docs/spec/grammar.md` (draft 1).
 4. **Syntax in EBNF**, in the same file (draft 1). Checked LL(1): every choice is decided by the next token. The reference recognizer `tools/grammar_check.py` runs the accept/reject programs in `tests/grammar/`, and CI runs it.
@@ -68,7 +68,7 @@ Nothing is reported as built or tested unless it was.
 1. One circle.
 2. Furfur (Goetia 34) is invoked into the triangle for his office (storms: `TEMPESTAS`).
 3. Lehahiah (Shem angel 34) examines what Furfur proposes.
-4. The work is committed (PARADISE), held (PURGATORY), or banished and quarantined (HELL).
+4. The work is ratified (`RATUM`), suspended (`SUSPENSUM`) or made void (`IRRITUM`). Paradise, Purgatory and Hell are the standing of beings, not of work (ruling 2026-11-11).
 
 Furfur is chosen because the Goetia says he speaks falsely unless he is confined in the triangle, so his output is untrusted by default.
 

@@ -55,7 +55,7 @@ def P2 (M : Core U) (R : RelRite U) : Prop :=
     ∀ k p es r, k < x.len → x.lb k = .commit p es r →
       ∃ j e v0 cb pi, j + 1 < k ∧
         x.lb j = .examine p (.examined e v0 cb) .approve ∧
-        x.lb (j + 1) = .judge p .paradisus ∧
+        x.lb (j + 1) = .judge p .ratum ∧
         (∀ m d, j + 1 < m → m < k → x.lb m ≠ .judge p d) ∧
         (x.st j).props p = some pi ∧ e ≠ pi.author ∧ ¬ e ∈ pi.carries
 
@@ -262,9 +262,10 @@ or by examination appending a suspicion; and *damnatus* is never left. -/
 def DamnationLaw (M : Core U) (R : RelRite U) : Prop :=
   ∀ σ l σ', Reachable M R σ → Step M R σ l σ' →
     (σ'.index = σ.index ∨
-      (∃ a c d, l = .intrude a c d ∧ σ'.index = σ.index ++ [.damn a]) ∨
-      (∃ p an v s, l = .examine p an v ∧ σ'.index = σ.index ++ [.suspect s])) ∧
-    (∀ s, standing σ.index s = .damnatus → standing σ'.index s = .damnatus)
+      (∃ a c d, l = .intrude a c d ∧ ¬ U.angelic a ∧ σ'.index = σ.index ++ [.damn a]) ∨
+      (∃ p an v s, l = .examine p an v ∧ ¬ U.angelic s ∧ σ'.index = σ.index ++ [.suspect s])) ∧
+    (∀ s, standing σ.index s = .damnatus → standing σ'.index s = .damnatus) ∧
+    (∀ s, U.angelic s → standing σ.index s = .unknown → standing σ'.index s = .unknown)
 
 /-- The whole of §8, for one model of the language and mechanics. -/
 def AllObligations (M : Core U) : Prop :=

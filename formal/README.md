@@ -122,6 +122,10 @@ By a different AI (ChatGPT), from `annulus-lean-audit.zip`, which had no Lean in
 | B5 | Examination does not check the rite's pairing rules | Medium | **Declined.** Pairings are rite (`core.md` §2: "who examines"); the core checks only independence, and re-checks every commit. `core.md` §9.3b now says so explicitly |
 | B6 | P9 gives prefix compatibility, not equality, for unfinished runs | Medium | **Accepted as a clarification.** Equality is impossible for runs stopped at different lengths; `core.md` §9.6 now states both parts |
 
+## Outcomes and destinations (ruling 2026-11-11)
+
+Work is never sent to Heaven, Purgatory or Hell. A judged proposal is `RATUM` (ratified), `SUSPENSUM` (suspended) or `IRRITUM` (void), with the same mechanics the old names had (`WorkOutcome`). Paradise, Purgatory and Hell are the standing of beings, read from the Index (`authority.md` §11.2a). Angels are in Paradise by nature: `Universe.angelic`, `damnIfMortal`, and the last clause of `DamnationLaw`.
+
 ## For step 3
 
 Prove `AllObligations M` for every `M` whose `Lang` is a model of `static.md`. Before then: the owner's approval of step 1.

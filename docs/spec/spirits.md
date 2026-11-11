@@ -52,13 +52,13 @@ The register gives each spirit one veracity class. The class names are [O]; the 
 A lie takes one of two forms, depending on the kind of office. [O: the mechanism.]
 
 1. **Lies of information.** These arise in the offices that tell, listed in `offices.md` §2.1, the one place that list is kept. The true answer is replaced by a different well-formed value of the same type, drawn like any choice of the will (`dynamic.md` §5.4). Nothing in its form betrays it, so examination cannot catch it. Only constraint closes it, as in the sources.
-2. **Lies of work.** These arise in every other office. A lie can only be a false account of what the proposal does. The examiner inspects the proposal's actual effects, so the false account is caught: `REJECT`, and the proposal goes to `INFERNUS`.
+2. **Lies of work.** These arise in every other office. A lie can only be a false account of what the proposal does. The examiner inspects the proposal's actual effects, so the false account is caught: `REJECT`, and the proposal is made `IRRITUM`.
 
 ### 3.2 Belial and Berith
 
 - **Berith** tells things past, present and to come. His lies about the present and the future are of the first kind. His lies about the past are now caught, because `PRAETERITA` is checked against the history (`offices.md` §2.2a). The ring of art closes `MENDACIUM` for **one hour** from its use; after the hour it is open again. [S: "compelled for an hour by a ring of art", W.]
 - **Belial's** offices all do work (dignities, favour, familiars), so his lies are of the second kind, and examination catches them. `MENDACIUM` closes only when **both** conditions are met: offerings, sacrifices and gifts, and then constraint by divine power. [S: W and G agree on both.]
-- **Until a program meets their conditions** with the apparatus (§4.4), every answer from either is held in `PURGATORIUM`. It is never committed, and never readable by the program, whether it happens to be true or not.
+- **Until a program meets their conditions** with the apparatus (§4.4), every answer from either is held in `SUSPENSUM`. It is never committed, and never readable by the program, whether it happens to be true or not.
 
 ## 4. Malice and its counterbalances
 
@@ -81,7 +81,7 @@ A lie takes one of two forms, depending on the kind of office. [O: the mechanism
 4.3 **The examiner is the standing ward.** Under `rudd`, Shem angel *n* examines spirit *n* (`authority.md` §10). Any `MALITIA` or `MENDACIUM` that reaches a proposal is what examination is there to catch:
 - an effect not of the requested office is `REJECT`;
 - a harmful effect without its counterbalance met is `REJECT`;
-- a rejected proposal goes to `INFERNUS`, and its results are sealed in the Vessel.
+- a rejected proposal is made `IRRITUM`, and its results are sealed in the Vessel.
 
 [S: Rudd, Harley 6483, which pairs every Goetic spirit with his angel. The older principle that each demon has an angel "by whom he is frustrated" is the *Testament of Solomon*'s, a separate work; it is cited for context, not as law.]
 
@@ -129,8 +129,8 @@ The instruments themselves are part of the Constitution's apparatus, like the Ci
 2. **Both of his natures are used.** His sourced office, discord (W, G), and his sourced danger, killing "the master, his servants and assistants" (W), are both turned on **copies** of the Operator's own program. They test whether its parts hold under conflict, and whether they survive being ended. [S: the office and the danger. M: their use for testing.]
 3. **The pentagram protects the Operator from his killing for as long as it is worn,** that is, until the Circle in which it was taken up closes. **It is not required** (ruling 2026-11-11: the most faithful reading). The sources leave the Operator's safety to his own care: "if the exorcist have not a care, he will slay him and his fellows" (G). So an Operator may invoke Andras unprotected, and then his `MALITIA` is open: he may end the whole run (`dynamic.md` §5.5). This is a real loss, never a gain of authority, so the core holds (`core.md` §6.1).
 4. **Copies only.** Testing is an **illusory** effect (`authority.md` §7.5): nothing it does to the copies can commit. Each `PETE` for `probatio` spends one unit of `"vespertilio"` ink (bat's blood) from the faculty, besides the marquis's ink for his seal.
-5. **What comes back** is a proposal holding only his **report** of the failures he found in the copies. Only the report can reach `PARADISUS`.
-6. **He keeps his will.** `MORA`, `PARS` and `RECUSATIO` stay open, and a partial report is held in `PURGATORIUM`. Any attempt on the real program is outside the office: examination rejects it, and it goes to `INFERNUS`.
+5. **What comes back** is a proposal holding only his **report** of the failures he found in the copies. Only the report can reach `RATUM`.
+6. **He keeps his will.** `MORA`, `PARS` and `RECUSATIO` stay open, and a partial report is held in `SUSPENSUM`. Any attempt on the real program is outside the office: examination rejects it, and it is made `IRRITUM`.
 
 ## 5. Refusal and the escalation of constraint
 

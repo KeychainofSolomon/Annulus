@@ -15,5 +15,5 @@ CIRCULUS RITU goetia {
     APPELLA belial;
     VETA belial;
     SIT p = PETE belial();
-    SI EXAMINA p == PARADISUS { VADE IN PACE belial; } ALITER { RELEGA belial; }
+    SI EXAMINA p == RATUM { VADE IN PACE belial; } ALITER { RELEGA belial; }
 }

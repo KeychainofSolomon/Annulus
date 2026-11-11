@@ -156,7 +156,7 @@ def Suspected (σ : State U) (s : U.Seal) : Prop := standing σ.index s = .suspe
 
 /-- Ruling 2026-11-11: suspicion is entered in the Index, at examination. -/
 def NewlySuspect (M : Core U) (σ : State U) (s : U.Seal) : Prop :=
-  standing σ.index s = .unknown ∧ M.mech.resembles σ.index s σ.audit
+  ¬ U.angelic s ∧ standing σ.index s = .unknown ∧ M.mech.resembles σ.index s σ.audit
 
 def noteSuspicion (M : Core U) (σ : State U) (s : U.Seal) : List (IxEntry U) :=
   if NewlySuspect M σ s then σ.index ++ [.suspect s] else σ.index
@@ -205,7 +205,11 @@ def accepts (M : Core U) (val : Validator U) (d : U.Datum) (o : Option (Label U)
 
 /-- §9.6 P8: doubt. -/
 def Doubtful (M : Core U) (σ : State U) (s : U.Seal) : Prop :=
-  Suspected σ s ∨ Barred σ s ∨ NewlySuspect M σ s
+  ¬ U.angelic s ∧ (Suspected σ s ∨ Barred σ s ∨ NewlySuspect M σ s)
+
+/-- Ruling 2026-11-11: angels are in Heaven by nature; the Index holds nothing against them. -/
+def damnIfMortal (s : U.Seal) (X : List (IxEntry U)) : List (IxEntry U) :=
+  if U.angelic s then X else X ++ [.damn s]
 
 def finalVerdict (M : Core U) (σ : State U) (pi : PInfo U) (v0 cb : Verdict) : Verdict :=
   if Doubtful M σ pi.author then .hold else v0.meet cb
@@ -338,15 +342,15 @@ def endHelpersOf (σ : State U) (p : U.Pid) (w : U.Worker) : Option (WInfo U) :=
       if wi.isHelper = true ∧ wi.queue = [p] then some { wi with alive := false } else some wi
   | none => none
 
-def afterJudge (σ : State U) (p : U.Pid) (pi : PInfo U) (d : Destination)
-    (k : Destination → U.Exec) : State U :=
+def afterJudge (σ : State U) (p : U.Pid) (pi : PInfo U) (d : WorkOutcome)
+    (k : WorkOutcome → U.Exec) : State U :=
   let σa : State U :=
     { σ with
       props := upd σ.props p (some { pi with status := .judged d }),
       exec := upd σ.exec U.operator (k d) }
-  if d = .paradisus then
+  if d = .ratum then
     { σ with props := upd σ.props p (some { pi with status := .judged d }) }
-  else if d = .infernus then
+  else if d = .irritum then
     { σa with
       vessel := (fun s => σa.vessel s ∨ s = .content pi.content),
       workers := endHelpersOf σa p }
@@ -362,7 +366,7 @@ def afterCommit (M : Core U) (σ : State U) (pi : PInfo U) : State U :=
     world := applyEffects M (effectsOf pi.content) σ.world,
     data := committedData σ pi }
 
-def setStatus (σ : State U) (p : U.Pid) (pi : PInfo U) (d : Destination) : State U :=
+def setStatus (σ : State U) (p : U.Pid) (pi : PInfo U) (d : WorkOutcome) : State U :=
   { σ with props := upd σ.props p (some { pi with status := .judged d }) }
 
 /-- Ruling 2026-11-11: a confirmed, unspent sealed petition for exactly this work. -/
@@ -388,7 +392,7 @@ def Denied (M : Core U) (R : RelRite U) (σ : State U) : Prop :=
   | .request to f q p w _ => σ.reqs q ≠ none ∨ σ.props p ≠ none ∨ RequestBad R σ f w to
   | .examine p _ =>
       ∀ pi, σ.props p = some pi →
-        ¬ (pi.status = .pending ∨ pi.status = .complete ∨ pi.status = .judged .purgatorium)
+        ¬ (pi.status = .pending ∨ pi.status = .complete ∨ pi.status = .judged .suspensum)
   | .release i _ => σ.invs i = none
   | .relegate i _ => ¬ Live σ i
   | .compute _ _ rs made =>

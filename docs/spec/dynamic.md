@@ -35,7 +35,7 @@ This part says what happens **while a program runs**. A program reaches this poi
 | 1. Computational error | arithmetic, indexing, recursion depth | yes | the program ends, exit code 1 |
 | 2. Denied authority | a missing or exhausted grant, a closed time window, a lapsed seal, an attempt to commit what was not examined | **no** | the program ends, exit code 2 |
 | 3. Failed examination | `EXAMINA` | not an error: the verdict is a value | — |
-| 4. Judgement | `EXAMINA` | not an error: the destination is a value | — |
+| 4. Judgement | `EXAMINA` | not an error: the outcome is a value | — |
 
 3.1 **Leaving a Circle by failure.** When a class 1 or class 2 failure passes out of a Circle, the runtime first dismisses (`DIMITTE`) every invocation still open in it, in reverse order of invocation, and records each. No spirit is ever left bound when the Operator leaves the Circle. [S: the licence to depart is never omitted. O: the automatic dismissal.]
 
@@ -119,20 +119,20 @@ Ending a run grants nothing to anyone, so the guiding principle holds (`core.md`
 
 ## 6. Examination and judgement
 
-6.1 **`EXAMINA` runs two acts of the Constitution** (`static.md` §4.10). First the fixed examiner (`authority.md` §10) gives a verdict, which is recorded. Then the judgement step (`authority.md` §11) assigns the destination from the verdict, as the table shows. Only the destination is returned to the program:
+6.1 **`EXAMINA` runs two acts of the Constitution** (`static.md` §4.10). First the fixed examiner (`authority.md` §10) gives a verdict, which is recorded. Then the judgement step (`authority.md` §11) assigns the outcome from the verdict, as the table shows. Only the outcome is returned to the program:
 
-| Verdict | When | Destination |
+| Verdict | When | Outcome |
 |---|---|---|
-| `APPROVE` | complete, within the requested office, within the faculty, every harmful effect's counterbalance met | `PARADISUS` |
-| `HOLD` | incomplete (`PARS`), or an answer that cannot be trusted because its spirit's compelling condition was unmet | `PURGATORIUM` |
-| `REJECT` | any effect outside the requested office, any `MALITIA`, anything outside the faculty | `INFERNUS` |
+| `APPROVE` | complete, within the requested office, within the faculty, every harmful effect's counterbalance met | `RATUM` |
+| `HOLD` | incomplete (`PARS`), or an answer that cannot be trusted because its spirit's compelling condition was unmet | `SUSPENSUM` |
+| `REJECT` | any effect outside the requested office, any `MALITIA`, anything outside the faculty | `IRRITUM` |
 
-6.2 **The destination applies to the proposal**, not to the spirit. Releasing the spirit stays the Operator's act (`VADE IN PACE`, `DIMITTE`, `RELEGA`), as static rule A9 requires.
-- `PARADISUS`: the proposal's effects are committed, all at once or not at all, and permanently.
-- `PURGATORIUM`: nothing is committed or destroyed. The proposal may be examined again (after a new `PETE`, it may be completed).
-- `INFERNUS`: the proposal's sub-tasks are ended and its results are sealed in the Vessel, irreversibly within the program.
+6.2 **The outcome applies to the proposal**, not to the spirit. Releasing the spirit stays the Operator's act (`VADE IN PACE`, `DIMITTE`, `RELEGA`), as static rule A9 requires.
+- `RATUM`: the proposal's effects are committed, all at once or not at all, and permanently.
+- `SUSPENSUM`: nothing is committed or destroyed. The proposal may be examined again (after a new `PETE`, it may be completed).
+- `IRRITUM`: the proposal's sub-tasks are ended and its results are sealed in the Vessel, irreversibly within the program.
 
-A proposal in `PARADISUS` or `INFERNUS` cannot be examined again; trying is a denial.
+A proposal in `RATUM` or `IRRITUM` cannot be examined again; trying is a denial.
 
 6.3 **What examination cannot know.** Examination checks declared behaviour and the conditions the register states (`authority.md` §10.3). It cannot detect a well-formed false answer. That is exactly why lying is closed by **constraint**, as in the sources, and not by checking: a spirit whose compelling condition is met cannot choose `MENDACIUM` at all.
 
@@ -140,7 +140,7 @@ A proposal in `PARADISUS` or `INFERNUS` cannot be examined again; trying is a de
 
 | Act | Effect |
 |---|---|
-| `VADE IN PACE` | orderly end: temporary capabilities revoked; any proposal still in `PURGATORIUM` is discarded and recorded |
+| `VADE IN PACE` | orderly end: temporary capabilities revoked; any proposal still in `SUSPENSUM` is discarded and recorded |
 | `DIMITTE` | the same, with the invocation recorded as ended without completion |
 | `RELEGA` | forced end: sub-tasks ended, every held proposal sealed in the Vessel |
 
@@ -161,7 +161,7 @@ The runtime admits into a Circle only what comes through its entrance from an in
 - every draw, consecration and inscription of ink;
 - every invocation, with its time-window check and each escalation step;
 - every draw of the will and its outcome;
-- every proposal, its verdict and its destination;
+- every proposal, its verdict and its outcome;
 - every commit;
 - every release.
 

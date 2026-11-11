@@ -8,5 +8,5 @@ CIRCULUS RITU goetia {
     SIT sigillum = INSCRIBE SIGILLUM gaap ATRAMENTO CONSECRA ATRAMENTUM "praeses";
     SIT gaap = INVOCA SPIRITUS 33 AD OFFICIUM vectio;
     SIT p = PETE gaap("archivum");
-    SI EXAMINA p == PARADISUS { VADE IN PACE gaap; } ALITER { RELEGA gaap; }
+    SI EXAMINA p == RATUM { VADE IN PACE gaap; } ALITER { RELEGA gaap; }
 }

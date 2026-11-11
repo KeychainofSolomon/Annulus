@@ -111,7 +111,7 @@ Each law is enforced by the compiler's authority analysis, by the VM, or by both
 | CONTAINMENT | every authority-sensitive operation runs inside a Circle; every invocation runs inside a Triangle | VM |
 | EXAMINATION | no proposed protected effect is committed without examination by an entity other than its author | VM |
 | RELEASE | every invocation terminates (enforced by budget) and releases its capabilities | VM |
-| JUDGEMENT | only the Constitution's judgement step assigns a destination; no subordinate overturns it | VM |
+| JUDGEMENT | only the Constitution's judgement step assigns an outcome; no subordinate overturns it | VM |
 
 **[S]** for the laws as a group: the operator in the sources works only inside the circle, by declared names and offices, with examination ("true answers" only under constraint), a licence to depart, and judgement reserved to God.
 **[O]** the enforcement mechanisms.
@@ -175,7 +175,7 @@ It defines permissions, prohibitions and resource limits [Architecture §9].
 - [S: BnF 1524 p246, the Book II circle with an open corridor into the centre, and p191 L.]
 - [O: the single-entry rule.]
 
-6.2a **The uninvited go to Hell** (ruling 2026-11-10). Any agent that reaches, or **attempts** to reach, a Circle other than through an invocation the Operator made there is an **intruder** (fourth audit, 2026-11-11: since its messages are refused at the entrance, the recorded fact is the attempt; the step is `intrude`, `core.md` §9.2): a spirit not invoked, or an outside program or AI agent acting on the program without a grant. It is not examined, because it has nothing to examine. No capability it holds traces to the faculty (law ORIGIN), and whether it was invoked is a recorded fact, not a judgement, so no examiner's error can condemn it. Its messages are refused at the entrance, everything it sent is sealed in the Vessel (`INFERNUS`), it is barred from the program for the rest of the run, and all of it is recorded. [S: the Circle "to preserve himself from the malice of those evill Spirits" (Sloane 3825 f112); Orobas and Haures suffer no other spirit to tempt the Operator (G, W). O: the mechanism.] (Ruling 2026-11-11: "go to Hell" means that everything they produced is sealed in `INFERNUS`, and that the intruder itself is **damned**, irreversibly, by its seal, on the recorded fact of intrusion alone: `core.md` §9.2, `proscription.md` §1.)
+6.2a **The uninvited go to Hell** (ruling 2026-11-10). Any agent that reaches, or **attempts** to reach, a Circle other than through an invocation the Operator made there is an **intruder** (fourth audit, 2026-11-11: since its messages are refused at the entrance, the recorded fact is the attempt; the step is `intrude`, `core.md` §9.2): a spirit not invoked, or an outside program or AI agent acting on the program without a grant. It is not examined, because it has nothing to examine. No capability it holds traces to the faculty (law ORIGIN), and whether it was invoked is a recorded fact, not a judgement, so no examiner's error can condemn it. Its messages are refused at the entrance, everything it sent is sealed in the Vessel (`IRRITUM`), it is barred from the program for the rest of the run, and all of it is recorded. [S: the Circle "to preserve himself from the malice of those evill Spirits" (Sloane 3825 f112); Orobas and Haures suffer no other spirit to tempt the Operator (G, W). O: the mechanism.] (Ruling 2026-11-11: "go to Hell" means that everything they produced is sealed in `IRRITUM`, and that the intruder itself is **damned**, irreversibly, by its seal, on the recorded fact of intrusion alone: `core.md` §9.2, `proscription.md` §1.)
 
 **Proscription** (ruling 2026-11-11). An intruder is banned **on every level at which it sought to enact change**: the program, every Circle it reached, and every resource it tried to alter (each file, place, grant or invocation it aimed at). The ban is entered in the **Index of the proscribed** (*index proscriptorum*), which the Constitution keeps outside every program. It holds:
 - every identity the intruder presented;
@@ -188,7 +188,7 @@ The ban **persists across runs**. Each later launch refuses those identities at 
 
 **The Vessel is never opened for use.** What is sealed in it is never released, committed, run or reused, by anyone, the Operator included. The Operator may *read* it, to learn what was attempted; reading changes nothing. [S: Sloane 3825 f113, the warning: the Babylonians broke the vessel "hoping to find great treasure", and the spirits fled to their former places, save Belial, who "entered into a certain Image". O: read-only access.]
 
-Invited agents keep the rule of §11 for what they do through their invocation: Hell applies to their *proposals*, and their release stays the Operator's act. An invited agent that attempts to reach a Circle where it holds no open invocation, or acts after its release, is an intruder there (ruling 2026-11-11, `core.md` §9.2).
+Invited agents keep the rule of §11 for what they do through their invocation: their work may be made `IRRITUM`, and their release stays the Operator's act. An invited agent that attempts to reach a Circle where it holds no open invocation, or acts after its release, is an intruder there (ruling 2026-11-11, `core.md` §9.2).
 
 6.3 **The form follows the rite.** A Circle's structure (its rings, names and figures) is drawn from its rite:
 - `clavicula`: the 1446 Circle of the Art (p194): a square with 8 crosses, 4 hexagrams and the ring of names.
@@ -339,17 +339,29 @@ The names in the form are references to Constitution entries (section 2.3).
 
 Examination is not judgement (section 11). [Architecture §10]
 
-## 11. Judgement and the three destinations (ruling 2026-11-10)
+## 11. Judgement: three outcomes for work, three destinations for beings (rulings 2026-11-10, 2026-11-11)
 
-11.1 **Only the Constitution's judgement step assigns a destination,** on the basis of the examiner's verdict. No agent assigns a destination to its own work. The core's commit step may then move an approved proposal to `INFERNUS` (its effects fall outside what was handed) or to `PURGATORIUM` (it awaits the second key), never upwards (`core.md` §9.2).
+11.1 **Only the Constitution's judgement step assigns an outcome,** on the basis of the examiner's verdict. No agent assigns an outcome to its own work. The core's commit step may then move an approved proposal to `IRRITUM` (its effects fall outside what was handed) or to `SUSPENSUM` (it awaits the second key), never upwards (`core.md` §9.2).
 
-11.2 **The destinations** apply to the proposal judged, not to the spirit who made it; releasing the spirit stays the Operator's act (`dynamic.md` §6.2). An agent's own states are separate (`core.md` §9.2). Only an intruder can be damned, and only by the recorded fact of intrusion:
+11.2 **The outcomes** apply to the proposal judged, not to the spirit who made it; releasing the spirit stays the Operator's act (`dynamic.md` §6.2). Work is never sent to Heaven, Purgatory or Hell (ruling 2026-11-11): those are for beings (§11.2a). Work keeps the same restrictions under its own names:
 
-| Destination | Mechanics |
-|---|---|
-| PARADISE | examined, approved, committed: final and permanent |
-| PURGATORY | held: not committed, not destroyed; awaits re-examination |
-| HELL | banished: capabilities revoked, tasks terminated, results quarantined in the Vessel and sealed; irreversible within the program |
+| Outcome | Meaning | Mechanics |
+|---|---|---|
+| `RATUM` | ratified | examined, approved, committed: final and permanent |
+| `SUSPENSUM` | suspended | held: not committed, not destroyed; awaits re-examination, and ends with its spirit (`core.md` §9.2) |
+| `IRRITUM` | void, nullified | nothing of it takes effect: sub-tasks ended, never committed, run or reused by anyone. Its record is sealed in the Vessel, which the Operator may read and no one may use (§6.2a) |
+
+11.2a **The destinations are for beings** (ruling 2026-11-11). Paradise, Purgatory and Hell are an entity's **standing**, read from the Index of the proscribed by its seal (`proscription.md`): a spirit, an angel's counterpart, a real AI agent, or a program other than the one launched. The program the Operator launches is never judged.
+
+| Destination | Standing | How it is entered | How it is left |
+|---|---|---|---|
+| **PARADISUS** | good standing: not suspected, proscribed or damned | the default for every seal | by suspicion, proscription or damnation |
+| **PURGATORIUM** | *suspected* or *proscribed*: its work is held, or it is refused at the entrance | suspicion at examination; proscription by the owner outside a session | only by the owner, outside a session (`operator.md` §4) |
+| **INFERNUS** | *damnatus* | only by the recorded fact of intrusion (`core.md` §9.2) | never |
+
+Only an intruder goes to Hell, and only by that recorded fact; the judgement step never sends a being anywhere.
+
+**Angels are in Paradise by nature** (ruling 2026-11-11). Their standing comes from the Constitution (§12.1a), not from the Index: no angel's seal can be suspected, proscribed or damned, and the Index takes no entry against one. An angel never intrudes, since it acts only at the Operator's petition. So anything that attempts entry bearing an angel's seal is a forgery: it is refused, what it sent is sealed in the Vessel, and it is recorded, but the angel's standing is untouched.
 
 11.3 **Real states, symbolic claim.** The states are real and have real consequences. The claim is symbolic: the runtime never claims to determine actual divine judgement [Architecture §4; JUDGEMENT law].
 - [S] In the sources the magician binds and banishes but never condemns, and some spirits' ends are left open: several hope to return "after 1200 years".
@@ -380,7 +392,7 @@ The runtime MUST distinguish four classes [Architecture §8]:
 1. **Computational error:** for example, division by zero.
 2. **Denied authority:** a missing or lapsed capability, a wrong ink, outside the jurisdiction, outside the office or time window.
 3. **Failed examination:** the verdict was REJECT or HOLD.
-4. **Judgement:** the work was assigned to a destination.
+4. **Judgement:** the work was assigned to an outcome.
 
 ## 14. Audit
 

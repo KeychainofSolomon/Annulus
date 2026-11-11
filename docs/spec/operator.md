@@ -34,7 +34,7 @@ So in Annulus the Operator is part of what must be secured. Every rule below is 
 
 3.1 The `CUSTODIA` office of Orobas ("suffers no spirit to tempt the exorcist", W) and of Haures ("will not let the exorcist be tempted", W) is applied **to the Operator's own decisions** while spirits are active. A guardian proposes a warning whenever a grant change, an approval or the lifting of a proscription follows from another spirit's proposal.
 
-3.2 Guardians, like every spirit, only propose. A warning is examined, and it holds the decision in `PURGATORIUM` until the Operator confirms it again through §4.
+3.2 Guardians, like every spirit, only propose. A warning is examined, and it holds the decision in `SUSPENSUM` until the Operator confirms it again through §4.
 
 ## 4. Preparation for consequential acts
 
@@ -47,9 +47,9 @@ So in Annulus the Operator is part of what must be secured. Every rule below is 
 
 ## 5. Doubt holds, and the gravest acts need two keys
 
-5.1 **Doubt holds.** When examination cannot reach a verdict, the verdict is `HOLD`, never `APPROVE`: the work goes to `PURGATORIUM`. [O; Purgatory is the sources' place of the unresolved.]
+5.1 **Doubt holds.** When examination cannot reach a verdict, the verdict is `HOLD`, never `APPROVE`: the work is made `SUSPENSUM`. [O; suspension echoes Purgatory, the sources' place of the unresolved.]
 
-5.2 **Two keys.** An effect the installation marks as high-consequence commits only with both a `PARADISUS` verdict and the launching person's confirmation under §4. [O]
+5.2 **Two keys.** An effect the installation marks as high-consequence commits only with both a `RATUM` outcome and the launching person's confirmation under §4. [O]
 
 ## 6. Real agents
 

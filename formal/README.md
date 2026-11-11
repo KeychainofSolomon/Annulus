@@ -62,29 +62,29 @@ Each is a reading of the spec where it was silent. The auditor should check each
 7. **Only the spirit's own worker may finish a request**, not a helper.
 8. **The program performs no writes of its own**; its only touches are reads. All writes are commits.
 
-## What formalising found (for the auditor and the owner)
+## What formalising found, and how it was settled
 
-Ranked most severe first. "Model" says what the Lean does meanwhile.
+Ranked most severe first. The owner ruled on 1 and 4 (2026-11-11); the rest are spec fixes made the same day in `core.md` §9 and `authority.md` §6.2a, §11, unless marked open.
 
-| # | Where | Problem | Severity | Suggested fix | Model |
-|---|---|---|---|---|---|
-| 1 | §9.4, P5 | **P5 as stated is false.** The observation includes the places commits touch. A work proposal's effects are its content. Two runs alike except that an approved proposal writes file A in one and file B in the other (both handed) meet every hypothesis, and their observations differ. Second, verdicts depend on content, but P5 assumes "the same rite answers", so the verdict channel is assumed away rather than accounted for in D | High | Count examination as declassification: add each verdict and each committed effect list to D (the "robust declassification" reading), or restrict obs to the program's own decisions and touches. Needs the owner's ruling | `P5` states the spec's version; finding stands |
-| 2 | §9.2, proposal's life | A proposal judged `PARADISUS` whose invocation ends before it commits: the life says nothing. Committing it later would use Hold(*i*) after the terminal step (P4) | High | Commit immediately follows a `judge` to `PARADISUS`, as `judge` follows `examine` | `CommitOwed` forces it |
-| 3 | §9.1, §3.3, `operator.md` §5.2 | Two-key (high-consequence) commits need a confirmation "outside a session", but §9.1 has no store for such confirmations and no step uses one. So within a run they can never commit | High | A store of one-use commit confirmations, like grave grants, or rule that such proposals wait in `PURGATORIUM` for a later run | commit result `awaitsKey` → `PURGATORIUM` |
-| 4 | §9.2 damnation, `authority.md` §6.2a | `intrude`'s condition, "other than through an invocation the Operator made there", also catches an invited agent attempting delivery into **another** Circle, or after its release. That contradicts "invited agents are never damned" | High | the owner rules: is an invited agent's out-of-channel attempt intrusion? | literal reading: not invited **in that Circle**, live |
-| 5 | §9.2, `judge` | Status between `examine` and `judge` undefined; "immediately after" does not say what happens if anything else intervenes | Medium | Say that nothing else may occur between them | `JudgeOwed` forces it |
-| 6 | §3.3, `authority.md` §11.1 | A failed re-check sends the proposal to `INFERNUS` after `judge` gave `PARADISUS`, yet only `judge` assigns destinations | Medium | Name the re-check's outcome in §11 as a second, core-only assignment, or have the commit step record a refusal without a destination | `commitOutside` sets `judged INFERNUS` |
-| 7 | §9.2 | Angels' work has no life: no transition creates an angel's proposal (there is no petition step), and nothing ends it when a Circle closes. P4 does not cover angels | Medium | Add `petition` to §9.2 and say when an angel's work ends | `request` to an angel; never abandoned |
-| 8 | §9.2, §9.6 | No transition ends a run normally or by failure; which terminal status (`released` or `relegated`) `close`, `kill` and the end of a run force is unsaid; whether closing the outermost Circle ends the run is unclear | Medium | Add the ending steps; name the forced status | ends are results of `step`; forced status `released`; closing does not end the run |
-| 9 | §9.1, `operator.md` §8.2 | The wand's state is "constant for the rest of the run", yet `GERE VIRGAM` needs the rite secret unlocked during the rite | Medium | Allow exactly one change, locked ↔ rite, and keep master unreachable | constant; `GERE VIRGAM` not modelled |
-| 10 | §9.2, `proscription.md` §2.3 | Suspicion is produced during a run (a new seal whose actions match a mark), but no field holds it and no step records it; §9.2 says only `intrude` changes the Index in a run | Medium | Add suspicion to the state, or a step that appends it | read only from entries made outside runs |
-| 11 | §9.6, P9 | Replay needs (a) a functional rite, not a relational one; (b) intrusions excluded or scripted, since they are outside input; (c) a fixed rule for when core steps (`judge`, `commit`) happen | Medium | State these in P9's precondition | `P9` over `Rite`, with `NoIntrusion` |
-| 12 | §9.3a | "Raw ink becomes consecrated ink": ink is a budget (a number), and no value is raw ink, so the step has nothing to act on | Low | Define ink values, or drop the clause | omitted |
-| 13 | §9.3c | `consecrate-grave`'s precondition does not require the value's mark to be above `consecrated-grave`; on a `clean` value it would raise the mark | Low | Require `quarantined` or `consecrated` | required |
-| 14 | §9.2 | A later `release` of a terminal invocation is a no-op, but a later `relegate` is unsaid | Low | Say it is a no-op too, or not enabled | not enabled |
-| 15 | §9.6, P8 | "Under doubt" is not defined | Low | Define doubt: no admissible examiner, a suspected author, or an examiner's `HOLD` | the first two |
-| 16 | §9.5, P6(b) | In the model it is almost immediate: the same run works under the laxer rite. That is correct, and shows how little (b) claims | Note | none | `P6b` |
+| # | Where | Problem | Severity | Settled |
+|---|---|---|---|---|
+| 1 | §9.4, P5 | P5 was false: the observation includes the places approved work touches, which the spirit chose; and verdicts depend on content but were assumed equal | High | **Ruling: judgement releases.** Every `examine`, `judge` and `commit` is in D, as consecration is (`Exn.declass`) |
+| 2 | §9.2 | A proposal judged `PARADISUS` whose invocation ended before commit would use Hold(*i*) afterwards | High | `commit` is the very next step after a `judge` to `PARADISUS` (`CommitOwed`) |
+| 3 | §9.1, §3.3 | Two-key commits had no store for the confirmation | High | Within a run: outcome "awaiting the second key", proposal to `PURGATORIUM` (`commitAwait`). **Open:** the store, and how a later confirmation commits it |
+| 4 | §9.2, §6.2a | `intrude` caught an invited agent attempting delivery into another Circle or after release, against "invited agents are never damned" | High | **Ruling: yes, damned.** Only an open invocation in that Circle is an invitation (`Invited`) |
+| 5 | §9.2 | Nothing defined between `examine` and `judge` | Medium | `judge` is the very next step (`JudgeOwed`) |
+| 6 | §3.3, §11.1 | A failed re-check assigned `INFERNUS` after `judge` | Medium | §11.1 names the commit step's core-only moves, downwards only |
+| 7 | §9.2 | Angels' work had no life | Medium | `request` covers petitions; an angel's unjudged work is abandoned at the end of the run (`endRun`) |
+| 8 | §9.2, §9.6 | No ending steps; forced status unsaid; outermost Circle unclear | Medium | `step` may end the run; forced status `released`; closing the outermost Circle does not end the run |
+| 9 | §9.1 | The wand was constant, yet `GERE VIRGAM` unlocks the rite secret | Medium | Exception: locked ↔ rite only, never master. Not in the model (no `GERE VIRGAM` step yet) |
+| 10 | §9.2, `proscription.md` §2.3 | Suspicion arises in a run but has no field and no step | Medium | **Open.** Model reads suspicion only from entries made outside runs |
+| 11 | §9.6, P9 | Replay needs a functional rite and no intrusions | Medium | Added to P9's precondition (`P9`, `NoIntrusion`) |
+| 12 | §9.3a | Raw ink has no value to act on | Low | Clause withdrawn until ink values are defined (open) |
+| 13 | §9.3c | Grave consecration could raise a `clean` value's mark | Low | Precondition: `quarantined` or `consecrated` (`GraveMatch`) |
+| 14 | §9.2 | `relegate` of a terminal invocation unsaid | Low | Applies only to an open invocation |
+| 15 | §9.6, P8 | "Doubt" undefined | Low | No admissible examiner, or a suspected author |
+| 16 | §9.5, P6(b) | Almost immediate in the model | Note | Correct as it stands |
 
 ## For step 3
 
-Prove `AllObligations M` for every `M` whose `Lang` is a model of `static.md`. Before then: the owner's rulings on findings 1 and 4, the spec fixed for 2–3 and 5–15, and this model audited by someone who reads Lean.
+Prove `AllObligations M` for every `M` whose `Lang` is a model of `static.md`. Before then: this model audited against `core.md` by someone who reads Lean (`AUDIT_BRIEF.md`), and findings 3 and 10 settled.

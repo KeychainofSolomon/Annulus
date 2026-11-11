@@ -188,7 +188,7 @@ The ban **persists across runs**. Each later launch refuses those identities at 
 
 **The Vessel is never opened for use.** What is sealed in it is never released, committed, run or reused, by anyone, the Operator included. The Operator may *read* it, to learn what was attempted; reading changes nothing. [S: Sloane 3825 f113, the warning: the Babylonians broke the vessel "hoping to find great treasure", and the spirits fled to their former places, save Belial, who "entered into a certain Image". O: read-only access.]
 
-Invited agents keep the rule of §11: Hell applies to their *proposals*, and their release stays the Operator's act.
+Invited agents keep the rule of §11 for what they do through their invocation: Hell applies to their *proposals*, and their release stays the Operator's act. An invited agent that attempts to reach a Circle where it holds no open invocation, or acts after its release, is an intruder there (ruling 2026-11-11, `core.md` §9.2).
 
 6.3 **The form follows the rite.** A Circle's structure (its rings, names and figures) is drawn from its rite:
 - `clavicula`: the 1446 Circle of the Art (p194): a square with 8 crosses, 4 hexagrams and the ring of names.
@@ -341,7 +341,7 @@ Examination is not judgement (section 11). [Architecture §10]
 
 ## 11. Judgement and the three destinations (ruling 2026-11-10)
 
-11.1 **Only the Constitution's judgement step assigns a destination,** on the basis of the examiner's verdict. No agent assigns a destination to its own work.
+11.1 **Only the Constitution's judgement step assigns a destination,** on the basis of the examiner's verdict. No agent assigns a destination to its own work. The core's commit step may then move an approved proposal to `INFERNUS` (its effects fall outside what was handed) or to `PURGATORIUM` (it awaits the second key), never upwards (`core.md` §9.2).
 
 11.2 **The destinations** apply to the proposal judged, not to the spirit who made it; releasing the spirit stays the Operator's act (`dynamic.md` §6.2). An agent's own states are separate (`core.md` §9.2). Only an intruder can be damned, and only by the recorded fact of intrusion:
 
@@ -353,7 +353,7 @@ Examination is not judgement (section 11). [Architecture §10]
 
 11.3 **Real states, symbolic claim.** The states are real and have real consequences. The claim is symbolic: the runtime never claims to determine actual divine judgement [Architecture §4; JUDGEMENT law].
 - [S] In the sources the magician binds and banishes but never condemns, and some spirits' ends are left open: several hope to return "after 1200 years".
-- [O] So the Operator never condemns, in Annulus either. Damnation (`core.md` §9.2) is the Constitution's law acting on a recorded fact, intrusion, never a judgement by anyone. Invited spirits are never damned.
+- [O] So the Operator never condemns, in Annulus either. Damnation (`core.md` §9.2) is the Constitution's law acting on a recorded fact, intrusion, never a judgement by anyone. Nothing a spirit does through his invocation can damn him; an attempt outside it, in another Circle or after his release, is intrusion (ruling 2026-11-11).
 
 ## 12. Angels
 

@@ -249,9 +249,27 @@ def terminate (σ : State U) (P : U.Inv → Inst U → Prop) (st : InvStatus) : 
     props := termProps σ P,
     vessel := termVessel σ P }
 
+def IsAngelWork (σ : State U) (pi : PInfo U) : Prop :=
+  ∃ ri a, σ.reqs pi.req = some ri ∧ ri.to = .angel a
+
+def abandonAngelProps (σ : State U) (p : U.Pid) : Option (PInfo U) :=
+  match σ.props p with
+  | some pi =>
+      if Unjudged pi.status ∧ IsAngelWork σ pi then some { pi with status := .abandoned } else some pi
+  | none => none
+
+def abandonAngelVessel (σ : State U) (s : Sealed U) : Prop :=
+  σ.vessel s ∨ ∃ p pi, σ.props p = some pi ∧ Unjudged pi.status ∧ IsAngelWork σ pi ∧
+    s = .content pi.content
+
+/-- §9.2: the end of a run forces every terminal step, and abandons angels' unjudged work. -/
 def endRun (σ : State U) (e : Ending U) : State U :=
   let τ := terminate σ (fun _ _ => True) .released
-  { τ with phase := .ended e, sched := idle τ.sched }
+  { τ with
+    props := abandonAngelProps τ,
+    vessel := abandonAngelVessel τ,
+    phase := .ended e,
+    sched := idle τ.sched }
 
 def addHelperTo (σ : State U) (w' : U.Worker) (wi : WInfo U) (i : U.Inv) : Option (Inst U) :=
   match σ.invs i with

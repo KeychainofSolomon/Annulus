@@ -304,4 +304,5 @@ Discussed with the owner, not built:
   - The rest (two-key commits have no store, commit must follow judge, angels' work has no life, run endings, the wand during `GERE VIRGAM`, suspicion in the state, P9's preconditions, …) are spec fixes with a suggested fix each.
 - **Then:** fold the fixes into `core.md`, update the Lean to match, audit the Lean against the spec (`AUDIT_BRIEF.md` is rewritten for that), and the owner's approval ends step 1.
 - **Watch (standing instruction):** the Lean model and `core.md` §9 now state the same rules in two places. Treat `core.md` as normative and change both together; say so if they drift.
-
+- **Ruled by the owner (2026-11-11, later):** P5, **judgement releases** (verdicts, destinations and commits go into D); intrusion, **an invited agent outside its open invocation in that Circle is an intruder, damned**. Both written into `core.md` §9 and `authority.md` §6.2a, §11, with the other formalisation fixes; the Lean model matches and CI passes. Still open: the store for second-key confirmations, and where suspicion is recorded during a run (`formal/README.md`, findings 3 and 10).
+- **Next:** the Lean audit (`AUDIT_BRIEF.md`), then findings 3 and 10, then the owner's approval of step 1.

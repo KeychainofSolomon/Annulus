@@ -160,10 +160,13 @@ def choiceOf : Label U → List (Choice U)
 
 def Exn.choices (x : Exn U) : List (Choice U) := concatAll (x.labels.map choiceOf)
 
-/-- D(ρ): the declassified record. -/
+/-- D(ρ): the declassified record. Ruling 2026-11-11: judgement releases. -/
 def declassOf : Label U → List (Label U)
   | .consecrate v k a => [.consecrate v k a]
   | .consecrateGrave v g k a => [.consecrateGrave v g k a]
+  | .examine p a v => [.examine p a v]
+  | .judge p d => [.judge p d]
+  | .commit p es r => [.commit p es r]
   | _ => []
 
 def Exn.declass (x : Exn U) : List (Label U) := concatAll (x.labels.map declassOf)
@@ -180,8 +183,8 @@ def eraseHigh (σ : State U) : State U :=
 /-- §9.4: low-equivalence, equal except in quarantined contents. -/
 def LowEq (σ τ : State U) : Prop := eraseHigh σ = eraseHigh τ
 
-/-- P5, quarantine, as `core.md` §9.4 states it. Runs that never end are covered by their
-finite prefixes (part a). README, finding 1: as stated, this is refutable. -/
+/-- P5, quarantine (`core.md` §9.4). Runs that never end are covered by their finite
+prefixes (first part). -/
 def P5 (M : Core U) (R : RelRite U) : Prop :=
   ∀ prog, M.lang.WellTyped prog →
     ∀ x y, Run M R prog x → Run M R prog y → LowEq (x.st 0) (y.st 0) →

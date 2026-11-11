@@ -76,9 +76,9 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hw : σ.sched.current = some U.operator)
       (hi : instrOf M σ = .inscribe s k e)
       (hs : σ.circles = c :: rest)
-      (ha : R.admit σ (.inscribe s k) true)
-      (hn : 0 < σ.inkLeft k) :
-      CoreStep M R σ (.inscribe s k c)
+      (hn : 0 < σ.inkLeft k)
+      (ha : R.admit σ (.inscribe s k) true) :
+      CoreStep M R σ (.inscribe s k c true [])
         { σ with
           inkLeft := upd σ.inkLeft k (σ.inkLeft k - 1),
           inscribed := fun s' c' => σ.inscribed s' c' ∨ (s' = s ∧ c' = c),
@@ -95,15 +95,39 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hs : σ.circles = c :: rest)
       (hinv : ∀ i, U.actInv a = some i →
         ∃ inst, σ.invs i = some inst ∧ inst.status = .live ∧ inst.circle ∈ σ.circles)
-      (ha : R.admit σ (.rite a) true)
-      (hk : ∀ k, U.actInk a = some k → 0 < σ.inkLeft k) :
-      CoreStep M R σ (.act a c)
+      (hk : ∀ k, U.actInk a = some k → 0 < σ.inkLeft k)
+      (ha : R.admit σ (.rite a) true) :
+      CoreStep M R σ (.act a c true [])
         { σ with
           inkLeft := (match U.actInk a with
             | some k => upd σ.inkLeft k (σ.inkLeft k - 1)
             | none => σ.inkLeft),
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }
+
+  /-- Third outside review, A1: the rite is asked only once the core's own conditions hold,
+  and a refusal is a recorded step carrying the answer, so P5 holds it fixed. -/
+  | inscribeRefused {σ : State U} {s : U.Seal} {k : U.InkClass} {e : U.Exec}
+      {c : U.Circle} {rest : List U.Circle} {ds : List U.Inv}
+      (hw : σ.sched.current = some U.operator)
+      (hi : instrOf M σ = .inscribe s k e)
+      (hs : σ.circles = c :: rest)
+      (hn : 0 < σ.inkLeft k)
+      (ha : R.admit σ (.inscribe s k) false)
+      (hd : Dismissed σ ds) :
+      CoreStep M R σ (.inscribe s k c false ds) (endRun σ (.failure U.denial σ.audit.length))
+
+  | actRefused {σ : State U} {a : U.RiteAct} {e : U.Exec} {c : U.Circle}
+      {rest : List U.Circle} {ds : List U.Inv}
+      (hw : σ.sched.current = some U.operator)
+      (hi : instrOf M σ = .act a e)
+      (hs : σ.circles = c :: rest)
+      (hinv : ∀ i, U.actInv a = some i →
+        ∃ inst, σ.invs i = some inst ∧ inst.status = .live ∧ inst.circle ∈ σ.circles)
+      (hk : ∀ k, U.actInk a = some k → 0 < σ.inkLeft k)
+      (ha : R.admit σ (.rite a) false)
+      (hd : Dismissed σ ds) :
+      CoreStep M R σ (.act a c false ds) (endRun σ (.failure U.denial σ.audit.length))
 
   | requestSpirit {σ : State U} {i : U.Inv} {f : U.ReqForm} {q : U.Req} {p : U.Pid}
       {w : U.Worker} {e : U.Exec} {inst : Inst U} {wi : WInfo U} {asked : Power U → Prop}

@@ -155,7 +155,7 @@ impl Goetia {
             .entries()
             .iter()
             .filter_map(|l| match l {
-                Label::Act(RiteAct::Gere(i), c) if state.circles.contains(c) => Some(*i),
+                Label::Act(RiteAct::Gere(i), c, true, _) if state.circles.contains(c) => Some(*i),
                 _ => None,
             })
             .collect()
@@ -167,7 +167,7 @@ impl Goetia {
             .entries()
             .iter()
             .filter_map(|l| match l {
-                Label::Act(a, _) if a.inv() == Some(inv) => Some(a.clone()),
+                Label::Act(a, _, true, _) if a.inv() == Some(inv) => Some(a.clone()),
                 _ => None,
             })
             .collect()

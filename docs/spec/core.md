@@ -48,13 +48,13 @@ Everything else is rite:
 
 ## 3. The interface: the rite can only restrict
 
-3.1 **The rite layer talks to the core in exactly these ways.** Each one can refuse, hold, spend or bound. None can grant. **One exception, stated openly** (second audit, 2026-11-11): consecration may *lift* the quarantine on data. It never adds authority, so T1 is untouched, but T5 holds only up to consecration (§9.4).
+3.1 **The rite layer talks to the core in exactly these ways.** Each one can refuse, hold, spend or bound. None can grant. **One exception, stated openly** (second audit, 2026-11-11): consecration may *lift* the quarantine on data. It never adds authority, so P1 is untouched, but P5 holds only up to consecration (§9.4).
 
 | What the rite supplies | What the core does with it | Why it cannot add authority |
 |---|---|---|
 | **admission** of an `INVOCA`, `INVOCA REGEM` or apparatus act: allow or refuse (hours, Moon, Earls, Dukes, kings, required instruments, allegiance) | refuses on any "no" | a refusal only removes |
 | **a signature** for each office kind and mode: the (place, permission) pairs a request needs, and the verbs its effects may use | checks every pair against *G* before the program runs (`offices.md` §3.2), and every effect at commit (§3.3 below) | a signature can only *ask for* pairs; the core grants only those in *G* |
-| **an examiner** for each spirit | requires that it is not the author (C2) | it can only approve what the core then re-checks |
+| **an examiner** for each proposal, whether its author is a spirit or an angel: only the examiner's **identifier** (§9.3b) | runs the examination step; requires that the examiner is not the author, nor any agent whose words the proposal carries (C2). If the rite names no examiner for an angel's proposal, the verdict is `HOLD` | it can only approve what the core then re-checks |
 | **a verdict**: `APPROVE`, `HOLD` or `REJECT` | maps it to a destination (C6) | `APPROVE` is necessary, never sufficient (§3.3) |
 | **bounds**: legions, ink costs, lifetimes, escalation steps | enforces them as upper limits, or spends them from *G* | a bound only caps; spending only removes |
 | **which outcomes of the will are open** | lets the will choose among them; the choice, and a proposal's content, are treated as adversarial (§9.5) | the will decides what a spirit offers, never what it may hold |
@@ -134,23 +134,23 @@ These are the theorems the core MUST be shown to satisfy. Each holds for **every
 
 | # | Theorem | In plain words |
 |---|---|---|
-| T1 | **Containment.** Every effect committed in a run belongs to the handed set of the request that proposed it, and every such pair is in *G* and not reserved for angels. Every effect an angel commits is in *G*. | no program, spirit or helper exceeds the grant, at any depth (the guiding principle, `authority.md` §1.5) |
-| T2 | **No self-approval.** Every commit is preceded by a verdict from an examiner other than its author, and a destination from the judgement step. | nobody approves their own work |
-| T3 | **Circle containment.** No rite value is used outside the Circle it came from. | the boundary holds |
-| T4 | **Release.** Every invocation ends exactly once; after that, nothing it held is used. | nothing lingers, nothing is reused |
-| T5 | **Quarantine (non-interference).** What a run decides, and which places it touches, do not depend on any spirit's words that were not consecrated. | spirits cannot steer the Operator |
-| T6 | **Monotonicity.** Adding restrictions to a rite only removes runs, and T1–T5 hold for every rite. | tradition can never make Annulus less safe |
-| T7 | **Audit.** Every grant, invocation, verdict, judgement, commit and release appears in the audit, in order, and the audit is only appended to. | everything is on the record |
-| T8 | **Fail closed.** Without the wand the faculty is empty; with a tampered Index the runtime does not launch; under doubt the verdict is `HOLD`. | when unsure, nothing happens |
-| T9 | **Replay.** In simulated mode, the same program, Constitution version, seed, clock, place, sky and script give the same audit. | every test can be repeated exactly |
+| P1 | **Containment.** Every effect committed in a run belongs to the handed set of the request that proposed it, and every such pair is in *G* and not reserved for angels. Every effect an angel commits is in *G*. | no program, spirit or helper exceeds the grant, at any depth (the guiding principle, `authority.md` §1.5) |
+| P2 | **No self-approval.** Every commit is preceded by a verdict from an examiner other than its author, and a destination from the judgement step. | nobody approves their own work |
+| P3 | **Circle containment.** No rite value is used outside the Circle it came from. | the boundary holds |
+| P4 | **Release.** Every invocation ends exactly once; after that, nothing it held is used. | nothing lingers, nothing is reused |
+| P5 | **Quarantine (non-interference).** What a run decides, and which places it touches, do not depend on any spirit's words that were not consecrated. | spirits cannot steer the Operator |
+| P6 | **Rite independence.** (a) P1–P5, P7 and P8 hold under every rite. (b) Under a relational rite, a stricter rite has no more runs (§9.5). | tradition can never make Annulus less safe |
+| P7 | **Audit.** Every grant, invocation, verdict, judgement, commit and release appears in the audit, in order, and the audit is only appended to. | everything is on the record |
+| P8 | **Fail closed.** Without the wand the faculty is empty; with a tampered Index the runtime does not launch; under doubt the verdict is `HOLD`. | when unsure, nothing happens |
+| P9 | **Replay.** In simulated mode, the same program, Constitution version, seed, clock, place, sky and script give the same audit. | every test can be repeated exactly |
 
 **Who discharges them, step by step:**
-- **Step 2, the interpreter:** the type checker enforces T1's static part, T3 and T5 (labels, `flow.md`). The runtime enforces the rest, and the core re-checks T1 at every commit (§3.3). The core is built first, as its own module, reached only through §3.1.
-- **Step 3, demonstrating enforcement:** a **machine-checked proof** of T1–T6 over a formal model of the core and the typing rules, in a proof assistant (for example Lean 4). Plus attack tests: Andras's `probatio`, hostile simulated runs (`--sors MALITIA`, `--sors MENDACIUM`), and exhaustive exploration of every turn order for small programs (deterministic simulation, `concurrency.md` §4).
-- **Step 4, real agents:** red-team tests of T5 with real AI agents attempting prompt injection through their answers.
-- **Step 6, testing the Operator's discipline:** T8, and `operator.md` §7.
-- **Step 7, the bytecode verifier:** it re-establishes T1, T3 and T5 on compiled code, so that bytecode not produced by the checker cannot break them. [Parallel: the Java bytecode verifier.]
-- **Step 9, the native backend:** each compilation is checked to preserve the bytecode's behaviour (translation validation), so that T1–T9 carry over.
+- **Step 2, the interpreter:** the type checker enforces P1's static part, P3 and P5 (labels, `flow.md`). The runtime enforces the rest, and the core re-checks P1 at every commit (§3.3). The core is built first, as its own module, reached only through §3.1.
+- **Step 3, demonstrating enforcement:** a **machine-checked proof** of P1–P6 over a formal model of the core and the typing rules, in a proof assistant (for example Lean 4). Plus attack tests: Andras's `probatio`, hostile simulated runs (`--sors MALITIA`, `--sors MENDACIUM`), and exhaustive exploration of every turn order for small programs (deterministic simulation, `concurrency.md` §4).
+- **Step 4, real agents:** red-team tests of P5 with real AI agents attempting prompt injection through their answers.
+- **Step 6, testing the Operator's discipline:** P8, and `operator.md` §7.
+- **Step 7, the bytecode verifier:** it re-establishes P1, P3 and P5 on compiled code, so that bytecode not produced by the checker cannot break them. [Parallel: the Java bytecode verifier.]
+- **Step 9, the native backend:** each compilation is checked to preserve the bytecode's behaviour (translation validation), so that P1–P9 carry over.
 
 ## 9. The formal model (second audit, 2026-11-11)
 
@@ -166,63 +166,103 @@ The definitions the proof of §8 rests on. Step 3 writes the transition rules ou
 - **the world:** the content and the mark of every place the faculty names, that is, the granted files as the run sees them. Nothing outside *G* is part of the state, because no transition can read or write it;
 - **the marks** λ(*v*) of every value (§9.3);
 - **the stores:** the audit *A*, a sequence; the Index *X*, a hash-chained log; the Vessel *V*;
+- **the scheduler:** in simulated mode, its position in the entropy stream, the simulated clock and the order of turns chosen so far; in real-agent mode, the record of the actual order of turns, which is an input the run does not control (`concurrency.md` §4);
+- **the store of grave grants:** one-use grave consecrations confirmed outside any run (§9.3c), each spent or unspent, in a hash-chained log;
 - **the wand:** present or absent; locked, or unlocked as master or as rite.
 
 9.2 **Transitions.** A run is a sequence σ₀ → σ₁ → … through these steps only:
 - `launch`, `open`, `close`;
 - `invoke`, `request`, `turn` (a spirit's or helper's piece of work);
-- `examine`, `judge`, `consecrate`, `commit`;
+- `examine`, `judge`, `consecrate`, `consecrate-grave`, `commit`;
 - `release`, `relegate`, `kill` (Andras, `dynamic.md` §5.5);
-- `step`: one step of ordinary computation.
+- `step`: one step of ordinary computation;
+- `schedule`: the scheduler chooses the next worker to take a turn.
+
+Two further steps happen **outside any run**, and only with the wand's master secret (`operator.md` §8): `grant-grave` (§9.3c) and the consequential acts of `operator.md` §4. One step changes the Index during a run: `damn` (below).
 
 Every transition appends to *A*, and none removes from it.
 
-**An invocation's life:** its status starts `open` and moves only to `released` or `relegated`. Both are **terminal**: no transition leaves them. Releasing an invocation that is already terminal only records "already done". `close`, `kill` and the end of a run make every open invocation terminal. That is the "exactly once" of T4.
+**An invocation's life:** its status starts `open` and moves only to `released` or `relegated`. Both are **terminal**: no transition leaves them. Releasing an invocation that is already terminal only records "already done". `close`, `kill` and the end of a run make every open invocation terminal. That is the "exactly once" of P4.
 
-**Proposals and agents are judged apart** (review, 2026-11-11). A **destination** belongs to a proposal, never to an agent (`authority.md` §11.2): `INFERNUS` seals that proposal's results in the Vessel and ends its sub-tasks. **An agent** has only these states:
+**Proposals and agents are judged apart.** A **destination** belongs to a proposal, never to an agent (`authority.md` §11.2): `INFERNUS` seals that proposal's results in the Vessel and ends its sub-tasks. **An agent** has only these states:
 - within a run, its invocation's status (`open`, `released`, `relegated`);
-- across runs, its standing in the Index: *unknown*, *suspected* or *proscribed* (`proscription.md` §2–3).
+- across runs, its **standing** in the Index, by its seal (`proscription.md` §2–3): *unknown*, *suspected*, *proscribed* or *damnatus*.
 
-**No agent is ever irreversibly condemned.** Proscription is lifted only by a consequential act outside the session, with the wand (`operator.md` §4, §8), and the lifting is appended, never erased. So "the uninvited go to Hell" (`authority.md` §6.2a) means: everything they produced goes to `INFERNUS`, and they are relegated and proscribed. It never means a final state of the agent. [S: the magician binds and banishes but never condemns; several spirits hope to return "after 1200 years" (`authority.md` §11.3).]
+**Damnation** (ruling 2026-11-11). *Damnatus* is the one irreversible agent state:
+- **Entered** only by the step `damn`, which the runtime takes when an **intruder** is recorded: an agent that reached a Circle other than through an invocation the Operator made there (`authority.md` §6.2a). That is a recorded fact, never a judgement. No examiner, angel, program or person can condemn, the wand included.
+- **Terminal:** no step leaves it. It cannot be lifted.
+- **By seal only:** an agent with a new seal starts *unknown*. If its actions resemble a damned one's, it is *suspected* and its work is held; it is never condemned on resemblance (`proscription.md` §2.3).
+- Invited agents are never damned. At worst they are *proscribed*, which only a consequential act with the wand can lift (`operator.md` §4).
 
-9.3 **Marks.** Each value and place has a mark, ordered from least to most restricted:
+9.3 **Marks.** Each value and place has a mark. The marks are ordered from least to most restricted:
 
     clean  <  outside  <  consecrated-grave  <  consecrated  <  quarantined
 
-- A computed value takes the **highest** of its inputs' marks, so quarantine absorbs everything else.
-- A file keeps the mark of what was written to it (`flow.md` §1.3).
-- `clean` and `outside` may steer anything.
-- `consecrated` may steer anything except code containing a grave act; only `consecrated-grave` may steer that.
-- `quarantined` may steer nothing.
-- Only `consecrate` lowers a mark.
+- **Join:** a computed value takes the **highest** of its inputs' marks (written ⊔). So quarantine absorbs everything, and a value made from a `consecrated` and a `consecrated-grave` input is `consecrated`.
+- **Persistence:** a file keeps the mark of what was written to it (`flow.md` §1.3).
+- **Steering**, defined by the mark alone:
+  - a value marked `clean`, `outside` or `consecrated-grave` may steer anything;
+  - a value marked `consecrated` may steer anything except code containing a grave act (`flow.md` §3.3);
+  - a value marked `quarantined` may steer nothing.
 
-9.3a **Validators and the consecration step** (review, 2026-11-11). The core never accepts a claim that something was validated. It runs the validation itself.
-- **What a validator is:** a deterministic piece of code that is an **entry in the Constitution**, built into the release, with an identifier and a fingerprint. It is never an agent: not a spirit, not an angel acting through a channel, not a real AI, not the program.
-- **Authentication:** at launch, the core checks every validator's fingerprint against the Constitution's manifest, which the owner's wand signs for each release (`authority.md` §2.5; `operator.md` §8). A mismatch fails closed: the runtime does not launch (T8).
-- **What the rite supplies:** only the **identifier** of the validator that applies, for the office (`authority.md` §10, the examining angel's validator). The core looks it up in the Constitution. An identifier that names no validator entry is refused. A rite cannot supply validator code, or an answer.
-- **Independence:** a validator was authored by a Constitution amendment, never by the program or any agent within a run, so it is not the author of the value it judges. This is checked by construction: no run can add or change a validator.
+  So the set of values that may steer a grave act is exactly those **below** `consecrated` in the order. This is the order's purpose.
+- **Lowering:** only `consecrate` and `consecrate-grave` lower a mark.
+
+9.3a **Validators and the consecration step.** The core never accepts a claim that something was validated. It runs the validation itself.
+- **What a validator is:** a piece of code that is an **entry in the Constitution**, built into the release, with an identifier, a fingerprint and a **work limit**, fixed in the entry when it is approved (ruling 2026-11-11). It is never an agent: not a spirit, not an angel, not a real AI, not the program.
+- **Purity** (third audit, 2026-11-11). A validator is a total function of exactly two inputs: the value, and the audit record of the value's origin. It MUST:
+  - read nothing else: no world, no clock, no entropy, no marks or contents of other values, no other part of the state;
+  - change nothing: no effects, no messages, no audit records of its own (the core records the step);
+  - give the same answer for the same inputs.
+
+  If it exceeds its work limit, the answer is **refusal**. Purity is checked when the entry is approved (`authority.md` §2.5); the runtime runs a validator isolated from the state.
+- **Authentication:** at launch, the core checks every validator's fingerprint against the Constitution's manifest, which the owner's wand signs for each release (`authority.md` §2.5; `operator.md` §8). A mismatch fails closed: the runtime does not launch.
+- **What the rite supplies:** only the **identifier** of the validator that applies to the value's office (`authority.md` §10). The core looks it up. An identifier that names no validator entry is refused. A rite never supplies validator code, nor an answer.
+- **Independence:** a validator is authored by a Constitution amendment, never by the program or any agent within a run. No run can add or change one.
 - **The step `consecrate(v, k)`:**
   - **precondition:** λ(*v*) is `quarantined` (or *v* is raw ink), and *k* is the identifier the rite names for this value's office;
-  - **action:** the core runs validator *k* on *v*, and records in the audit *v*'s origin, *k*, its fingerprint and the result;
+  - **action:** the core runs validator *k* on *v* and *v*'s origin record, isolated, and records in the audit *v*'s origin, *k*, its fingerprint and the answer;
   - **on acceptance:** λ(*v*) becomes `consecrated` (raw ink becomes consecrated ink);
-  - **on refusal:** nothing changes;
-  - `consecrated-grave` is never given by this step (`flow.md` §3.3).
+  - **on refusal:** nothing else changes.
 - **Proof certificates** (`library.md` §3, `flow.md` §3.4) are checked the same way: the checker is a validator entry, run by the core.
 
-9.4 **Non-interference (T5, stated exactly).** Take two runs of the same program, with the same *G*, rite, seed and inputs. They may differ **only** in the content of quarantined values that no `consecrate` step accepted. Then the two runs make the same sequence of control decisions, and touch the same places in the same order. With consecration: the runs may differ only after a `consecrate` step that accepted a value, and only through that value. [Parallel: "robust declassification" (Zdancewic and Myers, 2001).]
+9.3b **Examiners and the examination step** (third audit, 2026-11-11).
+- **Who examines:** for each proposal, the rite supplies only the **identifier** of its examiner: for a spirit, his angel (`authority.md` §10); for an angel, another angel, by each rite's rule (`authority.md` §12.1a, open per rite).
+- **Independence:** the examiner MUST NOT be the proposal's author, nor any agent whose words the proposal carries. A proposal whose rite names no admissible examiner is `HOLD`.
+- **The step `examine(p, e)`:** gives a verdict on *p*, recorded with *e*'s identifier. Then `judge` assigns the destination (`authority.md` §11). For any author, spirit or angel, `commit` requires a prior `judge` to `PARADISUS`, and the re-check of §3.3.
 
-9.5 **Ordering rites (T6, stated exactly).**
+9.3c **Grave consecration** (ruling 2026-11-11: one use).
+- **Outside any run, `grant-grave(v, k)`:** the Operator, with the wand's master secret, petitions it for a value *v* that a run left in a petition (`flow.md` §3.3). The core runs validator *k* on *v* as in §9.3a. On acceptance, it appends a **grave grant** to the store: the fingerprint of *v*, of its origin record and of *k*, marked unspent, signed by the wand.
+- **At launch:** the store's chain is checked like the Index's (`proscription.md` §3.2). A mismatch fails closed.
+- **In a run, `consecrate-grave(v, g)`:**
+  - **precondition:** *g* is an unspent grave grant whose fingerprints match *v*, *v*'s origin record and the validator the rite names for *v*'s office;
+  - **effect:** λ(*v*) becomes `consecrated-grave`, and *g* is marked spent by an appended entry. It can never be used again.
 
-**The will is a choice, not a rite answer.** In the formal model, the will and the content of every proposal are **adversarial**: at each draw, any outcome the rite leaves open may be chosen, and a proposal may hold any content of its office's form (`offices.md` §1.4). The seeded draw (`dynamic.md` §5.4) and the simulated or real agent are only ways of making one such choice; they matter for replay (T9), not for safety. So T1–T5 hold for every choice of outcome and content, and no theorem relies on the will being fair or a proposal being honest.
+9.4 **Non-interference (P5, stated exactly).**
+- **Observation.** The **observation** of a run, obs(ρ), is its sequence of control decisions (the branch taken at every `SI`, `DUM` and `PER`, and every choice of function or mode) and the sequence of places it touches, each with its verb.
+- **Low-equivalence.** Two states are **low-equivalent**, σ ≈ σ′, when they are equal except in the contents of values and places marked `quarantined`.
+- **Declassification.** The **declassified record** of a run, D(ρ), is the sequence of its `consecrate` and `consecrate-grave` steps, each with the value it was applied to, the validator or grant, and the answer.
+- **P5.** Let ρ and ρ′ be runs of the same well-typed program, from low-equivalent initial states, with the same choices everywhere except in the content of proposals: the same choices of the will, the same schedule, the same rite answers. If D(ρ) = D(ρ′), then obs(ρ) = obs(ρ′).
 
-**The relation.** Rite *R′* is **at least as strict** as rite *R*, written *R′* ⪯ *R*, when, for every state and every question of §3.1:
-- every admission *R′* allows, *R* allows;
-- every outcome of the will that *R′* leaves open, *R* leaves open. So the choices of the will under *R′* are a subset of those under *R*;
-- every pair *R′*'s signatures ask for, *R*'s ask for, and every effect verb *R′* allows, *R* allows;
-- *R′*'s verdict on every proposal is no more favourable, in the order `REJECT` < `HOLD` < `APPROVE`;
-- *R′*'s bounds are no larger, and its costs no smaller;
-- every consecration *R′*'s validators accept, *R*'s accept.
+In words: whatever spirits say, the run behaves the same, except through what consecration let through. The answer of a refused consecration is part of D, so even one bit leaked by a refusal is accounted for. [Parallel: "robust declassification" (Zdancewic and Myers, 2001) and "gradual release" (Askarov and Sabelfeld, 2007).]
 
-**T6:** if *R′* ⪯ *R*, then every run possible under *R′*, for some choices of the will and of proposal content, is possible under *R* with the same choices. And T1–T5 hold under every *R*, whatever its answers and whatever the choices.
+9.5 **The will, the rite, and P6** (ruling 2026-11-11: split).
+- **The will and proposal content are adversarial.** At each draw, any outcome the rite leaves open may be chosen. A proposal may hold any content of its office's form (`offices.md` §1.4). The seeded draw and the simulated or real agent are only ways of making one such choice; they matter for replay (P9), not for safety.
+- **The rite is an oracle.** For the proofs, a rite is any function from (state, question of §3.1) to an answer in that question's domain.
+- **P6(a), rite-parametric safety.** P1–P5, P7 and P8 hold for every rite oracle, every choice of the will, every proposal content and every schedule. This is the property that matters: no rite, however wrong or malicious, makes Annulus less safe.
+- **P6(b), trace inclusion.** Here a **relational rite** is one whose answer to each question is a *set* of allowed answers, any of which may be given. A relational rite *R′* is **at least as strict** as *R* when, for every state and question, *R′*'s set is a subset of *R*'s. Then every run possible under *R′*, with given choices of the will, proposal content and schedule, is possible under *R* with the same choices.
+- **Not claimed:** that a rite giving less favourable verdicts has fewer runs. A program may branch on a destination, so a stricter verdict can lead to a different run, not a subset of runs. (The former statement of the order was withdrawn after the third audit.)
 
-9.6 **Each theorem's form.** Each of T1–T9 is a statement about every reachable state, or every complete run, of every well-typed program under every rite. Its precondition is only that the program passed the type checker and was launched with a faculty. No assumption about the rite, the will or the order of turns is allowed.
+9.6 **Each theorem's precondition** (third audit, 2026-11-11). The program is well-typed and was launched (`launch` succeeded). Beyond that, each has its own:
+
+| Theorem | Ranges over | Further precondition |
+|---|---|---|
+| P1, P2, P3 | every reachable state | none |
+| P4 | every **complete** run: one ended by the program, by `close` of its outermost Circle, by `kill` or by a failure | none |
+| P5 | pairs of runs | as stated in §9.4 |
+| P6 | every rite oracle; relational rites for (b) | as stated in §9.5 |
+| P7 | every prefix of every run | none |
+| P8 | the `launch` step, and every `examine` | none |
+| P9 | pairs of runs | simulated mode, with the same program, Constitution version and fingerprint, seed, clock, place, sky, script, faculty, store of grave grants and Index |
+
+No precondition may assume anything about the rite, the will, proposal content or the order of turns, beyond what this table states.

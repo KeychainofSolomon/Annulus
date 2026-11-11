@@ -41,7 +41,7 @@ So in Annulus the Operator is part of what must be secured. Every rule below is 
 4.1 Three acts are **consequential**:
 - widening a faculty;
 - confirming a high-consequence commit (§5.2);
-- lifting an entry in the Index of the proscribed.
+- lifting a proscription in the Index (never a damnation, which cannot be lifted: `proscription.md` §3.4).
 
 4.2 None of them can be performed within a session in which spirits are invoked. Each requires a deliberate act outside the session, appointed beforehand or made only after a fixed interval of preparation. The interval is set by the installation, never by a program. [S: the work's day and hour are appointed beforehand, and the Operator prepares (the Key, Book II). O: the interval.]
 
@@ -74,7 +74,8 @@ Each is locked by a passphrase, the Operator's **words**. A copy of the stick wi
 | Act | Which secret | When |
 |---|---|---|
 | **granting the faculty** (`authority.md` §2.4): the launching person signs the grant | master | at launch, before anything runs |
-| **the second key** (§4, §5.2): grave commits, grave consecration (`flow.md` §3.3), freeing another program's familiars, lifting a proscription | master | only outside a session |
+| **grave grants** (`core.md` §9.3c): one-use confirmations of grave consecration | master | only outside any run |
+| **the second key** (§4, §5.2): grave commits, grave consecration (`flow.md` §3.3), freeing another program's familiars, lifting a proscription (never a damnation) | master | only outside a session |
 | **amending the Constitution** (`authority.md` §2.5): only releases signed by the owner's wand are genuine law | master | outside any run |
 | **`GERE VIRGAM`** in a Circle: the real wand must be plugged in and its words given | rite | during the rite |
 

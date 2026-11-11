@@ -213,7 +213,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 | A13 | a President invoked without his king, or whose king is not stated |
 | A14 | a quarantined value steering the program, choosing a place, slot or mode, or used as ink, a seal or a grant (`flow.md` §2.2) |
 | A15 | a quarantined value passed to a spirit (`flow.md` §2.2) |
-| A16 | a grave act steered by a value not consecrated at the grave grade (`flow.md` §3.3) |
+| A16 | a grave act steered by a value marked `consecrated` or `quarantined` (`flow.md` §3.3) |
 
 ## 7. Open items
 

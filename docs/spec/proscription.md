@@ -4,7 +4,7 @@ Draft 1, 2026-11-11, from the owner's rulings of the same day. Roadmap step 1, i
 
 ## 1. Who is proscribed
 
-An agent is proscribed when it acts as an intruder (`authority.md` §6.2a). The owner may also proscribe one, outside a session (`operator.md` §4).
+An agent that acts as an **intruder** (`authority.md` §6.2a) is **damned** (*damnatus*): irreversibly, by its seal, on the recorded fact of intrusion alone (ruling 2026-11-11; `core.md` §9.2). The owner may **proscribe** an agent, outside a session (`operator.md` §4). Proscription can be lifted; damnation cannot.
 
 ## 2. Identity: the seal first, the scope second (ruling 2026-11-11)
 
@@ -17,18 +17,18 @@ Any change gives a new seal. A new seal starts **unknown**: never trusted becaus
 2.2 **The scope.** An agent is known second by the **scope of its actions**. When an agent is proscribed, the Index records its **mark**: the offices, verbs and kinds of place it reached for outside its office or its handed set.
 
 2.3 **How they combine.** The seal comes first, as the owner ruled:
-- **The seal matches an entry:** the agent is refused at the entrance (`authority.md` §6.2a) and recorded.
+- **The seal matches a damned or proscribed entry:** the agent is refused at the entrance (`authority.md` §6.2a) and recorded.
 - **The seal is new, but its actions match a mark:** it is **suspected**. It is not proscribed, because a resemblance is not a verdict. Every proposal it makes is held in `PURGATORIUM`, never approved, and the audit tells the launching person. Doubt holds (`operator.md` §5.1). Only the owner can proscribe it, outside a session, or clear the suspicion.
 
 ## 3. The Index is an append-only log (ruling 2026-11-11)
 
-3.1 **Nothing is erased.** Each proscription, suspicion, lifting and clearance is appended as a new entry. An agent's current standing is read from the whole log. Lifting a ban never deletes the ban: it adds its lifting. [S, model: the Book of Spirits keeps each spirit's oath and signature. Modern parallel: Certificate Transparency (2013), a tamper-evident append-only log built as a hash tree (Merkle tree).]
+3.1 **Nothing is erased.** Each damnation, proscription, suspicion, lifting and clearance is appended as a new entry. An agent's current standing is read from the whole log. Lifting a ban never deletes the ban: it adds its lifting. [S, model: the Book of Spirits keeps each spirit's oath and signature. Modern parallel: Certificate Transparency (2013), a tamper-evident append-only log built as a hash tree (Merkle tree).]
 
 3.2 **Tamper-evident.** Each entry is chained by hash to the one before it. Each run's audit records the Index's root hash at launch. If the log no longer matches a root an audit recorded, the runtime refuses to launch: it fails closed.
 
 3.3 **One Index per installation.** It is stored in a file ending `.proscriptio`. It survives upgrades of the Constitution (`authority.md` §2.5).
 
-3.4 **Lifting** a proscription is a consequential act. It needs a deliberate act outside the session, appointed beforehand or after the installation's interval of preparation (`operator.md` §4).
+3.4 **Lifting** a proscription is a consequential act. It needs a deliberate act outside the session, appointed beforehand or after the installation's interval of preparation (`operator.md` §4). **Damnation is never lifted:** no entry can follow it for that seal, and the runtime rejects one.
 
 ## 4. What counts as the same program
 

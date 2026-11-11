@@ -36,7 +36,7 @@ Nothing is reported as built or tested unless it was.
 5. **Concurrency semantics.** **Drafted 2026-11-11 in `docs/spec/concurrency.md`.**
 6. **Standard library** **Drafted 2026-11-11 in `docs/spec/library.md`.** for files and the network, with its grants.
 7. **Persistent proscription details:** **Drafted 2026-11-11 in `docs/spec/proscription.md`.** agent identity, storage of the Index, and how an entry is lifted.
-8. **The guiding principle** (`authority.md` §1.5, ruling 2026-11-11). **Drafted 2026-11-11 as theorems T1–T9, with who proves each, in `core.md` §8.** no program's authority can exceed its grant, at any depth of delegation. Its proof obligations bind later steps:
+8. **The guiding principle** (`authority.md` §1.5, ruling 2026-11-11). **Drafted 2026-11-11 as proof obligations P1–P9 (named T1–T9 until the third audit), with who proves each, in `core.md` §8.** no program's authority can exceed its grant, at any depth of delegation. Its proof obligations bind later steps:
    - the office signatures must make helper tasks checkable;
    - the type checker (step 2) must enforce the principle;
    - the bytecode verifier (step 7) must reject anything that breaks it;

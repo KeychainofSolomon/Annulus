@@ -362,15 +362,16 @@ Examination is not judgement (section 11). [Architecture §10]
 | `SUSPENSUM` | suspended | held: not committed, not destroyed; awaits re-examination, and ends with its spirit (`core.md` §9.2) |
 | `IRRITUM` | void, nullified | nothing of it takes effect: sub-tasks ended, never committed, run or reused by anyone. Its record is sealed in the Vessel, which the Operator may read and no one may use (§6.2a) |
 
-11.2a **The destinations are for beings** (ruling 2026-11-11). Paradise, Purgatory and Hell are an entity's **standing**, read from the Index of the proscribed by its seal (`proscription.md`): a spirit, an angel's counterpart, a real AI agent, or a program other than the one launched. The program the Operator launches is never judged.
+11.2a **The destinations are for beings** (rulings 2026-11-11). Paradise, Purgatory and Hell are an entity's **standing**, read from the Index of the proscribed by its seal (`proscription.md`): a spirit, an angel's counterpart, a real AI agent, or a program other than the one launched. The program the Operator launches is never judged.
 
 | Destination | Standing | How it is entered | How it is left |
 |---|---|---|---|
-| **PARADISUS** | good standing: not suspected, proscribed or damned | the default for every seal | by suspicion, proscription or damnation |
+| **PARADISUS** | the angels, and only the angels, by nature | never entered by any other being | never |
+| *at large* (no destination) | a spirit, agent or program in good standing: not suspected, proscribed or damned | the default for every seal that is not an angel's | by suspicion, proscription or damnation |
 | **PURGATORIUM** | *suspected* or *proscribed*: its work is held, or it is refused at the entrance | suspicion at examination; proscription by the owner outside a session | only by the owner, outside a session (`operator.md` §4) |
 | **INFERNUS** | *damnatus* | only by the recorded fact of intrusion (`core.md` §9.2) | never |
 
-Only an intruder goes to Hell, and only by that recorded fact; the judgement step never sends a being anywhere.
+Only an intruder goes to Hell, and only by that recorded fact; the judgement step never sends a being anywhere. **Paradise is for the angels alone** (ruling 2026-11-11): the spirits are fallen, and no good standing makes them otherwise. A spirit, agent or program that is not condemned has no destination; it is *at large*, as the spirits returned "to their former places" when the vessel broke (Sloane 3825 ff. 110v–111r).
 
 **Angels are in Paradise by nature** (ruling 2026-11-11). Their standing comes from the Constitution (§12.1a), not from the Index: no angel's seal can be suspected, proscribed or damned, and the Index takes no entry against one. An angel never intrudes, since it acts only at the Operator's petition. So anything that attempts entry bearing an angel's seal is a forgery: it is refused, what it sent is sealed in the Vessel, and it is recorded, but the angel's standing is untouched.
 

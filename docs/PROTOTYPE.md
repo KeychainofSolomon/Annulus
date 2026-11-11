@@ -108,7 +108,7 @@ Output already written before a runtime error is kept.
 ## 7. Command line
 
 ```text
-annulus <source.ann>     run a program
+annulus <source.annulus>     run a program
 annulus --version        print the version
 annulus --help           print usage
 ```

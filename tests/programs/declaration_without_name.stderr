@@ -1,1 +1,1 @@
-declaration_without_name.ann:1:5: syntax error: expected a name after the declaration keyword, found `=`
+declaration_without_name.annulus:1:5: syntax error: expected a name after the declaration keyword, found `=`

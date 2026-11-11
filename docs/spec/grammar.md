@@ -8,7 +8,7 @@ Provenance tags follow `authority.md` §0:
 
 ## 1. Source text
 
-- **Encoding:** a program is one UTF-8 file, with the extension `.ann` (ruled 2026-11-10). Invalid UTF-8 is rejected before lexing.
+- **Encoding:** a program is one UTF-8 file, with the extension `.annulus` (ruled 2026-11-11, replacing `.ann`, which other tools already use). Invalid UTF-8 is rejected before lexing.
 - **Line endings:** LF and CRLF are both accepted.
 - **Whitespace:** Unicode `White_Space` separates tokens and is otherwise ignored.
 - **Positions:** reported as `line:column` (1-based, counted in Unicode scalar values).

@@ -1,5 +1,5 @@
 * text=auto eol=lf
-*.ann -text
+*.annulus -text
 *.stdout -text
 *.stderr -text
 *.status -text

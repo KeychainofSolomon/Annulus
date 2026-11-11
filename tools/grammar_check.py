@@ -461,7 +461,7 @@ def main(directory):
     failures = 0
     total = 0
     for expected in ("accept", "reject"):
-        for path in sorted((root / expected).glob("*.ann")):
+        for path in sorted((root / expected).glob("*.annulus")):
             total += 1
             try:
                 check(path.read_text(encoding="utf-8"))

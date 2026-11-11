@@ -14,7 +14,7 @@ MANIFEST result;
 ```
 
 ```text
-$ annulus examples/first_light.ann
+$ annulus examples/first_light.annulus
 35
 ```
 
@@ -37,7 +37,7 @@ cargo test --locked
 ## Run
 
 ```sh
-annulus examples/first_light.ann
+annulus examples/first_light.annulus
 annulus --version
 ```
 

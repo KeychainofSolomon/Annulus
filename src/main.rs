@@ -6,7 +6,7 @@ use std::thread;
 
 use annulus::{run_source, RunError, EXECUTION_STACK_BYTES};
 
-const USAGE: &str = "usage: annulus <source.ann>\n       annulus --version";
+const USAGE: &str = "usage: annulus <source.annulus>\n       annulus --version";
 const EXIT_PROGRAM_FAILURE: u8 = 1;
 const EXIT_USAGE: u8 = 2;
 

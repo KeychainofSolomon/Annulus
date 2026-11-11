@@ -38,7 +38,7 @@ fn sources_in(directory: &str) -> Vec<PathBuf> {
     let mut sources: Vec<PathBuf> = fs::read_dir(&root)
         .unwrap_or_else(|error| panic!("cannot list {}: {error}", root.display()))
         .map(|entry| entry.expect("directory entry").path())
-        .filter(|path| path.extension().is_some_and(|extension| extension == "ann"))
+        .filter(|path| path.extension().is_some_and(|extension| extension == "annulus"))
         .collect();
     sources.sort();
     sources

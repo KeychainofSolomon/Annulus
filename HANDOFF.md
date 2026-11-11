@@ -21,7 +21,7 @@ The governing document is the owner's "Definitive Architecture and Engineering H
 
 ## Decisions the owner has made
 
-1. **Name: Annulus**, for the Ring of Solomon. Applied in the code. File extension `.ann` (ruled 2026-11-10).
+1. **Name: Annulus**, for the Ring of Solomon. Applied in the code. File extension `.annulus` (ruled 2026-11-11, replacing `.ann` of 2026-11-10).
 2. **Zero annotations in Annulus programs.** No comment syntax exists; the lexer rejects it.
 3. **"Fully obfuscated, like the real world until you look closer."** Agreed design:
    - opaque surface, fully lawful depth;
@@ -50,7 +50,7 @@ The governing document is the owner's "Definitive Architecture and Engineering H
 - Type labels are syntax, not annotations: required on function interfaces and record fields, optional elsewhere.
 - Pentacles: the 1446 Key's set is the foundation; Mathers' 44 are later additions where they don't conflict, each labelled. 1446 wins where they disagree.
 - Licence: public domain (the Unlicense). Anyone may use the code; no credit needed.
-- File extension: `.ann`.
+- File extension: `.annulus` (programs); `.acta` (audit files).
 - `DIMITTE` (dismiss) and `RELEGA` (banish) are kept.
 - The "Definitive Architecture" re-attachment is not needed.
 - **Offices once marked impossible:** the Ring of Virtues (Asmoday, Weyer) = `TUTELA`, protection against deletion and termination, taking precedence over the 1904 'invincible', which stays `NULLUM`. Foras's long life = `LONGAEVITAS`. Forneus's good name = `APPELLATIO`, naming only (partial).

@@ -1,1 +1,1 @@
-negate_type_error.ann:1:7: runtime error: operator `-` requires an integer operand, found boolean
+negate_type_error.annulus:1:7: runtime error: operator `-` requires an integer operand, found boolean

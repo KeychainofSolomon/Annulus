@@ -155,7 +155,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hp : σ.props p = some pi)
       (hst : pi.status = .complete ∨ pi.status = .judged .suspensum)
       (he : R.examiner σ p (some e))
-      (hadm : e ≠ pi.author ∧ ¬ e ∈ pi.carries)
+      (hadm : e ≠ pi.author ∧ ¬ e ∈ pi.carries ∧ U.angelic e)
       (hv : R.verdict σ p e v0)
       (hcb : R.counterbalance σ p cb) :
       CoreStep M R σ (.examine p (.examined e v0 cb) (finalVerdict M σ pi v0 cb))
@@ -168,7 +168,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hp : σ.props p = some pi)
       (hst : pi.status = .complete ∨ pi.status = .judged .suspensum)
       (he : R.examiner σ p ea)
-      (hno : ea = none ∨ ∃ e, ea = some e ∧ (e = pi.author ∨ e ∈ pi.carries)) :
+      (hno : ea = none ∨ ∃ e, ea = some e ∧ (e = pi.author ∨ e ∈ pi.carries ∨ ¬ U.angelic e)) :
       CoreStep M R σ (.examine p (.noExaminer ea) .hold)
         { σ with index := noteSuspicion M σ pi.author, sched := idle σ.sched }
 

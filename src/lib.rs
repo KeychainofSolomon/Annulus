@@ -2,6 +2,7 @@ pub mod ast;
 pub mod compiler;
 pub mod diagnostic;
 pub mod lexer;
+pub mod lingua;
 pub mod nucleus;
 pub mod parser;
 pub mod program;

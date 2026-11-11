@@ -45,7 +45,7 @@ The real wand (`virga`) comes later, but without a wand the faculty is empty. **
 | | Milestone | Done when |
 |---|---|---|
 | 2a | **core**, with its own tests | every transition rule implemented and tested; property checks pass. **First pass done 2026-11-11:** `src/nucleus/` (the core is named `nucleus`, since `core` is Rust's own library), 31 rule tests in `tests/nucleus_rules.rs`, each checking P1, P2, P4, P7 and the damnation law over its audit. **Completed the same day:** suspicion at examination (proscription entries carry the agent's mark, `Reach`), angels' petitions end to end with reserved grants, and the seeded simulated scheduler and will (`nucleus::Sim`), with a replay test (P9) and 50 seeds checked against the theorems. 38 tests. **2a done.** |
-| 2b | **lang** for the subset | the subset's grammar tests pass; type errors A5, A14, A15 reported |
+| 2b | **lang** for the subset | the subset's grammar tests pass; type errors A5, A14, A15 reported. **Front end done 2026-11-11:** `src/lingua/` (`lexis` lexer, `syntaxis` tree, `parse` LL(1) parser for the **whole** grammar, `registra` reading `goetia.json` at build time, `check` the static checker for the subset). All 69 grammar programs agree with `tools/grammar_check.py`, including the position of every rejection. 43 checker tests: N1–N4, T1–T3, T7, A1–A3, A5, A7–A11, A13–A15. Constructs outside the subset are refused with the implementation code `X1` (not a spec code). The evaluator moves to 2c, with the rite it drives. |
 | 2c | **rite** `goetia` and the command line | `annulus` runs the example rites; the stores are written and checked |
 | 2d | **attack tests** | every hostile spirit refused; the prototype is removed |
 

@@ -189,6 +189,27 @@ impl<'p> Run<'p> {
         }
     }
 
+    fn offering_class(&self, inv: InvId) -> String {
+        let classes: Vec<&'static str> = self
+            .state
+            .invs
+            .get(&inv)
+            .and_then(|i| self.rite.spirit(&i.seal))
+            .map(|s| {
+                s.ranks
+                    .iter()
+                    .filter_map(|r| super::registra::rank_ink(r))
+                    .collect()
+            })
+            .unwrap_or_default();
+        classes
+            .iter()
+            .find(|c| self.state.ink_left.get(**c).is_some_and(|n| *n > 0))
+            .or(classes.first())
+            .map(|c| c.to_string())
+            .unwrap_or_default()
+    }
+
     fn fresh_value(&mut self) -> ValueId {
         self.next_value += 1;
         self.next_value
@@ -390,6 +411,32 @@ impl<'p> Run<'p> {
                     Release::Relega => self.op(|_| true, |s, _| s.relegate(inv)),
                     _ => self.op(|_| true, |s, _| s.release(inv)),
                 }
+            }
+            Stmt::Gere(instrument, _) => {
+                let act = RiteAct::Gere(match instrument {
+                    super::syntaxis::Instrument::Anulum => crate::nucleus::Instrument::Anulum,
+                    super::syntaxis::Instrument::Virgam => crate::nucleus::Instrument::Virgam,
+                    super::syntaxis::Instrument::Hexagrammum => {
+                        crate::nucleus::Instrument::Hexagrammum
+                    }
+                    super::syntaxis::Instrument::Pentagrammum => {
+                        crate::nucleus::Instrument::Pentagrammum
+                    }
+                });
+                self.op(|_| true, |s, r| s.act(r, &act))
+            }
+            Stmt::Command(command, e, _) => {
+                let inv = self.inv_of(e)?;
+                let act = match command {
+                    Command::Offer => RiteAct::Offer(inv, self.offering_class(inv)),
+                    Command::Appella => RiteAct::Appella(inv),
+                    Command::Veta => RiteAct::Veta(inv),
+                };
+                self.op(|_| true, |s, r| s.act(r, &act))
+            }
+            Stmt::Constringe(e, name, _) => {
+                let act = RiteAct::Constringe(self.inv_of(e)?, name.clone());
+                self.op(|_| true, |s, r| s.act(r, &act))
             }
             Stmt::Expr(e, _) => self.expr(e).map(|_| ()),
             Stmt::Assign(Expr::Name(name, _), value, _) => {

@@ -65,6 +65,10 @@ impl Rite for Yes {
         usize::MAX
     }
 
+    fn admit_act(&self, _: &State, _: &RiteAct) -> bool {
+        true
+    }
+
     fn will_open(&self, _: &State, _: WorkerId, _: Outcome) -> bool {
         true
     }

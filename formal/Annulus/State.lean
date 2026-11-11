@@ -402,6 +402,11 @@ def Denied (M : Core U) (R : RelRite U) (σ : State U) : Prop :=
   | .closeC _ => σ.circles = []
   | .invoke i _ w _ _ => σ.circles = [] ∨ σ.invs i ≠ none ∨ σ.workers w ≠ none
   | .inscribe s k _ => σ.circles = [] ∨ σ.inkLeft k = 0 ∨ R.admit σ (.inscribe s k) false
+  | .act a _ =>
+      σ.circles = [] ∨ R.admit σ (.rite a) false ∨
+      (∃ i, U.actInv a = some i ∧ ¬ ∃ inst, σ.invs i = some inst ∧ inst.status = .live ∧
+        inst.circle ∈ σ.circles) ∨
+      (∃ k, U.actInk a = some k ∧ σ.inkLeft k = 0)
   | .request to f q p w _ => σ.reqs q ≠ none ∨ σ.props p ≠ none ∨ RequestBad R σ f w to
   | .examine p _ =>
       ∀ pi, σ.props p = some pi →

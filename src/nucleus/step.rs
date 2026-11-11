@@ -8,8 +8,8 @@ use super::state::{
 use super::types::{
     Addressee, Cap, CircleId, CommitResult, Content, Contrib, Ending, ExamAns, Inst, InvId,
     InvStatus, IxEntry, KeyEntry, Label, Made, Mark, Outcome, PStatus, Phase, Pid, Proposal, ReqId,
-    Request, Seal, Sealed, Value, ValueId, Verdict, WorkOutcome, Worker, WorkerId, ANGEL_OUTCOMES,
-    DENIAL, OPERATOR,
+    Request, RiteAct, Seal, Sealed, Value, ValueId, Verdict, WorkOutcome, Worker, WorkerId,
+    ANGEL_OUTCOMES, DENIAL, OPERATOR,
 };
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -215,6 +215,34 @@ impl State {
         ));
         self.done();
         Ok(inv)
+    }
+
+    pub fn act(&mut self, rite: &dyn Rite, act: &RiteAct) -> Step<()> {
+        self.operator()?;
+        let Some(&circle) = self.circles.last() else {
+            return self.deny("an act of the rite outside a Circle");
+        };
+        if let Some(inv) = act.inv() {
+            let open = self
+                .invs
+                .get(&inv)
+                .is_some_and(|i| i.status == InvStatus::Live && self.circles.contains(&i.circle));
+            if !open {
+                return self.deny("an act of the rite on a spirit who is not here");
+            }
+        }
+        if !rite.admit_act(self, act) {
+            return self.deny("the rite refuses this act");
+        }
+        if let Some(class) = act.ink() {
+            match self.ink_left.get_mut(class) {
+                Some(left) if *left > 0 => *left -= 1,
+                _ => return self.deny("no ink of this class is left for the offering"),
+            }
+        }
+        self.record(Label::Act(act.clone(), circle));
+        self.done();
+        Ok(())
     }
 
     pub fn inscribe(&mut self, rite: &dyn Rite, seal: &Seal, class: &str) -> Step<()> {

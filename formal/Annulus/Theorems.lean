@@ -64,6 +64,7 @@ def usesInv (σ : State U) : Label U → List U.Inv
   | .request _ _ (.spirit i) _ _ _ => [i]
   | .release i _ => [i]
   | .relegate i => [i]
+  | .act a _ => (U.actInv a).toList
   | .turn w _ _ _ => parentOf σ w
   | .kill w _ _ => parentOf σ w
   | .examine p _ _ => invOfProp σ p

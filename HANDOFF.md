@@ -337,7 +337,7 @@ Discussed with the owner, not built:
 - **Readings taken, to confirm with the owner:**
   - **Labels:** a register label is the name lowercased, with `-` and spaces as `_` (`glasya_labolas`). Aliases count as labels where they spell one spirit only (`barbas` = Marbas).
   - **N5 vs `static.md` §2.1:** §2.1 says `SIT furfur = INVOCA furfur …` is lawful (two namespaces), and the grammar example does exactly that, yet N5 says declaring a register label is an error. The checker follows §2.1, so N5 never fires. Needs an amendment either way.
-  - **A11 and A13 always refuse** in step 2 (Beleth, Berith, Astaroth; pure Presidents), because the apparatus and the kings are outside the subset.
+  - **A13 always refuses** in step 2 (pure Presidents), because the kings are outside the subset. **A11 is now checked** (the apparatus, 2026-11-11): Beleth comes with ring and wand taken up on every path; Berith and Astaroth are dukes, still refused while the sky is undeclared.
   - **Copies of rite values** (`SIT b = a;` for ink or an invocation) share the original: spending or releasing through either counts for both.
   - **A rite value in a `MUTABILIS` variable** is `X1` for now.
 - **Drift watch (standing instruction):** there are now two parsers, Python and Rust, plus the old prototype's. They agree on all 69 programs today, but nothing in CI compares their rejection positions. When 2c adds the command line, add a CI step that runs both and diffs. The prototype (`src/lexer.rs`, `parser.rs`, `compiler.rs`, `vm.rs`, …) still uses the English keywords; it is removed in 2d.

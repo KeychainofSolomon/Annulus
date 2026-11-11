@@ -4,6 +4,7 @@ use std::sync::OnceLock;
 use super::json::{self, Json};
 
 const GOETIA: &str = include_str!("../../docs/registers/goetia.json");
+const NOMINA: &str = include_str!("../../docs/registers/nomina.json");
 
 pub const RITES: &[&str] = &[
     "goetia",
@@ -203,4 +204,17 @@ pub fn load(rite: &'static str, source: &str) -> Result<Register, String> {
 pub fn goetia() -> &'static Register {
     static REGISTER: OnceLock<Register> = OnceLock::new();
     REGISTER.get_or_init(|| load("goetia", GOETIA).expect("the goetia register is well formed"))
+}
+
+pub fn divine_names() -> &'static std::collections::BTreeSet<String> {
+    static NAMES: OnceLock<std::collections::BTreeSet<String>> = OnceLock::new();
+    NAMES.get_or_init(|| {
+        let root = json::parse(NOMINA).expect("the register of names is well formed");
+        root.list()
+            .iter()
+            .filter(|e| e.get("kind").and_then(Json::text) == Some("deus"))
+            .flat_map(|e| e.get("forms").map(Json::list).unwrap_or(&[]).to_vec())
+            .filter_map(|f| f.get("text").and_then(Json::text).map(str::to_string))
+            .collect()
+    })
 }

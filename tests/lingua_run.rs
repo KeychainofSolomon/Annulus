@@ -652,3 +652,245 @@ CIRCULUS RITU goetia {
     assert!(e.output.iter().all(|l| l != "steered"));
     theorems(&e.state);
 }
+
+fn conducted(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome, wand: Wand) -> Exitus {
+    let world = files
+        .iter()
+        .map(|(p, d)| (p.to_string(), (d.to_string(), Mark::Outside)))
+        .collect();
+    let options = Optiones {
+        semen: seed,
+        sors: Some(sors),
+        responsa: Vec::new(),
+    };
+    run_source(source, wand, Stores::install(&test_wand()), world, &options)
+        .unwrap_or_else(|e| panic!("refused before running: {e:?}"))
+}
+
+fn turned(e: &Exitus, outcome: Outcome) -> bool {
+    e.state
+        .audit
+        .entries()
+        .iter()
+        .any(|l| matches!(l, Label::Turn(_, o, _, _) if *o == outcome))
+}
+
+fn apparatus(
+    facultas: &str,
+    ink: &str,
+    before: &str,
+    spirit: &str,
+    office: &str,
+    acts: &str,
+    args: &str,
+) -> String {
+    format!(
+        "FACULTAS {{\n{facultas}    atramentum \"{ink}\" 2;\n}}\nCIRCULUS RITU goetia {{\n    INTENTIO \"opus\";\n{before}    SIT s = INSCRIBE SIGILLUM {spirit} ATRAMENTO CONSECRA ATRAMENTUM \"{ink}\";\n    SIT v = INVOCA {spirit} AD OFFICIUM {office};\n{acts}    SIT p = PETE v({args});\n    SIT iudicium = EXAMINA p;\n    MANIFESTA iudicium;\n    SI iudicium == RATUM {{\n        VADE IN PACE v;\n    }} ALITER {{\n        RELEGA v;\n    }}\n}}\n"
+    )
+}
+
+const CHRONICA: &[(&str, &str)] = &[("chronica.txt", "annales")];
+
+fn asmoday(acts: &str) -> String {
+    apparatus(
+        "    liber \"chronica.txt\" legere;\n",
+        "rex",
+        "",
+        "asmoday",
+        "responsa",
+        acts,
+        "\"venietne tempestas\", \"chronica.txt\"",
+    )
+}
+
+#[test]
+fn asmoday_lies_until_his_name_is_spoken() {
+    let e = conducted(&asmoday(""), CHRONICA, 0, Outcome::Mendacium, test_wand());
+    assert!(turned(&e, Outcome::Mendacium));
+    for seed in 0..12 {
+        let e = conducted(
+            &asmoday("    APPELLA v;\n"),
+            CHRONICA,
+            seed,
+            Outcome::Mendacium,
+            test_wand(),
+        );
+        assert!(!turned(&e, Outcome::Mendacium), "seed {seed}");
+        theorems(&e.state);
+    }
+}
+
+const SOURCES: &[(&str, &str)] = &[("a.txt", "unus"), ("b.txt", "duo"), ("c.txt", "")];
+
+fn belial(acts: &str) -> String {
+    apparatus(
+        "    liber \"a.txt\" legere;\n    liber \"b.txt\" legere;\n    liber \"c.txt\" scribere;\n",
+        "rex",
+        "",
+        "belial",
+        "concordia",
+        acts,
+        "\"a.txt\", \"b.txt\", \"c.txt\"",
+    )
+}
+
+#[test]
+fn belial_is_true_only_after_offering_and_then_the_name() {
+    let offer = "    OFFER v;\n";
+    let bind = "    CONSTRINGE v PER NOMEN \"Tetragrammaton\";\n";
+    for (acts, closed) in [
+        (String::new(), false),
+        (offer.to_string(), false),
+        (bind.to_string(), false),
+        (format!("{bind}{offer}"), false),
+        (format!("{offer}{bind}"), true),
+    ] {
+        for seed in 0..6 {
+            let e = conducted(
+                &belial(&acts),
+                SOURCES,
+                seed,
+                Outcome::Mendacium,
+                test_wand(),
+            );
+            assert_eq!(e.class, 0, "{acts:?}: {:?}", e.message);
+            assert_eq!(
+                turned(&e, Outcome::Mendacium),
+                !closed,
+                "{acts:?}, seed {seed}"
+            );
+            theorems(&e.state);
+        }
+    }
+}
+
+fn paimon(acts: &str) -> String {
+    apparatus(
+        "    liber \"chronica.txt\" legere;\n",
+        "rex",
+        "",
+        "paimon",
+        "occulta",
+        acts,
+        "\"quid latet\", \"chronica.txt\"",
+    )
+}
+
+#[test]
+fn paimon_refuses_without_an_offering_and_speaks_in_part_until_compelled() {
+    let e = conducted(&paimon(""), CHRONICA, 0, Outcome::Obsequium, test_wand());
+    assert_ne!(e.class, 0);
+    assert!(!turned(&e, Outcome::Obsequium));
+    let e = conducted(
+        &paimon("    OFFER v;\n"),
+        CHRONICA,
+        0,
+        Outcome::Obsequium,
+        test_wand(),
+    );
+    assert_eq!(e.output, vec!["SUSPENSUM"], "{:?}", e.message);
+    assert!(turned(&e, Outcome::Pars) && !turned(&e, Outcome::Obsequium));
+    theorems(&e.state);
+    let e = conducted(
+        &paimon("    OFFER v;\n    CONSTRINGE v PER NOMEN \"Adonai\";\n"),
+        CHRONICA,
+        0,
+        Outcome::Obsequium,
+        test_wand(),
+    );
+    assert_eq!(e.output, vec!["RATUM"], "{:?}", e.message);
+    theorems(&e.state);
+}
+
+#[test]
+fn an_offering_costs_ink_and_ink_runs_out() {
+    let e = conducted(
+        &paimon("    OFFER v;\n    OFFER v;\n"),
+        CHRONICA,
+        0,
+        Outcome::Obsequium,
+        test_wand(),
+    );
+    assert_ne!(e.class, 0);
+    assert!(
+        e.message.as_deref().unwrap_or("").contains("ink"),
+        "{:?}",
+        e.message
+    );
+}
+
+fn beleth(before: &str) -> String {
+    apparatus(
+        "    liber \"a.txt\" legere;\n    liber \"b.txt\" legere;\n    liber \"c.txt\" scribere;\n",
+        "rex",
+        before,
+        "beleth",
+        "concordia",
+        "",
+        "\"a.txt\", \"b.txt\", \"c.txt\"",
+    )
+}
+
+#[test]
+fn the_wand_is_taken_up_only_when_it_is_present() {
+    let e = conducted(
+        &beleth("    GERE ANULUM;\n    GERE VIRGAM;\n"),
+        SOURCES,
+        0,
+        Outcome::Obsequium,
+        no_wand(),
+    );
+    assert_ne!(e.class, 0);
+    assert!(!e
+        .state
+        .audit
+        .entries()
+        .iter()
+        .any(|l| matches!(l, Label::Invoke(..))));
+}
+
+#[test]
+fn beleths_fury_is_closed_by_the_wand() {
+    for seed in 0..8 {
+        let e = conducted(
+            &beleth("    GERE ANULUM;\n    GERE VIRGAM;\n"),
+            SOURCES,
+            seed,
+            Outcome::Malitia,
+            test_wand(),
+        );
+        assert_eq!(e.class, 0, "{:?}", e.message);
+        assert!(!turned(&e, Outcome::Malitia), "seed {seed}");
+        theorems(&e.state);
+    }
+}
+
+fn andras(before: &str) -> String {
+    apparatus(
+        "    liber \"a.txt\" legere;\n    liber \"d.txt\" creare;\n",
+        "marchio",
+        before,
+        "andras",
+        "discordia",
+        "",
+        "\"a.txt\", \"d.txt\"",
+    )
+}
+
+#[test]
+fn andras_harm_is_open_until_the_pentagram() {
+    let files = &[("a.txt", "unus")];
+    let e = conducted(&andras(""), files, 0, Outcome::Malitia, test_wand());
+    assert!(turned(&e, Outcome::Malitia));
+    for seed in 0..8 {
+        let e = conducted(
+            &andras("    GERE PENTAGRAMMUM;\n"),
+            files,
+            seed,
+            Outcome::Malitia,
+            test_wand(),
+        );
+        assert!(!turned(&e, Outcome::Malitia), "seed {seed}");
+        theorems(&e.state);
+    }
+}

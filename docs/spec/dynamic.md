@@ -53,6 +53,12 @@ This part says what happens **while a program runs**. A program reaches this poi
 
 `GERE` records the instrument as held, with the time it was taken up; Berith's hour counts from it. `OFFER` spends one unit of the spirit's ink class, or is a denial for Malphas. `CONSTRINGE` performs the constraint (escalation step 3) at once, by the named name, and records it. `APPELLA` and `VETA` are recorded commands. Their effects on the will are those of `spirits.md` §4.4.
 
+**In the step-2 subset** (2026-11-11). Every act is a core step (`Label::Act`, Lean `CoreStep.act`): only the Operator acts, only in an open Circle, only on an invocation that is live in an open Circle, only if the rite admits it, and an offering spends one unit of the class it names or is a denial. The rite admits `GERE VIRGAM` only while the wand is present, refuses an offering to Malphas or of a class not his, and admits `CONSTRINGE` only by a recorded form of a divine name. What the acts do reaches the will only through `will_open`, which may only close. Two readings, by `authority.md` §1.7 (no presumption):
+- **Berith's hour.** Until hours exist, no time is recorded, so it cannot be shown that the hour is still running. The ring does not close his `MENDACIUM`.
+- **Paimon unoffered.** Escalation (`RECUSATIO`) is not yet built, so with no offering no outcome of his will is open, and the run ends in a denial: his refusal, honestly recorded.
+
+`HEXAGRAMMUM` and `PENTAGRAMMUM` are recorded, but in the subset `RECUSATIO` and `OCCISIO` are already closed for every spirit, so their general effects add nothing yet; the pentagram's one live effect is on Andras.
+
 **Illusory and veiled work** spends bat's-blood ink, class `"vespertilio"`, one unit per request. Andras's testing is the first such office (`spirits.md` §4.5).
 
 **The kings at runtime.** `INVOCA REGEM r` is refused (class 2) outside the four kings' hours: "à tertia hora usque ad meridiem, à nona hora usque ad vesperas" (Weyer ch. III). Within them, the runtime performs the Invocation of the King in its source form, by the names it cites (El, Iehovah Tetragrammaton, Primeumaton, all in `nomina.md`), and records it. It has three effects for the rest of the Circle:

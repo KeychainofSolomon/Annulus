@@ -405,3 +405,86 @@ fn a5_working_offices_check_each_place_by_its_role() {
     );
     refused(&format!("{base}    SIT p = PETE v(\"rapere\", \"a.txt\", \"b.txt\");\n    VADE IN PACE v;\n}}\n"), "A5");
 }
+
+fn beleth(apparatus: &str, after: &str) -> String {
+    format!(
+        "FACULTAS {{\n    atramentum \"rex\" 2;\n}}\nCIRCULUS RITU goetia {{\n    INTENTIO \"concord\";\n{apparatus}    SIT s = INSCRIBE SIGILLUM beleth ATRAMENTO CONSECRA ATRAMENTUM \"rex\";\n    SIT b = INVOCA beleth AD OFFICIUM concordia;\n{after}    VADE IN PACE b;\n}}\n"
+    )
+}
+
+#[test]
+fn a11_beleth_comes_only_to_ring_and_wand() {
+    lawful(&beleth("    GERE ANULUM;\n    GERE VIRGAM;\n", ""));
+    refused(&beleth("    GERE ANULUM;\n", ""), "A11");
+    refused(
+        &beleth(
+            "    GERE ANULUM;\n    SI VERUM {\n        GERE VIRGAM;\n    }\n",
+            "",
+        ),
+        "A11",
+    );
+    refused(
+        &beleth(
+            "    GERE ANULUM;\n    DUM FALSUM {\n        GERE VIRGAM;\n    }\n",
+            "",
+        ),
+        "A11",
+    );
+    lawful(&beleth(
+        "    GERE ANULUM;\n    SI VERUM {\n        GERE VIRGAM;\n    } ALITER {\n        GERE VIRGAM;\n    }\n",
+        "",
+    ));
+}
+
+#[test]
+fn an_instrument_lasts_until_its_circle_closes() {
+    refused(
+        "FACULTAS {\n    atramentum \"rex\" 1;\n}\nCIRCULUS RITU goetia {\n    INTENTIO \"a\";\n    GERE ANULUM;\n    GERE VIRGAM;\n}\nCIRCULUS RITU goetia {\n    INTENTIO \"b\";\n    SIT s = INSCRIBE SIGILLUM beleth ATRAMENTO CONSECRA ATRAMENTUM \"rex\";\n    SIT b = INVOCA beleth AD OFFICIUM concordia;\n    VADE IN PACE b;\n}\n",
+        "A11",
+    );
+}
+
+#[test]
+fn a1_the_apparatus_stays_in_the_circle() {
+    refused("GERE ANULUM;\n", "A1");
+    refused("SIT x = 1;\nAPPELLA x;\n", "A1");
+    refused("SIT x = 1;\nCONSTRINGE x PER NOMEN \"AGLA\";\n", "A1");
+}
+
+#[test]
+fn the_apparatus_addresses_a_live_invocation() {
+    let both = "    GERE ANULUM;\n    GERE VIRGAM;\n";
+    refused(&beleth(both, "    SIT n = 3;\n    APPELLA n;\n"), "T1");
+    refused(&beleth(both, "    VETA 3;\n"), "T1");
+    refused(&beleth(both, "    APPELLA nemo;\n"), "N1");
+    refused(
+        &format!(
+            "FACULTAS {{\n    atramentum \"rex\" 2;\n}}\nCIRCULUS RITU goetia {{\n    INTENTIO \"c\";\n{both}    SIT s = INSCRIBE SIGILLUM beleth ATRAMENTO CONSECRA ATRAMENTUM \"rex\";\n    SIT b = INVOCA beleth AD OFFICIUM concordia;\n    VADE IN PACE b;\n    VETA b;\n}}\n"
+        ),
+        "A9",
+    );
+    lawful(&beleth(both, "    APPELLA b;\n    VETA b;\n    OFFER b;\n"));
+}
+
+#[test]
+fn a12_only_a_recorded_divine_name_binds() {
+    let both = "    GERE ANULUM;\n    GERE VIRGAM;\n";
+    lawful(&beleth(
+        both,
+        "    CONSTRINGE b PER NOMEN \"Tetragrammaton\";\n",
+    ));
+    lawful(&beleth(both, "    CONSTRINGE b PER NOMEN \"AGLA\";\n"));
+    for name in [
+        "Metatron",
+        "Kether",
+        "agla",
+        "Tetragrammaton ",
+        "Beleth",
+        "",
+    ] {
+        refused(
+            &beleth(both, &format!("    CONSTRINGE b PER NOMEN \"{name}\";\n")),
+            "A12",
+        );
+    }
+}

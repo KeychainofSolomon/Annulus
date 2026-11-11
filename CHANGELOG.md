@@ -9,6 +9,13 @@
 - **`TEMPESTAS` is outside the step-2 subset** until the storm (fault injection) exists; it used to commit an unchanged write, a false record.
 - **A spirit's name belongs to the spirit** (`static.md` §2.1, error N5). No program name may be spelled as any label of a register entry, in any recorded spelling, even if the program never refers to that entry. Reason: §2.1 allowed `SIT furfur = INVOCA furfur …` while N5 forbade declaring a register label; the owner chose N5, which keeps `authority.md` §2.3 (no program shadows a Constitution entry). The grammar example and five grammar test programs now name the invocation `vocatus`.
 
+### Fourth outside review, for exploitable defects (2026-11-11; core changes, audit owed)
+- **Reproduced and fixed, store substitution:** stores replaced together with their expected roots passed launch, since no signature covered the roots. The wand now signs the faculty *with* the roots of the Index, the Vessel and the sealed petitions.
+- **Reproduced and fixed, struck-out revocation:** removing a wand from the revocation list passed launch. The owner now signs the revocations with the Constitution; the launching wand cannot vouch for its own standing.
+- **The chain's tamper hook** exists only under the test feature `probatio`; `intact` also compares lengths.
+- **A source is at most 1 MiB** (`grammar.md` §2), in the language and in the CLI, which reads no further.
+- **Known and unchanged:** test signatures are forgeable by design until the real wand. **Deferred:** making the core's state private behind read-only views, before real agents.
+
 ### Third outside review, of the formal model (2026-11-11; core changes, audit owed)
 - **A1 (high), P5 did not hold every rite answer fixed:** the admission of inscriptions and acts, and the legions bound, were not choices, so two runs could differ by the rite's answer alone and still count as making the same choices. Fixed: `Choice.answer` and `Choice.legions`; the core now asks the rite only after its own conditions (ink, a live spirit), and a refusal by the rite is a recorded step, `Label::Inscribe`/`Label::Act` with `admitted = false` and the dismissed invocations, as a refused invocation already was. Lean: `inscribeRefused`, `actRefused`. Tests: a rite that peeks at quarantined data is caught on the record; a refusal ends the run and dismisses every open invocation; the rite is never asked when the core already refuses.
 - **A2 (medium), P4's "use" was narrower than Hold(*i*):** acts of the rite on an invocation now count as use (`UsesHold`). Hold(*i*) is amended to follow ruling R1 (a): seals belong to the Circle, so they leave Hold(*i*); the ink drawn for an invocation is that of its offerings (`core.md` §9.2).

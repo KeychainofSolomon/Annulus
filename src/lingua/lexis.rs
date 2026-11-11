@@ -132,7 +132,15 @@ fn lexical(pos: Pos, message: String) -> Error {
     Error::new("L1", pos, message)
 }
 
+pub const MAX_SOURCE_BYTES: usize = 1 << 20;
+
 pub fn tokenize(source: &str) -> Result<Vec<Token>, Error> {
+    if source.len() > MAX_SOURCE_BYTES {
+        return Err(lexical(
+            Pos { line: 1, column: 1 },
+            format!("a source is at most {MAX_SOURCE_BYTES} bytes"),
+        ));
+    }
     let chars: Vec<char> = source.chars().collect();
     let mut tokens = Vec::new();
     let mut i = 0;

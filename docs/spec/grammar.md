@@ -15,6 +15,8 @@ Provenance tags follow `authority.md` §0:
 
 ## 2. Lexical grammar
 
+A source is at most 1 MiB (1 048 576 bytes); a longer one is a lexical error (L1) before any token is read. [O: a bound on what the interpreter will hold, from the fourth outside review, 2026-11-11; nothing is presumed affordable, `authority.md` §1.7.]
+
 ```ebnf
 token       = keyword | identifier | integer | string | operator | punctuation ;
 identifier  = lower , { lower | digit | "_" } ;                    (* not a keyword *)

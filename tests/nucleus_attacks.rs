@@ -137,9 +137,12 @@ fn built(index: &[IxEntry], smuggle: bool) -> State {
         stores.index.push(entry.clone());
     }
     let auth = Auth {
-        faculty_signature: sign_for_test("test-wand", &digest_faculty(&faculty, &reserved)),
+        faculty_signature: sign_for_test(
+            "test-wand",
+            &digest_faculty(&faculty, &reserved, &stores.roots()),
+        ),
         owner: "owner-wand".to_string(),
-        manifest_signature: sign_for_test("owner-wand", &digest_constitution(&signed)),
+        manifest_signature: sign_for_test("owner-wand", &digest_constitution(&signed, &[])),
         revoked: Vec::new(),
         roots: stores.roots(),
         wand: wand(),

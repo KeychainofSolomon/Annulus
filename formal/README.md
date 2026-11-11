@@ -115,12 +115,29 @@ By a different AI (ChatGPT), from `annulus-lean-audit.zip`, which had no Lean in
 
 | # | Finding | Severity | Settled |
 |---|---|---|---|
-| B1 | P3 covered invocations and proposals, not every Circle-bound value; `circleRite` unused | High | **Accepted in part.** The core now tracks each value's Circle (`valueCircle`, `madeCircle`, `Made.rite`), and P3 covers values used by computation and consecration (`usesVal`). `circleRite` stays: it is rite data the rite oracle reads (instruments, `TEMPESTAS`); no step changes it, since apparatus acts are not modelled |
+| B1 | P3 covered invocations and proposals, not every Circle-bound value; `circleRite` unused | High | **Accepted in part.** The core now tracks each value's Circle (`valueCircle`, `madeCircle`, `Made.rite`), and P3 covers values used by computation and consecration (`usesVal`). `circleRite` stays: it is rite data the rite oracle reads (instruments, `TEMPESTAS`); no step changes it. (Since 2026-11-11 the apparatus acts are modelled, `CoreStep.act`, and recorded; the rite reads them from the audit) |
 | B2 | `UsesHold` ignored a commit's effects on invocations | High | **Accepted.** A done commit uses every invocation it targets |
 | B3 | The faculty's signature was a bare proposition, not a check | High | **Accepted.** `launch` verifies the faculty's signature against the wand's key and the manifest's against the owner's (`Mech.verify`, `digestFaculty`, `digestManifest`); cryptography stated as an assumption (above) |
 | B4 | P5 held part of a proposal's content fixed (a helper's handed set, the shape of a turn) | Medium | **Accepted.** P5 now fixes only the will's outcome per turn (`Choice.will`); everything else the agent does is content |
 | B5 | Examination does not check the rite's pairing rules | Medium | **Declined.** Pairings are rite (`core.md` §2: "who examines"); the core checks only independence, and re-checks every commit. `core.md` §9.3b now says so explicitly |
 | B6 | P9 gives prefix compatibility, not equality, for unfinished runs | Medium | **Accepted as a clarification.** Equality is impossible for runs stopped at different lengths; `core.md` §9.6 now states both parts |
+
+## The third and fourth outside reviews (2026-11-11)
+
+By the owner's friend's AI. The third reviewed this model; the fourth looked for exploitable defects in the Rust. Claude checked each against the code and reproduced the exploitable ones as failing tests before fixing them.
+
+| # | Finding | Severity | Settled |
+|---|---|---|---|
+| C1 | P5 did not hold every rite answer fixed: admission of inscriptions and acts, and the legions bound | High | **Accepted.** `Choice.answer`, `Choice.legions`; refusals by the rite are recorded steps (`inscribeRefused`, `actRefused`), asked only after the core's own conditions |
+| C2 | `UsesHold` narrower than Hold(*i*) | Medium | **Accepted.** Acts on an invocation are use. Seals leave Hold(*i*) by ruling R1 (a); `core.md` §9.2 amended |
+| D1 | Test signatures are forgeable | Critical if used for real | **Known.** Stated as an assumption; the real wand replaces them |
+| D2 | Store roots not covered by any signature | High | **Accepted, reproduced.** Stores and roots replaced together passed launch. The wand now signs them with the faculty (`digestFaculty`) |
+| D3 | Revocations not covered by any signature | High | **Accepted, reproduced.** A revocation could be struck out. The owner now signs them with the manifest (`digestManifest`), so a revoked wand cannot sign itself back in |
+| D4 | The core's state is publicly mutable to Rust callers | Medium–high | **Deferred.** In-process code is trusted base today; before real agents (step 4) the state's fields become private behind read-only views |
+| D5 | The test hook for tampering with a chain was public; `intact` did not compare lengths | Medium | **Accepted.** The hook exists only under the test feature `probatio`; `intact` checks lengths |
+| D6 | Unbounded source size | Medium | **Accepted.** A source is at most 1 MiB (`grammar.md` §2), in the language and the CLI |
+
+**Drift noticed while fixing D2:** this model checks an Index, a grave and a keys root at launch; the Rust checks Index, Vessel and keys, and has no store of grave grants yet. To be reconciled when grave consecration is built.
 
 ## Outcomes and destinations (ruling 2026-11-11)
 

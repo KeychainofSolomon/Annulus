@@ -90,3 +90,16 @@ fn the_rust_parser_agrees_with_the_reference_to_the_column() {
         "positions.json lists a program that no longer exists"
     );
 }
+
+#[test]
+fn a_source_past_its_bound_is_refused_before_lexing() {
+    use annulus::lingua::lexis::MAX_SOURCE_BYTES;
+    let at_bound = format!("SIT s = \"{}\";\n", "a".repeat(MAX_SOURCE_BYTES - 12));
+    assert_eq!(at_bound.len(), MAX_SOURCE_BYTES);
+    assert!(annulus::lingua::parse_source(&at_bound).is_ok());
+    let over = format!("{at_bound} ");
+    match annulus::lingua::parse_source(&over) {
+        Err(e) => assert_eq!(e.code, "L1"),
+        Ok(_) => panic!("a source past the bound was read"),
+    }
+}

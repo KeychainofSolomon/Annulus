@@ -143,9 +143,12 @@ fn launch_reserving(stores: Stores, wand: Wand, reserved: &[Cap]) -> State {
     faculty.extend(reserved.iter().cloned());
     let reserved: BTreeSet<Cap> = reserved.iter().cloned().collect();
     let auth = Auth {
-        faculty_signature: sign_for_test(&wand.fingerprint, &digest_faculty(&faculty, &reserved)),
+        faculty_signature: sign_for_test(
+            &wand.fingerprint,
+            &digest_faculty(&faculty, &reserved, &stores.roots()),
+        ),
         owner: "owner-wand".to_string(),
-        manifest_signature: sign_for_test("owner-wand", &digest_constitution(&constitution)),
+        manifest_signature: sign_for_test("owner-wand", &digest_constitution(&constitution, &[])),
         revoked: Vec::new(),
         roots: stores.roots(),
         wand,
@@ -1219,4 +1222,39 @@ fn inscription_takes_ink_of_the_seals_class_until_it_runs_out() {
     }
     let out = op(&mut s, |s| s.inscribe(&rite, &FURFUR.to_string(), "comes"));
     assert!(matches!(out, Err(Refusal::Denied(_))));
+}
+
+#[test]
+fn substituted_stores_with_matching_roots_refuse_launch() {
+    let mut s = launch_with(Stores::install(&wand()), wand());
+    let mut forged = Stores::install(&wand());
+    forged
+        .index
+        .push(IxEntry::Proscribe("goetia:34:furfur".to_string(), vec![]));
+    s.auth.roots = forged.roots();
+    s.stores = forged;
+    assert!(
+        matches!(s.launch(), Err(Refusal::LaunchRefused(_))),
+        "stores and roots replaced together must not pass the wand's signature"
+    );
+}
+
+#[test]
+fn a_revocation_cannot_be_struck_out() {
+    let w = wand();
+    let mut s = launch_with(Stores::install(&w), w.clone());
+    s.auth.revoked = vec![w.fingerprint.clone()];
+    s.auth.manifest_signature = sign_for_test(
+        "owner-wand",
+        &digest_constitution(&s.constitution, &s.auth.revoked),
+    );
+    assert!(
+        matches!(s.launch(), Err(Refusal::LaunchRefused(_))),
+        "a revoked wand is refused"
+    );
+    s.auth.revoked.clear();
+    assert!(
+        matches!(s.launch(), Err(Refusal::LaunchRefused(_))),
+        "striking the revocation out breaks the owner's signature"
+    );
 }

@@ -26,7 +26,7 @@ impl State {
         let auth = &self.auth;
         if !verify(
             &auth.owner,
-            &digest_constitution(&self.constitution),
+            &digest_constitution(&self.constitution, &auth.revoked),
             &auth.manifest_signature,
         ) {
             return Err("the Constitution is not signed by the owner's wand");
@@ -57,7 +57,7 @@ impl State {
             }
             if !verify(
                 &auth.wand.fingerprint,
-                &digest_faculty(&self.faculty, &self.reserved),
+                &digest_faculty(&self.faculty, &self.reserved, &auth.roots),
                 &auth.faculty_signature,
             ) {
                 return Err("the faculty is not signed by the wand");

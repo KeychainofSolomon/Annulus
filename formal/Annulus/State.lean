@@ -440,7 +440,8 @@ def Eligible (M : Core U) (σ : State U) (w : U.Worker) : Prop :=
 
 /-- §9.1, §9.3a, §9.3c, `proscription.md` §3.2: what `launch` checks. -/
 def LaunchChecks (M : Core U) (σ : State U) : Prop :=
-  M.mech.verify σ.auth.ownerFp (M.mech.digestManifest σ.constitution.manifest) σ.auth.manifestSig ∧
+  M.mech.verify σ.auth.ownerFp (M.mech.digestManifest σ.constitution.manifest σ.auth.revoked)
+    σ.auth.manifestSig ∧
   ¬ σ.auth.ownerFp ∈ σ.auth.revoked ∧
   (∀ k val, σ.constitution.validators k = some val →
     σ.constitution.manifest k = some (M.mech.fpCode val.code)) ∧
@@ -449,7 +450,9 @@ def LaunchChecks (M : Core U) (σ : State U) : Prop :=
   M.mech.chainKeys σ.keys = σ.auth.keysRoot ∧
   σ.auth.wandLock ≠ .master ∧
   (σ.auth.wandPresent = true → ¬ σ.auth.wandFp ∈ σ.auth.revoked ∧
-    M.mech.verify σ.auth.wandFp (M.mech.digestFaculty σ.faculty σ.reserved) σ.auth.facultySig)
+    M.mech.verify σ.auth.wandFp
+      (M.mech.digestFaculty σ.faculty σ.reserved σ.auth.indexRoot σ.auth.graveRoot
+        σ.auth.keysRoot) σ.auth.facultySig)
 
 def GraveMatch (M : Core U) (σ : State U) (v : U.Value) (g : Nat) (kid : Option U.ValidatorId) :
     Prop :=

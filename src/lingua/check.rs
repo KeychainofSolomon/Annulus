@@ -59,42 +59,7 @@ impl Ty {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Class {
-    Telling,
-    Working,
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Signature {
-    pub class: Class,
-    pub modes: &'static [&'static str],
-    pub quaestio: bool,
-    pub perm: Perm,
-    pub min_places: usize,
-}
-
-pub fn signature(kind: &str) -> Option<Signature> {
-    let telling = Signature {
-        class: Class::Telling,
-        modes: &[],
-        quaestio: true,
-        perm: Perm::Legere,
-        min_places: 0,
-    };
-    let working = |perm, modes| Signature {
-        class: Class::Working,
-        modes,
-        quaestio: false,
-        perm,
-        min_places: 1,
-    };
-    Some(match kind {
-        "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" => telling,
-        "AEDIFICATIO" => working(Perm::Creare, &[]),
-        _ => return None,
-    })
-}
+pub use crate::officia::{signature, Class, Signature};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Granted {
@@ -804,9 +769,12 @@ impl<'r> Checker<'r> {
             return Val::error();
         };
         let mut rest = args.iter().zip(&vals).peekable();
+        let mut mode = None;
         if !sig.modes.is_empty() {
             match rest.next() {
-                Some((Expr::Text(mode, _), _)) if sig.modes.contains(&mode.as_str()) => {}
+                Some((Expr::Text(m, _), _)) if sig.modes.contains(&m.as_str()) => {
+                    mode = Some(m.clone());
+                }
                 Some((e, val)) => {
                     let code = if val.mark == Mark::Quarantined {
                         "A14"
@@ -821,8 +789,12 @@ impl<'r> Checker<'r> {
                             sig.modes.join(" or ")
                         ),
                     );
+                    return Val::error();
                 }
-                None => self.error("A5", pos, format!("{kind} needs a mode")),
+                None => {
+                    self.error("A5", pos, format!("{kind} needs a mode"));
+                    return Val::error();
+                }
             }
         }
         if sig.quaestio {
@@ -850,9 +822,22 @@ impl<'r> Checker<'r> {
                 None => self.error("A5", pos, format!("{kind} needs a question")),
             }
         }
-        let mut places = 0;
-        for (e, val) in rest {
-            places += 1;
+        let given: Vec<(&Expr, &Val)> = rest.collect();
+        let Some(roles) = crate::officia::places(&kind, mode.as_deref(), given.len()) else {
+            self.error(
+                "A5",
+                pos,
+                format!(
+                    "{kind} takes {}",
+                    crate::officia::shape(&kind, mode.as_deref())
+                ),
+            );
+            return Val {
+                office: Some(kind),
+                ..Val::plain(Ty::Prop)
+            };
+        };
+        for ((e, val), perms) in given.into_iter().zip(roles) {
             if val.mark == Mark::Quarantined {
                 self.error(
                     "A14",
@@ -871,34 +856,29 @@ impl<'r> Checker<'r> {
                 }
                 continue;
             };
-            let grant = self
-                .grants
-                .iter()
-                .find(|g| g.kind == "liber" && g.target == place && g.perms.contains(&sig.perm))
-                .cloned();
-            match grant {
-                None => self.error(
-                    "A8",
-                    e.pos(),
-                    format!(
-                        "{kind} needs liber {place:?} {} in the FACULTAS",
-                        perm_word(sig.perm)
+            for perm in perms {
+                let grant = self
+                    .grants
+                    .iter()
+                    .find(|g| g.kind == "liber" && g.target == place && g.perms.contains(&perm))
+                    .cloned();
+                match grant {
+                    None => self.error(
+                        "A8",
+                        e.pos(),
+                        format!(
+                            "{kind} needs liber {place:?} {} in the FACULTAS",
+                            perm_word(perm)
+                        ),
                     ),
-                ),
-                Some(g) if g.reserved => self.error(
-                    "A5",
-                    e.pos(),
-                    format!("liber {place:?} is reserved for angels"),
-                ),
-                Some(_) => {}
+                    Some(g) if g.reserved => self.error(
+                        "A5",
+                        e.pos(),
+                        format!("liber {place:?} is reserved for angels"),
+                    ),
+                    Some(_) => {}
+                }
             }
-        }
-        if places < sig.min_places {
-            self.error(
-                "A5",
-                pos,
-                format!("{kind} needs at least {} place", sig.min_places),
-            );
         }
         Val {
             office: Some(kind),

@@ -52,7 +52,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hb : R.bound σ (.ink s) n)
       (hx : ¬ Barred σ s)
       (hn : n ≤ σ.inkLeft) :
-      CoreStep M R σ (.invoke i s c w true n)
+      CoreStep M R σ (.invoke i s c w true n [])
         { σ with
           invs := upd σ.invs i (some ⟨s, c, .live, n, 0, w, []⟩),
           workers := upd σ.workers w (some ⟨some (.spirit i), some i, (fun _ => False), [], true, false⟩),
@@ -61,14 +61,15 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
           sched := idle σ.sched }
 
   | invokeRefused {σ : State U} {i : U.Inv} {s : U.Seal} {w : U.Worker} {ok no : U.Exec}
-      {c : U.Circle} {rest : List U.Circle} {b : Bool} {n : Nat}
+      {c : U.Circle} {rest : List U.Circle} {b : Bool} {n : Nat} {ds : List U.Inv}
       (hw : σ.sched.current = some U.operator)
       (hi : instrOf M σ = .invoke i s w ok no)
       (hs : σ.circles = c :: rest)
       (ha : R.admit σ (.invoke s c) b)
       (hb : R.bound σ (.ink s) n)
-      (hr : b = false ∨ Barred σ s ∨ σ.inkLeft < n) :
-      CoreStep M R σ (.invoke i s c w b n) (endRun σ (.failure U.denial σ.audit.length))
+      (hr : b = false ∨ Barred σ s ∨ σ.inkLeft < n)
+      (hd : Dismissed σ ds) :
+      CoreStep M R σ (.invoke i s c w b n ds) (endRun σ (.failure U.denial σ.audit.length))
 
   | requestSpirit {σ : State U} {i : U.Inv} {f : U.ReqForm} {q : U.Req} {p : U.Pid}
       {w : U.Worker} {e : U.Exec} {inst : Inst U} {wi : WInfo U} {asked : Power U → Prop}
@@ -123,15 +124,16 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hc : ContribOK R σ wi ri pi c) :
       CoreStep M R σ (.turn w o c fin) (afterTurn σ w wi p rest pi c fin (.turn w o c fin))
 
-  | kill {σ : State U} {w : U.Worker} {o : U.Outcome} {wi : WInfo U} {i : U.Inv}
+  | kill {σ : State U} {w : U.Worker} {o : U.Outcome} {wi : WInfo U} {i : U.Inv} {ds : List U.Inv}
       (hw : σ.sched.current = some w)
       (hwi : σ.workers w = some wi)
       (ha : wi.alive = true)
       (hpar : wi.parent = some i)
       (ho : R.willOpen σ w o)
       (hk : U.killOutcome o)
-      (hsim : σ.mode = .simulated → o = M.sim.will σ w) :
-      CoreStep M R σ (.kill w o) (endRun σ .killed)
+      (hsim : σ.mode = .simulated → o = M.sim.will σ w)
+      (hd : Dismissed σ ds) :
+      CoreStep M R σ (.kill w o ds) (endRun σ .killed)
 
   | examineBy {σ : State U} {p : U.Pid} {k : WorkOutcome → U.Exec} {pi : PInfo U}
       {e : U.Seal} {v0 cb : Verdict}
@@ -316,20 +318,23 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }
 
-  | halt {σ : State U}
+  | halt {σ : State U} {ds : List U.Inv}
       (hw : σ.sched.current = some U.operator)
-      (hi : instrOf M σ = .halt) :
-      CoreStep M R σ (.step .halt) (endRun σ .normal)
+      (hi : instrOf M σ = .halt)
+      (hd : Dismissed σ ds) :
+      CoreStep M R σ (.step (.halt ds)) (endRun σ .normal)
 
-  | fail {σ : State U} {k : U.FailClass}
+  | fail {σ : State U} {k : U.FailClass} {ds : List U.Inv}
       (hw : σ.sched.current = some U.operator)
-      (hi : instrOf M σ = .fail k) :
-      CoreStep M R σ (.step (.fail k)) (endRun σ (.failure k σ.audit.length))
+      (hi : instrOf M σ = .fail k)
+      (hd : Dismissed σ ds) :
+      CoreStep M R σ (.step (.fail k ds)) (endRun σ (.failure k σ.audit.length))
 
-  | deny {σ : State U}
+  | deny {σ : State U} {ds : List U.Inv}
       (hw : σ.sched.current = some U.operator)
-      (hd : Denied M R σ) :
-      CoreStep M R σ (.step (.fail U.denial)) (endRun σ (.failure U.denial σ.audit.length))
+      (hd : Denied M R σ)
+      (hds : Dismissed σ ds) :
+      CoreStep M R σ (.step (.fail U.denial ds)) (endRun σ (.failure U.denial σ.audit.length))
 
   | schedule {σ : State U} {w : U.Worker}
       (hn : σ.sched.current = none)

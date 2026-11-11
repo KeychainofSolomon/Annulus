@@ -64,6 +64,7 @@ struct Asked {
     spirit: &'static Spirit,
     office: String,
     quaestio: Option<String>,
+    mode: Option<String>,
     places: Vec<String>,
 }
 
@@ -235,8 +236,8 @@ impl<'p> Run<'p> {
             return Contrib::Idle;
         };
         let spirit = asked.spirit;
-        let class = super::check::signature(&asked.office).map(|s| s.class);
-        if class == Some(super::check::Class::Telling) {
+        let class = crate::officia::signature(&asked.office).map(|s| s.class);
+        if class == Some(crate::officia::Class::Telling) {
             let q = asked.quaestio.clone().unwrap_or_default();
             let script = self.responsa.iter().find(|r| {
                 r.spirit == spirit.n
@@ -264,28 +265,51 @@ impl<'p> Run<'p> {
             let id = self.fresh_value();
             return Contrib::Respond(id, text);
         }
-        let verb = if asked.office == "AEDIFICATIO" {
-            Verb::Crea
-        } else {
-            Verb::Scribe
+        let read = |p: &String| {
+            self.state
+                .world
+                .get(p)
+                .map(|(d, _)| d.clone())
+                .unwrap_or_default()
         };
-        let mut effects: Vec<Effect> = asked
-            .places
-            .iter()
-            .map(|p| Effect {
-                verb,
-                place: p.clone(),
-                data: match verb {
-                    Verb::Crea => String::new(),
-                    _ => self
-                        .state
-                        .world
-                        .get(p)
-                        .map(|(d, _)| d.clone())
-                        .unwrap_or_default(),
-                },
-            })
-            .collect();
+        let effect = |verb, place: &String, data: String| Effect {
+            verb,
+            place: place.clone(),
+            data,
+        };
+        let places = &asked.places;
+        let mut effects: Vec<Effect> = match (asked.office.as_str(), asked.mode.as_deref()) {
+            ("AEDIFICATIO", _) => places
+                .iter()
+                .map(|p| effect(Verb::Crea, p, String::new()))
+                .collect(),
+            ("EVERSIO", _) => places
+                .iter()
+                .map(|p| effect(Verb::Dele, p, String::new()))
+                .collect(),
+            ("VECTIO", Some("transfer")) => vec![
+                effect(Verb::Transfer, &places[1], read(&places[0])),
+                effect(Verb::Dele, &places[0], String::new()),
+            ],
+            ("VECTIO", _) => vec![effect(Verb::Exscribe, &places[1], read(&places[0]))],
+            ("FURTUM", _) => vec![
+                effect(Verb::Exscribe, &places[1], read(&places[0])),
+                effect(Verb::Aufer, &places[0], String::new()),
+            ],
+            ("CONCORDIA", _) => {
+                let (sources, target) = places.split_at(places.len() - 1);
+                let texts: Vec<String> = sources.iter().map(read).collect();
+                vec![effect(Verb::Coniunge, &target[0], merge(&texts))]
+            }
+            ("DISCORDIA", _) => {
+                let source = read(&places[0]);
+                places[1..]
+                    .iter()
+                    .map(|p| effect(Verb::Scinde, p, source.clone()))
+                    .collect()
+            }
+            _ => Vec::new(),
+        };
         match outcome {
             Outcome::Pars => effects.truncate(effects.len() / 2),
             Outcome::Mendacium => effects
@@ -558,17 +582,22 @@ impl<'p> Run<'p> {
             .get(&inv)
             .cloned()
             .ok_or_else(|| Halt::Denial("an invocation without an office".into()))?;
-        let sig = super::check::signature(&office)
+        let sig = crate::officia::signature(&office)
             .ok_or_else(|| Halt::Denial("an office outside the step-2 subset".into()))?;
         let mut texts = vals.into_iter().map(|v| match v {
             V::Text(t) => t.s,
             _ => String::new(),
         });
+        let mode = if sig.modes.is_empty() {
+            None
+        } else {
+            texts.next()
+        };
         let quaestio = if sig.quaestio { texts.next() } else { None };
         let places: Vec<String> = texts.collect();
         let form = ReqForm {
             office: office.clone(),
-            mode: None,
+            mode: mode.clone(),
             places: places.clone(),
         };
         let prop = self.op(|_| true, |s, r| s.request(r, Addressee::Spirit(inv), &form))?;
@@ -578,6 +607,7 @@ impl<'p> Run<'p> {
                 spirit,
                 office,
                 quaestio,
+                mode,
                 places,
             },
         );
@@ -723,4 +753,13 @@ fn mark_of(v: &V) -> Mark {
         V::Bool(_, m) => *m,
         _ => Mark::Clean,
     }
+}
+
+fn merge(sources: &[String]) -> String {
+    let split: Vec<Vec<&str>> = sources.iter().map(|s| s.lines().collect()).collect();
+    let longest = split.iter().map(Vec::len).max().unwrap_or(0);
+    (0..longest)
+        .filter_map(|i| split.iter().find_map(|lines| lines.get(i).copied()))
+        .collect::<Vec<&str>>()
+        .join("\n")
 }

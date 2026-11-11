@@ -371,3 +371,15 @@ Discussed with the owner, not built:
   5. **Research:** is Sloane 3825 the oldest Goetia witness or only the best? Is the *Livre des Esperitz* (15th c.) an older witness of the *Officium* line than Weyer? Current rules stand until evidence.
   6. Then the second half of 2c (command line, stores on disk).
 - **The repository is to become public.** Keep it free of the owner's identity (privacy rule above) and of copyrighted modern material: cite such sources, never commit them.
+
+## Second outside review and the core changes (2026-11-11, night)
+
+- **Done at the owner's request:** release records on every run's end; five effect verbs and the offices `VECTIO`, `CONCORDIA`, `DISCORDIA`, `EVERSIO`, `FURTUM` (`"aufer"`); a create can no longer overwrite (the reviewer's finding 1, the only route found by which a spirit exceeded its grant); mixed ranks keep the Earl's and Duke's conditions; ink totals saturate. 165 tests. Lean updated (labels carry `ds`, `Dismissed`, `Recheck` with `creates`).
+- **Still owed under the interim proof rule:** an independent audit of these core changes.
+- **Open from the second review:**
+  - Finding 3, **needs a ruling:** ink is counted twice, differently (per class at each draw in the evaluator; one class-blind unit per invocation in the core). Does one inscribed seal serve one invocation or many?
+  - Finding 4: a helper's narrower handed set is checked at spawn but not on its effects; matters for freed familiars (`offices.md` §4.6). Spec gap.
+  - Finding 5: `forma` is only a format check; consecrated words can then be passed to another spirit. Needs real validators before the agent demo.
+  - Finding 6: the rite sets the ink cost; a rite returning 0 makes invocations free. Add to the always-yes attack tests.
+  - Note: Furfur's inability to lie hangs on the word "triangle" in a prose field of the register; give the register an explicit field.
+- **Not yet in the subset:** `TRANSMUTATIO` (needs the conversion library), `MORBUS`, `APPELLATIO`, `TUTELA`, `INVISIBILITAS`, `TEMPESTAS` (their effects need state the core does not have yet: a title, protection, a veil, a storm).

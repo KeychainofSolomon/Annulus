@@ -101,7 +101,8 @@ impl State {
 
     fn deny<T>(&mut self, why: &'static str) -> Step<T> {
         let at = self.audit.len();
-        self.record(Label::Fail(DENIAL));
+        let dismissed = self.open_invocations();
+        self.record(Label::Fail(DENIAL, dismissed));
         self.end_run(Ending::Failure(DENIAL, at));
         Err(Refusal::Denied(why))
     }
@@ -169,6 +170,7 @@ impl State {
         let inv = self.fresh();
         let worker = self.fresh();
         if !admitted || self.barred(seal) || cost > self.ink_left {
+            let dismissed = self.open_invocations();
             self.record(Label::Invoke(
                 inv,
                 seal.clone(),
@@ -176,6 +178,7 @@ impl State {
                 worker,
                 admitted,
                 cost,
+                dismissed,
             ));
             let at = self.audit.len();
             self.end_run(Ending::Failure(DENIAL, at));
@@ -204,7 +207,15 @@ impl State {
             },
         );
         self.ink_left -= cost;
-        self.record(Label::Invoke(inv, seal.clone(), circle, worker, true, cost));
+        self.record(Label::Invoke(
+            inv,
+            seal.clone(),
+            circle,
+            worker,
+            true,
+            cost,
+            Vec::new(),
+        ));
         self.done();
         Ok(inv)
     }
@@ -414,7 +425,8 @@ impl State {
         if !able || outcome != Outcome::Occisio || !rite.will_open(self, worker, outcome) {
             return Err(Refusal::NotEnabled("killing is not open"));
         }
-        self.record(Label::Kill(worker, outcome));
+        let dismissed = self.open_invocations();
+        self.record(Label::Kill(worker, outcome, dismissed));
         self.end_run(Ending::Killed);
         Ok(())
     }
@@ -490,10 +502,11 @@ impl State {
                 return false;
             }
         }
-        p.content
-            .effects()
-            .iter()
-            .all(|e| req.handed.contains(&e.needs()) && self.contained(&req.to, &e.needs()))
+        p.content.effects().iter().all(|e| {
+            req.handed.contains(&e.needs())
+                && self.contained(&req.to, &e.needs())
+                && !(e.verb.creates() && self.world.contains_key(&e.place))
+        })
     }
 
     fn commit(&mut self, prop: Pid) -> WorkOutcome {
@@ -530,10 +543,7 @@ impl State {
             }
         }
         for e in &effects {
-            let written = match e.verb {
-                super::types::Verb::Dele => None,
-                _ => Some(e.data.clone()),
-            };
+            let written = (!e.verb.removes()).then(|| e.data.clone());
             match written {
                 Some(data) => {
                     self.world
@@ -703,7 +713,8 @@ impl State {
 
     pub fn halt(&mut self) -> Step<()> {
         self.operator()?;
-        self.record(Label::Halt);
+        let dismissed = self.open_invocations();
+        self.record(Label::Halt(dismissed));
         self.end_run(Ending::Normal);
         Ok(())
     }
@@ -711,9 +722,19 @@ impl State {
     pub fn fail(&mut self, class: u8) -> Step<()> {
         self.operator()?;
         let at = self.audit.len();
-        self.record(Label::Fail(class));
+        let dismissed = self.open_invocations();
+        self.record(Label::Fail(class, dismissed));
         self.end_run(Ending::Failure(class, at));
         Ok(())
+    }
+
+    pub fn open_invocations(&self) -> Vec<InvId> {
+        self.invs
+            .iter()
+            .rev()
+            .filter(|(_, inst)| inst.status == InvStatus::Live)
+            .map(|(id, _)| *id)
+            .collect()
     }
 
     pub fn holds(&self, cap: &Cap) -> bool {

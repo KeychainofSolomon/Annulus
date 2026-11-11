@@ -1073,3 +1073,48 @@ fn every_seed_keeps_the_theorems() {
     }
     assert!(roots.len() > 1, "the seed changes the order of turns");
 }
+
+#[test]
+fn a_failure_mid_circle_records_each_dismissal_newest_first() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, first) = circle_and(&mut s, &rite, FURFUR);
+    let second = op(&mut s, |s| s.invoke(&rite, &MARBAS.to_string())).expect("invoke");
+    op(&mut s, |s| s.fail(1)).expect("fail");
+    assert_eq!(
+        s.audit.entries().last(),
+        Some(&Label::Fail(1, vec![second, first]))
+    );
+    assert!(s.invs.values().all(|i| i.status != InvStatus::Live));
+    check_theorems(&s);
+}
+
+#[test]
+fn a_denial_records_the_dismissals_too() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, inv) = circle_and(&mut s, &rite, FURFUR);
+    let r = op(&mut s, |s| {
+        s.request(
+            &rite,
+            Addressee::Spirit(inv),
+            &form("scribe", &["secret.txt"]),
+        )
+    });
+    assert!(matches!(r, Err(Refusal::Denied(_))));
+    assert_eq!(
+        s.audit.entries().last(),
+        Some(&Label::Fail(DENIAL, vec![inv]))
+    );
+}
+
+#[test]
+fn a_clean_halt_dismisses_nothing() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, inv) = circle_and(&mut s, &rite, FURFUR);
+    op(&mut s, |s| s.release(inv)).expect("release");
+    op(&mut s, |s| s.close_circle()).expect("close");
+    op(&mut s, |s| s.halt()).expect("halt");
+    assert_eq!(s.audit.entries().last(), Some(&Label::Halt(Vec::new())));
+}

@@ -194,7 +194,7 @@ So the guiding principle holds. The freed task's authority comes from *G*, never
 
 ## 6. The example, read with these signatures
 
-In `grammar.md` §7, `PETE furfur("tempestas.txt")`, for `tempestas` with `liber "tempestas.txt" scribere` granted, proposes `turba` on that file. By ruling 2026-11-11 the example keeps to the source: Furfur "raises lightning, thunder and blasts, and great tempestuous storms" (W), so its `INTENTIO` now reads "raise a tempest". In computer terms, that is a fault injection on the file.
+In `grammar.md` §7, `PETE vocatus("tempestas.txt")`, for `tempestas` with `liber "tempestas.txt" scribere` granted, proposes `turba` on that file. By ruling 2026-11-11 the example keeps to the source: Furfur "raises lightning, thunder and blasts, and great tempestuous storms" (W), so its `INTENTIO` now reads "raise a tempest". In computer terms, that is a fault injection on the file.
 
 ## 7. Rulings and open points
 

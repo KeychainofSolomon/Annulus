@@ -21,9 +21,9 @@ Every error names its phase, a code (§6), and the source position.
 - **Program names:** variables, functions (`OPUS`), forms (`FORMA`) and parameters.
 - **Register labels:** the names of Constitution entries, such as `furfur` or `lehahiah`.
 
-An identifier in an **entity position** (after `INVOCA` or `SIGILLUM`) is a register label. Everywhere else it is a program name. So `SIT furfur = INVOCA furfur AD OFFICIUM …;` is lawful: the variable holds the invocation; the label names the spirit.
+An identifier in an **entity position** (after `INVOCA` or `SIGILLUM`) is a register label. Everywhere else it is a program name.
 
-A program cannot declare, assign or shadow a register label (`authority.md` §2.3).
+**A spirit's name belongs to the spirit** (amended, ruling of the owner 2026-11-11; it replaces the earlier reading that `SIT furfur = INVOCA furfur …;` was lawful). No program name (a variable, a function, a form, a parameter, a field, a `PER` or `CAPE` variable) may be spelled as any label of any register entry, in any spelling the register records, whether or not the program refers to that entry (N5). So `SIT vocatus = INVOCA furfur AD OFFICIUM …;` is lawful, and `SIT furfur = …;` or `SIT bael = 7;` is not. A program cannot declare, assign or shadow a register label (`authority.md` §2.3). [O; enforces `authority.md` §2.3: obscure but never ambiguous.]
 
 2.2 **Scopes.**
 - Functions and forms are declared at the top level and are visible everywhere in the program, so functions may call each other in any order.
@@ -190,7 +190,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 | N2 | use before declaration |
 | N3 | shadowing |
 | N4 | assignment to an immutable variable |
-| N5 | declaring or assigning a register label |
+| N5 | a program name spelled as a register label (§2.1) |
 | T1 | operand types do not fit the operator |
 | T2 | equality between different types |
 | T3 | condition is not `VERITAS` |

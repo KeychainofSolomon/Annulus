@@ -1,9 +1,9 @@
 CIRCULUS RITU goetia {
     INTENTIO "ask of the storm";
-    SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM responsa;
-    SIT p = PETE furfur("quid est tempestas");
+    SIT vocatus = INVOCA SPIRITUS 34 AD OFFICIUM responsa;
+    SIT p = PETE vocatus("quid est tempestas");
     SI EXAMINA p == RATUM {
         MANIFESTA RESPONSUM p;
     }
-    VADE IN PACE furfur;
+    VADE IN PACE vocatus;
 }

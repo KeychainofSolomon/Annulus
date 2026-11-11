@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Amended (approved by the owner, 2026-11-11)
+- **A spirit's name belongs to the spirit** (`static.md` §2.1, error N5). No program name may be spelled as any label of a register entry, in any recorded spelling, even if the program never refers to that entry. Reason: §2.1 allowed `SIT furfur = INVOCA furfur …` while N5 forbade declaring a register label; the owner chose N5, which keeps `authority.md` §2.3 (no program shadows a Constitution entry). The grammar example and five grammar test programs now name the invocation `vocatus`.
+
+### Added
+- Step 2b front end, `src/lingua/`: Latin lexer, parser for the whole grammar, the goetia register read from its JSON, and the static checker for the step-2 subset.
+
 ## 0.2.1 — 2026-11-10
 
 Milestone 1: audit and reproducible build. No language features added; see `docs/AUDIT.md` for every finding.

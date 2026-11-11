@@ -436,6 +436,16 @@ impl<'r> Checker<'r> {
                 if *mutable && val.ty.rite() {
                     self.subset(*pos, "a mutable variable holding a rite value");
                 }
+                if let Some(spirit) = self.register.by_label(name) {
+                    self.error(
+                        "N5",
+                        *pos,
+                        format!(
+                            "{name} is the name of {}; a spirit's name belongs to the spirit",
+                            spirit.name
+                        ),
+                    );
+                }
                 if self.visible(name).is_some() {
                     self.error("N3", *pos, format!("{name} is already declared"));
                 }

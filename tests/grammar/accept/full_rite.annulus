@@ -6,12 +6,12 @@ FACULTAS {
 CIRCULUS RITU goetia {
     INTENTIO "raise a tempest";
     SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
-    SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
-    SIT propositum = PETE furfur("tempestas.txt");
+    SIT vocatus = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
+    SIT propositum = PETE vocatus("tempestas.txt");
     SIT iudicium = EXAMINA propositum;
     SI iudicium == RATUM {
-        VADE IN PACE furfur;
+        VADE IN PACE vocatus;
     } ALITER {
-        RELEGA furfur;
+        RELEGA vocatus;
     }
 }

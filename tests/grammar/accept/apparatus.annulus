@@ -9,11 +9,11 @@ CIRCULUS RITU goetia {
     GERE HEXAGRAMMUM;
     GERE PENTAGRAMMUM;
     SIT sigillum = INSCRIBE SIGILLUM belial ATRAMENTO CONSECRA ATRAMENTUM "rex";
-    SIT belial = INVOCA SPIRITUS 68 AD OFFICIUM concordia;
-    OFFER belial;
-    CONSTRINGE belial PER NOMEN "Tetragrammaton";
-    APPELLA belial;
-    VETA belial;
-    SIT p = PETE belial();
-    SI EXAMINA p == RATUM { VADE IN PACE belial; } ALITER { RELEGA belial; }
+    SIT vocatus = INVOCA SPIRITUS 68 AD OFFICIUM concordia;
+    OFFER vocatus;
+    CONSTRINGE vocatus PER NOMEN "Tetragrammaton";
+    APPELLA vocatus;
+    VETA vocatus;
+    SIT p = PETE vocatus();
+    SI EXAMINA p == RATUM { VADE IN PACE vocatus; } ALITER { RELEGA vocatus; }
 }

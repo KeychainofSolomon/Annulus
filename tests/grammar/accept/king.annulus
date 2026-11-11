@@ -6,7 +6,7 @@ CIRCULUS RITU goetia {
     INTENTIO "carry the archive to another place";
     INVOCA REGEM amaymon;
     SIT sigillum = INSCRIBE SIGILLUM gaap ATRAMENTO CONSECRA ATRAMENTUM "praeses";
-    SIT gaap = INVOCA SPIRITUS 33 AD OFFICIUM vectio;
-    SIT p = PETE gaap("archivum");
-    SI EXAMINA p == RATUM { VADE IN PACE gaap; } ALITER { RELEGA gaap; }
+    SIT vocatus = INVOCA SPIRITUS 33 AD OFFICIUM vectio;
+    SIT p = PETE vocatus("archivum");
+    SI EXAMINA p == RATUM { VADE IN PACE vocatus; } ALITER { RELEGA vocatus; }
 }

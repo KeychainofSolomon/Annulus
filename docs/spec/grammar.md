@@ -195,7 +195,7 @@ entry          = ( "SPIRITUS" | "ANGELUS" ) , integer ;
 - Type labels are required on `OPUS` parameters and results, and on `FORMA` fields; elsewhere they are optional. Type labels are syntax, not annotations (ruled 2026-11-10).
 - **One reading only.** Every choice in this grammar is decided by the next token alone (LL(1)). Three rules make that true:
   1. An assignment is parsed as an expression followed by `=`. Its left side must then be a *place*: a variable, a field (`a.b`) or an element (`a[i]`). Anything else on the left is a syntax error.
-  2. `PETE` takes a plain name: `PETE furfur("x")`. Otherwise its argument list would be read as an ordinary function call.
+  2. `PETE` takes a plain name: `PETE vocatus("x")`. Otherwise its argument list would be read as an ordinary function call.
   3. `CONSECRA`, `EXAMINA` and `INSCRIBE … ATRAMENTO …` bind as tightly as `NON`. So `EXAMINA p == RATUM` means `(EXAMINA p) == RATUM`.
 
   The reference recognizer `tools/grammar_check.py` is hand-written to follow this grammar, and runs the test programs in `tests/grammar/`. **It checks examples, not the LL(1) property itself** (second audit, 2026-11-11). An independent check, computing FIRST and FOLLOW sets from the EBNF above and comparing the parser mechanically against it, is a task for step 2.
@@ -247,13 +247,13 @@ MANIFESTA summa;
 CIRCULUS RITU goetia {
     INTENTIO "raise a tempest";
     SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
-    SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
-    SIT propositum = PETE furfur("tempestas.txt");
+    SIT vocatus = INVOCA SPIRITUS 34 AD OFFICIUM tempestas;
+    SIT propositum = PETE vocatus("tempestas.txt");
     SIT iudicium = EXAMINA propositum;
     SI iudicium == RATUM {
-        VADE IN PACE furfur;
+        VADE IN PACE vocatus;
     } ALITER {
-        RELEGA furfur;
+        RELEGA vocatus;
     }
 }
 ```

@@ -35,7 +35,7 @@ fn rite(body: &str) -> String {
 
 fn telling(body: &str) -> String {
     rite(&format!(
-        "    SIT furfur = INVOCA SPIRITUS 34 AD OFFICIUM responsa;\n    SIT p = PETE furfur(\"quid est tempestas\", \"liber.txt\");\n{body}\n    VADE IN PACE furfur;"
+        "    SIT vocatus = INVOCA SPIRITUS 34 AD OFFICIUM responsa;\n    SIT p = PETE vocatus(\"quid est tempestas\", \"liber.txt\");\n{body}\n    VADE IN PACE vocatus;"
     ))
 }
 
@@ -137,20 +137,20 @@ fn a14_consecrated_words_may_steer() {
 
 #[test]
 fn a15_quarantined_words_to_a_spirit() {
-    refused(&telling("    SIT q = PETE furfur(RESPONSUM p);"), "A15");
+    refused(&telling("    SIT q = PETE vocatus(RESPONSUM p);"), "A15");
 }
 
 #[test]
 fn a15_computed_from_words_is_still_quarantined() {
     refused(
-        &telling("    SIT verba = \"dic: \" + RESPONSUM p;\n    SIT q = PETE furfur(verba);"),
+        &telling("    SIT verba = \"dic: \" + RESPONSUM p;\n    SIT q = PETE vocatus(verba);"),
         "A15",
     );
 }
 
 #[test]
 fn a15_consecrated_words_may_be_passed() {
-    lawful(&telling("    SIT q = PETE furfur(CONSECRA RESPONSUM p);"));
+    lawful(&telling("    SIT q = PETE vocatus(CONSECRA RESPONSUM p);"));
 }
 
 #[test]
@@ -345,6 +345,17 @@ fn names_and_types() {
     refused("SIT x = 7 == \"7\";\n", "T2");
     refused("SI 1 {\n}\n", "T3");
     refused("SIT x: VERBUM = 1;\n", "T1");
+}
+
+#[test]
+fn n5_a_spirits_name_belongs_to_the_spirit() {
+    refused(
+        &rite("    SIT furfur = INVOCA furfur AD OFFICIUM tempestas;\n    VADE IN PACE furfur;"),
+        "N5",
+    );
+    refused("SIT bael = 7;\n", "N5");
+    refused("SIT barbas = 7;\n", "N5");
+    lawful("SIT baelus = 7;\n");
 }
 
 #[test]

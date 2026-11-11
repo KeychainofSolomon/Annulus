@@ -2,7 +2,7 @@
 
 Draft 1, 2026-11-11. The last part of roadmap step 1: `docs/spec/core.md` §9 written as a Lean 4 model, with P1–P9 **stated** as Lean propositions. **Nothing is proved.** The proofs are roadmap step 3. No security theorem of Annulus is yet established.
 
-**Not yet type-checked.** It was written in a session with no Lean installed. Check it first (below) and fix what Lean underlines before anyone audits it.
+**Type-checks** (2026-11-11): GitHub Actions builds it on every push (`.github/workflows/lean.yml`), and fails if any proof, `sorry` or axiom appears.
 
 ## Checking it
 

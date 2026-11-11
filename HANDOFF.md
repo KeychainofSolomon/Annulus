@@ -296,7 +296,8 @@ Discussed with the owner, not built:
 ## Next session: start here (2026-11-11, third session)
 
 - **Done:** the core's formal model in Lean 4, `formal/` (draft 1): the state, 27 transition rules, marks, validators, examiners, grave grants, the Index, and P1–P9 plus the damnation law **stated** as Lean propositions. No proofs. Plain Lean core, no Mathlib, toolchain `v4.19.0`.
-- **Not yet type-checked.** The session had no Lean and no shell on the owner's PC. First step: the owner opens `formal/` in VS Code with the "Lean 4" extension (steps in `formal/README.md`), and the next session fixes whatever is underlined.
+- **Type-checks.** The project is now on GitHub, private: `KeychainofSolomon/Annulus`. The `lean` workflow builds `formal/` on GitHub's servers on every push; read its result with `env -u GH_TOKEN gh run list -R KeychainofSolomon/Annulus`. Lean reserves the word `seal`: the invocation's field is `spiritSeal`.
+- **Authorship:** commits are authored as `Solomon <KeychainofSolomon@users.noreply.github.com>` (history rewritten 2026-11-11 so that no personal name or address is in it). Keep it so.
 - **Formalising found 15 problems in the spec** (`formal/README.md`, last table). Two need the owner's ruling:
   - **Finding 1, high:** P5 as stated in §9.4 is false. Committed effects are proposal content and are in the observation; verdicts depend on content but are assumed equal. Proposed: count examination as declassification (verdicts and committed effect lists go into D), or narrow the observation to the program's own acts.
   - **Finding 4, high:** `intrude`'s condition also catches an *invited* agent that attempts delivery into another Circle, or after its release, contradicting "invited agents are never damned". Ruling needed: is that intrusion?

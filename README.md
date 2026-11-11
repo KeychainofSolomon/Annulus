@@ -54,7 +54,7 @@ CI builds and smoke-tests both platform binaries, each with a SHA-256 checksum:
 |---|---|
 | [`docs/PROTOTYPE.md`](docs/PROTOTYPE.md) | The old v0.2.1 prototype, exactly as implemented. **Not** the specification |
 | [`docs/spec/core.md`](docs/spec/core.md) | Part 0: the proven core, the rite layer, and the interface between them (draft 1) |
-| [`formal/README.md`](formal/README.md) | The core's formal model in Lean 4: §9 and P1–P9 stated, not proved; not yet type-checked (draft 1) |
+| [`formal/README.md`](formal/README.md) | The core's formal model in Lean 4: §9 and P1–P9 stated, not proved; type-checked in CI (draft 1) |
 | [`docs/spec/authority.md`](docs/spec/authority.md) | Normative draft: the authority model (constitution, laws, rites, seals and ink, examination, judgement) |
 | [`docs/spec/provenance.md`](docs/spec/provenance.md) | The source-precedence rule and the dated register of witnesses |
 | [`docs/spec/grammar.md`](docs/spec/grammar.md) | Lexical grammar, the Latin keyword table and the EBNF syntax (draft 1) |

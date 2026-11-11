@@ -48,6 +48,8 @@ Everything else is rite:
 
 ## 3. The interface: the rite can only restrict
 
+**Closed reading** (`authority.md` §1.6, 2026-11-11): the core enables a step only where a rule expressly permits it. Every answer of the rite is checked against the core's own allow-lists, and whatever they do not name is refused.
+
 3.1 **The rite layer talks to the core in exactly these ways.** Each one can refuse, hold, spend or bound. None can grant. **Two exceptions, stated openly** (second audit; ruling 2026-11-11): consecration may *lift* the quarantine on data, and judgement lets approved work take effect, so what a spirit said reaches the world through the verdict and the commit. Neither adds authority, so P1 is untouched, but P5 holds only up to consecration and judgement (§9.4).
 
 | What the rite supplies | What the core does with it | Why it cannot add authority |

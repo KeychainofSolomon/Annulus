@@ -35,9 +35,11 @@ structure Universe where
   operator : Worker
   blank : Datum
   killOutcome : Outcome → Prop
+  angelOpen : Outcome → Prop
   highConsequence : Verb → Prop
   creates : Verb → Prop
   writes : Verb → Prop
+  removes : Verb → Prop
   denial : FailClass
   angelic : Seal → Prop
 

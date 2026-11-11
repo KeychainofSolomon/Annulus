@@ -401,3 +401,9 @@ Discussed with the owner, not built:
 
 - Fixed: the angel list is now under the owner's signature; the core refuses to invoke an angel; Lean's angel petition and barring now match Rust. 188 tests.
 - **Questions for the owner (not holes):** (1) may an angel's will ever lie or do harm, if a rite opens it? The core does not close it; examination still catches harm in work, but a lie in an angel's answer would pass. (2) Angels may be petitioned outside a Circle (prayer needs no Circle); confirm. (3) An angel's answer is quarantined like a spirit's until consecrated; confirm or exempt.
+
+## What is not granted is denied (2026-11-11, 23:15)
+
+- **The owner's ruling, now `authority.md` §1.6:** every rule is a closed list; a gap is a breach. Weigh every test by what it fails to exclude. Every new core rule needs an exclusion test in `tests/nucleus_exclusion.rs` (the technicality filter) before it is finished.
+- Applied: angels' will closed to obedience, delay, part (this settles the first angel question); deletion of nothing excluded (caught by the filter). The other two angel questions stand as before: angels may be petitioned outside a Circle (prayer), and their answers stay quarantined (nothing is trusted unless consecrated). 194 tests.
+- **Keep in mind always (the owner):** the Solomonic principles decide every design question.

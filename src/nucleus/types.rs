@@ -13,6 +13,8 @@ pub type ValidatorId = String;
 pub const OPERATOR: WorkerId = 0;
 pub const DENIAL: u8 = 2;
 
+pub const ANGEL_OUTCOMES: [Outcome; 3] = [Outcome::Obsequium, Outcome::Mora, Outcome::Pars];
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Perm {
     Legere,

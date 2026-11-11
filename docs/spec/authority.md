@@ -60,6 +60,13 @@ This is a property **of the type system**, checked before the program runs. It i
 2. **The Constitution's own acts.** Consecration, examination, the invocation of a king and the escalation steps are the Constitution's acts, not the program's. They MUST spend only what *G* provides (ink, time) and grant nothing beyond it.
 3. **A machine-checked proof.** The principle MUST be proven over a formal model of Part 3's typing rules, and tested by Andras's `probatio` against the real runtime (roadmap: EXAMINATIO).
 
+
+1.6 **What is not granted is denied** (*quod non conceditur, negatur*; the owner's ruling, 2026-11-11). Every rule of the Constitution is read as a closed list. An act, outcome of the will, effect, examiner, grant, being or value is lawful only where a rule expressly permits it. Whatever no rule expressly permits is excluded, however the rest of the Constitution is worded.
+- **A gap is a breach.** Anything the Constitution fails to exclude is a technicality that would disrupt the hierarchy of §1.1–1.5. At run time it is refused as a denial (class 2) and recorded. In the Constitution it is a defect, closed by amendment (§2.5), never a freedom to be used.
+- **The technicality filter.** A rule is weighed by what it fails to exclude, not by what it includes. Every rule of the core carries an exclusion test that enumerates the possibilities around it and checks that everything outside the rule's allow-list is refused (`tests/nucleus_exclusion.rs`). A rule without such a test is not finished.
+- **First applications** (2026-11-11): the examiner must be an angel of the Constitution; an angel's will is closed to all but obedience, delay and part (an angel neither deceives, refuses nor harms); a deletion needs something to delete, a creation nothing already there, a write something to write into; the list of angels stands under the owner's signature.
+
+[S, model: the magician acts only by permission (§2.4; the *Liber iuratus*), and a spirit only within his declared office (the Goetia). O: the closed reading and the filter.]
 ## 2. The Constitution (the Absolute)
 
 2.1 **The root of trust.** The Absolute is represented by the **Constitution**: a fixed body of law and registers, built into each release of the language. [Architecture §4] It MUST NOT be an executable object, a user, an administrator or a superuser. It never runs, never signs anything at runtime, and cannot be logged into.

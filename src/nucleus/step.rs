@@ -8,8 +8,8 @@ use super::state::{
 use super::types::{
     Addressee, Cap, CircleId, CommitResult, Content, Contrib, Ending, ExamAns, Inst, InvId,
     InvStatus, IxEntry, KeyEntry, Label, Made, Mark, Outcome, PStatus, Phase, Pid, Proposal, ReqId,
-    Request, Seal, Sealed, Value, ValueId, Verdict, WorkOutcome, Worker, WorkerId, DENIAL,
-    OPERATOR,
+    Request, Seal, Sealed, Value, ValueId, Verdict, WorkOutcome, Worker, WorkerId, ANGEL_OUTCOMES,
+    DENIAL, OPERATOR,
 };
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -372,6 +372,11 @@ impl State {
         if outcome == Outcome::Occisio || !rite.will_open(self, worker, outcome) {
             return Err(Refusal::NotEnabled("that outcome of the will is not open"));
         }
+        if matches!(w.owner, Some(Addressee::Angel(_))) && !ANGEL_OUTCOMES.contains(&outcome) {
+            return Err(Refusal::NotEnabled(
+                "an angel neither deceives, refuses nor harms",
+            ));
+        }
         if finish && w.helper {
             return Err(Refusal::NotEnabled("a helper cannot finish the request"));
         }
@@ -526,6 +531,7 @@ impl State {
                 && self.contained(&req.to, &e.needs())
                 && !(e.verb.creates() && self.world.contains_key(&e.place))
                 && !(e.verb.writes() && !self.world.contains_key(&e.place))
+                && !(e.verb.removes() && !self.world.contains_key(&e.place))
         })
     }
 

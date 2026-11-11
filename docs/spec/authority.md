@@ -133,6 +133,17 @@ It defines permissions, prohibitions and resource limits [Architecture §9].
 
 6.2a **The uninvited go to Hell** (ruling 2026-11-10). Any agent that reaches a Circle other than through an invocation the Operator made there is an **intruder**: a spirit not invoked, or an outside program or AI agent acting on the program without a grant. It is not examined, because it has nothing to examine. No capability it holds traces to the faculty (law ORIGIN), and whether it was invoked is a recorded fact, not a judgement, so no examiner's error can condemn it. Its messages are refused at the entrance, everything it sent is sealed in the Vessel (`INFERNUS`), it is barred from the program for the rest of the run, and all of it is recorded. [S: the Circle "to preserve himself from the malice of those evill Spirits" (Sloane 3825 f112); Orobas and Haures suffer no other spirit to tempt the Operator (G, W). O: the mechanism.]
 
+**Proscription** (ruling 2026-11-11). An intruder is banned **on every level at which it sought to enact change**: the program, every Circle it reached, and every resource it tried to alter (each file, place, grant or invocation it aimed at). The ban is entered in the **Index of the proscribed** (*index proscriptorum*), which the Constitution keeps outside every program. It holds:
+- every identity the intruder presented;
+- every target it aimed at;
+- the audit records proving the intrusion.
+
+The ban **persists across runs**. Each later launch refuses those identities at those targets before any program code runs. No program and no agent can read, alter or lift the Index. Only the person who launches programs on that installation may lift an entry, by an explicit, recorded act outside any program. [O]
+
+**Why lifting stays possible:** an attacker could present someone else's identity in order to have them proscribed. Lifting is therefore kept, as the one remedy against being framed. Detection itself is never weakened.
+
+**The Vessel is never opened for use.** What is sealed in it is never released, committed, run or reused, by anyone, the Operator included. The Operator may *read* it, to learn what was attempted; reading changes nothing. [S: Sloane 3825 f113, the warning: the Babylonians broke the vessel "hoping to find great treasure", and the spirits fled to their former places, save Belial, who "entered into a certain Image". O: read-only access.]
+
 Invited agents keep the rule of §11: Hell applies to their *proposals*, and their release stays the Operator's act.
 
 6.3 **The form follows the rite.** A Circle's structure (its rings, names and figures) is drawn from its rite:

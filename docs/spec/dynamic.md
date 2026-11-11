@@ -128,7 +128,7 @@ A spirit's helper tasks (`FAMILIARES`, and the sub-tasks of any office) are capp
 
 ## 8a. Intruders
 
-The runtime admits into a Circle only what comes through its entrance from an invocation recorded there (`authority.md` §6.2). Anything else is an intruder (§6.2a): refused, its input sealed in the Vessel, its source barred for the rest of the run, and recorded. This is a class 2 denial against the intruder, never against the program: the program goes on.
+The runtime admits into a Circle only what comes through its entrance from an invocation recorded there (`authority.md` §6.2). Anything else is an intruder (§6.2a): refused, its input sealed in the Vessel, its source barred for the rest of the run, and recorded. This is a class 2 denial against the intruder, never against the program: the program goes on. The runtime then enters the intruder in the Index of the proscribed (`authority.md` §6.2a). At every later launch, before the program's first statement, the runtime loads the Index and refuses each proscribed identity at each proscribed target.
 
 ## 9. The audit
 

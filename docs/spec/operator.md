@@ -105,3 +105,15 @@ A program launched without the wand has no faculty, and nothing it does reaches 
 
 9.7 **The honest limit.** The mirror cannot stop the Operator from retyping what he sees, or pasting it into an AI. That is the Operator's discipline (§2): a spirit's words never command the magician, and the words of the damned least of all.
 
+## 10. The crystal (`crystallus`, ruling 2026-11-11)
+
+10.1 **Looking into Heaven.** The crystal is the mirror's counterpart: the mirror faces Hell, the crystal faces Heaven. It shows:
+- **the angels, in Paradise by nature** (`authority.md` §11.2a): the orders and names each rite gives, their seals and their channels, from the Constitution and the registers;
+- **the beings in good standing:** every spirit or agent the installation has dealt with that stands neither in Purgatory nor in Hell, by its established seal, with its invocations, its proposals and which of them were ratified (`RATUM`), read from the audits.
+
+[S: in the *Janua* the orders appear to visible appearance through the crystal (Sloane 3825, frames 57–99; `authority.md` §6.5, §12.2). O: the instrument. It calls no angel and invokes no order, so it keeps the *Liber iuratus*'s rule that the nine orders are not invoked (§12.2); it reads records only.]
+
+10.2 **Paradise is not trust.** Good standing means only that a being is not condemned. A spirit in good standing still lies where his will allows it (`spirits.md` §3), and his ratified answers are still quarantined words (`flow.md` §1.2). The crystal shows them as the mirror shows the words of the damned: plain, inert text, marked as theirs, with no copy or export.
+
+10.3 **The same rules as the mirror** (§9.2–9.7): a standalone program made by the `crystallus` library, which no Annulus program, spirit, angel or AI can open or read; only outside a session, and no run launches while it is open; the wand present, with the rite secret; read-only over the Constitution, the registers, the Index and the audits; each gaze recorded in its own hash-chained log (`.crystallus`); chains checked before anything is shown.
+

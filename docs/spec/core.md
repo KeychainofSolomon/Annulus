@@ -80,7 +80,7 @@ The Constitution's own acts (consecration, examination, judgement, the invocatio
 
 Writing the interface brought up two rite rules that, read literally, would act outside it. The guiding principle wins until the owner rules (`authority.md` §1.5).
 
-1. **Andras without the pentagram.** `spirits.md` §4.5 says that without the pentagram "his killing reaches the real program". Under the core, nothing reaches the real program without examination and a commit inside the handed set (C6, §3.3). The case also cannot be written, since A11 requires the pentagram. **Proposed reading:** the sources' warning is kept as the reason for A11. In Annulus, an attempt on the real program is outside his office, so examination rejects it and it goes to `INFERNUS`, as §4.5 item 6 already says. `spirits.md` is updated to say so.
+1. **Andras without the pentagram. Ruled 2026-11-11:** the most faithful reading. The pentagram is not required, and without it Andras may **end the whole run** (`dynamic.md` §5.5). This stays within the core: ending a run commits nothing new, keeps what was committed, records everything and grants no authority. Stopping is always the safe direction. What the old text implied, his killing *acting* on the real program without examination, is not possible.
 2. **Angels' authority. Ruled 2026-11-11:** standing from God, reach from the grant, with extended privileges that the grant gives to angels alone (`authority.md` §12.1a). A grant ending in `angelis` is in *G* but reserved: no spirit and no program operation may use it. So the angels' privileges are wider than any spirit's or the program's own, and still inside *G*. C1 and C3 hold.
 
 ## 7. Map: which layer each section belongs to

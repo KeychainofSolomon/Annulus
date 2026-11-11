@@ -94,6 +94,15 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 
 5.4 **The draw.** The runtime draws uniformly among the outcomes still open, from its entropy source or the launch seed. Uniform is [O]: the sources state no likelihoods, so none is favoured. Every draw is recorded with its result. A run given the same seed, clock and place repeats exactly.
 
+5.5 **Andras's killing** (ruling 2026-11-11). When Andras is invoked without `PENTAGRAMMUM` and his will draws `MALITIA`, he slays "the master, his servants and assistants" (W):
+- **the run ends at once.** No further statement runs;
+- every invocation is **relegated**: helper tasks ended, held proposals sealed in the Vessel (§7);
+- every **uncommitted** effect is discarded. What was committed before stays committed: he cannot undo the past;
+- the audit records the killing and the absence of the pentagram;
+- the run exits with failure class 2, denied authority, marked *occisus* ("slain").
+
+Ending a run grants nothing to anyone, so the guiding principle holds (`core.md` §6.1). Andras is not proscribed: he was invited. [S: W, G. O: the mechanism]
+
 ## 6. Examination and judgement
 
 6.1 **`EXAMINA` runs two acts of the Constitution** (`static.md` §4.10). First the fixed examiner (`authority.md` §10) gives a verdict, which is recorded. Then the judgement step (`authority.md` §11) assigns the destination from the verdict, as the table shows. Only the destination is returned to the program:

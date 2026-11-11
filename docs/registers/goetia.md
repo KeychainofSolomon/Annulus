@@ -1331,7 +1331,7 @@ Also: Volac, Valak, Valu, Ualac.
 **Counterbalances and wards:**
 
 - (G) none stated beyond the apparatus and the exorcist's care
-- (M) the pentagram protects the Operator from his killing for as long as it is worn, and is required to invoke him for PROBATIO
+- (M) the pentagram protects the Operator from his killing for as long as it is worn. It is not required: without it, his malice may end the whole run (ruling 2026-11-11)
 
 **Notes:**
 

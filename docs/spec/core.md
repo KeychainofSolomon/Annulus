@@ -16,7 +16,7 @@ The core is these nine things and nothing else:
 
 | # | Core element | Defined in |
 |---|---|---|
-| C1 | **Capabilities and the faculty** *G*: the single root of authority, granted at launch; no authority without a recorded chain to *G* (law ORIGIN) | `authority.md` §1.1, §2.4 |
+| C1 | **Capabilities and the faculty** *G*: the single root of authority, granted at launch; no authority without a recorded chain to *G* (law ORIGIN). Grants reserved for angels are part of *G* (`authority.md` §12.1a) | `authority.md` §1.1, §2.4 |
 | C2 | **No self-granting, self-approval or self-minting** | `authority.md` §1.2–1.4 |
 | C3 | **No amplification** (the guiding principle): every capability exercised is in *G*; every delegation is contained in what it came from, at any depth | `authority.md` §1.5 |
 | C4 | **The Circle boundary**: rite values stay in their Circle; one entrance; inner Circles only narrow; intruders hold nothing and go to Hell | `static.md` §4.1, §4.7, §4.12; `authority.md` §6.1–6.2a |
@@ -81,7 +81,7 @@ The Constitution's own acts (consecration, examination, judgement, the invocatio
 Writing the interface brought up two rite rules that, read literally, would act outside it. The guiding principle wins until the owner rules (`authority.md` §1.5).
 
 1. **Andras without the pentagram.** `spirits.md` §4.5 says that without the pentagram "his killing reaches the real program". Under the core, nothing reaches the real program without examination and a commit inside the handed set (C6, §3.3). The case also cannot be written, since A11 requires the pentagram. **Proposed reading:** the sources' warning is kept as the reason for A11. In Annulus, an attempt on the real program is outside his office, so examination rejects it and it goes to `INFERNUS`, as §4.5 item 6 already says. `spirits.md` is updated to say so.
-2. **Angels' authority.** `authority.md` §12.1 says angels hold authority "from the Constitution only, never from the Operator". If angels could *act*, that would be authority outside *G*, breaking C1. **Proposed reading:** in the core, angels only **examine**, and later only **advise** through their channel (`ADVOCA`). Any effect an angel ever proposes is bounded by *G*, like everything else. Their standing comes from the Constitution, but their reach in any program is the faculty. **To rule.**
+2. **Angels' authority. Ruled 2026-11-11:** standing from God, reach from the grant, with extended privileges that the grant gives to angels alone (`authority.md` §12.1a). A grant ending in `angelis` is in *G* but reserved: no spirit and no program operation may use it. So the angels' privileges are wider than any spirit's or the program's own, and still inside *G*. C1 and C3 hold.
 
 ## 7. Map: which layer each section belongs to
 
@@ -101,7 +101,7 @@ C = core, R = rite, C+R = core mechanics with rite content.
 | | §9 release | C |
 | | §10 examination | C+R (independence C; pairings R) |
 | | §11 judgement | C |
-| | §12 angels | R (see §6.2 above) |
+| | §12 angels | R; §12.1a reserved grants C |
 | | §13 failure classes, §14 audit | C |
 | `static.md` | §1 phases, §2 names, §3 types | C |
 | | §4.1, §4.7, §4.9–4.12 containment, faculty, examination, release, nesting | C |

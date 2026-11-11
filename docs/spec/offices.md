@@ -147,7 +147,7 @@ No signature. Invoking a spirit for an office marked `NULLUM` is an error (A5).
 
 3.1 **What a request hands.** For a request *q*, its **handed set** H(*q*) is the set of pairs (place, permission) that the signature requires for its arguments, together with the invocation rights it names (inspect, end helpers, narrow a request, adopt a helper, warn).
 
-3.2 **Static check.** Every place is a constant (§1.2), so the type checker knows H(*q*) and checks that each pair is in the faculty *G*. A pair outside *G* is an error (A5 or A8). So H(*q*) ⊆ *G* before the program runs.
+3.2 **Static check.** Every place is a constant (§1.2), so the type checker knows H(*q*) and checks that each pair is in the faculty *G* and is **not reserved for angels** (`authority.md` §12.1a). A pair outside *G* is an error (A5 or A8). So H(*q*) ⊆ *G* before the program runs.
 
 3.3 **Runtime check.** The Triangle holds exactly H(*q*), from `PETE` until the proposal is judged, and nothing after. The runtime, not the spirit, performs every commit. An effect on anything outside H(*q*) cannot be performed, and the examiner rejects it (`INFERNUS`). The bound itself is static. The commit-time re-check is a core rule (`core.md` §3.3).
 

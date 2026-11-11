@@ -1,0 +1,4 @@
+FACULTAS {
+    liber "acta.txt" legere;
+    liber "vetus.txt" delere angelis;
+}

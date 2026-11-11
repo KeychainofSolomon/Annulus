@@ -338,7 +338,14 @@ Examination is not judgement (section 11). [Architecture §10]
 
 ## 12. Angels
 
-12.1 **Angels hold authority from the Constitution only,** never from the Operator [Architecture §11]. The ministries are NUNTIATIO, MINISTERIUM and MILITIA [O: from the Architecture].
+12.1 **Angels hold authority from the Constitution only,** never from the Operator [Architecture §11].
+
+12.1a **Standing from God, reach from the grant** (ruling 2026-11-11). An angel's **standing** comes from the Constitution: the Operator cannot command, compel or bind an angel, only petition. An angel's **reach** in any program is the faculty *G*, like everything else (`core.md` C1). Angels have **extended privileges**, which the faculty grants to them alone:
+- **Reserved grants.** A grant ending in `angelis` ("to the angels") is reserved: `liber "x" delere angelis;`. It is part of *G*, so the guiding principle holds. But only an angel may exercise it. No spirit's handed set may contain it, the program cannot use it directly, and no angel can pass it on (§8.5). [O: the word and the mechanism]
+- **What angels also hold, without a reserved grant:** examination (§10), and advice through their channel (§6.5, `ADVOCA`), which is a response like any other: untrusted data until judged.
+- **An angel's effects are examined too,** by an examiner other than that angel (law EXAMINATION, `core.md` C2), and the core re-checks them at commit (`core.md` §3.3). Which angel examines an angel is set by each rite. **Open:** the `iuratus`, `janua` and `arbatel` rules for it.
+
+[S: in the sources the Operator only petitions angels, and they act by God's will (*Liber iuratus*; Arbatel Aph. XV). O: the reserved grant.] The ministries are NUNTIATIO, MINISTERIUM and MILITIA [O: from the Architecture].
 
 12.2 **The orders, per rite:**
 - `iuratus`: the nine orders serve God alone and MUST NOT be invoked (ch. III), in the order Cherubim, Seraphim, Thrones, Dominations, Virtues, Principalities, Powers, Archangels, Angels.

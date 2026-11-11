@@ -145,6 +145,7 @@ Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
   - `atramentum`: ink;
   - `historia "prior" legere`: the history of the previous run (`offices.md` §2.2a);
   - `familiaris "programma" liberare`: freeing a familiar from that program (`offices.md` §4.6).
+  - **reserved for angels:** any grant may end in `angelis` (ruling 2026-11-11, `authority.md` §12.1a). Such a grant MUST NOT appear in a `PETE` request's handed set (A5), and no program operation may use it (A8).
 
   Every request needs its grants checked against the office signatures (`offices.md` §3.2). The standard library that performs file work will be specified with its grants.
 - `MANIFESTA` needs no grant: the console is part of the default faculty.

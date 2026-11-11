@@ -24,6 +24,7 @@ The model uses Lean's core library only, no Mathlib, so the check takes seconds.
 ## What is concrete and what is a parameter
 
 - **Concrete (the core):** the state, every transition and its enabling condition, marks, the commit re-check, release and abandonment, the Index and its standings, grave grants, launch checks, the audit.
+- **Assumed, not modelled:** cryptography. `Mech.verify`, the fingerprints and the hash chains are parameters; signature checks are real conditions of `launch`, but the model assumes, as every proof of this kind does, that signatures cannot be forged.
 - **Parameters:** the carriers (places, seals, values…), the program's semantics and its type system (`Lang`, with `WellTyped` standing for `static.md`), the cryptography and the validator interpreter (`Mech`), the simulated will (`Sim`), and the rite (`RelRite`/`Rite`, any function at all).
 - **Consequence for step 3.** P1, P2, P4, P7, P8, P9 and the damnation law should be provable for **any** language, since the core alone enforces them. P3 and P5 depend on the language: P3 because the program names the invocations it uses (`static.md` §4.1, §4.7), P5 because the typing rules (`flow.md` §2) and an honest report of each value's inputs are what keep quarantined data from steering. Neither can be proved until `Lang` is instantiated with a model of `static.md` §3–4. P3 as stated covers invocations and the proposals made to them, not every Circle-bound value.
 
@@ -108,6 +109,19 @@ An independent Claude agent, which had not seen the work, audited the model agai
 | A13 | Signature verbs and counterbalance vetoes left out | Low | Noted (choice 10) |
 | A14 | Dead definitions and fields | Low | Dead definitions removed; unchanging fields noted (choice 10) |
 
+## The second Lean audit (2026-11-11)
+
+By a different AI (ChatGPT), from `annulus-lean-audit.zip`, which had no Lean installed and took the CI log as evidence. Six findings; Claude checked each against the text.
+
+| # | Finding | Severity | Settled |
+|---|---|---|---|
+| B1 | P3 covered invocations and proposals, not every Circle-bound value; `circleRite` unused | High | **Accepted in part.** The core now tracks each value's Circle (`valueCircle`, `madeCircle`, `Made.rite`), and P3 covers values used by computation and consecration (`usesVal`). `circleRite` stays: it is rite data the rite oracle reads (instruments, `TEMPESTAS`); no step changes it, since apparatus acts are not modelled |
+| B2 | `UsesHold` ignored a commit's effects on invocations | High | **Accepted.** A done commit uses every invocation it targets |
+| B3 | The faculty's signature was a bare proposition, not a check | High | **Accepted.** `launch` verifies the faculty's signature against the wand's key and the manifest's against the owner's (`Mech.verify`, `digestFaculty`, `digestManifest`); cryptography stated as an assumption (above) |
+| B4 | P5 held part of a proposal's content fixed (a helper's handed set, the shape of a turn) | Medium | **Accepted.** P5 now fixes only the will's outcome per turn (`Choice.will`); everything else the agent does is content |
+| B5 | Examination does not check the rite's pairing rules | Medium | **Declined.** Pairings are rite (`core.md` §2: "who examines"); the core checks only independence, and re-checks every commit. `core.md` §9.3b now says so explicitly |
+| B6 | P9 gives prefix compatibility, not equality, for unfinished runs | Medium | **Accepted as a clarification.** Equality is impossible for runs stopped at different lengths; `core.md` §9.6 now states both parts |
+
 ## For step 3
 
-Prove `AllObligations M` for every `M` whose `Lang` is a model of `static.md`. Before then: a second, independent audit of the model by a different AI (`AUDIT_BRIEF.md`), and the owner's approval of step 1.
+Prove `AllObligations M` for every `M` whose `Lang` is a model of `static.md`. Before then: the owner's approval of step 1.

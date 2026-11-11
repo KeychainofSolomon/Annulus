@@ -169,7 +169,7 @@ The definitions the proof of §8 rests on. Step 3 writes the transition rules ou
 - **the scheduler:** in simulated mode, its position in the entropy stream, the simulated clock and the order of turns chosen so far; in real-agent mode, the record of the actual order of turns, which is an input the run does not control (`concurrency.md` §4);
 - **the store of grave grants:** one-use grave consecrations confirmed outside any run (§9.3c), each spent or unspent, in a hash-chained log;
 - **the store of sealed petitions** (ruling 2026-11-11): approved work awaiting the second key, by the fingerprint of its exact effects; the Operator's confirmations of them; and their spending. A hash-chained log, checked at `launch` like the Index;
-- **the wand and authentication** (fourth audit, 2026-11-11): the fingerprint of the wand that signed the faculty; whether it is present, and locked or unlocked as master or as rite; the revocation log of wands (`operator.md` §8.5); the Constitution's manifest and the result of checking its signature; the Index's root hash. All are checked at `launch` and are constant for the rest of the run, with one exception: `GERE VIRGAM` may move the wand between locked and unlocked **as rite**; it is never unlocked as master within a run (`operator.md` §8.3). A revoked wand's signature fails `launch`.
+- **the wand and authentication** (fourth audit, 2026-11-11): the fingerprint of the wand that signed the faculty; whether it is present, and locked or unlocked as master or as rite; the revocation log of wands (`operator.md` §8.5); the Constitution's manifest and the result of checking its signature; the Index's root hash. All are checked at `launch` and are constant for the rest of the run, with one exception: `GERE VIRGAM` may move the wand between locked and unlocked **as rite**; it is never unlocked as master within a run (`operator.md` §8.3). A revoked wand's signature fails `launch`. "Signed" means verified cryptographically: the faculty's signature against the launching wand's key, the manifest's against the owner's. The proofs assume that signatures cannot be forged; they prove nothing about the cryptography itself.
 
 9.2 **Transitions.** A run is a sequence σ₀ → σ₁ → … through these steps only:
 - `launch`, `open`, `close`;
@@ -186,6 +186,8 @@ Further steps happen **outside any run**, and only with the wand's master secret
 **Denials** (formal model, 2026-11-11). A program step the core cannot grant is a denial, class 2, which cannot be caught and ends the run (`dynamic.md` §3): a refused `INVOCA`, an exhausted draw, a request outside its faculty, examining a proposal that cannot be examined (`dynamic.md` §6.2), releasing an invocation that does not exist, reading a place not granted. Consecration is the exception: its refusal is an answer the program receives (§9.3a).
 
 **Circles are fresh.** Each `open` makes a new Circle; no Circle identifier is reused within a run.
+
+**Circle-bound values** (second Lean audit, 2026-11-11). The core records, for each value, the Circle it is bound to, if any: a value produced by a rite expression (`static.md` §4.1, §4.7) is bound to the Circle it was made in, and a value computed from a bound value is bound to the same Circle. No step uses a bound value once its Circle is closed (P3).
 
 Every transition appends to *A*, and none removes from it.
 
@@ -246,7 +248,7 @@ Every transition appends to *A*, and none removes from it.
 
 9.3b **Examiners and the examination step** (third audit, 2026-11-11).
 - **Who examines:** for each proposal, the rite supplies only the **identifier** of its examiner: for a spirit, his angel (`authority.md` §10); for an angel, another angel, by each rite's rule (`authority.md` §12.1a, open per rite).
-- **Independence:** the examiner MUST NOT be the proposal's author, nor any agent whose words the proposal carries. A proposal whose rite names no admissible examiner is `HOLD`.
+- **Independence:** the examiner MUST NOT be the proposal's author, nor any agent whose words the proposal carries. A proposal whose rite names no admissible examiner is `HOLD`. **Admissible** means exactly this independence. Which angel the rite names (Rudd's pairings, `authority.md` §10.1) is the rite's answer, not checked by the core: a wrong pairing can only approve what the core then re-checks (§3.3).
 - **The step `examine(p, e)`:** gives a verdict on *p*, recorded with *e*'s identifier. Then `judge` assigns the destination (`authority.md` §11). For any author, spirit or angel, `commit` requires a prior `judge` to `PARADISUS`, and the re-check of §3.3.
 
 9.3c **Grave consecration** (ruling 2026-11-11: one use).
@@ -281,7 +283,7 @@ In words: whatever spirits say, the run behaves the same, except through what co
 | P6 | every rite oracle; relational rites for (b) | as stated in §9.5 |
 | P7 | every prefix of every run | none |
 | P8 | the `launch` step, and every `examine` | none. **Doubt** means: the rite names no admissible examiner, or the author is *suspected*, newly suspected, proscribed or damned |
-| P9 | pairs of runs | under a **functional** rite (one answer per question), with no `intrude` step in either run (intrusions are outside input, not scripted), in simulated mode, from **equal initial states** σ₀ (§9.1): the same program, Constitution version and fingerprint, launch parameters (seed, clock, place, sky, script), faculty, store of grave grants, Index and wand state, and the same **world**. The world is captured at `launch`: the runtime records the fingerprint of every granted place's content and mark in the audit's first record, so equality of σ₀ can be checked from the two audits (fourth audit, 2026-11-11) |
+| P9 | pairs of runs: complete runs give **equal** audits; unfinished runs give audits of which one extends the other | under a **functional** rite (one answer per question), with no `intrude` step in either run (intrusions are outside input, not scripted), in simulated mode, from **equal initial states** σ₀ (§9.1): the same program, Constitution version and fingerprint, launch parameters (seed, clock, place, sky, script), faculty, store of grave grants, Index and wand state, and the same **world**. The world is captured at `launch`: the runtime records the fingerprint of every granted place's content and mark in the audit's first record, so equality of σ₀ can be checked from the two audits (fourth audit, 2026-11-11) |
 
 No precondition may assume anything about the rite, the will, proposal content or the order of turns, beyond what this table states.
 

@@ -254,6 +254,7 @@ pub enum Label {
     OpenC(CircleId),
     CloseC(CircleId),
     Inscribe(Seal, String, CircleId),
+    Act(RiteAct, CircleId),
     Invoke(InvId, Seal, CircleId, WorkerId, bool, Vec<InvId>),
     Request(
         ReqId,
@@ -276,6 +277,42 @@ pub enum Label {
     Halt(Vec<InvId>),
     Fail(u8, Vec<InvId>),
     Schedule(WorkerId),
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum Instrument {
+    Anulum,
+    Virgam,
+    Hexagrammum,
+    Pentagrammum,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum RiteAct {
+    Gere(Instrument),
+    Offer(InvId, String),
+    Appella(InvId),
+    Veta(InvId),
+    Constringe(InvId, String),
+}
+
+impl RiteAct {
+    pub fn inv(&self) -> Option<InvId> {
+        match self {
+            RiteAct::Gere(_) => None,
+            RiteAct::Offer(i, _)
+            | RiteAct::Appella(i)
+            | RiteAct::Veta(i)
+            | RiteAct::Constringe(i, _) => Some(*i),
+        }
+    }
+
+    pub fn ink(&self) -> Option<&str> {
+        match self {
+            RiteAct::Offer(_, class) => Some(class),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]

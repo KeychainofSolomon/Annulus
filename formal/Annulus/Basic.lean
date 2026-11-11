@@ -29,6 +29,9 @@ structure Universe where
   CircleRite : Type
   Decision : Type
   InkClass : Type
+  RiteAct : Type
+  actInv : RiteAct → Option Inv
+  actInk : RiteAct → Option InkClass
   needs : Verb → Perm
   invNeeds : Verb → InvRight
   read : Perm
@@ -231,6 +234,7 @@ inductive Instr (U : Universe) where
   | openC (c : U.Circle) (e : U.Exec)
   | closeC (e : U.Exec)
   | inscribe (s : U.Seal) (k : U.InkClass) (e : U.Exec)
+  | act (a : U.RiteAct) (e : U.Exec)
   | invoke (i : U.Inv) (s : U.Seal) (w : U.Worker) (ok no : U.Exec)
   | request (to : Addressee U) (f : U.ReqForm) (q : U.Req) (p : U.Pid) (w : U.Worker) (e : U.Exec)
   | examine (p : U.Pid) (k : WorkOutcome → U.Exec)
@@ -247,6 +251,7 @@ inductive Label (U : Universe) where
   | openC (c : U.Circle)
   | closeC (c : U.Circle)
   | inscribe (s : U.Seal) (k : U.InkClass) (c : U.Circle)
+  | act (a : U.RiteAct) (c : U.Circle)
   | invoke (i : U.Inv) (s : U.Seal) (c : U.Circle) (w : U.Worker) (admitted : Bool)
       (dismissed : List U.Inv)
   | request (q : U.Req) (p : U.Pid) (to : Addressee U) (f : U.ReqForm) (w : U.Worker)
@@ -302,6 +307,7 @@ inductive Sealed (U : Universe) where
 inductive Act (U : Universe) where
   | invoke (s : U.Seal) (c : U.Circle)
   | inscribe (s : U.Seal) (k : U.InkClass)
+  | rite (a : U.RiteAct)
 
 inductive BoundQ (U : Universe) where
   | legions (i : U.Inv)

@@ -59,6 +59,9 @@ impl Rite for Yes {
     fn legions(&self, _: &State, _: InvId) -> usize {
         usize::MAX
     }
+    fn admit_act(&self, _: &State, _: &RiteAct) -> bool {
+        true
+    }
     fn will_open(&self, _: &State, _: WorkerId, _: Outcome) -> bool {
         true
     }
@@ -379,4 +382,147 @@ fn every_inscription_not_expressly_lawful_is_excluded() {
     let mut s = state(true, &[], &[], 1);
     let r = op(&mut s, |s| s.inscribe(&rite, &SPIRIT.to_string(), "comes"));
     assert!(r.is_err(), "no inscription outside a Circle");
+}
+
+#[derive(Clone, Copy, Debug)]
+enum Standing {
+    NoCircle,
+    Live,
+    Released,
+    Unknown,
+}
+
+fn acts(inv: InvId) -> Vec<RiteAct> {
+    vec![
+        RiteAct::Gere(Instrument::Anulum),
+        RiteAct::Gere(Instrument::Virgam),
+        RiteAct::Gere(Instrument::Hexagrammum),
+        RiteAct::Gere(Instrument::Pentagrammum),
+        RiteAct::Offer(inv, "comes".to_string()),
+        RiteAct::Offer(inv, "rex".to_string()),
+        RiteAct::Appella(inv),
+        RiteAct::Veta(inv),
+        RiteAct::Constringe(inv, "AGLA".to_string()),
+    ]
+}
+
+#[test]
+fn every_act_of_the_rite_not_expressly_lawful_is_excluded() {
+    let mut checked = 0;
+    for standing in [
+        Standing::NoCircle,
+        Standing::Live,
+        Standing::Released,
+        Standing::Unknown,
+    ] {
+        for ink in [1, 2] {
+            for k in 0..acts(0).len() {
+                let rite = yes(Vec::new());
+                let mut s = state(true, &[], &[], ink);
+                let inv = match standing {
+                    Standing::NoCircle => 9999,
+                    Standing::Unknown => {
+                        op(&mut s, |s| s.open_circle()).unwrap();
+                        9999
+                    }
+                    Standing::Live => spirit(&mut s, &rite),
+                    Standing::Released => {
+                        let inv = spirit(&mut s, &rite);
+                        op(&mut s, |s| s.release(inv)).unwrap();
+                        inv
+                    }
+                };
+                let act = acts(inv)[k].clone();
+                let left = s.ink_left.get("comes").copied().unwrap_or(0);
+                let in_circle = !matches!(standing, Standing::NoCircle);
+                let here = act.inv().is_none() || matches!(standing, Standing::Live);
+                let paid = match act.ink() {
+                    None => true,
+                    Some("comes") => left > 0,
+                    Some(_) => false,
+                };
+                let lawful = in_circle && here && paid;
+                let before = s.audit.len();
+                let r = op(&mut s, |s| s.act(&rite, &act));
+                assert_eq!(
+                    r.is_ok(),
+                    lawful,
+                    "{standing:?}, ink {ink}, {act:?}: lawful is {lawful}"
+                );
+                let recorded = s.audit.entries()[before..]
+                    .iter()
+                    .filter(|l| matches!(l, Label::Act(..)))
+                    .count();
+                if lawful {
+                    assert_eq!(recorded, 1, "a lawful act is recorded once");
+                    let spent = u64::from(act.ink().is_some());
+                    assert_eq!(s.ink_left.get("comes").copied().unwrap_or(0), left - spent);
+                } else {
+                    assert_eq!(recorded, 0, "an unlawful act is never recorded");
+                }
+                checked += 1;
+            }
+        }
+    }
+    assert_eq!(checked, 4 * 2 * 9);
+}
+
+#[test]
+fn only_the_operator_acts_and_the_rite_may_refuse() {
+    let rite = yes(Vec::new());
+    let mut s = state(true, &[], &[], 2);
+    let inv = spirit(&mut s, &rite);
+    op(&mut s, |s| {
+        s.request(&rite, Addressee::Spirit(inv), &form())
+    })
+    .unwrap();
+    let worker = s.invs[&inv].main;
+    s.schedule(worker).unwrap();
+    assert!(s.act(&rite, &RiteAct::Appella(inv)).is_err());
+    assert!(!s
+        .audit
+        .entries()
+        .iter()
+        .any(|l| matches!(l, Label::Act(..))));
+    struct No;
+    impl Rite for No {
+        fn admit(&self, _: &State, _: &Seal, _: CircleId) -> bool {
+            true
+        }
+        fn signature(&self, _: &State, _: &ReqForm) -> BTreeSet<Cap> {
+            BTreeSet::new()
+        }
+        fn examiner(&self, _: &State, _: Pid) -> Option<Seal> {
+            None
+        }
+        fn verdict(&self, _: &State, _: Pid, _: &Seal) -> Verdict {
+            Verdict::Reject
+        }
+        fn counterbalance(&self, _: &State, _: Pid) -> Verdict {
+            Verdict::Reject
+        }
+        fn ink_fits(&self, _: &State, _: &Seal, _: &str) -> bool {
+            true
+        }
+        fn admit_act(&self, _: &State, _: &RiteAct) -> bool {
+            false
+        }
+        fn legions(&self, _: &State, _: InvId) -> usize {
+            0
+        }
+        fn will_open(&self, _: &State, _: WorkerId, _: Outcome) -> bool {
+            false
+        }
+        fn validator(&self, _: &State, _: ValueId) -> Option<ValidatorId> {
+            None
+        }
+    }
+    let mut s = state(true, &[], &[], 2);
+    let inv = spirit(&mut s, &rite);
+    let before = s.ink_left["comes"];
+    assert!(op(&mut s, |s| s.act(&No, &RiteAct::Offer(inv, "comes".into()))).is_err());
+    assert_eq!(
+        s.ink_left["comes"], before,
+        "a refused offering costs nothing"
+    );
 }

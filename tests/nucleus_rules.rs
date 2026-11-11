@@ -71,6 +71,10 @@ impl Rite for TestRite {
         self.legions
     }
 
+    fn admit_act(&self, _: &State, _: &RiteAct) -> bool {
+        self.admit
+    }
+
     fn will_open(&self, _: &State, _: WorkerId, outcome: Outcome) -> bool {
         outcome != Outcome::Occisio || self.kill_open
     }

@@ -125,6 +125,7 @@ struct Flow {
     released: BTreeSet<VarId>,
     spent: BTreeSet<VarId>,
     inscribed: Vec<BTreeSet<u32>>,
+    held: Vec<BTreeSet<&'static str>>,
 }
 
 struct Checker<'r> {
@@ -526,8 +527,10 @@ impl<'r> Checker<'r> {
                     self.error("A2", *pos, "the intention is empty".into());
                 }
                 self.flow.inscribed.push(BTreeSet::new());
+                self.flow.held.push(BTreeSet::new());
                 self.block(body);
                 self.flow.inscribed.pop();
+                self.flow.held.pop();
             }
             Stmt::Release(_, e, pos) => {
                 if !self.rite_only(*pos, "a release") {
@@ -597,13 +600,35 @@ impl<'r> Checker<'r> {
             Stmt::Perge(pos) => self.subset(*pos, "PERGE"),
             Stmt::Redde(_, pos) => self.subset(*pos, "REDDE"),
             Stmt::Tenta { pos, .. } => self.subset(*pos, "TENTA"),
-            Stmt::Gere(_, pos) => {
-                self.rite_only(*pos, "GERE");
-                self.subset(*pos, "the apparatus (GERE)");
+            Stmt::Gere(instrument, pos) => {
+                if self.rite_only(*pos, "GERE") {
+                    if let Some(held) = self.flow.held.last_mut() {
+                        held.insert(instrument_word(*instrument));
+                    }
+                }
             }
-            Stmt::Command(_, _, pos) | Stmt::Constringe(_, _, pos) => {
-                self.rite_only(*pos, "the apparatus");
-                self.subset(*pos, "the apparatus (OFFER, APPELLA, VETA, CONSTRINGE)");
+            Stmt::Command(command, target, pos) => {
+                let word = match command {
+                    Command::Offer => "OFFER",
+                    Command::Appella => "APPELLA",
+                    Command::Veta => "VETA",
+                };
+                if !self.rite_only(*pos, word) {
+                    return;
+                }
+                let Some(spirit) = self.addressed(target, word, *pos) else {
+                    return;
+                };
+                if *command == Command::Offer {
+                    self.offering(spirit, *pos);
+                }
+            }
+            Stmt::Constringe(target, name, pos) => {
+                if !self.rite_only(*pos, "CONSTRINGE") {
+                    return;
+                }
+                self.addressed(target, "CONSTRINGE", *pos);
+                self.divine(name, *pos);
             }
         }
     }
@@ -625,10 +650,17 @@ impl<'r> Checker<'r> {
             .zip(&b.inscribed)
             .map(|(x, y)| x.intersection(y).copied().collect())
             .collect();
+        let held = a
+            .held
+            .iter()
+            .zip(&b.held)
+            .map(|(x, y)| x.intersection(y).copied().collect())
+            .collect();
         self.flow = Flow {
             released: a.released.union(&b.released).copied().collect(),
             spent: a.spent.union(&b.spent).copied().collect(),
             inscribed,
+            held,
         };
     }
 
@@ -711,13 +743,19 @@ impl<'r> Checker<'r> {
                 ),
             );
         }
-        let instruments = spirit.instruments();
+        let held = self.flow.held.last().cloned().unwrap_or_default();
+        let instruments: Vec<&str> = spirit
+            .instruments()
+            .iter()
+            .copied()
+            .filter(|i| !held.contains(i))
+            .collect();
         if !instruments.is_empty() {
             self.error(
                 "A11",
                 pos,
                 format!(
-                    "{} requires {} taken up before INVOCA",
+                    "{} requires {} taken up earlier in this Circle on every path",
                     spirit.name,
                     instruments.join(" and ")
                 ),
@@ -737,6 +775,68 @@ impl<'r> Checker<'r> {
             spirit: Some(spirit.n),
             office: Some(kind),
             ..Val::plain(Ty::Inv)
+        }
+    }
+
+    fn addressed(&mut self, target: &Expr, word: &str, pos: Pos) -> Option<&'r Spirit> {
+        let Expr::Name(name, npos) = target else {
+            self.expr(target);
+            self.error(
+                "T1",
+                pos,
+                format!("{word} names the variable that holds the invocation"),
+            );
+            return None;
+        };
+        let v = self.resolve(name, *npos)?;
+        let var = self.vars[v].clone();
+        if var.ty != Ty::Inv {
+            if var.ty != Ty::Error {
+                self.error(
+                    "T1",
+                    pos,
+                    format!("{word} needs an invocation; {name} is {}", var.ty.shown()),
+                );
+            }
+            return None;
+        }
+        if self.flow.released.contains(&var.root) {
+            self.error("A9", pos, format!("{name} is used after its release"));
+        }
+        var.spirit
+            .and_then(|n| self.register.by_number(i64::from(n)))
+    }
+
+    fn offering(&mut self, spirit: &Spirit, pos: Pos) {
+        let classes: Vec<&str> = spirit
+            .ranks
+            .iter()
+            .filter_map(|r| super::registra::rank_ink(r))
+            .collect();
+        let granted = self
+            .grants
+            .iter()
+            .any(|g| g.kind == "atramentum" && !g.reserved && classes.contains(&g.target.as_str()));
+        if !granted {
+            self.error(
+                "A8",
+                pos,
+                format!(
+                    "an offering to {} costs atramentum {}, and the FACULTAS grants none",
+                    spirit.name,
+                    classes.join(" or ")
+                ),
+            );
+        }
+    }
+
+    fn divine(&mut self, name: &str, pos: Pos) {
+        if !super::registra::divine_names().contains(name) {
+            self.error(
+                "A12",
+                pos,
+                format!("{name:?} is not a recorded form of a divine name"),
+            );
         }
     }
 
@@ -1199,5 +1299,14 @@ fn perm_word(perm: Perm) -> &'static str {
         Perm::Scribere => "scribere",
         Perm::Creare => "creare",
         Perm::Delere => "delere",
+    }
+}
+
+fn instrument_word(instrument: Instrument) -> &'static str {
+    match instrument {
+        Instrument::Anulum => "ANULUM",
+        Instrument::Virgam => "VIRGAM",
+        Instrument::Hexagrammum => "HEXAGRAMMUM",
+        Instrument::Pentagrammum => "PENTAGRAMMUM",
     }
 }

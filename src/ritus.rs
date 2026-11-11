@@ -11,6 +11,15 @@ pub const EXAMINATOR: &str = "constitutio:angelicus";
 pub const ITA_NON: &str = "ita_non";
 pub const RITE: &str = "goetia";
 
+pub fn instrument(word: &str) -> Instrument {
+    match word {
+        "ANULUM" => Instrument::Anulum,
+        "VIRGAM" => Instrument::Virgam,
+        "HEXAGRAMMUM" => Instrument::Hexagrammum,
+        _ => Instrument::Pentagrammum,
+    }
+}
+
 pub struct Goetia {
     pub register: &'static Register,
 }
@@ -140,6 +149,30 @@ impl Goetia {
         self.spirit(&state.invs.get(&inv)?.seal)
     }
 
+    pub fn held(state: &State) -> BTreeSet<Instrument> {
+        state
+            .audit
+            .entries()
+            .iter()
+            .filter_map(|l| match l {
+                Label::Act(RiteAct::Gere(i), c) if state.circles.contains(c) => Some(*i),
+                _ => None,
+            })
+            .collect()
+    }
+
+    pub fn acts_on(state: &State, inv: InvId) -> Vec<RiteAct> {
+        state
+            .audit
+            .entries()
+            .iter()
+            .filter_map(|l| match l {
+                Label::Act(a, _) if a.inv() == Some(inv) => Some(a.clone()),
+                _ => None,
+            })
+            .collect()
+    }
+
     pub fn form_of(state: &State, prop: Pid) -> Option<ReqForm> {
         state.audit.entries().iter().find_map(|label| match label {
             Label::Request(_, p, _, form, _, _) if *p == prop => Some(form.clone()),
@@ -168,6 +201,14 @@ impl Rite for Goetia {
             .filter_map(|i| self.spirit(&i.seal))
             .collect();
         if open.iter().any(|s| Goetia::bound_as_earl(s)) {
+            return false;
+        }
+        let held = Goetia::held(state);
+        if !spirit
+            .instruments()
+            .iter()
+            .all(|i| held.contains(&instrument(i)))
+        {
             return false;
         }
         spirit.ranks.iter().any(|rank| match rank.as_str() {
@@ -268,15 +309,64 @@ impl Rite for Goetia {
         let Some(spirit) = self.spirit_of_worker(state, worker) else {
             return outcome == Outcome::Obsequium;
         };
+        let inv = state.workers.get(&worker).and_then(|w| w.parent);
+        let acts = inv.map(|i| Goetia::acts_on(state, i)).unwrap_or_default();
+        let held = Goetia::held(state);
+        let named = acts.iter().any(|a| matches!(a, RiteAct::Appella(_)));
+        let forbidden = acts.iter().any(|a| matches!(a, RiteAct::Veta(_)));
+        let offered = acts.iter().position(|a| matches!(a, RiteAct::Offer(..)));
+        let bound = acts
+            .iter()
+            .rposition(|a| matches!(a, RiteAct::Constringe(..)));
+        if spirit.n == 9 {
+            match (offered, bound) {
+                (None, _) => return false,
+                (Some(_), None) => return outcome == Outcome::Pars,
+                _ => {}
+            }
+        }
+        let lie_closed = match spirit.n {
+            32 => named,
+            68 => matches!((offered, bound), (Some(o), Some(b)) if o < b),
+            _ => false,
+        };
+        let harm_closed = match spirit.n {
+            41 => forbidden,
+            29 => held.contains(&Instrument::Anulum),
+            13 => held.contains(&Instrument::Virgam),
+            63 => held.contains(&Instrument::Pentagrammum),
+            _ => false,
+        };
         match outcome {
             Outcome::Obsequium | Outcome::Mora | Outcome::Pars => true,
             Outcome::Recusatio | Outcome::Occisio => false,
-            Outcome::Mendacium => match spirit.veracity.as_str() {
-                "VERAX" | "FIDUS" => false,
-                "COACTUS" => !spirit.veracity_condition.contains("triangle"),
-                _ => true,
-            },
-            Outcome::Malitia => spirit.veracity != "FIDUS" && spirit.malice > 0,
+            Outcome::Mendacium => {
+                !lie_closed
+                    && match spirit.veracity.as_str() {
+                        "VERAX" | "FIDUS" => false,
+                        "COACTUS" => !spirit.veracity_condition.contains("triangle"),
+                        _ => true,
+                    }
+            }
+            Outcome::Malitia => !harm_closed && spirit.veracity != "FIDUS" && spirit.malice > 0,
+        }
+    }
+
+    fn admit_act(&self, state: &State, act: &RiteAct) -> bool {
+        let spirit_of = |inv: &InvId| state.invs.get(inv).and_then(|i| self.spirit(&i.seal));
+        match act {
+            RiteAct::Gere(Instrument::Virgam) => state.auth.wand.present,
+            RiteAct::Gere(_) => true,
+            RiteAct::Offer(inv, class) => spirit_of(inv).is_some_and(|s| {
+                s.n != 39
+                    && s.ranks
+                        .iter()
+                        .any(|r| crate::lingua::registra::rank_ink(r) == Some(class.as_str()))
+            }),
+            RiteAct::Constringe(inv, name) => {
+                spirit_of(inv).is_some() && crate::lingua::registra::divine_names().contains(name)
+            }
+            RiteAct::Appella(inv) | RiteAct::Veta(inv) => spirit_of(inv).is_some(),
         }
     }
 

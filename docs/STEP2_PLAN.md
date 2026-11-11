@@ -22,7 +22,7 @@ The core is its own module, reached only through the interface of `core.md` §3.
 
 **In:** `FACULTAS` with `liber` grants (`legere`, `scribere`, `creare`, `delere`, and reserved `… angelis`); `CIRCULUS`; `INVOCA` of a **simulated** spirit (`--voluntas simulata`, scripted answers via `--responsa`, `--sors` for hostile tests); `PETE` for one telling office and one working office; `EXAMINA`, returning `RATUM`, `SUSPENSUM` or `IRRITUM`; `RESPONSUM`; `CONSECRA` with one validator entry; `MANIFESTA`; `VADE IN PACE`, `DIMITTE`, `RELEGA`; `LET`/`SIT`, `SI`/`ALITER`, `DUM`; the deterministic scheduler; denials ending the run with class 2.
 
-**Out, for later steps:** hours and the Moon (`horae`), kings, apparatus, Earls and Dukes, angels' petitions, real AI agents (step 4), grave consecration and the second key (they need the real wand), `PER`, functions, concurrency beyond the scheduler, the mirror and the crystal, the bytecode VM.
+**Out, for later steps:** hours and the Moon (`horae`), kings, Earls and Dukes, angels' petitions, real AI agents (step 4), grave consecration and the second key (they need the real wand), `PER`, functions, concurrency beyond the scheduler, the mirror and the crystal, the bytecode VM.
 
 ## Stores on disk
 

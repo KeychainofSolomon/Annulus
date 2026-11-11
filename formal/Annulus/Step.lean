@@ -85,6 +85,26 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }
 
+  /-- The apparatus (`spirits.md` §4.4): an act of the rite in an open Circle, on a live
+  invocation if it names one. It may spend ink (an offering) and is recorded; it grants
+  nothing, and its effects reach the will only through the rite's answers, which may only
+  restrict (`core.md` §3). -/
+  | act {σ : State U} {a : U.RiteAct} {e : U.Exec} {c : U.Circle} {rest : List U.Circle}
+      (hw : σ.sched.current = some U.operator)
+      (hi : instrOf M σ = .act a e)
+      (hs : σ.circles = c :: rest)
+      (hinv : ∀ i, U.actInv a = some i →
+        ∃ inst, σ.invs i = some inst ∧ inst.status = .live ∧ inst.circle ∈ σ.circles)
+      (ha : R.admit σ (.rite a) true)
+      (hk : ∀ k, U.actInk a = some k → 0 < σ.inkLeft k) :
+      CoreStep M R σ (.act a c)
+        { σ with
+          inkLeft := (match U.actInk a with
+            | some k => upd σ.inkLeft k (σ.inkLeft k - 1)
+            | none => σ.inkLeft),
+          exec := upd σ.exec U.operator e,
+          sched := idle σ.sched }
+
   | requestSpirit {σ : State U} {i : U.Inv} {f : U.ReqForm} {q : U.Req} {p : U.Pid}
       {w : U.Worker} {e : U.Exec} {inst : Inst U} {wi : WInfo U} {asked : Power U → Prop}
       (hw : σ.sched.current = some U.operator)

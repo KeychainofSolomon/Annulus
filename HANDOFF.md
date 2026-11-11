@@ -390,3 +390,8 @@ Discussed with the owner, not built:
 - **Done now:** F1's other half (a write needs an existing place), F4 (helpers held to their own set, R2(a)), F2 by the written rule (R3(a)). 168 tests.
 - **R1 ruled by the owner: (a).** A seal serves its whole Circle; ink is paid once at inscription, by class, in the core (`inscribe` step, Rust and Lean). F3 and F6 are closed by it. 173 tests. F5 (validators) before step 4. The ink class of a two-rank seal is still an open item.
 - The repository is now **public**.
+
+## The honest examiner (2026-11-11, 22:40)
+
+- Done: the angel judges only the proposal, the request's form and the world (`ritus.rs` `verdict`, `officia::expected`); the will is a test scorecard (`examination_scorecard`). This was next-step 1 of the outside review. 174 tests.
+- **Next, in order:** attack tests with a rite that says yes to everything (one per question of `core.md` §3.1); spirit-specific malice (each spirit's recorded harm, not a stock one); the escalation, so RECUSATIO can open; real validators (F5) before step 4; then the second half of 2c (command line, stores on disk). An independent audit of tonight's core changes is still owed.

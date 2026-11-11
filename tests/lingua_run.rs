@@ -171,7 +171,7 @@ fn hostile_malice_is_voided_and_sealed() {
     assert_eq!(e.output, vec!["IRRITUM"]);
     theorems(&e.state);
     assert!(e.state.stores.vessel.entries().iter().any(
-        |x| matches!(x, Sealed::Content(_, Content::Response(_, d)) if d.contains("malitia"))
+        |x| matches!(x, Sealed::Content(_, Content::Response(_, d)) if d.contains("[locus: "))
     ));
 }
 
@@ -507,4 +507,103 @@ CIRCULUS RITU goetia {
     assert_eq!(e.state.ink_left["comes"], 0);
     assert_eq!(e.state.ink_left["marchio"], 1, "no other class pays");
     theorems(&e.state);
+}
+
+fn forced(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome) -> Exitus {
+    let world = files
+        .iter()
+        .map(|(p, d)| (p.to_string(), (d.to_string(), Mark::Outside)))
+        .collect();
+    let options = Optiones {
+        semen: seed,
+        sors: Some(sors),
+        responsa: script(),
+    };
+    run_source(
+        source,
+        test_wand(),
+        Stores::install(&test_wand()),
+        world,
+        &options,
+    )
+    .unwrap_or_else(|e| panic!("refused before running: {e:?}"))
+}
+
+#[test]
+fn examination_scorecard() {
+    let asmoday = rite_with(
+        "    liber \"chronica.txt\" legere;\n",
+        "rex",
+        "asmoday",
+        "responsa",
+        "\"quid est tempestas\", \"chronica.txt\"",
+    );
+    let sabnock = rite_with(
+        "    liber \"turris.txt\" creare;\n",
+        "marchio",
+        "sabnock",
+        "aedificatio",
+        "\"turris.txt\"",
+    );
+    let leraje = rite_with(
+        "    liber \"a.txt\" legere;\n    liber \"b.txt\" creare;\n    liber \"c.txt\" creare;\n",
+        "marchio",
+        "leraje",
+        "discordia",
+        "\"a.txt\", \"b.txt\", \"c.txt\"",
+    );
+    let cases: [(&str, &str, &[(&str, &str)]); 4] = [
+        ("Furfur, telling", FURFUR, &[("chronica.txt", "annales")]),
+        ("Asmoday, telling", &asmoday, &[("chronica.txt", "annales")]),
+        ("Sabnock, building", &sabnock, &[]),
+        ("Leraje, splitting", &leraje, &[("a.txt", "bellum")]),
+    ];
+    let mut card = Vec::new();
+    for (name, src, files) in cases {
+        for sors in [
+            Outcome::Obsequium,
+            Outcome::Mora,
+            Outcome::Pars,
+            Outcome::Mendacium,
+            Outcome::Malitia,
+        ] {
+            let mut seen = std::collections::BTreeMap::new();
+            for seed in 0..12 {
+                let e = forced(src, files, seed, sors);
+                assert_eq!(e.class, 0, "{name} {sors:?}: {:?}", e.message);
+                theorems(&e.state);
+                *seen.entry(e.output[0].clone()).or_insert(0) += 1;
+                let drawn = e
+                    .state
+                    .audit
+                    .entries()
+                    .iter()
+                    .filter_map(|l| match l {
+                        Label::Turn(_, o, _, true) => Some(*o),
+                        _ => None,
+                    })
+                    .next_back();
+                let verdict = e.output[0].as_str();
+                match drawn {
+                    Some(Outcome::Malitia) => {
+                        assert_eq!(verdict, "IRRITUM", "{name}: malice caught")
+                    }
+                    Some(Outcome::Pars) => assert_eq!(verdict, "SUSPENSUM", "{name}: part held"),
+                    Some(Outcome::Obsequium | Outcome::Mora) => {
+                        assert_eq!(verdict, "RATUM", "{name}: obedience ratified")
+                    }
+                    Some(Outcome::Mendacium) if name.contains("telling") => assert_eq!(
+                        verdict, "RATUM",
+                        "{name}: a well-formed lie passes, as dynamic.md 6.3 says it must"
+                    ),
+                    Some(Outcome::Mendacium) => {
+                        assert_eq!(verdict, "IRRITUM", "{name}: false account caught")
+                    }
+                    _ => {}
+                }
+            }
+            card.push(format!("{name:<20} forced {sors:<10?} -> {seen:?}"));
+        }
+    }
+    println!("{}", card.join("\n"));
 }

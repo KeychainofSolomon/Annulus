@@ -1,4 +1,4 @@
-use crate::nucleus::Perm;
+use crate::nucleus::{Effect, Perm, Verb};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Class {
@@ -67,5 +67,70 @@ pub fn shape(kind: &str, mode: Option<&str>) -> &'static str {
         ("DISCORDIA", _) => "one source, then new targets",
         ("AEDIFICATIO", _) | ("EVERSIO", _) => "at least one place",
         _ => "places",
+    }
+}
+
+pub const INCOMPLETE: &str = " [...]";
+
+pub fn cited(text: &str) -> Vec<String> {
+    text.split("[locus: ")
+        .skip(1)
+        .filter_map(|rest| rest.split_once(']').map(|(p, _)| p.to_string()))
+        .collect()
+}
+
+pub fn merge(sources: &[String]) -> String {
+    let split: Vec<Vec<&str>> = sources.iter().map(|s| s.lines().collect()).collect();
+    let longest = split.iter().map(Vec::len).max().unwrap_or(0);
+    (0..longest)
+        .filter_map(|i| split.iter().find_map(|lines| lines.get(i).copied()))
+        .collect::<Vec<&str>>()
+        .join("\n")
+}
+
+pub fn expected(
+    kind: &str,
+    mode: Option<&str>,
+    places: &[String],
+    read: impl Fn(&str) -> String,
+) -> Vec<Effect> {
+    let effect = |verb, place: &String, data: String| Effect {
+        verb,
+        place: place.clone(),
+        data,
+    };
+    match (kind, mode) {
+        ("AEDIFICATIO", _) => places
+            .iter()
+            .map(|p| effect(Verb::Crea, p, String::new()))
+            .collect(),
+        ("EVERSIO", _) => places
+            .iter()
+            .map(|p| effect(Verb::Dele, p, String::new()))
+            .collect(),
+        ("VECTIO", Some("transfer")) if places.len() == 2 => vec![
+            effect(Verb::Transfer, &places[1], read(&places[0])),
+            effect(Verb::Dele, &places[0], String::new()),
+        ],
+        ("VECTIO", _) if places.len() == 2 => {
+            vec![effect(Verb::Exscribe, &places[1], read(&places[0]))]
+        }
+        ("FURTUM", _) if places.len() == 2 => vec![
+            effect(Verb::Exscribe, &places[1], read(&places[0])),
+            effect(Verb::Aufer, &places[0], String::new()),
+        ],
+        ("CONCORDIA", _) if places.len() >= 2 => {
+            let (sources, target) = places.split_at(places.len() - 1);
+            let texts: Vec<String> = sources.iter().map(|p| read(p)).collect();
+            vec![effect(Verb::Coniunge, &target[0], merge(&texts))]
+        }
+        ("DISCORDIA", _) if places.len() >= 2 => {
+            let source = read(&places[0]);
+            places[1..]
+                .iter()
+                .map(|p| effect(Verb::Scinde, p, source.clone()))
+                .collect()
+        }
+        _ => Vec::new(),
     }
 }

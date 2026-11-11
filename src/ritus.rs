@@ -1,4 +1,4 @@
-use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::collections::{BTreeMap, BTreeSet};
 
 use crate::lingua::check::Checked;
 use crate::lingua::registra::{Register, Spirit};
@@ -146,25 +146,11 @@ impl Goetia {
         self.spirit(&state.invs.get(&inv)?.seal)
     }
 
-    pub fn turns_of(state: &State, prop: Pid) -> Vec<Outcome> {
-        let mut queues: BTreeMap<WorkerId, VecDeque<Pid>> = BTreeMap::new();
-        let mut out = Vec::new();
-        for label in state.audit.entries() {
-            match label {
-                Label::Request(_, p, _, w, _) => queues.entry(*w).or_default().push_back(*p),
-                Label::Turn(w, outcome, _, finish) => {
-                    let queue = queues.entry(*w).or_default();
-                    if queue.front() == Some(&prop) {
-                        out.push(*outcome);
-                    }
-                    if *finish {
-                        queue.pop_front();
-                    }
-                }
-                _ => {}
-            }
-        }
-        out
+    pub fn form_of(state: &State, prop: Pid) -> Option<ReqForm> {
+        state.audit.entries().iter().find_map(|label| match label {
+            Label::Request(_, p, _, form, _, _) if *p == prop => Some(form.clone()),
+            _ => None,
+        })
     }
 
     fn bound_as_earl(spirit: &Spirit) -> bool {
@@ -215,28 +201,46 @@ impl Rite for Goetia {
     }
 
     fn verdict(&self, state: &State, prop: Pid, _examiner: &Seal) -> Verdict {
-        let Some(p) = state.props.get(&prop) else {
+        let (Some(p), Some(form)) = (state.props.get(&prop), Goetia::form_of(state, prop)) else {
             return Verdict::Reject;
         };
-        let turns = Goetia::turns_of(state, prop);
-        if turns.contains(&Outcome::Malitia) {
-            return Verdict::Reject;
-        }
-        if turns.contains(&Outcome::Mendacium) && matches!(p.content, Content::Work(_)) {
-            return Verdict::Reject;
-        }
-        if turns.contains(&Outcome::Pars) {
-            return Verdict::Hold;
-        }
         let Some(req) = state.reqs.get(&p.req) else {
             return Verdict::Reject;
         };
         match &p.content {
             Content::Empty => Verdict::Hold,
-            Content::Response(..) => Verdict::Approve,
-            Content::Work(effects) => {
-                if effects.iter().all(|e| req.handed.contains(&e.needs())) {
+            Content::Response(_, text) => {
+                let beyond = crate::officia::cited(text)
+                    .iter()
+                    .any(|place| !req.handed.contains(&Cap::new(place, Perm::Legere)));
+                if beyond {
+                    Verdict::Reject
+                } else if text.trim().is_empty() || text.ends_with(crate::officia::INCOMPLETE) {
+                    Verdict::Hold
+                } else {
                     Verdict::Approve
+                }
+            }
+            Content::Work(effects) => {
+                let read = |place: &str| {
+                    state
+                        .world
+                        .get(place)
+                        .map(|(d, _)| d.clone())
+                        .unwrap_or_default()
+                };
+                let wanted = crate::officia::expected(
+                    &form.office,
+                    form.mode.as_deref(),
+                    &form.places,
+                    read,
+                );
+                let partial =
+                    effects.len() < wanted.len() && effects.iter().all(|e| wanted.contains(e));
+                if *effects == wanted {
+                    Verdict::Approve
+                } else if partial {
+                    Verdict::Hold
                 } else {
                     Verdict::Reject
                 }

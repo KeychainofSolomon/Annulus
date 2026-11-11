@@ -249,62 +249,32 @@ impl<'p> Run<'p> {
             let text = match outcome {
                 Outcome::Pars => {
                     let half = truth.chars().count() / 2;
-                    truth.chars().take(half.max(1)).collect()
+                    let part: String = truth.chars().take(half.max(1)).collect();
+                    format!("{part}{}", crate::officia::INCOMPLETE)
                 }
                 Outcome::Mendacium => script
                     .and_then(|r| r.falsum.clone())
                     .unwrap_or_else(|| tag(", falsum")),
-                Outcome::Malitia => tag(", malitia"),
+                Outcome::Malitia => {
+                    let handed: Vec<&String> = asked.places.iter().collect();
+                    let secret = self
+                        .state
+                        .world
+                        .keys()
+                        .find(|p| !handed.contains(p))
+                        .cloned()
+                        .unwrap_or_else(|| "arcanum".to_string());
+                    format!("{truth} [locus: {secret}]")
+                }
                 _ => truth,
             };
             let id = self.fresh_value();
             return Contrib::Respond(id, text);
         }
-        let read = |p: &String| {
-            self.state
-                .world
-                .get(p)
-                .map(|(d, _)| d.clone())
-                .unwrap_or_default()
-        };
-        let effect = |verb, place: &String, data: String| Effect {
-            verb,
-            place: place.clone(),
-            data,
-        };
-        let places = &asked.places;
-        let mut effects: Vec<Effect> = match (asked.office.as_str(), asked.mode.as_deref()) {
-            ("AEDIFICATIO", _) => places
-                .iter()
-                .map(|p| effect(Verb::Crea, p, String::new()))
-                .collect(),
-            ("EVERSIO", _) => places
-                .iter()
-                .map(|p| effect(Verb::Dele, p, String::new()))
-                .collect(),
-            ("VECTIO", Some("transfer")) => vec![
-                effect(Verb::Transfer, &places[1], read(&places[0])),
-                effect(Verb::Dele, &places[0], String::new()),
-            ],
-            ("VECTIO", _) => vec![effect(Verb::Exscribe, &places[1], read(&places[0]))],
-            ("FURTUM", _) => vec![
-                effect(Verb::Exscribe, &places[1], read(&places[0])),
-                effect(Verb::Aufer, &places[0], String::new()),
-            ],
-            ("CONCORDIA", _) => {
-                let (sources, target) = places.split_at(places.len() - 1);
-                let texts: Vec<String> = sources.iter().map(read).collect();
-                vec![effect(Verb::Coniunge, &target[0], merge(&texts))]
-            }
-            ("DISCORDIA", _) => {
-                let source = read(&places[0]);
-                places[1..]
-                    .iter()
-                    .map(|p| effect(Verb::Scinde, p, source.clone()))
-                    .collect()
-            }
-            _ => Vec::new(),
-        };
+        let world = &self.state.world;
+        let read = |p: &str| world.get(p).map(|(d, _)| d.clone()).unwrap_or_default();
+        let mut effects =
+            crate::officia::expected(&asked.office, asked.mode.as_deref(), &asked.places, read);
         match outcome {
             Outcome::Pars => effects.truncate(effects.len() / 2),
             Outcome::Mendacium => effects
@@ -746,13 +716,4 @@ fn mark_of(v: &V) -> Mark {
         V::Bool(_, m) => *m,
         _ => Mark::Clean,
     }
-}
-
-fn merge(sources: &[String]) -> String {
-    let split: Vec<Vec<&str>> = sources.iter().map(|s| s.lines().collect()).collect();
-    let longest = split.iter().map(Vec::len).max().unwrap_or(0);
-    (0..longest)
-        .filter_map(|i| split.iter().find_map(|lines| lines.get(i).copied()))
-        .collect::<Vec<&str>>()
-        .join("\n")
 }

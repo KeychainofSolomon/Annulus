@@ -4,7 +4,7 @@ Draft 1, 2026-11-11, from the owner's rulings of the same day. Roadmap step 1, i
 
 ## 1. Who is proscribed
 
-An agent that acts as an **intruder** (`authority.md` §6.2a) is **damned** (*damnatus*): irreversibly, by its seal, on the recorded fact of intrusion alone (ruling 2026-11-11; `core.md` §9.2). The owner may **proscribe** an agent, outside a session (`operator.md` §4). Proscription can be lifted; damnation cannot.
+An agent that acts as an **intruder** (`authority.md` §6.2a) is **damned** (*damnatus*): irreversibly, by its seal, on the recorded fact of intrusion alone, its attempt being enough (ruling 2026-11-11; the step `intrude`, `core.md` §9.2). The owner may **proscribe** an agent, outside a session (`operator.md` §4). Proscription can be lifted; damnation cannot.
 
 ## 2. Identity: the seal first, the scope second (ruling 2026-11-11)
 

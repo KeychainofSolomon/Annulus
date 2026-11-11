@@ -33,7 +33,7 @@ Draft 1, 2026-11-11, from the owner's rulings of the same day. Roadmap step 1, i
 
 3.3 **Grave grade.** This is needed for a consecrated value to steer code containing a grave act: `dele`, `aufer`, `neca`, freeing a familiar from another program, or any high-consequence commit (`operator.md` §5.2). (A `clean` or `outside` value may steer such code already: `core.md` §9.3.) The grave grade needs both keys: the validator, **and** the Operator's confirmation with the wand, outside any run. Within a run it can only be asked for, as a petition. The confirmation is a **one-use grave grant** (ruling 2026-11-11): it consecrates that exact value once, in a later run, and is then spent (`core.md` §9.3c). Steering a grave act with a value marked `consecrated` or `quarantined` is error A16.
 
-3.4 **A proof consecrates.** A computing office's result whose certificate the angel has verified (`offices.md` §2.2) is consecrated at the ordinary grade, provided all of its inputs were clean or consecrated. A verified proof needs no second validator.
+3.4 **A proof consecrates, through the same step.** A computing office's certificate is checked by a checker that is a validator entry in the Constitution (`library.md` §3). The core runs it as the step `consecrate(v, k)` (`core.md` §9.3a), with *k* the checker. If the checker accepts, and every input of the result was `clean`, `outside` or consecrated, the result is marked `consecrated`. There is no other route: the examining angel's verdict on the proposal lowers no mark (fourth audit, 2026-11-11).
 
 ## 4. Errors added
 

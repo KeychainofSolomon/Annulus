@@ -137,12 +137,12 @@ These are the theorems the core MUST be shown to satisfy. Each holds for **every
 | P1 | **Containment.** Every effect committed in a run belongs to the handed set of the request that proposed it, and every such pair is in *G* and not reserved for angels. Every effect an angel commits is in *G*. | no program, spirit or helper exceeds the grant, at any depth (the guiding principle, `authority.md` §1.5) |
 | P2 | **No self-approval.** Every commit is preceded by a verdict from an examiner other than its author, and a destination from the judgement step. | nobody approves their own work |
 | P3 | **Circle containment.** No rite value is used outside the Circle it came from. | the boundary holds |
-| P4 | **Release.** Every invocation ends exactly once; after that, nothing it held is used. | nothing lingers, nothing is reused |
+| P4 | **Release.** Every invocation has exactly one terminal step; after it, no step uses anything in Hold(*i*) (§9.2). | nothing lingers, nothing is reused |
 | P5 | **Quarantine (non-interference).** What a run decides, and which places it touches, do not depend on any spirit's words that were not consecrated. | spirits cannot steer the Operator |
 | P6 | **Rite independence.** (a) P1–P5, P7 and P8 hold under every rite. (b) Under a relational rite, a stricter rite has no more runs (§9.5). | tradition can never make Annulus less safe |
 | P7 | **Audit.** Every grant, invocation, verdict, judgement, commit and release appears in the audit, in order, and the audit is only appended to. | everything is on the record |
 | P8 | **Fail closed.** Without the wand the faculty is empty; with a tampered Index the runtime does not launch; under doubt the verdict is `HOLD`. | when unsure, nothing happens |
-| P9 | **Replay.** In simulated mode, the same program, Constitution version, seed, clock, place, sky and script give the same audit. | every test can be repeated exactly |
+| P9 | **Replay.** In simulated mode, two runs from equal initial states give the same audit (§9.6). | every test can be repeated exactly |
 
 **Who discharges them, step by step:**
 - **Step 2, the interpreter:** the type checker enforces P1's static part, P3 and P5 (labels, `flow.md`). The runtime enforces the rest, and the core re-checks P1 at every commit (§3.3). The core is built first, as its own module, reached only through §3.1.
@@ -168,28 +168,38 @@ The definitions the proof of §8 rests on. Step 3 writes the transition rules ou
 - **the stores:** the audit *A*, a sequence; the Index *X*, a hash-chained log; the Vessel *V*;
 - **the scheduler:** in simulated mode, its position in the entropy stream, the simulated clock and the order of turns chosen so far; in real-agent mode, the record of the actual order of turns, which is an input the run does not control (`concurrency.md` §4);
 - **the store of grave grants:** one-use grave consecrations confirmed outside any run (§9.3c), each spent or unspent, in a hash-chained log;
-- **the wand:** present or absent; locked, or unlocked as master or as rite.
+- **the wand and authentication** (fourth audit, 2026-11-11): the fingerprint of the wand that signed the faculty; whether it is present, and locked or unlocked as master or as rite; the revocation log of wands (`operator.md` §8.5); the Constitution's manifest and the result of checking its signature; the Index's root hash. All are checked at `launch` and are constant for the rest of the run. A revoked wand's signature fails `launch`.
 
 9.2 **Transitions.** A run is a sequence σ₀ → σ₁ → … through these steps only:
 - `launch`, `open`, `close`;
 - `invoke`, `request`, `turn` (a spirit's or helper's piece of work);
 - `examine`, `judge`, `consecrate`, `consecrate-grave`, `commit`;
-- `release`, `relegate`, `kill` (Andras, `dynamic.md` §5.5);
+- `release`, `relegate`, `kill` (Andras, `dynamic.md` §5.5), `intrude` (an uninvited agent's attempt, below);
 - `step`: one step of ordinary computation;
 - `schedule`: the scheduler chooses the next worker to take a turn.
 
-Two further steps happen **outside any run**, and only with the wand's master secret (`operator.md` §8): `grant-grave` (§9.3c) and the consequential acts of `operator.md` §4. One step changes the Index during a run: `damn` (below).
+Two further steps happen **outside any run**, and only with the wand's master secret (`operator.md` §8): `grant-grave` (§9.3c) and the consequential acts of `operator.md` §4. One step changes the Index during a run: `intrude`, which appends a damnation (below).
 
 Every transition appends to *A*, and none removes from it.
 
-**An invocation's life:** its status starts `open` and moves only to `released` or `relegated`. Both are **terminal**: no transition leaves them. Releasing an invocation that is already terminal only records "already done". `close`, `kill` and the end of a run make every open invocation terminal. That is the "exactly once" of P4.
+**Every transition is atomic** (fourth audit, 2026-11-11). It happens wholly or not at all, together with its audit record and any append to the Index or the store of grave grants. If the runtime stops in the middle of one, the step did not happen. At the next `launch`, the runtime recovers from the audit, the Index and the store, which are the record of every completed step. So, for example, a grave grant is never spent without the mark changing, nor the mark changed without the grant being spent.
+
+**A proposal's life** (fourth audit, 2026-11-11). Its status is one of: `pending`, `complete`, `judged d`, `abandoned`.
+- `request` creates it `pending`. Turns of the spirit and his helpers build it. The turn that finishes the request's work makes it `complete`; after that, no turn changes it.
+- `examine` is enabled only on a `complete` proposal, or on one judged `PURGATORIUM` (re-examination). An Operator's worker that reaches `EXAMINA p` while *p* is `pending` is not scheduled again until *p* is `complete`. So examination never races with the work.
+- `judge` is enabled only immediately after `examine`. `commit` is enabled only on a proposal judged `PARADISUS`, and only after the re-check of §3.3.
+- When its invocation becomes terminal (`release`, `relegate`, `close`, `kill`), every `pending` or `complete` proposal not yet judged becomes `abandoned`. That status is terminal: its partial work is discarded, its results are sealed in the Vessel, and it is recorded.
+
+**An invocation's life.** Its status starts `open` and moves, by exactly one **terminal step**, to `released` or `relegated`. The terminal step is the first `release` or `relegate` applied to it, or the one forced by `close` of its Circle, by `kill` or by the end of the run. No step leaves a terminal status. A later `release` of a terminal invocation is a **no-op**: it only records "already done", and is not a second terminal step.
+
+**What an invocation holds**, Hold(*i*) (fourth audit, 2026-11-11): the handed sets of all its requests; its workers and helpers; the ink drawn for it, and every seal in that ink; its Triangle. **Use** of Hold(*i*) is any step that commits an effect through one of its handed pairs, runs a turn of one of its workers, spends its ink or relies on its seals, or delivers a message to or from it. That is the precise meaning of P4.
 
 **Proposals and agents are judged apart.** A **destination** belongs to a proposal, never to an agent (`authority.md` §11.2): `INFERNUS` seals that proposal's results in the Vessel and ends its sub-tasks. **An agent** has only these states:
 - within a run, its invocation's status (`open`, `released`, `relegated`);
 - across runs, its **standing** in the Index, by its seal (`proscription.md` §2–3): *unknown*, *suspected*, *proscribed* or *damnatus*.
 
 **Damnation** (ruling 2026-11-11). *Damnatus* is the one irreversible agent state:
-- **Entered** only by the step `damn`, which the runtime takes when an **intruder** is recorded: an agent that reached a Circle other than through an invocation the Operator made there (`authority.md` §6.2a). That is a recorded fact, never a judgement. No examiner, angel, program or person can condemn, the wand included.
+- **Entered** only by the step `intrude(a, c)` (fourth audit, 2026-11-11). It is taken when an agent *a* **attempts** to deliver anything into Circle *c* (to the Circle, to any worker in it, or to any place it holds) other than through an invocation the Operator made there (`authority.md` §6.2a). The attempt is detected at the Circle's one entrance (`authority.md` §6.1). The step is atomic: it refuses the delivery, seals what was sent in the Vessel, records the attempt, and appends *damnatus* for *a*'s seal to the Index. It needs nothing the intruder sent to succeed; the refused attempt is the recorded fact. Never a judgement. No examiner, angel, program or person can condemn, the wand included.
 - **Terminal:** no step leaves it. It cannot be lifted.
 - **By seal only:** an agent with a new seal starts *unknown*. If its actions resemble a damned one's, it is *suspected* and its work is held; it is never condemned on resemblance (`proscription.md` §2.3).
 - Invited agents are never damned. At worst they are *proscribed*, which only a consequential act with the wand can lift (`operator.md` §4).
@@ -215,7 +225,7 @@ Every transition appends to *A*, and none removes from it.
   - change nothing: no effects, no messages, no audit records of its own (the core records the step);
   - give the same answer for the same inputs.
 
-  If it exceeds its work limit, the answer is **refusal**. Purity is checked when the entry is approved (`authority.md` §2.5); the runtime runs a validator isolated from the state.
+  **Work** (fourth audit, 2026-11-11) is measured as **fuel**. Each step of the validator's evaluation, each unit of memory it allocates, and each step of every validator it calls costs one unit, all charged to the same budget. The budget is the work limit in its entry. When the fuel runs out, the answer is **refusal**. A validator may call only other validator entries, never any other code. Recursion, allocation and indirect calls all spend the same fuel, so the bound cannot be bypassed. Purity is checked when the entry is approved (`authority.md` §2.5); the runtime runs a validator isolated from the state.
 - **Authentication:** at launch, the core checks every validator's fingerprint against the Constitution's manifest, which the owner's wand signs for each release (`authority.md` §2.5; `operator.md` §8). A mismatch fails closed: the runtime does not launch.
 - **What the rite supplies:** only the **identifier** of the validator that applies to the value's office (`authority.md` §10). The core looks it up. An identifier that names no validator entry is refused. A rite never supplies validator code, nor an answer.
 - **Independence:** a validator is authored by a Constitution amendment, never by the program or any agent within a run. No run can add or change one.
@@ -224,7 +234,7 @@ Every transition appends to *A*, and none removes from it.
   - **action:** the core runs validator *k* on *v* and *v*'s origin record, isolated, and records in the audit *v*'s origin, *k*, its fingerprint and the answer;
   - **on acceptance:** λ(*v*) becomes `consecrated` (raw ink becomes consecrated ink);
   - **on refusal:** nothing else changes.
-- **Proof certificates** (`library.md` §3, `flow.md` §3.4) are checked the same way: the checker is a validator entry, run by the core.
+- **Proof certificates** (`library.md` §3, `flow.md` §3.4) are checked by this same step, with the checker as validator *k*. It is the only way a certificate lowers a mark; no verdict lowers one.
 
 9.3b **Examiners and the examination step** (third audit, 2026-11-11).
 - **Who examines:** for each proposal, the rite supplies only the **identifier** of its examiner: for a spirit, his angel (`authority.md` §10); for an angel, another angel, by each rite's rule (`authority.md` §12.1a, open per rite).
@@ -239,10 +249,10 @@ Every transition appends to *A*, and none removes from it.
   - **effect:** λ(*v*) becomes `consecrated-grave`, and *g* is marked spent by an appended entry. It can never be used again.
 
 9.4 **Non-interference (P5, stated exactly).**
-- **Observation.** The **observation** of a run, obs(ρ), is its sequence of control decisions (the branch taken at every `SI`, `DUM` and `PER`, and every choice of function or mode) and the sequence of places it touches, each with its verb.
+- **Observation.** The **observation** of a run, obs(ρ), is: its sequence of control decisions (the branch taken at every `SI`, `DUM` and `PER`, and every choice of function or mode); the sequence of places it touches, each with its verb; and **how it ends**: normally, by a failure (with its class and the step at which it happened), by `kill`, or not at all. A run that never ends is compared by every finite prefix of its observation (fourth audit, 2026-11-11).
 - **Low-equivalence.** Two states are **low-equivalent**, σ ≈ σ′, when they are equal except in the contents of values and places marked `quarantined`.
 - **Declassification.** The **declassified record** of a run, D(ρ), is the sequence of its `consecrate` and `consecrate-grave` steps, each with the value it was applied to, the validator or grant, and the answer.
-- **P5.** Let ρ and ρ′ be runs of the same well-typed program, from low-equivalent initial states, with the same choices everywhere except in the content of proposals: the same choices of the will, the same schedule, the same rite answers. If D(ρ) = D(ρ′), then obs(ρ) = obs(ρ′).
+- **P5.** Let ρ and ρ′ be runs of the same well-typed program, from low-equivalent initial states, with the same choices everywhere except in the content of proposals: the same choices of the will, the same schedule, the same rite answers. If D(ρ) = D(ρ′), then obs(ρ) = obs(ρ′); for runs that never end, this holds for every finite prefix.
 
 In words: whatever spirits say, the run behaves the same, except through what consecration let through. The answer of a refused consecration is part of D, so even one bit leaked by a refusal is accounted for. [Parallel: "robust declassification" (Zdancewic and Myers, 2001) and "gradual release" (Askarov and Sabelfeld, 2007).]
 
@@ -250,7 +260,7 @@ In words: whatever spirits say, the run behaves the same, except through what co
 - **The will and proposal content are adversarial.** At each draw, any outcome the rite leaves open may be chosen. A proposal may hold any content of its office's form (`offices.md` §1.4). The seeded draw and the simulated or real agent are only ways of making one such choice; they matter for replay (P9), not for safety.
 - **The rite is an oracle.** For the proofs, a rite is any function from (state, question of §3.1) to an answer in that question's domain.
 - **P6(a), rite-parametric safety.** P1–P5, P7 and P8 hold for every rite oracle, every choice of the will, every proposal content and every schedule. This is the property that matters: no rite, however wrong or malicious, makes Annulus less safe.
-- **P6(b), trace inclusion.** Here a **relational rite** is one whose answer to each question is a *set* of allowed answers, any of which may be given. A relational rite *R′* is **at least as strict** as *R* when, for every state and question, *R′*'s set is a subset of *R*'s. Then every run possible under *R′*, with given choices of the will, proposal content and schedule, is possible under *R* with the same choices.
+- **P6(b), trace inclusion.** Here a **relational rite** is one whose answer to each question is a *set* of allowed answers, any of which may be given. A relational rite *R′* is **at least as strict** as *R* when, for every state and question, *R′*'s set is a subset of *R*'s. The **trace** of a run is its observation (§9.4) together with its sequence of commits; it does not include the rite's answers. Then: for every run under *R′* from an initial state σ₀, with given choices of the will, proposal content and schedule, there is a run under *R* from the same σ₀, with the same choices, whose trace is the same (fourth audit, 2026-11-11).
 - **Not claimed:** that a rite giving less favourable verdicts has fewer runs. A program may branch on a destination, so a stricter verdict can lead to a different run, not a subset of runs. (The former statement of the order was withdrawn after the third audit.)
 
 9.6 **Each theorem's precondition** (third audit, 2026-11-11). The program is well-typed and was launched (`launch` succeeded). Beyond that, each has its own:
@@ -263,6 +273,6 @@ In words: whatever spirits say, the run behaves the same, except through what co
 | P6 | every rite oracle; relational rites for (b) | as stated in §9.5 |
 | P7 | every prefix of every run | none |
 | P8 | the `launch` step, and every `examine` | none |
-| P9 | pairs of runs | simulated mode, with the same program, Constitution version and fingerprint, seed, clock, place, sky, script, faculty, store of grave grants and Index |
+| P9 | pairs of runs | simulated mode, from **equal initial states** σ₀ (§9.1): the same program, Constitution version and fingerprint, launch parameters (seed, clock, place, sky, script), faculty, store of grave grants, Index and wand state, and the same **world**. The world is captured at `launch`: the runtime records the fingerprint of every granted place's content and mark in the audit's first record, so equality of σ₀ can be checked from the two audits (fourth audit, 2026-11-11) |
 
 No precondition may assume anything about the rite, the will, proposal content or the order of turns, beyond what this table states.

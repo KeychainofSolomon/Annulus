@@ -24,7 +24,7 @@ The core is these nine things and nothing else:
 | C6 | **Commits**: only the runtime performs effects; all at once or not at all; nothing commits without a verdict from an examiner other than its author, and a destination from the judgement step | `authority.md` §3 (EXAMINATION, JUDGEMENT), §11; `dynamic.md` §6 |
 | C7 | **Release**: every invocation ends exactly once; its capabilities are revoked; seals in its ink lapse | `static.md` §4.11; `dynamic.md` §7 |
 | C8 | **The three stores**: the audit (append-only, written by the runtime), the Vessel (never opened for use) and the Index of the proscribed (persists across runs) | `dynamic.md` §9; `authority.md` §6.2a |
-| C9 | **The Operator's discipline over grants**: no widening while any spirit is invoked; consequential acts only outside the session; doubt holds; two keys | `operator.md` §1, §4, §5 |
+| C9 | **The Operator's discipline over grants**: no widening while any spirit is invoked; consequential acts only outside the session; doubt holds; two keys; the wand signs every grant and every second key (`operator.md` §8) | `operator.md` §1, §4, §5 |
 
 The core also owns the **mechanics** that the rite fills with content:
 - the effect verbs the runtime can commit (`offices.md` §2: `crea`, `dele`, `transfer` …) and the permissions they need (`static.md` §4.9);
@@ -114,7 +114,7 @@ C = core, R = rite, C+R = core mechanics with rite content.
 | | §8 legions | C+R (the cap C; the numbers R) |
 | | §8a intruders, §9 audit | C |
 | `spirits.md` | all | R |
-| `operator.md` | §1, §2, §4, §5 | C |
+| `operator.md` | §1, §2, §4, §5, §8 | C |
 | | §3 guardians, §6 real agents | R |
 | `offices.md` | §1, §3, §4 | C |
 | | §2, §5, §6 | R |

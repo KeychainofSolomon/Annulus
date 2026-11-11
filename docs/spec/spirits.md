@@ -96,7 +96,7 @@ The Operator takes up the instruments inside a Circle (`grammar.md` §3.3). Each
 | `GERE ANULUM` | protects the Operator from spirits' harmful breath and fumes | S f113; G |
 | `GERE HEXAGRAMMUM` | once the spirit has appeared, `RECUSATIO` is closed for its requests: "compelled to be obedient". Delay (`MORA`) and partial work (`PARS`) stay open: obedience is not completeness | S f112; G |
 | `GERE PENTAGRAMMUM` | "to preserve thee from danger": harm aimed at the Operator himself is closed | G (preserve); S f112 (to command) |
-| `GERE VIRGAM` | no general effect stated | |
+| `GERE VIRGAM` | no general effect stated. It requires the real wand, present with its words (`operator.md` §8) | |
 
 **What each spirit requires or allows:**
 

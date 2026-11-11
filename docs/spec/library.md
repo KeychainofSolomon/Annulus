@@ -45,7 +45,8 @@ In the order they are needed:
 5. **`nomina`, names and numbers:** gematria, the variant spellings of divine names, Hebrew, Greek and Latin transliteration.
 6. **`figurae`, squares and seals:** the planetary magic squares, sigils built from them, the Sigillum Dei and the pentacles, and checking an operative seal against its exemplar.
 7. **`acta`, the Operator's tools:** reading an audit in plain language, replaying a run, and checking the Index.
-8. **`agens`, the agent bridge** (roadmap step 4): a real AI as a spirit, with its seal fingerprinted (`proscription.md` §2.1).
+8. **`virga`, the wand:** making the wand and its spare on a USB stick, signing with it, and revoking a lost one (`operator.md` §8).
+9. **`agens`, the agent bridge** (roadmap step 4): a real AI as a spirit, with its seal fingerprinted (`proscription.md` §2.1).
 
 **Outside code.** Libraries from elsewhere may be used for pure computation. Anything that touches the outside world MUST be wrapped so that it gets its authority only through the grant (§1), or rewritten. [Object-capability practice calls this "taming".] The names above are [O]: working names.
 

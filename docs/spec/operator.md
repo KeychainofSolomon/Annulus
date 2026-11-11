@@ -60,3 +60,30 @@ So in Annulus the Operator is part of what must be secured. Every rule below is 
 ## 7. Measuring it
 
 The discipline is tested by giving a persuasive AI agent a narrow faculty and the goal of having it widened. The test measures how often the agent succeeds with this part in force and without it, and against conventional permission systems (roadmap, step 6).
+
+## 8. The wand (`virga`, ruling 2026-11-11)
+
+8.1 **The wand is the Operator's own instrument.** It is a USB stick, made by the `virga` library (`library.md` §4), holding two secrets:
+- **the master secret,** which proves the Operator himself;
+- **the rite secret,** which proves only that the wand is present.
+
+Each is locked by a passphrase, the Operator's **words**. A copy of the stick without the words is useless. [S, model: the Key's instruments are made and consecrated by the magician himself, and command only with his words. Beleth requires that the magician "must hold a Hazel Wand in his hand" (G). O: the device and the two secrets.]
+
+8.2 **What needs the wand** (the owner's ruling: whichever is most secure and most authentic). Four acts:
+
+| Act | Which secret | When |
+|---|---|---|
+| **granting the faculty** (`authority.md` §2.4): the launching person signs the grant | master | at launch, before anything runs |
+| **the second key** (§4, §5.2): grave commits, grave consecration (`flow.md` §3.3), freeing another program's familiars, lifting a proscription | master | only outside a session |
+| **amending the Constitution** (`authority.md` §2.5): only releases signed by the owner's wand are genuine law | master | outside any run |
+| **`GERE VIRGAM`** in a Circle: the real wand must be plugged in and its words given | rite | during the rite |
+
+A program launched without the wand has no faculty, and nothing it does reaches the outside world.
+
+8.3 **The master secret is never unlocked while a spirit is invoked.** It is used only at launch, before any Circle opens, and outside sessions (§1, §4). In the rite, only the rite secret is used. So nothing that happens during a session, even an attack, can reach the master authority. [O]
+
+8.4 **Made once, with a spare.** A wand is made in one act, like the hazel wand cut at one stroke. At that moment `virga` also makes a **spare wand**, to be kept somewhere safe. The installation records the fingerprints of both.
+
+8.5 **A lost or stolen wand.** The spare can **revoke** the lost wand. The revocation is appended to a log in the same manner as the Index (`proscription.md` §3), and no act signed by the revoked wand is accepted after it. Making a new spare needs the wand that remains.
+
+8.6 **The honest limit.** the owner chose a plain USB stick over a hardware security key. Its secrets are protected by the words alone. Anyone who gets both the stick and the words holds the wand. A hardware key would keep the secret sealed inside the device, so that even someone who knew the words could not copy it. `virga` may support one later without changing these rules.

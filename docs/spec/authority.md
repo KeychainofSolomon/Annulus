@@ -92,6 +92,7 @@ This is a property **of the type system**, checked before the program runs. It i
   | **Rite** | registers, offices and their signatures, hours, conditions, seals, ink classes, pairings, divine names | a source check under the precedence rule (`provenance.md`), recorded with its deciding witness in the cross-check or source log, and the registers rebuilt from the JSON | minor |
   | **Editorial** | wording only, with no change of meaning | a reading by the owner | patch |
 
+- **Until the proofs exist** (amended 2026-11-11, the owner's ruling): while P1–P9 are unproved (roadmap step 3), "a new proof" for a core change means: the Lean model updated to match, still building in CI; every theorem check and attack test passing; and an independent audit of the change. Once a theorem is proved, a change that touches it must keep its proof.
 - **A rite change may not cross the line.** If a rite change would need anything the interface of `core.md` §3.1 does not already offer (a new way to grant, or to skip examination), it is a core change and needs the proof.
 - **The record of a change.** Each release lists every changed entry, the reason, the deciding source or the proof, and the date of approval (`CHANGELOG.md`).
 - **What survives an upgrade.** The Index of the proscribed and the audit persist across versions. An upgrade never lifts a proscription (`operator.md` §4). The history of the previous run (`offices.md` §2.2a) stays readable, marked with the version it ran under.

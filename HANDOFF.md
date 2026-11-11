@@ -14,7 +14,7 @@ The governing document is the owner's "Definitive Architecture and Engineering H
 - The language is implemented in Rust, but Rust must not leak into the language.
 - Bytecode and VM are the reference execution model; a native x86-64 backend comes later.
 - Eight foundational laws: ORIGIN, SOVEREIGNTY, DECLARATION, OFFICE, CONTAINMENT, EXAMINATION, RELEASE, JUDGEMENT.
-- Axiom: *nulla potestas sibi ipsi oritur* (no authority is self-originating).
+- Axiom: *nulla potestas a se ipsa oritur* (no authority arises from itself). Corrected 2026-11-11 from *sibi ipsi*, which reads "for itself".
 - 14 Latin subsystems, from LOGOS to EXAMINATIO.
 - 18-step development sequence.
 - The implementation source must contain no comments.
@@ -358,3 +358,16 @@ Discussed with the owner, not built:
   - **`TEMPESTAS`** commits an unchanged write; the storm itself (fault injection) waits for the file library.
   - **`DIMITTE`** is recorded as an ordinary release; the core has no separate label.
 - **Next:** the command line (`annulus` running a `.annulus` file with `--virga-probationis`, `--semen`, `--sors`, `--responsa`), the stores and audit written to disk and checked at launch, granted files read from and written to disk with their marks. Then 2d.
+
+## Outside review and the owner's rulings (2026-11-11, late evening)
+
+- **An outside review** (another Claude, from the handover report) found: a real hole in mark inference (fixed: loops checked to a fixpoint, test `a14_a_chain_of_assignments_cannot_launder_quarantine`); the report's "nothing widens authority" was false (hours unchecked admit more; `TEMPESTAS` made a false record, now set aside; ink budgets live outside the core); the simulated examiner reads the drawn outcome, which no real examiner sees; the trusted base includes the checker and evaluator; an abnormal end does not record each release (`dynamic.md` §3.1).
+- **Ruled by the owner ("go intuitive"):** entries declined by case (`SPIRITUM`, `ANGELI`); the axiom *a se ipsa*; the interim meaning of proof (`authority.md` §2.5); copyrighted files removed from the history (the 2020 Shem-angel PDF and the website's day-angel images) with the pdfcoffee mention. All in `CHANGELOG.md`.
+- **Next, in order:**
+  1. **The examiner sees only what an angel could:** the proposal, its effects and the office. The drawn outcome becomes a separate test score of what examination caught and missed. Needed before step 3 measures enforcement.
+  2. **Record each release at an abnormal end** (a core change: Lean model, tests, audit, per the interim rule).
+  3. **Ink in the audit** (core change, same rule); then hours.
+  4. **Attack tests with a rite that says yes to everything** (one per question of `core.md` §3.1), a mutation fuzzer over the grammar programs, and a check that Lean rule names match the core's functions.
+  5. **Research:** is Sloane 3825 the oldest Goetia witness or only the best? Is the *Livre des Esperitz* (15th c.) an older witness of the *Officium* line than Weyer? Current rules stand until evidence.
+  6. Then the second half of 2c (command line, stores on disk).
+- **The repository is to become public.** Keep it free of the owner's identity (privacy rule above) and of copyrighted modern material: cite such sources, never commit them.

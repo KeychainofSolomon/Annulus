@@ -9,7 +9,7 @@ variable {U : Universe}
 
 /-- §9.1: an invocation. -/
 structure Inst (U : Universe) where
-  seal : U.Seal
+  spiritSeal : U.Seal
   circle : U.Circle
   status : InvStatus
   ink : Nat
@@ -154,7 +154,7 @@ def Live (σ : State U) (i : U.Inv) : Prop :=
 
 /-- §9.2, `authority.md` §6.2a: invited in Circle c. -/
 def Invited (σ : State U) (a : U.Seal) (c : U.Circle) : Prop :=
-  ∃ i inst, σ.invs i = some inst ∧ inst.seal = a ∧ inst.circle = c ∧ inst.status = .live
+  ∃ i inst, σ.invs i = some inst ∧ inst.spiritSeal = a ∧ inst.circle = c ∧ inst.status = .live
 
 /-- C3, C5: what a request may hand, by addressee. -/
 def Contained (σ : State U) : Addressee U → Power U → Prop

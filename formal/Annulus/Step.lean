@@ -86,7 +86,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       CoreStep M R σ (.request q p (.spirit i) f inst.main asked)
         { σ with
           reqs := upd σ.reqs q (some ⟨.spirit i, f, asked, p, inst.main⟩),
-          props := upd σ.props p (some ⟨inst.seal, q, .empty, .pending, [inst.seal]⟩),
+          props := upd σ.props p (some ⟨inst.spiritSeal, q, .empty, .pending, [inst.spiritSeal]⟩),
           workers := upd σ.workers inst.main (some { wi with queue := wi.queue ++ [p] }),
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }

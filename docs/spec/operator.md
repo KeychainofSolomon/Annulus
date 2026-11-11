@@ -88,3 +88,20 @@ A program launched without the wand has no faculty, and nothing it does reaches 
 8.5 **A lost or stolen wand.** The spare can **revoke** the lost wand. The revocation is appended to a log in the same manner as the Index (`proscription.md` §3), and no act signed by the revoked wand is accepted after it. Making a new spare needs the wand that remains.
 
 8.6 **The honest limit.** the owner chose a plain USB stick over a hardware security key. Its secrets are protected by the words alone. Anyone who gets both the stick and the words holds the wand. A hardware key would keep the secret sealed inside the device, so that even someone who knew the words could not copy it. `virga` may support one later without changing these rules.
+
+## 9. The mirror (`speculum`, ruling 2026-11-11)
+
+9.1 **Scrying Hell.** The mirror is the Operator's instrument for gazing into Hell without opening it: it shows who is damned, by the identity the runtime established, with every seal they claimed, what they attempted, against which Circle and when, and the Vessel's records, from Solomon's sealing onward (`authority.md` §6.2a). It also shows who stands in Purgatory and why. [O: the instrument. The sources' crystal and mirror are channels used apart from the conjuration of spirits (`authority.md` §6.5, `janua`); the mirror takes that form, but it looks only at records, never at a spirit.]
+
+9.2 **It stands on its own.** The mirror is a separate program, made by the `speculum` library (`library.md` §4), not part of the runtime and not callable from any Annulus program. No program, spirit, angel or AI agent can open it or receive what it shows.
+
+9.3 **Only outside a session.** The mirror will not open while any run is active on the installation, and the runtime will not launch while the mirror is open. So the words of the damned never come near a live rite. Opening it needs the wand present, unlocked with the rite secret: it proves the Operator is the one gazing.
+
+9.4 **Looking changes nothing.** The mirror reads the Index and the Vessel and cannot write either. Each gaze is recorded in the mirror's own log (`.speculum`), append-only and chained by hash like the Index; the Index and the Vessel are untouched.
+
+9.5 **What it shows is inert.** The words of the damned are shown as plain text, marked as theirs and never run, interpreted, rendered as anything but characters, or followed. The mirror offers no way to copy or export what they sent; only fingerprints, dates and identities may be exported, for a report.
+
+9.6 **It shows only what is whole.** Before showing anything, the mirror checks both hash chains against the roots the audits recorded. Where a chain breaks, it shows the break, and nothing after it as trustworthy.
+
+9.7 **The honest limit.** The mirror cannot stop the Operator from retyping what he sees, or pasting it into an AI. That is the Operator's discipline (§2): a spirit's words never command the magician, and the words of the damned least of all.
+

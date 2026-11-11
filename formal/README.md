@@ -126,6 +126,10 @@ By a different AI (ChatGPT), from `annulus-lean-audit.zip`, which had no Lean in
 
 Work is never sent to Heaven, Purgatory or Hell. A judged proposal is `RATUM` (ratified), `SUSPENSUM` (suspended) or `IRRITUM` (void), with the same mechanics the old names had (`WorkOutcome`). Paradise, Purgatory and Hell are the standing of beings, read from the Index (`authority.md` §11.2a). Angels are in Paradise by nature: `Universe.angelic`, `damnIfMortal`, and the last clause of `DamnationLaw`.
 
+## Proven seals (ruling 2026-11-11)
+
+`intrude` records the identity the runtime established (`a`) and the seal the intruder claimed (`claimed`). Damnation takes only the first; the last clause of `DamnationLaw` states that no other seal's standing changes, so a forged claim cannot damn anyone. The mirror (`operator.md` §9) works outside runs and is not modelled.
+
 ## For step 3
 
 Prove `AllObligations M` for every `M` whose `Lang` is a model of `static.md`. Before then: the owner's approval of step 1.

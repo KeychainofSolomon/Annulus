@@ -252,7 +252,7 @@ inductive Label (U : Universe) where
   | consecrateGrave (v : U.Value) (g : Nat) (k : Option U.ValidatorId) (accepted : Bool)
   | release (i : U.Inv) (noop : Bool)
   | relegate (i : U.Inv)
-  | intrude (a : U.Seal) (c : U.Circle) (sent : U.Datum)
+  | intrude (a : U.Seal) (claimed : U.Seal) (c : U.Circle) (sent : U.Datum)
   | step (out : StepOut U)
   | schedule (w : U.Worker)
 

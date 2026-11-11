@@ -184,7 +184,7 @@ It defines permissions, prohibitions and resource limits [Architecture §9].
 
 The ban **persists across runs**. Each later launch refuses those identities at those targets before any program code runs. No program and no agent can read, alter or lift the Index. Only the person who launches programs on that installation may lift an entry, by an explicit, recorded act outside any program. [O]
 
-**Why lifting stays possible:** an attacker could present someone else's identity in order to have them proscribed. Lifting is therefore kept, as the one remedy against being framed. Detection itself is never weakened.
+**Why lifting stays possible:** an attacker could present someone else's identity in order to have them proscribed. Damnation, which cannot be lifted, is protected differently: it takes only the identity the runtime establishes, never the one an intruder claims (ruling 2026-11-11, `core.md` §9.2). Lifting is therefore kept, as the one remedy against being framed. Detection itself is never weakened.
 
 **The Vessel is kept, one per installation** (ruling 2026-11-11). Like the Index, it persists across runs, is only appended to, and is chained by hash so that tampering fails `launch` (`proscription.md` §3.2). It is the evidence of what was attempted, and nothing is ever removed from it.
 

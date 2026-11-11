@@ -156,7 +156,7 @@ def choiceOf : Label U → List (Choice U)
   | .examine p a v => [.exam p a v]
   | .consecrate v k _ => [.valid v k]
   | .consecrateGrave v _ k _ => [.valid v k]
-  | .intrude a c _ => [.intrude a c]
+  | .intrude a _ c _ => [.intrude a c]
   | _ => []
 
 def Exn.choices (x : Exn U) : List (Choice U) := concatAll (x.labels.map choiceOf)
@@ -227,7 +227,7 @@ def agentOf : Label U → List (Label U)
   | .schedule w => [.schedule w]
   | .turn w o c fin => [.turn w o c fin]
   | .kill w o => [.kill w o]
-  | .intrude a c d => [.intrude a c d]
+  | .intrude a a' c d => [.intrude a a' c d]
   | _ => []
 
 def commitOf : Label U → List (Label U)
@@ -246,7 +246,7 @@ def P6b (M : Core U) : Prop :=
         x.obs = x'.obs ∧ x.commits = x'.commits
 
 def NoIntrusion (x : Exn U) : Prop :=
-  ∀ k a c d, k < x.len → x.lb k ≠ .intrude a c d
+  ∀ k a a' c d, k < x.len → x.lb k ≠ .intrude a a' c d
 
 /-- P9, replay, over a functional rite. README, finding 11: intrusions excluded. Complete
 runs give equal audits; unfinished runs give audits of which one extends the other. -/
@@ -262,10 +262,11 @@ or by examination appending a suspicion; and *damnatus* is never left. -/
 def DamnationLaw (M : Core U) (R : RelRite U) : Prop :=
   ∀ σ l σ', Reachable M R σ → Step M R σ l σ' →
     (σ'.index = σ.index ∨
-      (∃ a c d, l = .intrude a c d ∧ ¬ U.angelic a ∧ σ'.index = σ.index ++ [.damn a]) ∨
+      (∃ a a' c d, l = .intrude a a' c d ∧ ¬ U.angelic a ∧ σ'.index = σ.index ++ [.damn a]) ∨
       (∃ p an v s, l = .examine p an v ∧ ¬ U.angelic s ∧ σ'.index = σ.index ++ [.suspect s])) ∧
     (∀ s, standing σ.index s = .damnatus → standing σ'.index s = .damnatus) ∧
-    (∀ s, U.angelic s → standing σ.index s = .unknown → standing σ'.index s = .unknown)
+    (∀ s, U.angelic s → standing σ.index s = .unknown → standing σ'.index s = .unknown) ∧
+    (∀ a a' c d s, l = .intrude a a' c d → s ≠ a → standing σ'.index s = standing σ.index s)
 
 /-- The whole of §8, for one model of the language and mechanics. -/
 def AllObligations (M : Core U) : Prop :=

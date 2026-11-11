@@ -296,10 +296,10 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }
 
-  | intrude {σ : State U} {a : U.Seal} {c : U.Circle} {d : U.Datum}
+  | intrude {σ : State U} {a claimed : U.Seal} {c : U.Circle} {d : U.Datum}
       (hc : c ∈ σ.circles)
       (hn : ¬ Invited σ a c) :
-      CoreStep M R σ (.intrude a c d)
+      CoreStep M R σ (.intrude a claimed c d)
         { (terminate σ (fun _ inst => inst.spiritSeal = a) .relegated) with
           vessel := (fun s => termVessel σ (fun _ inst => inst.spiritSeal = a) s ∨ s = .datum d),
           index := damnIfMortal a σ.index }

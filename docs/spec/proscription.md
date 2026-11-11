@@ -12,6 +12,8 @@ An agent that acts as an **intruder** (`authority.md` §6.2a) is **damned** (*da
 - **A simulated spirit's seal** is his register entry: his number and his seal reference (`goetia.json`).
 - **A real agent's seal** is the hash of its model, version, provider and configuration: its instructions, its tools and its settings.
 
+A seal counts only when it is **established**: the runtime hosts the agent, or the agent proves the seal with its own key. A seal merely claimed is recorded as a claim and never damns or proscribes its owner (ruling 2026-11-11, `core.md` §9.2).
+
 Any change gives a new seal. A new seal starts **unknown**: never trusted because it resembles a known one. [Modern parallel: content addressing, as in Git and Nix, where a thing is named by a fingerprint of what it is, so a disguise changes the name.]
 
 2.2 **The scope.** An agent is known second by the **scope of its actions**. When an agent is proscribed, the Index records its **mark**: the offices, verbs and kinds of place it reached for outside its office or its handed set.

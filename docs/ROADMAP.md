@@ -30,7 +30,7 @@ Nothing is reported as built or tested unless it was.
 ## Step 1: what the specification still needs
 
 1. **Office signatures:** for each office kind (`spirits.md` §6), what `PETE` passes and what the proposal holds. **Drafted 2026-11-11** in `docs/spec/offices.md` (Part 1c), with the containment argument for helper tasks (§3–4); its §7 lists eight points for the owner.
-2. **The two-layer split:** a small **core** (capabilities, the grant, no amplification, the Circle boundary, commits, audit, Vessel, Index) that is proven, separate from the **rite layer** (registers, offices, hours, seals, ink, apparatus), which is data and policy judged by the source rule. Tradition decides what the rite means; the core decides what is possible.
+2. **The two-layer split** (drafted 2026-11-11, `docs/spec/core.md`, Part 0; two collisions for the owner in its §6): a small **core** (capabilities, the grant, no amplification, the Circle boundary, commits, audit, Vessel, Index) that is proven, separate from the **rite layer** (registers, offices, hours, seals, ink, apparatus), which is data and policy judged by the source rule. Tradition decides what the rite means; the core decides what is possible.
 3. **Amendment procedure:** the Constitution is versioned; changes come only through reviewed releases; every program records the Constitution version it ran under. The sources check the rite layer's fidelity; proof and attack testing check the core's safety.
 4. **Information flow:** rules beyond taint, including when tainted data may be released; no ambient authority anywhere in the standard library.
 5. **Concurrency semantics.**
@@ -48,6 +48,7 @@ Nothing is reported as built or tested unless it was.
 
 ## Specification parts written so far
 
+0. **The core and the rite layer:** what is proven and what is judged by the sources, the interface between them, and a map of every section. File: `docs/spec/core.md` (Part 0, draft 1).
 1. **Authority model:** the constitution, the axiom, the eight laws, seals and ink, registers, examination, destinations. File: `docs/spec/authority.md`.
 2. **Provenance register:** the source-precedence rule, plus a sourced or original label on every element. File: `docs/spec/provenance.md`.
 3. **Lexical grammar:** literals, the keyword set and casing; no comment syntax. Keywords are all Latin (ruled 2026-11-10). File: `docs/spec/grammar.md` (draft 1).

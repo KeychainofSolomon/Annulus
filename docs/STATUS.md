@@ -1,6 +1,6 @@
 # Implementation status — v0.2.1
 
-**The specification and the code are at different stages.** The specification (`docs/spec/`, eight files in draft) is being completed under roadmap step 1. The code is still the v0.2.1 prototype: a small expression language with English keywords, immutable bindings and output, described in `docs/PROTOTYPE.md`. It implements none of the specification. Roadmap step 2 (the minimal interpreter) replaces it.
+**The specification and the code are at different stages.** The specification (`docs/spec/`, nine files in draft) is being completed under roadmap step 1. The code is still the v0.2.1 prototype: a small expression language with English keywords, immutable bindings and output, described in `docs/PROTOTYPE.md`. It implements none of the specification. Roadmap step 2 (the minimal interpreter) replaces it.
 
 ## Implemented and tested
 
@@ -32,7 +32,7 @@
 
 | Area (handoff section) | State |
 |---|---|
-| Formal normative specification (12, step 2) | **In draft:** eight files in `docs/spec/`, plus the registers; awaiting the owner's approval (roadmap step 1) |
+| Formal normative specification (12, step 2) | **In draft:** nine files in `docs/spec/`, plus the registers; awaiting the owner's approval (roadmap step 1) |
 | Serialised, versioned bytecode format and verifier (12, step 4) | Not started |
 | Comments | **Ruled out:** Annulus has no comment syntax (the owner's ruling) |
 | String escapes | Specified (`grammar.md` §2); not in the prototype |

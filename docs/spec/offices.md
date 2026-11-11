@@ -149,7 +149,7 @@ No signature. Invoking a spirit for an office marked `NULLUM` is an error (A5).
 
 3.2 **Static check.** Every place is a constant (§1.2), so the type checker knows H(*q*) and checks that each pair is in the faculty *G*. A pair outside *G* is an error (A5 or A8). So H(*q*) ⊆ *G* before the program runs.
 
-3.3 **Runtime check.** The Triangle holds exactly H(*q*), from `PETE` until the proposal is judged, and nothing after. The runtime, not the spirit, performs every commit. An effect on anything outside H(*q*) cannot be performed, and the examiner rejects it (`INFERNUS`). This is defence in depth. The bound itself is static.
+3.3 **Runtime check.** The Triangle holds exactly H(*q*), from `PETE` until the proposal is judged, and nothing after. The runtime, not the spirit, performs every commit. An effect on anything outside H(*q*) cannot be performed, and the examiner rejects it (`INFERNUS`). The bound itself is static. The commit-time re-check is a core rule (`core.md` §3.3).
 
 3.4 **No acting on oneself.** An invocation argument MUST NOT be the invocation asked. [O; it extends axiom 1.2–1.3: no spirit acts on its own standing.]
 

@@ -11,7 +11,8 @@ This part says what happens **while a program runs**. A program reaches this poi
 - the sky at the place (`--caelum serenum` for clear, `--caelum turbidum` for not clear), as the launching person observes it; needed only for Dukes (§5.1);
 - a fixed clock (`--hora` with a date and time), for reproducible runs and tests;
 - an entropy seed (`--semen`), to replay a recorded run exactly (§5.4);
-- the audit file (`--acta`; default: the program's name with `.acta` added).
+- the audit file (`--acta`; default: the program's name with `.acta` added);
+- the mode of the spirits' will (`--voluntas simulata`, the default, or `--voluntas agens` for real agents, roadmap step 4), with its options (§5.6).
 
 1.2 **The faculty is granted first.** The runtime shows the program's `FACULTAS` request. The launching person grants all of it, part of it, or none (`authority.md` §2.4). The grant is the first audit record. Nothing in the program runs before it.
 
@@ -102,6 +103,19 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 - the run exits with failure class 2, denied authority, marked *occisus* ("slain").
 
 Ending a run grants nothing to anyone, so the guiding principle holds (`core.md` §6.1). Andras is not proscribed: he was invited. [S: W, G. O: the mechanism]
+
+5.6 **The simulated will** (ruling 2026-11-11: the owner left the design to Claude). With `--voluntas simulata` there is no agent behind the spirits. The runtime plays each spirit from the register: it draws his will (§5.4) and produces his work. This is the test bench for the enforcement (roadmap step 3): it repeats exactly under a seed, it can be made hostile on demand, and it needs no AI service. [O, all of it]
+- **Working offices** (`offices.md` §2.3): the runtime builds the effects that were asked for, then shapes them by the outcome drawn:
+  - `PARS` keeps only part of them;
+  - `MENDACIUM` gives a false account of them (`spirits.md` §3.1);
+  - `MALITIA` adds the register's harm for that spirit.
+- **Computing offices** (`offices.md` §2.2): the runtime computes the result with the domain library. Under `MENDACIUM` it alters the result, so examination should catch it. Until a library exists, it gives a placeholder (below).
+- **Telling offices** (`offices.md` §2.1) need a source of answers, since the runtime knows nothing:
+  1. **Scripted answers** (`--responsa FILE`). The launching person may give a file of answers. Each entry names a spirit number, an office kind and the exact question, with a **true** answer and, optionally, a **false** one. Under `OBSEQUIUM`, `MORA` and `PARS`, the spirit returns the true answer (`PARS`: its first half). Under `MENDACIUM` he returns the false answer. This is the hardest case to test: a well-formed lie that examination cannot detect.
+  2. **Placeholders,** when no entry matches: the answer is a marked dummy, `[simulatum: spirit, office, question]`. Under `MENDACIUM` it is marked false as well, `[simulatum, falsum: …]`. It tests the rules, not the content.
+- **The script is the spirits' knowledge, not the program's.** The program cannot read the file. Its answers reach the program only as proposals, untrusted, examined and judged like any other. A script can shape what a spirit says, never what he may hold or do: it supplies content, never authority (`core.md` §3.1).
+- **A hostile test** (`--sors OUTCOME`). This forces every draw to that outcome wherever the register leaves it open, for example `--sors MALITIA` or `--sors MENDACIUM`. Where the outcome is closed for a spirit, the draw is made normally. It changes only the will, never authority.
+- **Recorded:** the audit records the mode, the script's fingerprint and any forced outcome, so a run can be repeated exactly.
 
 ## 6. Examination and judgement
 

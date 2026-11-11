@@ -42,7 +42,7 @@ Nothing is reported as built or tested unless it was.
    - the bytecode verifier (step 7) must reject anything that breaks it;
    - a machine-checked proof over a formal model of the typing rules, plus Andras's `probatio`, must show it (step 3).
 9. **The GPT audit:** received 2026-11-11 and folded in (`docs/AUDIT_SPEC_1.md`): four findings fixed, one (Rudd's kings) open for a source check or the owner's ruling. The auditor recommends a second audit before approval.
-9a. **Simulated spirits** (found 2026-11-11): what a spirit produces when no real AI agent stands behind it. A working office can simply perform the requested work, but a telling office has no source of a true answer. Simulation mode needs a rule before the core runtime (step 2) can run a rite.
+9a. **Simulated spirits** (found and drafted 2026-11-11, `dynamic.md` §5.6: scripted answers, placeholders, forced outcomes for hostile tests): what a spirit produces when no real AI agent stands behind it. A working office can simply perform the requested work, but a telling office has no source of a true answer. Simulation mode needs a rule before the core runtime (step 2) can run a rite.
 10. **The owner's approval** of the whole. The Earls' and Dukes' readings are ruled (2026-11-11), as are the eight points of `offices.md` §7.
 
 **Exit criterion:** the owner approves the specification.

@@ -319,3 +319,10 @@ Discussed with the owner, not built:
 - **Ruled by the owner (2026-11-11, 16:23): Paradise is for angels only.** Spirits are demons; beings in good standing have no destination ("at large", after "their former places", Sloane 3825 ff. 110v–111r). The crystal shows angels and the works they ratified, never spirits as its own. The standing map: unknown = at large, suspected/proscribed = Purgatory, damnatus = Hell, angels = Paradise by nature.
 - **STEP 1 APPROVED by the owner, 2026-11-11 16:33** ("ok, next", after every open core question was settled). From now on the spec changes only by the amendment procedure (`authority.md` §2.5). Next: step 2, the minimal interpreter, plan in `docs/STEP2_PLAN.md`.
 
+## Next session: start here (step 2)
+
+- **Read:** this file's last sections, `docs/STEP2_PLAN.md` (approved by the owner, 2026-11-11 16:41: the test wand, the subset, the Furfur and working-spirit example), `docs/spec/core.md` §3 and §9, and `formal/Annulus/Step.lean`.
+- **Do:** milestone 2a, the **core** module in Rust: one function per transition rule of `Step.lean`, named after it, with a test for each and the property checks (P1, P2, P4, P7, damnation law) over every audit. No comments in the source.
+- **Build and test:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (the pinned 1.97.0 cannot download here; the local stable is 1.97.0). Push to `KeychainofSolomon/Annulus` (private); GitHub runs `build` (Rust, Windows and Linux) and `lean`. Read results with `env -u GH_TOKEN gh run list -R KeychainofSolomon/Annulus`. Both are green as of this handoff.
+- **Commits** are authored as `Solomon <KeychainofSolomon@users.noreply.github.com>` (set in the repo's git config); keep it so. Never put the owner's name or email in the history.
+

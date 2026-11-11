@@ -1,6 +1,6 @@
 # Step 2: the minimal interpreter (plan)
 
-Drafted 2026-11-11, after the owner approved step 1. For the owner's approval before building.
+Drafted 2026-11-11, after the owner approved step 1. **Approved by the owner, 2026-11-11 16:41**, with all three points below.
 
 ## Goal
 
@@ -49,8 +49,8 @@ The real wand (`virga`) comes later, but without a wand the faculty is empty. **
 | 2c | **rite** `goetia` and the command line | `annulus` runs the example rites; the stores are written and checked |
 | 2d | **attack tests** | every hostile spirit refused; the prototype is removed |
 
-## For the owner
+## Approved by the owner (2026-11-11)
 
-1. The test wand, as above?
-2. The subset, as above?
-3. The example to aim at: a program that invokes **Furfur** for a telling office (he must be in his triangle to speak true), and a spirit whose office is working, for one small file effect, each examined by his angel, with a hostile run of each.
+1. **The test wand**, as above: yes.
+2. **The subset**, as above: yes.
+3. **The example to aim at** (yes): a program that invokes **Furfur** for a telling office (he must be in his triangle to speak true), and a spirit whose office is working, for one small file effect, each examined by his angel, with a hostile run of each.

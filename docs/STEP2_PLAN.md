@@ -44,7 +44,7 @@ The real wand (`virga`) comes later, but without a wand the faculty is empty. **
 
 | | Milestone | Done when |
 |---|---|---|
-| 2a | **core**, with its own tests | every transition rule implemented and tested; property checks pass. **First pass done 2026-11-11:** `src/nucleus/` (the core is named `nucleus`, since `core` is Rust's own library), 31 rule tests in `tests/nucleus_rules.rs`, each checking P1, P2, P4, P7 and the damnation law over its audit. Still to do in 2a: suspicion at examination (needs the Index's marks), angels' petitions end to end, and the scheduler's simulated draws |
+| 2a | **core**, with its own tests | every transition rule implemented and tested; property checks pass. **First pass done 2026-11-11:** `src/nucleus/` (the core is named `nucleus`, since `core` is Rust's own library), 31 rule tests in `tests/nucleus_rules.rs`, each checking P1, P2, P4, P7 and the damnation law over its audit. **Completed the same day:** suspicion at examination (proscription entries carry the agent's mark, `Reach`), angels' petitions end to end with reserved grants, and the seeded simulated scheduler and will (`nucleus::Sim`), with a replay test (P9) and 50 seeds checked against the theorems. 38 tests. **2a done.** |
 | 2b | **lang** for the subset | the subset's grammar tests pass; type errors A5, A14, A15 reported |
 | 2c | **rite** `goetia` and the command line | `annulus` runs the example rites; the stores are written and checked |
 | 2d | **attack tests** | every hostile spirit refused; the prototype is removed |

@@ -429,12 +429,16 @@ impl State {
             PStatus::Complete | PStatus::Judged(WorkOutcome::Suspensum) => {}
             _ => return self.deny("this proposal cannot be examined again"),
         }
+        let suspect = self.newly_suspect(&p.author, prop);
+        if suspect {
+            self.stores.index.push(IxEntry::Suspect(p.author.clone()));
+        }
         let examiner = rite.examiner(self, prop);
         let (answer, verdict) = match &examiner {
             Some(e) if *e != p.author && !p.carries.contains(e) => {
                 let v0 = rite.verdict(self, prop, e);
                 let cb = rite.counterbalance(self, prop);
-                let v = if self.doubtful(&p.author) {
+                let v = if suspect || self.doubtful(&p.author) {
                     Verdict::Hold
                 } else {
                     v0.meet(cb)

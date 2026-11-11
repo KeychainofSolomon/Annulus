@@ -4,8 +4,8 @@ use std::fmt::Debug;
 use super::sha256::hash_hex;
 use super::types::{
     Addressee, Cap, CircleId, Constitution, Ending, Inst, InvId, InvStatus, IxEntry, KeyEntry,
-    Label, Mark, Perm, Phase, Pid, Place, Proposal, ReqId, Request, Seal, Sealed, Standing, Value,
-    ValueId, Wand, Worker, WorkerId, OPERATOR,
+    Label, Mark, Perm, Phase, Pid, Place, Proposal, Reach, ReqId, Request, Seal, Sealed, Standing,
+    Value, ValueId, Wand, Worker, WorkerId, OPERATOR,
 };
 
 pub const GENESIS: &str = "annulus";
@@ -273,6 +273,47 @@ impl State {
         !self.angelic(seal) && self.standing(seal) != Standing::Unknown
     }
 
+    pub fn marks(&self) -> BTreeSet<Reach> {
+        self.stores
+            .index
+            .entries()
+            .iter()
+            .filter_map(|e| match e {
+                IxEntry::Proscribe(s, reach) if self.barred(s) => Some(reach.clone()),
+                _ => None,
+            })
+            .flatten()
+            .collect()
+    }
+
+    pub fn overreach(&self, prop: Pid) -> Vec<Reach> {
+        let Some(p) = self.props.get(&prop) else {
+            return Vec::new();
+        };
+        let handed = self
+            .reqs
+            .get(&p.req)
+            .map(|r| r.handed.clone())
+            .unwrap_or_default();
+        p.content
+            .effects()
+            .iter()
+            .filter(|e| !handed.contains(&e.needs()))
+            .map(|e| Reach {
+                verb: e.verb,
+                place: e.place.clone(),
+            })
+            .collect()
+    }
+
+    pub fn newly_suspect(&self, seal: &Seal, prop: Pid) -> bool {
+        if self.angelic(seal) || self.standing(seal) != Standing::Unknown {
+            return false;
+        }
+        let marks = self.marks();
+        self.overreach(prop).iter().any(|r| marks.contains(r))
+    }
+
     pub fn live(&self, inv: InvId) -> bool {
         self.invs
             .get(&inv)
@@ -366,7 +407,7 @@ impl State {
 fn standing_step(seal: &Seal, st: Standing, entry: &IxEntry) -> Standing {
     match entry {
         IxEntry::Damn(s) if s == seal => Standing::Damnatus,
-        IxEntry::Proscribe(s) if s == seal && st != Standing::Damnatus => Standing::Proscribed,
+        IxEntry::Proscribe(s, _) if s == seal && st != Standing::Damnatus => Standing::Proscribed,
         IxEntry::Lift(s) if s == seal && st == Standing::Proscribed => Standing::Unknown,
         IxEntry::Suspect(s) if s == seal && st == Standing::Unknown => Standing::Suspected,
         IxEntry::Clear(s) if s == seal && st == Standing::Suspected => Standing::Unknown,

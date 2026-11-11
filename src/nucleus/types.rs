@@ -251,10 +251,16 @@ pub enum Label {
     Schedule(WorkerId),
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Reach {
+    pub verb: Verb,
+    pub place: Place,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum IxEntry {
     Damn(Seal),
-    Proscribe(Seal),
+    Proscribe(Seal, Vec<Reach>),
     Lift(Seal),
     Suspect(Seal),
     Clear(Seal),

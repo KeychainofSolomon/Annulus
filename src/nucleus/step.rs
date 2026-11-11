@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use super::rite::{ReqForm, Rite};
 use super::sha256::hash_hex;
 use super::state::{
-    digest_faculty, digest_manifest, fingerprint_effects, fingerprint_validator, verify, State,
+    digest_constitution, digest_faculty, fingerprint_effects, fingerprint_validator, verify, State,
 };
 use super::types::{
     Addressee, Cap, CircleId, CommitResult, Content, Contrib, Ending, ExamAns, Inst, InvId,
@@ -26,10 +26,10 @@ impl State {
         let auth = &self.auth;
         if !verify(
             &auth.owner,
-            &digest_manifest(&self.constitution.manifest),
+            &digest_constitution(&self.constitution),
             &auth.manifest_signature,
         ) {
-            return Err("the Constitution's manifest is not signed by the owner's wand");
+            return Err("the Constitution is not signed by the owner's wand");
         }
         if auth.revoked.contains(&auth.owner) {
             return Err("the owner's wand is revoked");
@@ -170,7 +170,7 @@ impl State {
         let inv = self.fresh();
         let worker = self.fresh();
         let sealed = self.inscribed.contains(&(seal.clone(), circle));
-        if !admitted || self.barred(seal) || !sealed {
+        if !admitted || self.barred(seal) || !sealed || self.angelic(seal) {
             let dismissed = self.open_invocations();
             self.record(Label::Invoke(
                 inv,

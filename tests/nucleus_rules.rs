@@ -1,7 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use annulus::nucleus::state::{
-    digest_faculty, digest_manifest, fingerprint_effects, fingerprint_validator, sign_for_test,
+    digest_constitution, digest_faculty, fingerprint_effects, fingerprint_validator, sign_for_test,
     Roots,
 };
 use annulus::nucleus::*;
@@ -141,7 +141,7 @@ fn launch_reserving(stores: Stores, wand: Wand, reserved: &[Cap]) -> State {
     let auth = Auth {
         faculty_signature: sign_for_test(&wand.fingerprint, &digest_faculty(&faculty, &reserved)),
         owner: "owner-wand".to_string(),
-        manifest_signature: sign_for_test("owner-wand", &digest_manifest(&constitution.manifest)),
+        manifest_signature: sign_for_test("owner-wand", &digest_constitution(&constitution)),
         revoked: Vec::new(),
         roots: stores.roots(),
         wand,

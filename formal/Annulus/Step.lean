@@ -50,7 +50,8 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hfw : σ.workers w = none)
       (ha : R.admit σ (.invoke s c) true)
       (hx : ¬ Barred σ s)
-      (hsl : σ.inscribed s c) :
+      (hsl : σ.inscribed s c)
+      (hna : ¬ U.angelic s) :
       CoreStep M R σ (.invoke i s c w true [])
         { σ with
           invs := upd σ.invs i (some ⟨s, c, .live, 0, w, []⟩),
@@ -64,7 +65,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hi : instrOf M σ = .invoke i s w ok no)
       (hs : σ.circles = c :: rest)
       (ha : R.admit σ (.invoke s c) b)
-      (hr : b = false ∨ Barred σ s ∨ ¬ σ.inscribed s c)
+      (hr : b = false ∨ Barred σ s ∨ ¬ σ.inscribed s c ∨ U.angelic s)
       (hd : Dismissed σ ds) :
       CoreStep M R σ (.invoke i s c w b ds) (endRun σ (.failure U.denial σ.audit.length))
 
@@ -112,7 +113,8 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hq : σ.reqs q = none)
       (hp : σ.props p = none)
       (hsig : R.signature σ f asked)
-      (hcon : ∀ r, asked r → Contained σ (.angel a) r) :
+      (hcon : ∀ r, asked r → Contained σ (.angel a) r)
+      (hang : U.angelic a) :
       CoreStep M R σ (.request q p (.angel a) f w asked)
         { σ with
           reqs := upd σ.reqs q (some ⟨.angel a, f, asked, p, w⟩),

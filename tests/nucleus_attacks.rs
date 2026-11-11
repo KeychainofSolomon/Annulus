@@ -1,7 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use annulus::nucleus::state::{
-    digest_faculty, digest_manifest, fingerprint_validator, sign_for_test,
+    digest_constitution, digest_faculty, fingerprint_validator, sign_for_test,
 };
 use annulus::nucleus::*;
 
@@ -92,6 +92,10 @@ fn wand() -> Wand {
 }
 
 fn launched(index: &[IxEntry]) -> State {
+    built(index, false)
+}
+
+fn built(index: &[IxEntry], smuggle: bool) -> State {
     let mut constitution = Constitution {
         version: 1,
         ..Default::default()
@@ -109,6 +113,7 @@ fn launched(index: &[IxEntry]) -> State {
         .insert("brevis".to_string(), fingerprint_validator("brevis"));
     constitution.angels.insert(ANGEL.to_string());
     constitution.high_consequence.insert(Verb::Dele);
+    let signed = constitution.clone();
     let faculty: BTreeSet<Cap> = [
         Cap::new("notes.txt", Perm::Legere),
         Cap::new("notes.txt", Perm::Scribere),
@@ -130,7 +135,7 @@ fn launched(index: &[IxEntry]) -> State {
     let auth = Auth {
         faculty_signature: sign_for_test("test-wand", &digest_faculty(&faculty, &reserved)),
         owner: "owner-wand".to_string(),
-        manifest_signature: sign_for_test("owner-wand", &digest_manifest(&constitution.manifest)),
+        manifest_signature: sign_for_test("owner-wand", &digest_constitution(&signed)),
         revoked: Vec::new(),
         roots: stores.roots(),
         wand: wand(),
@@ -144,6 +149,9 @@ fn launched(index: &[IxEntry]) -> State {
     .into_iter()
     .map(|(p, d)| (p.to_string(), (d.to_string(), Mark::Outside)))
     .collect();
+    if smuggle {
+        constitution.angels.insert(FURFUR.to_string());
+    }
     let mut s = State::initial(Launch {
         simulated: true,
         constitution,
@@ -154,7 +162,9 @@ fn launched(index: &[IxEntry]) -> State {
         world,
         stores,
     });
-    s.launch().expect("launch");
+    if !smuggle {
+        s.launch().expect("launch");
+    }
     s
 }
 
@@ -418,4 +428,20 @@ fn any_ink_class_still_draws_from_a_bounded_budget() {
     op(&mut s, |s| s.inscribe(&rite, &FURFUR.to_string(), "comes")).unwrap();
     let again = op(&mut s, |s| s.inscribe(&rite, &MARBAS.to_string(), "comes"));
     assert!(matches!(again, Err(Refusal::Denied(_))));
+}
+
+#[test]
+fn a_spirit_smuggled_into_the_list_of_angels_refuses_the_launch() {
+    let mut s = built(&[], true);
+    assert!(matches!(s.launch(), Err(Refusal::LaunchRefused(_))));
+}
+
+#[test]
+fn admit_yes_cannot_put_an_angel_in_a_triangle() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    op(&mut s, |s| s.open_circle()).unwrap();
+    op(&mut s, |s| s.inscribe(&rite, &ANGEL.to_string(), "comes")).unwrap();
+    let r = op(&mut s, |s| s.invoke(&rite, &ANGEL.to_string()));
+    assert!(matches!(r, Err(Refusal::Denied(_))));
 }

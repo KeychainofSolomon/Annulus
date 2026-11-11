@@ -151,8 +151,14 @@ pub fn digest_faculty(faculty: &BTreeSet<Cap>, reserved: &BTreeSet<Cap>) -> Stri
     hash_hex(format!("{faculty:?}|{reserved:?}").as_bytes())
 }
 
-pub fn digest_manifest(manifest: &BTreeMap<String, String>) -> String {
-    hash_hex(format!("{manifest:?}").as_bytes())
+pub fn digest_constitution(c: &super::types::Constitution) -> String {
+    hash_hex(
+        format!(
+            "{}|{:?}|{:?}|{:?}",
+            c.version, c.manifest, c.angels, c.high_consequence
+        )
+        .as_bytes(),
+    )
 }
 
 pub fn fingerprint_validator(name: &str) -> String {

@@ -396,3 +396,8 @@ Discussed with the owner, not built:
 - Done: the angel judges only the proposal, the request's form and the world (`ritus.rs` `verdict`, `officia::expected`); the will is a test scorecard (`examination_scorecard`). This was next-step 1 of the outside review. 174 tests.
 - **Attack tests done** (`tests/nucleus_attacks.rs`, 12, a rite that says yes to everything): all held; they found that the core did not require an angelic examiner, now fixed in Rust and Lean. 186 tests.
 - **Next, in order:** spirit-specific malice (each spirit's recorded harm, not a stock one); the escalation, so RECUSATIO can open; real validators (F5) before step 4; then the second half of 2c (command line, stores on disk). An independent audit of tonight's core changes is still owed.
+
+## Angel audit (2026-11-11, 23:00)
+
+- Fixed: the angel list is now under the owner's signature; the core refuses to invoke an angel; Lean's angel petition and barring now match Rust. 188 tests.
+- **Questions for the owner (not holes):** (1) may an angel's will ever lie or do harm, if a rite opens it? The core does not close it; examination still catches harm in work, but a lie in an angel's answer would pass. (2) Angels may be petitioned outside a Circle (prayer needs no Circle); confirm. (3) An angel's answer is quarantined like a spirit's until consecrated; confirm or exempt.

@@ -3,7 +3,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use crate::lingua::check::Checked;
 use crate::lingua::registra::{Register, Spirit};
 use crate::nucleus::state::{
-    digest_faculty, digest_manifest, fingerprint_validator, sign_for_test, Roots,
+    digest_constitution, digest_faculty, fingerprint_validator, sign_for_test, Roots,
 };
 use crate::nucleus::*;
 
@@ -104,7 +104,7 @@ pub fn launch(
     let owner = test_wand().fingerprint;
     let auth = Auth {
         faculty_signature: sign_for_test(&wand.fingerprint, &digest_faculty(&faculty, &reserved)),
-        manifest_signature: sign_for_test(&owner, &digest_manifest(&constitution.manifest)),
+        manifest_signature: sign_for_test(&owner, &digest_constitution(&constitution)),
         owner,
         revoked: Vec::new(),
         roots: roots_of(&stores),

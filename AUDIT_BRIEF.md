@@ -1,56 +1,32 @@
-# Audit brief: Annulus specification, second audit
+# Audit brief: Annulus specification, third audit (narrow)
 
-You are auditing the Annulus language specification. Annulus is a programming language and also a faithful simulation of Solomonic magic. Find errors; do not rewrite. The first audit's findings and their disposition are in `docs/AUDIT_SPEC_1.md`; check that its fixes hold.
+You are auditing one part of the Annulus specification: **the formal security boundary**. Find errors; do not rewrite. The earlier audits and their dispositions are in `docs/AUDIT_SPEC_1.md`, `docs/AUDIT_SPEC_2.md` and `docs/AUDIT_SPEC_3.md`. Everything outside the scope below has been audited twice; do not report on it.
 
-## The rules the work must follow
+**Status to keep in mind:** the theorems are specified for proof, not proved. No security theorem is yet established; the machine-checked proof is roadmap step 3. Judge whether they are stated precisely enough to prove, not whether they are true.
 
-1. **Source precedence:** within one work's line of copies, the oldest witness wins. Separate works (rites) never override each other. A later addition stands if it conflicts with nothing older.
-2. **Labels:** every rule is tagged **[S]** (sourced, with its witness) or **[O]** (original to Annulus). The owner's rulings are tagged **M** or "ruling" with a date. Witness codes:
-   - **W** Weyer 1577
-   - **S** Sloane 3825
-   - **G** the 1904 edition
-   - **F** Folger V.b.26
-   - **A** Ad. 36674
-   - **K** BnF Ital. 1524 (1446)
-3. **Analogues:** a traditional detail is kept only if it has a mechanical analogue in the language.
-4. **The guiding principle:** no program's authority can exceed its grant, at any depth of delegation (`authority.md` §1.5). Where tradition and the principle collide, the principle wins and the collision is raised with the owner.
-5. **Rulings in force:** recorded in `HANDOFF.md`, including those of 2026-11-11 (office signatures, the core/rite split, angels' reserved grants, Andras's danger, simulated spirits, information flow, the powerbox, actors, the Index, the wand, the `.annulus` extension).
+## Scope
 
-## Read in this order
-
-1. `docs/spec/core.md`: the core, the rite layer, the interface, the proof obligations (Part 0)
-2. `docs/spec/authority.md`: the authority model (Part 1)
-3. `docs/spec/spirits.md`: offices, will, malice, apparatus (Part 1a)
-4. `docs/spec/operator.md`: the discipline of the Operator, and the wand (Part 1b)
-5. `docs/spec/offices.md`: office signatures and containment (Part 1c)
-6. `docs/spec/grammar.md`: lexical grammar and EBNF (Part 2)
-7. `docs/spec/flow.md`, `library.md`, `concurrency.md`, `proscription.md` (Parts 2a–2d)
-8. `docs/spec/static.md`: compile-time rules (Part 3)
-9. `docs/spec/dynamic.md`: runtime rules (Part 4)
-10. `docs/registers/*.md`: generated from the `.json` files by `tools/build_register.py`
-11. `docs/sources/LOG.md`, `docs/spec/provenance.md`, `docs/sources/occultist-explorer/CROSSCHECK.md`
+1. `docs/spec/core.md` in full, especially:
+   - §3.1, the interface between the rite layer and the core, including consecration;
+   - §8, theorems T1–T9;
+   - §9, the formal model: the state (§9.1), the transitions and agent-level states (§9.2), the marks (§9.3), validators and the consecration step (§9.3a), non-interference (§9.4), the order of rites and the will (§9.5).
+2. Its cross-references, read only as far as needed to check them:
+   - `docs/spec/flow.md` (marks, quarantine, consecration);
+   - `docs/spec/offices.md` §1, §3, §4 (handed sets, containment, helpers);
+   - `docs/spec/authority.md` §1.5, §2.5, §6.2a, §11;
+   - `docs/spec/operator.md` §4, §5, §8 (the second key and the wand);
+   - `docs/spec/concurrency.md` (workers, commits one at a time);
+   - `docs/spec/proscription.md` §2–3.
 
 ## Check
 
-1. **Citations:** every [S] claim is supported by the cited witness, and nothing invented is passed off as [S].
-2. **Precedence:** the oldest-wins rule is applied consistently, and the rulings are obeyed everywhere.
-3. **Consistency:** the parts agree with each other: section references, error codes A1 to A16, the outcomes of the will, destinations, ink classes, grant kinds, office signatures.
-4. **The core interface:** no rite rule anywhere grants authority, skips examination or reaches past `core.md` §3.1. Look especially for rules that let data, a spirit, an angel or a library act outside the faculty.
-5. **Theorems:** whether T1–T9 (`core.md` §8) are stated precisely enough to prove, and whether any rule in the spec contradicts one.
-6. **Grammar:** it is LL(1) and matches `tools/grammar_check.py`. Run `python3 tools/grammar_check.py tests/grammar` (69 programs).
-7. **Registers:** they match their sources: the 8 legion corrections, the ranks, the quarters, the divine names.
-8. **Gaps:** rules that cannot be implemented as written.
-
-## Known open items (do not report)
-
-- mixed-rank seal metal;
-- quarters for Buer, Glasya-Labolas, Haagenti, Caim, Amy, Valac, Botis and Marax;
-- Rudd's kings (waiting for Harley 6483);
-- which angel examines an angel, per rite;
-- the making of the instruments and the Secret Seal;
-- the `heptameron` sigils and the Harley 6483 seals;
-- `LONGAEVITAS`'s time grant; the network;
-- the angels' channel (`ADVOCA`).
+1. **Completeness of the state:** can anything that affects a run's next step lie outside §9.1?
+2. **The interface:** can any rite answer, any validator, any agent or any library grant authority, skip examination, or lift a mark other than through the step of §9.3a?
+3. **Each theorem:** is it stated over defined objects, with explicit preconditions, and free of hidden assumptions about the rite, the will, proposal content or the order of turns?
+4. **The order of rites:** does §9.5 cover every question of §3.1, and does T6 follow from it as stated?
+5. **Non-interference:** is §9.4 well defined given §9.3 and §9.3a, including across files and runs (`flow.md` §1.3)?
+6. **Proposals and agents:** is the separation of destinations (proposals) from agent states (invocation status, Index standing) consistent everywhere it is used?
+7. **Cross-references:** every reference in the scope points to a section that says what is claimed.
 
 ## Report format
 

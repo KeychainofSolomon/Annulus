@@ -175,7 +175,7 @@ It defines permissions, prohibitions and resource limits [Architecture §9].
 - [S: BnF 1524 p246, the Book II circle with an open corridor into the centre, and p191 L.]
 - [O: the single-entry rule.]
 
-6.2a **The uninvited go to Hell** (ruling 2026-11-10). Any agent that reaches a Circle other than through an invocation the Operator made there is an **intruder**: a spirit not invoked, or an outside program or AI agent acting on the program without a grant. It is not examined, because it has nothing to examine. No capability it holds traces to the faculty (law ORIGIN), and whether it was invoked is a recorded fact, not a judgement, so no examiner's error can condemn it. Its messages are refused at the entrance, everything it sent is sealed in the Vessel (`INFERNUS`), it is barred from the program for the rest of the run, and all of it is recorded. [S: the Circle "to preserve himself from the malice of those evill Spirits" (Sloane 3825 f112); Orobas and Haures suffer no other spirit to tempt the Operator (G, W). O: the mechanism.]
+6.2a **The uninvited go to Hell** (ruling 2026-11-10). Any agent that reaches a Circle other than through an invocation the Operator made there is an **intruder**: a spirit not invoked, or an outside program or AI agent acting on the program without a grant. It is not examined, because it has nothing to examine. No capability it holds traces to the faculty (law ORIGIN), and whether it was invoked is a recorded fact, not a judgement, so no examiner's error can condemn it. Its messages are refused at the entrance, everything it sent is sealed in the Vessel (`INFERNUS`), it is barred from the program for the rest of the run, and all of it is recorded. [S: the Circle "to preserve himself from the malice of those evill Spirits" (Sloane 3825 f112); Orobas and Haures suffer no other spirit to tempt the Operator (G, W). O: the mechanism.] ("Go to Hell" applies to what they produced; the agents themselves are relegated and proscribed, never irreversibly condemned: `core.md` §9.2.)
 
 **Proscription** (ruling 2026-11-11). An intruder is banned **on every level at which it sought to enact change**: the program, every Circle it reached, and every resource it tried to alter (each file, place, grant or invocation it aimed at). The ban is entered in the **Index of the proscribed** (*index proscriptorum*), which the Constitution keeps outside every program. It holds:
 - every identity the intruder presented;
@@ -343,7 +343,7 @@ Examination is not judgement (section 11). [Architecture §10]
 
 11.1 **Only the Constitution's judgement step assigns a destination,** on the basis of the examiner's verdict. No agent assigns a destination to its own work.
 
-11.2 **The destinations** apply to the proposal judged, not to the spirit who made it; releasing the spirit stays the Operator's act (`dynamic.md` §6.2):
+11.2 **The destinations** apply to the proposal judged, not to the spirit who made it; releasing the spirit stays the Operator's act (`dynamic.md` §6.2). An agent's own states are separate, and none of them is irreversible condemnation (`core.md` §9.2):
 
 | Destination | Mechanics |
 |---|---|

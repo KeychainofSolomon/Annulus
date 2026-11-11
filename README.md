@@ -60,6 +60,7 @@ CI builds and smoke-tests both platform binaries, each with a SHA-256 checksum:
 | [`docs/registers/goetia.md`](docs/registers/goetia.md) | The register of the 72 spirits, generated from `goetia.json` |
 | [`docs/registers/nomina.md`](docs/registers/nomina.md) | Divine and sacred names from the Circle, figures and conjuration of Sloane 3825 |
 | [`docs/registers/reges.md`](docs/registers/reges.md) | The four kings of the quarters, per rite |
+| [`docs/spec/operator.md`](docs/spec/operator.md) | The discipline of the Operator: securing the person who grants and approves (draft 1) |
 | [`docs/spec/static.md`](docs/spec/static.md) | Static semantics: names, types and the compile-time authority checks (draft 1) |
 | [`docs/spec/dynamic.md`](docs/spec/dynamic.md) | Dynamic semantics: evaluation, failures, ink, the will at runtime, examination, release, audit (draft 1) |
 | [`docs/AUDIT.md`](docs/AUDIT.md) | Audit of the v0.2 prototype: what worked, what was broken, what must be redesigned |

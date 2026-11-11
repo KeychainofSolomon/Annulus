@@ -258,3 +258,19 @@ Discussed with the owner, not built:
 - **Keeping a sourced detail:** it is kept only if it has a mechanical analogue (ruling of the same day).
 - **Specification started:** `docs/spec/authority.md` and `docs/spec/provenance.md`.
 - **Roadmap:** now the 18 steps (`docs/ROADMAP.md`).
+
+## Next session: start here (2026-11-11)
+
+- **Read first:** `docs/ROADMAP.md`, adopted 2026-11-11. The new order is: finish the spec → minimal interpreter → demonstrate enforcement → AI-agent demo → evaluation → discipline of the Operator → VM and native backend.
+- **Current step:** step 1, completing the specification. Its outstanding list is in the roadmap; the office signatures come first.
+- **Pending from the owner:**
+  - approval of the spec;
+  - the [O] readings of the Earls' and Dukes' conditions;
+  - the results of the GPT audit (`AUDIT_BRIEF.md` and `annulus-audit.zip`).
+- **New this session:**
+  - Part 1b, `docs/spec/operator.md`;
+  - the guiding principle (`authority.md` §1.5);
+  - intruders and proscription (`authority.md` §6.2a).
+- **Data scripts:** the registers' JSON is the source of truth. Edit the JSON, then run `python3 tools/build_register.py`; CI checks that the generated `.md` files match.
+- **Tests:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (prototype, 50 tests); `python3 tools/grammar_check.py tests/grammar` (64 programs).
+

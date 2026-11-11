@@ -188,6 +188,12 @@ The ban **persists across runs**. Each later launch refuses those identities at 
 
 **The Vessel is kept, one per installation** (ruling 2026-11-11). Like the Index, it persists across runs, is only appended to, and is chained by hash so that tampering fails `launch` (`proscription.md` §3.2). It is the evidence of what was attempted, and nothing is ever removed from it.
 
+**The Vessel's first two records** (ruling 2026-11-11). Every installation's Vessel begins with its history, in the order the source gives:
+1. **The sealing:** Solomon shuts the 72 spirits with their legions in the brass vessel, seals it with his seal and casts it into the lake (Sloane 3825 f113).
+2. **The breaking**, afterwards: the Babylonians break the vessel hoping for treasure; the spirits flee to their former places, save Belial, who enters an image (same source).
+
+Each is dated only as the source dates it: the breaking comes after the sealing, and no year is claimed. Both are fixed text in the Constitution, signed with each release (§2.5). They hold no spirit, no capability and nothing that can run; the chain of every installation's Vessel starts from them, so altering either fails `launch`. The second record is why the spirits can be invoked at all: they are no longer in the vessel. [S: Sloane 3825 f113. O: the records as the chain's start.]
+
 **The Vessel is never opened for use.** What is sealed in it is never released, committed, run or reused, by anyone, the Operator included. The Operator may *read* it, to learn what was attempted; reading changes nothing. [S: Sloane 3825 f113, the warning: the Babylonians broke the vessel "hoping to find great treasure", and the spirits fled to their former places, save Belial, who "entered into a certain Image". O: read-only access.]
 
 Invited agents keep the rule of §11 for what they do through their invocation: their work may be made `IRRITUM`, and their release stays the Operator's act. An invited agent that attempts to reach a Circle where it holds no open invocation, or acts after its release, is an intruder there (ruling 2026-11-11, `core.md` §9.2).

@@ -272,7 +272,13 @@ Discussed with the owner, not built:
 - **Pending from the owner:** (Andras ruled: no pentagram required, unprotected he may end the run, `dynamic.md` §5.5; angels ruled: `authority.md` §12.1a, reserved grants `… angelis;`, used only at the Operator's petition, since only the Operator prays); then approval of the whole spec, after a second audit.
 - **Amendment procedure drafted:** `authority.md` §2.5 (version and fingerprint; only the owner approves; AI drafts are petitions; core, rite and editorial changes; for approval).
 - **Simulated spirits drafted:** `dynamic.md` §5.6 (`--voluntas simulata`; scripted answers via `--responsa`, placeholders otherwise; `--sors` forces an outcome for hostile tests; the script is never readable by the program).
-- **Next in step 1:** items 4–8 (information flow, concurrency, standard library, proscription details, the guiding principle's obligations). The auditor recommends a second audit before approval.
+- **Items 4–7 drafted from the owner's rulings** (asked as design questions pairing Solomonic principles with modern or forgotten techniques):
+  - `flow.md`: spirits' words quarantined, CaMeL-style; consecration by gravity; outside data tainted for ink but may steer;
+  - `concurrency.md`: each Triangle an actor (E vats), only the Operator sends, deterministic simulation;
+  - `library.md`: no ambient authority, a powerbox of slots chosen at launch, proof-carrying answers;
+  - `proscription.md`: identity by seal then by scope of actions (a match on scope only means suspected and held), an append-only hash-chained log (`.proscriptio`).
+- **The owner's working style for design questions:** ask by prompt (multiple choice), be creative, keep to the Solomonic principles, and draw on current technology or older ideas that never caught on.
+- **Next in step 1:** item 8 (write down the guiding principle's obligations for later steps), then the second audit and the owner's approval. The auditor recommends a second audit before approval.
 - **Standing instruction from the owner (2026-11-11):** say so plainly, and early, when the project reaches a point where it would pay to bring the core up to standard before building more on it, so it never ends in spaghetti. Watch for: the same rule written in two places, the two parsers (`tools/grammar_check.py` and the Rust one) drifting apart, and new features built on unapproved spec. **Known now:** the Rust prototype implements none of the spec. It should be replaced (step 2) once the spec is approved, never extended.
 - **Data scripts:** the registers' JSON is the source of truth. Edit the JSON, then run `python3 tools/build_register.py`; CI checks that the generated `.md` files match.
 - **Tests:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (prototype, 50 tests); `python3 tools/grammar_check.py tests/grammar` (69 programs).

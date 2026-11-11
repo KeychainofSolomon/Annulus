@@ -60,12 +60,14 @@ CI builds and smoke-tests both platform binaries, each with a SHA-256 checksum:
 | [`docs/spec/spirits.md`](docs/spec/spirits.md) | The spirits: offices as computer work, will, malice, counterbalances and wards (draft 1) |
 | [`docs/spec/operator.md`](docs/spec/operator.md) | The discipline of the Operator (Part 1b, draft 1) |
 | [`docs/spec/offices.md`](docs/spec/offices.md) | Office signatures: what each office is handed and gives back (Part 1c, draft 1) |
-| [`docs/spec/static.md`](docs/spec/static.md) | Static semantics: scopes, types, authority analysis, error codes (draft 1) |
-| [`docs/spec/dynamic.md`](docs/spec/dynamic.md) | Dynamic semantics: launch, invocation, the will, examination, release, audit (draft 1) |
 | [`docs/registers/goetia.md`](docs/registers/goetia.md) | The register of the 72 spirits, generated from `goetia.json` |
 | [`docs/registers/nomina.md`](docs/registers/nomina.md) | Divine and sacred names from the Circle, figures and conjuration of Sloane 3825 |
 | [`docs/registers/reges.md`](docs/registers/reges.md) | The four kings of the quarters, per rite |
 | [`docs/spec/operator.md`](docs/spec/operator.md) | The discipline of the Operator: securing the person who grants and approves (draft 1) |
+| [`docs/spec/flow.md`](docs/spec/flow.md) | Information flow: the quarantine of spirits' words, consecration by gravity (draft 1) |
+| [`docs/spec/concurrency.md`](docs/spec/concurrency.md) | Concurrency: each Triangle an actor; only the Operator sends; deterministic simulation (draft 1) |
+| [`docs/spec/library.md`](docs/spec/library.md) | Standard library: no ambient authority, the powerbox, proof-carrying answers (draft 1) |
+| [`docs/spec/proscription.md`](docs/spec/proscription.md) | The Index of the proscribed: identity by seal then scope, an append-only log (draft 1) |
 | [`docs/spec/static.md`](docs/spec/static.md) | Static semantics: names, types and the compile-time authority checks (draft 1) |
 | [`docs/spec/dynamic.md`](docs/spec/dynamic.md) | Dynamic semantics: evaluation, failures, ink, the will at runtime, examination, release, audit (draft 1) |
 | [`docs/AUDIT.md`](docs/AUDIT.md) | Audit of the v0.2 prototype: what worked, what was broken, what must be redesigned |

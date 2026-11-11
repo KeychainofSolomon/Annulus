@@ -119,5 +119,8 @@ C = core, R = rite, C+R = core mechanics with rite content.
 | `offices.md` | §1, §3, §4 | C |
 | | §2, §5, §6 | R |
 | `grammar.md` | all | C (syntax carries no authority) |
+| `flow.md`, `concurrency.md`, `proscription.md` | all | C |
+| `library.md` | §1, §2, §3.1 | C |
+| | §3.2–3.3, §4 | R |
 | `provenance.md` | all | R |
 | `docs/registers/` | all | R |

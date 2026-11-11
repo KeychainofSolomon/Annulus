@@ -17,8 +17,8 @@ Nothing is reported as built or tested unless it was.
 | # | Step | State |
 |---|---|---|
 | 0 | Audit and reproducible build of the v0.2 prototype | **Done** (v0.2.1; `docs/AUDIT.md`; pinned toolchain, CI double build) |
-| 1 | **Complete the formal specification** | **In progress**: Parts 1, 1a, 1b, 2, 3 and 4 drafted (`docs/spec/`); outstanding work below |
-| 2 | **Minimal executable interpreter** (Rust): parser, type checker with the authority rules, direct interpreter | |
+| 1 | **Complete the formal specification** | **Done, approved by the owner 2026-11-11**: the spec (`docs/spec/`) and the core's formal model in Lean 4 (`formal/`, statements only), after five prose audits and two Lean audits. Open rite-layer items remain listed (angel-over-angel examination, source questions) |
+| 2 | **Minimal executable interpreter** (Rust): parser, type checker with the authority rules, direct interpreter | **Next**: plan in `docs/STEP2_PLAN.md` |
 | 3 | **Demonstrate enforcement**: programs written to break every law, each refused; Andras's `probatio`; begin the no-amplification proof | |
 | 4 | **Practical demonstration**: a real AI agent invoked as a spirit, in a Triangle, for one office, under a narrow faculty | |
 | 5 | **Evaluate** against conventional languages, permission systems and capability frameworks: security, clarity, complexity, performance | |

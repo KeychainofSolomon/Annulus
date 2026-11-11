@@ -109,7 +109,7 @@ Rules for these kinds:
 | `VECTIO` | `"transfer"` (move) or `"exscribe"` (copy) | source with `legere` (and `delere` to move); target with `creare` or `scribere` | `transfer` or `exscribe` |
 | `AEDIFICATIO` | — | targets with `creare` | `crea`: files or directories |
 | `EVERSIO` | — | targets with `delere` | `dele` |
-| `CONCORDIA` | — | sources with `legere`; one target with `scribere` | `coniunge`: merge the sources into the target, conflicts resolved |
+| `CONCORDIA` | — | sources with `legere`; one target with `scribere` | `coniunge`: merge the sources into the target by the rule of §2.3a |
 | `DISCORDIA` | — | one source with `legere`; targets with `creare` | `scinde`: split the source into divergent copies. Races and load wait for concurrency (roadmap item 5) |
 | `MORBUS` | `"corrumpe"` or `"sana"` | targets with `scribere` | `corrumpe` (corrupt) or `sana` (repair). For **Vepar** every `corrumpe` carries its inverse, kept until the Circle closes (`spirits.md` §4.4) |
 | `FURTUM` | `"aufer"` | source with `legere` and `delere`; target with `scribere` or `creare` | `aufer`: take the data out of the source into the target |
@@ -123,6 +123,15 @@ Rules for these kinds:
 | `FAMILIARES` | `"voca"` or `"libera"` | handed places; for `libera`, either one same-Circle invocation or one other program named by a constant (§4.6) | `voca`: attaches helpers to the spirit (§4). `libera`: frees a helper of that invocation or program, and takes it into this spirit's Triangle stripped and narrowed (§4.6) |
 | `LONGAEVITAS` | — | one same-Circle invocation | `proroga`: lengthens how long its helpers or held proposals last, within the Circle. **[For the owner]** The faculty has no time budget yet, so this cannot be invoked until one exists (a `tempus` grant) |
 | `CUSTODIA` | — | same-Circle invocations; places with `legere` | a response: warnings only. A warning can hold a decision in `PURGATORIUM`, never approve one (`operator.md` §3). A false warning can only cause a delay, so this is the safe direction |
+
+### 2.3a How `coniunge` merges (second audit, 2026-11-11)
+
+1. **What the proposal holds.** The proposal holds the **whole** merged content of the target, and a **resolution map**. The commit writes exactly that content, so every implementation commits the same thing.
+2. **Agreement.** The sources are compared line by line, in the order the request lists them. Wherever they agree, the merge MUST keep that text unchanged.
+3. **Conflicts.** Wherever they disagree, the map MUST say how each conflict was resolved: by one named source's version, or by new text the spirit wrote.
+4. **Examination.** The examiner checks that the agreed text is unchanged, and that every conflict appears in the map. An unmapped change is a false account: `REJECT`.
+5. **Marks.** Any new text the spirit wrote is his words, so the target becomes quarantined (`flow.md` §1.3). A merge made only of the sources' own versions keeps the highest of their marks.
+6. **Simulated mode** (`dynamic.md` §5.6): the first source listed wins every conflict, so the merge is deterministic.
 
 ### 2.4 Petitions (they cannot take effect within the run)
 

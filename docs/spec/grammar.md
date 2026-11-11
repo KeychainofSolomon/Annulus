@@ -198,7 +198,7 @@ entry          = ( "SPIRITUS" | "ANGELUS" ) , integer ;
   2. `PETE` takes a plain name: `PETE furfur("x")`. Otherwise its argument list would be read as an ordinary function call.
   3. `CONSECRA`, `EXAMINA` and `INSCRIBE … ATRAMENTO …` bind as tightly as `NON`. So `EXAMINA p == PARADISUS` means `(EXAMINA p) == PARADISUS`.
 
-  The reference recognizer `tools/grammar_check.py` implements exactly this grammar and runs the test programs in `tests/grammar/`.
+  The reference recognizer `tools/grammar_check.py` is hand-written to follow this grammar, and runs the test programs in `tests/grammar/`. **It checks examples, not the LL(1) property itself** (second audit, 2026-11-11). An independent check, computing FIRST and FOLLOW sets from the EBNF above and comparing the parser mechanically against it, is a task for step 2.
 - The smallest `NUMERUS`, −9223372036854775808, cannot be written as a literal, because its digits overflow before the minus applies. Write it as `-9223372036854775807 - 1`.
 - Comparison does not chain: `a < b < c` is a syntax error.
 - The precedence, from loosest to tightest binding: `VEL`, `ET`, comparison, `+ -`, `* / %`, prefix (`-`, `NON`, `CONSECRA`, `EXAMINA`, `INSCRIBE`), postfix.

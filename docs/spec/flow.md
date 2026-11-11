@@ -27,7 +27,7 @@ Draft 1, 2026-11-11, from the owner's rulings of the same day. Roadmap step 1, i
 
 ## 3. Consecration by gravity (ruling 2026-11-11)
 
-3.1 **`CONSECRA v`** lifts the quarantine from a value, when a validator other than the program accepts it (`authority.md` §7.4). It yields a value marked **consecrated**, at one of two grades.
+3.1 **`CONSECRA v`** lifts the quarantine from a value, when a validator other than the program accepts it (`authority.md` §7.4). It is a question of the core interface (`core.md` §3.1): the rite names the validator and gives its answer; the core alone changes the mark (`core.md` §9.3). It yields a value marked **consecrated**, at one of two grades.
 
 3.2 **Ordinary grade.** The validator is the one the examining angel's rite assigns for that office (`authority.md` §10). An ordinary-grade value may steer the program, except where the code it steers contains a grave act.
 

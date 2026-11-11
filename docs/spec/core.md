@@ -48,7 +48,7 @@ Everything else is rite:
 
 ## 3. The interface: the rite can only restrict
 
-3.1 **The rite layer talks to the core in exactly these ways.** Each one can refuse, hold, spend or bound. None can grant.
+3.1 **The rite layer talks to the core in exactly these ways.** Each one can refuse, hold, spend or bound. None can grant. **One exception, stated openly** (second audit, 2026-11-11): consecration may *lift* the quarantine on data. It never adds authority, so T1 is untouched, but T5 holds only up to consecration (§9.4).
 
 | What the rite supplies | What the core does with it | Why it cannot add authority |
 |---|---|---|
@@ -58,6 +58,7 @@ Everything else is rite:
 | **a verdict**: `APPROVE`, `HOLD` or `REJECT` | maps it to a destination (C6) | `APPROVE` is necessary, never sufficient (§3.3) |
 | **bounds**: legions, ink costs, lifetimes, escalation steps | enforces them as upper limits, or spends them from *G* | a bound only caps; spending only removes |
 | **the will's draw** | gives the proposal its content | the will decides what a spirit offers, never what it may hold |
+| **consecration** (`CONSECRA`, `flow.md` §3): the validator for the value, chosen by the rite (the examining angel's validator for the office), and its answer, accept or refuse | the core alone changes the value's mark: raw ink becomes consecrated ink; a quarantined value becomes consecrated at the ordinary grade. The validator MUST be neither the program nor the spirit whose words the value carries. The grave grade needs the wand's second key, outside the session (`operator.md` §8), so it is never given within a run | it changes a mark on data, never a capability. It is the only point where quarantined data may come to steer, and it can steer only among acts the program could already perform within *G* |
 | **counterbalances and extra checks** (Focalor's prohibition, Vepar's reversibility, `TUTELA`) | can only turn `APPROVE` into `HOLD` or `REJECT`, or refuse an effect | they only remove |
 
 3.2 **Monotonicity.** Formally: for any two rites *R* and *R′*, where *R′* adds restrictions to *R*, every run allowed under *R′* is allowed under *R*. And for **every** rite, even a wrong or a malicious one, the guiding principle (C3) holds. So the proof is done once, over the core, with the rite treated as an unknown that can only answer the questions in §3.1. [O]
@@ -148,3 +149,51 @@ These are the theorems the core MUST be shown to satisfy. Each holds for **every
 - **Step 6, testing the Operator's discipline:** T8, and `operator.md` §7.
 - **Step 7, the bytecode verifier:** it re-establishes T1, T3 and T5 on compiled code, so that bytecode not produced by the checker cannot break them. [Parallel: the Java bytecode verifier.]
 - **Step 9, the native backend:** each compilation is checked to preserve the bytecode's behaviour (translation validation), so that T1–T9 carry over.
+
+## 9. The formal model (second audit, 2026-11-11)
+
+The definitions the proof of §8 rests on. Step 3 writes the transition rules out in full, in the proof assistant. These are the objects and relations they must use. [O]
+
+9.1 **The state** σ of a run holds:
+- the faculty *G*, with its reserved part *G*ᵃ (grants for angels);
+- the stack of open Circles;
+- for each invocation *i*: its status, and the handed set H(*q*) of each of its requests;
+- for each proposal: its status, *pending* or *judged d*, with *d* one of `PARADISUS`, `PURGATORIUM`, `INFERNUS`;
+- the mark λ(*v*) of every value and place (§9.3);
+- the audit *A*, a sequence; the Index *X*, a hash-chained log; the Vessel *V*;
+- the wand's state: present or absent; unlocked, master or rite.
+
+9.2 **Transitions.** A run is a sequence σ₀ → σ₁ → … through these steps only:
+- `launch`, `open`, `close`;
+- `invoke`, `request`, `turn` (a spirit's or helper's piece of work);
+- `examine`, `judge`, `consecrate`, `commit`;
+- `release`, `relegate`, `kill` (Andras, `dynamic.md` §5.5);
+- `step`: one step of ordinary computation.
+
+Every transition appends to *A*, and none removes from it.
+
+**An invocation's life:** its status starts `open` and moves only to `released` or `relegated`. Both are **terminal**: no transition leaves them. Releasing an invocation that is already terminal only records "already done". `close`, `kill` and the end of a run make every open invocation terminal. That is the "exactly once" of T4.
+
+9.3 **Marks.** Each value and place has a mark, ordered from least to most restricted:
+
+    clean  <  outside  <  consecrated-grave  <  consecrated  <  quarantined
+
+- A computed value takes the **highest** of its inputs' marks, so quarantine absorbs everything else.
+- A file keeps the mark of what was written to it (`flow.md` §1.3).
+- `clean` and `outside` may steer anything.
+- `consecrated` may steer anything except code containing a grave act; only `consecrated-grave` may steer that.
+- `quarantined` may steer nothing.
+- Only `consecrate` lowers a mark.
+
+9.4 **Non-interference (T5, stated exactly).** Take two runs of the same program, with the same *G*, rite, seed and inputs. They may differ **only** in the content of quarantined values that no `consecrate` step accepted. Then the two runs make the same sequence of control decisions, and touch the same places in the same order. With consecration: the runs may differ only after a `consecrate` step that accepted a value, and only through that value. [Parallel: "robust declassification" (Zdancewic and Myers, 2001).]
+
+9.5 **Ordering rites (T6, stated exactly).** Rite *R′* is **at least as strict** as rite *R*, written *R′* ⪯ *R*, when for every state and every question of §3.1:
+- every admission *R′* allows, *R* allows;
+- every pair *R′*'s signatures ask for, *R*'s ask for;
+- *R′*'s verdict is no more favourable, in the order `REJECT` < `HOLD` < `APPROVE`;
+- *R′*'s bounds are no larger, and its costs no smaller;
+- every consecration *R′* accepts, *R* accepts.
+
+T6 then reads: if *R′* ⪯ *R*, every run possible under *R′* is possible under *R*. And T1–T5 hold under every *R*, whatever its answers.
+
+9.6 **Each theorem's form.** Each of T1–T9 is a statement about every reachable state, or every complete run, of every well-typed program under every rite. Its precondition is only that the program passed the type checker and was launched with a faculty. No assumption about the rite, the will or the order of turns is allowed.

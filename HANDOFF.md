@@ -207,7 +207,7 @@ Discussed with the owner, not built:
 **Corrections to the notes above:**
 - **Mathers PDF:** figure = page − 45 for pp. 56–99. A source is stated for 42 of the 44 pentacles, mostly in captions inside the images.
 - **Sloane 3825:** dated 1641 or later. The 1904 "doubles" may be copies of seals the scribe struck out.
-- **Arbatel 1575:** Bethor has 32 provinces, total 186.
+- **Arbatel 1575:** the edition *prints* Bethor XXXII and a total of CLXXXXVI (196); the printed numbers sum to 186. Its intended reading, by its own total and the series falling by 7, is **42**, total 196 (`docs/sources/LOG.md`; `provenance.md` rule 6). (Corrected 2026-11-11 after the second audit: this note used to say "total 186".)
 - **Book of Oberon:** all its figures are modern redrawings.
 
 ## Decision (the owner, 2026-11-10): "oldest wins" applies only within one work
@@ -281,7 +281,8 @@ Discussed with the owner, not built:
 - **The wand** (`operator.md` §8, ruling): a plain USB stick (the owner's choice) with a master secret and a rite secret, each locked by a passphrase; it signs the faculty, the second key, Constitution releases, and is needed for `GERE VIRGAM`. The master secret is never unlocked while a spirit is invoked; a spare wand can revoke a lost one. Hours and registers come first, since the interpreter needs them for any invocation.
 - **The owner's working style for design questions:** ask by prompt (multiple choice), be creative, keep to the Solomonic principles, and draw on current technology or older ideas that never caught on.
 - **Step 1's writing is complete.** Item 8 drafted as theorems T1–T9 (`core.md` §8). `AUDIT_BRIEF.md` is rewritten for the **second audit**.
-- **Next:** the owner sends the project and `AUDIT_BRIEF.md` to the auditor. Fold in its findings (as with `docs/AUDIT_SPEC_1.md`), then the owner's approval ends step 1. Step 2 begins with the core module, then `horae` and `registra`. The auditor recommends a second audit before approval.
+- **Second audit received and folded in:** `docs/AUDIT_SPEC_2.md`. All five findings fixed (Bethor was a stale handoff note). New: `core.md` §9, the formal model; consecration in the core interface; `offices.md` §2.3a, the merge rule.
+- **Next:** the owner's approval ends step 1, or a third audit first if he wants one. Step 2 begins with the core module, then `horae` and `registra`, and the LL(1) analysis carried over.
 - **Standing instruction from the owner (2026-11-11):** say so plainly, and early, when the project reaches a point where it would pay to bring the core up to standard before building more on it, so it never ends in spaghetti. Watch for: the same rule written in two places, the two parsers (`tools/grammar_check.py` and the Rust one) drifting apart, and new features built on unapproved spec. **Known now:** the Rust prototype implements none of the spec. It should be replaced (step 2) once the spec is approved, never extended.
 - **Data scripts:** the registers' JSON is the source of truth. Edit the JSON, then run `python3 tools/build_register.py`; CI checks that the generated `.md` files match.
 - **Tests:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (prototype, 50 tests); `python3 tools/grammar_check.py tests/grammar` (69 programs).

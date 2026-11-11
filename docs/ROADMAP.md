@@ -45,6 +45,8 @@ Nothing is reported as built or tested unless it was.
 9a. **Simulated spirits** (found and drafted 2026-11-11, `dynamic.md` §5.6: scripted answers, placeholders, forced outcomes for hostile tests): what a spirit produces when no real AI agent stands behind it. A working office can simply perform the requested work, but a telling office has no source of a true answer. Simulation mode needs a rule before the core runtime (step 2) can run a rite.
 10. **The owner's approval** of the whole. The Earls' and Dukes' readings are ruled (2026-11-11), as are the eight points of `offices.md` §7.
 
+**Carried to step 2** (second audit): an independent LL(1) analysis of the EBNF (FIRST and FOLLOW sets), and a mechanical comparison of the parser against it.
+
 **Exit criterion:** the owner approves the specification.
 
 ## Specification parts written so far

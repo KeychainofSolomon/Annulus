@@ -54,6 +54,7 @@ A program cannot declare, assign or shadow a register label (`authority.md` §2.
 | seal (operative) | `INSCRIBE … ATRAMENTO …` | a capability |
 | ink (raw) | `ATRAMENTUM "classis"` | drawn from the faculty; not yet usable |
 | ink (consecrated) | `CONSECRA` on raw ink | usable for one inscription |
+| **marks** on plain values | inferred, never written (`flow.md` §2.3) | `clean`, `outside`, `consecrated-grave`, `consecrated`, `quarantined` (`core.md` §9.3). `CONSECRA` on a quarantined value gives the same type marked `consecrated`. The grave grade is never given within a run (`flow.md` §3.3) |
 | entry | `SPIRITUS n`, `ANGELUS n` | a register reference |
 | divine name | `NOMEN "…"` | a Constitution reference |
 

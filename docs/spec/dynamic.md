@@ -74,7 +74,7 @@ Escalation step 4 for a spirit whose king is not stated is recorded as skipped: 
 | the Moon's age 2, 4, 6, 8, 10, 12, 14 | whole days since the astronomical new moon |
 | Earls: "in woods or places where men resort not, or where no noise is" | **[O, for approval]** no other invocation is open in the program |
 | Dukes: "in clear weather" | **[O, for approval]** no `TEMPESTAS` effect is active |
-| Presidents, at any hour (Weyer, ruling 2026-11-10) | refused unless the king he obeys is invoked, and always at nightfall. A pure President is refused unless `INVOCA REGEM` of his king came first in the Circle. The witnesses name the king for only four spirits (Agares, Asmoday, Gaap, Seere: Amaymon); see `docs/registers/reges.md` |
+| Presidents, at any hour (Weyer, ruling 2026-11-10) | refused unless the king he obeys is invoked, and always at nightfall. A pure President is refused unless `INVOCA REGEM` of his king came first in the Circle. His king is the `goetia` king of his stated quarter (`static.md` §4.5b, ruling 2026-11-10): Gaap and Marbas (East, Amaymon); Foras, Malphas and Osé (South, Gorson); Zagan (West, Goap). A President whose quarter is not stated cannot be invoked (A13). See `docs/registers/reges.md` |
 
 A spirit of two ranks may be invoked when **either** rank's window is open. [O; the mixed-rank question stays open]
 
@@ -95,7 +95,7 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 
 ## 6. Examination and judgement
 
-6.1 **`EXAMINA` runs the fixed examiner** (`authority.md` §10) over the proposal and gives a verdict:
+6.1 **`EXAMINA` runs two acts of the Constitution** (`static.md` §4.10). First the fixed examiner (`authority.md` §10) gives a verdict, which is recorded. Then the judgement step (`authority.md` §11) assigns the destination from the verdict, as the table shows. Only the destination is returned to the program:
 
 | Verdict | When | Destination |
 |---|---|---|
@@ -150,5 +150,5 @@ The runtime admits into a Circle only what comes through its entrance from an in
 - The register of divine names that `NOMEN` and `CONSTRINGE … PER NOMEN` must match, transcribed from the Circle of Solomon (Sloane 3825 f112) and the instruments.
 - How the instruments are made (materials, days), and the vestments and the Secret Seal (`spirits.md` §4.4).
 - The four kings as a register, for the Presidents' twilight rule and for Paimon's attendant kings.
-- Signatures for each office kind (what `PETE` passes and what the proposal holds).
+- Signatures for each office kind: drafted in `offices.md` (Part 1c), for approval.
 - The owner's approval of the two [O] readings of the Earls' and Dukes' conditions (§5.1).

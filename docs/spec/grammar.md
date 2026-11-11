@@ -210,7 +210,7 @@ The full rules are in Part 3, `static.md`. In summary:
 
 1. **`entity`** resolves through the Constitution's registers, by number or by label, within the Circle's rite. An unknown name is a compile-time error. `furfur` and `SPIRITUS 34` are the same entity.
 2. **`AD OFFICIUM` office** must be one of the spirit's offices in that rite. A spirit asked for anything else is a compile-time error (law OFFICE).
-3. **`EXAMINA p`** sends `p` to the examiner fixed by the Constitution (Rudd's angel *n* for spirit *n* in `rudd`). It yields a destination. There is no syntax for choosing an examiner.
+3. **`EXAMINA p`** sends `p` to the examiner fixed by the Constitution (Rudd's angel *n* for spirit *n* in `rudd`). The examiner gives a verdict; the Constitution's judgement step then assigns the destination, which is the value of `EXAMINA p` (`static.md` §4.10). There is no syntax for choosing an examiner or a judge.
 4. **`NOMEN "…"`** must match exactly one recorded form of a divine name (kind `deus`) in `docs/registers/nomina.md`, for example `NOMEN "AGLA"` or `NOMEN "Tetragrammaton"`.
 
 ## 6. Built-in types (summary)

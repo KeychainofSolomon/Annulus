@@ -49,7 +49,7 @@ A program cannot declare, assign or shadow a register label (`authority.md` §2.
 |---|---|---|
 | invocation | `INVOCA` | a spirit in its Triangle |
 | proposal | `PETE` | untrusted output of a spirit |
-| destination | `EXAMINA`, the literals `PARADISUS`, `PURGATORIUM`, `INFERNUS` | a plain value; may leave the Circle |
+| destination | the judgement step inside `EXAMINA` (§4.10); the literals `PARADISUS`, `PURGATORIUM`, `INFERNUS` | a plain value; may leave the Circle |
 | seal (exemplar) | `SIGILLUM e` | data; grants nothing |
 | seal (operative) | `INSCRIBE … ATRAMENTO …` | a capability |
 | ink (raw) | `ATRAMENTUM "classis"` | drawn from the faculty; not yet usable |
@@ -94,7 +94,7 @@ A program cannot declare, assign or shadow a register label (`authority.md` §2.
 
 These rules are checked before the program runs. Where a law can only be checked while running (budgets, time windows, verdicts), Part 4 covers it.
 
-4.1 **CONTAINMENT and SOVEREIGNTY: rite operations stay inside a Circle.** `GERE`, `OFFER`, `CONSTRINGE`, `APPELLA`, `VETA`, `INVOCA`, `PETE`, `SIGILLUM`, `ATRAMENTUM`, `CONSECRA`, `INSCRIBE`, `EXAMINA`, `VADE IN PACE`, `DIMITTE` and `RELEGA` are errors outside a `CIRCULUS` block. A function body counts as outside unless the operation is in a Circle inside that body. [S: the operator works only within the circle.]
+4.1 **CONTAINMENT and SOVEREIGNTY: rite operations stay inside a Circle.** `GERE`, `OFFER`, `CONSTRINGE`, `APPELLA`, `VETA`, `INVOCA`, `PETE`, `SIGILLUM`, `ATRAMENTUM`, `CONSECRA`, `INSCRIBE`, `EXAMINA`, `VADE IN PACE`, `DIMITTE` and `RELEGA` are errors outside a `CIRCULUS` block. So are the expressions that produce Circle-bound values: `NOMEN`, `SPIRITUS` and `ANGELUS` (audit 2026-11-11). Outside a Circle there is no rite in which an entry could resolve (§4.3), and §4.7 binds entries and divine names to their Circle. A function body counts as outside unless the operation is in a Circle inside that body. [S: the operator works only within the circle.]
 
 4.2 **The rite must exist.** `RITU` names one of the rites in `authority.md` §4.1. The intention string MUST NOT be empty. [O]
 
@@ -116,11 +116,13 @@ An entry outside the range, a label not in the rite's register, or a reference t
 
 4.5a **The apparatus.** `GERE`, `OFFER`, `CONSTRINGE`, `APPELLA` and `VETA` are rite operations: only inside a Circle (§4.1). An instrument taken up lasts until its Circle closes. Where a spirit **requires** an instrument (`spirits.md` §4.4: Beleth, Berith, Astaroth; Andras for `probatio`, §4.5), it MUST be taken up before `INVOCA`, on every path (A11). `PETE` to Andras for `probatio` takes the names of the program's functions as `VERBUM` arguments; each MUST name an `OPUS` of the program. The name in `CONSTRINGE … PER NOMEN` follows the rule for `NOMEN` (`grammar.md` §5, item 4).
 
-4.5b **The kings.** `INVOCA REGEM r` names a king of the Circle's rite (`docs/registers/reges.md`). It is defined for `goetia` and `rudd` (which shares the Goetia's kings); in other rites it is an error (A3). It yields `NIHIL`: the king does not appear, and nothing is released. [S: the kings "are not to be called forth except it be upon Great Occasions; but are to be Invocated and Commanded to send" (G).]
+4.5b **The kings.** `INVOCA REGEM r` names a king of the Circle's rite (`docs/registers/reges.md`). It is defined for `goetia`; in other rites it is an error (A3). It yields `NIHIL`: the king does not appear, and nothing is released. [S: the kings "are not to be called forth except it be upon Great Occasions; but are to be Invocated and Commanded to send" (G).]
+
+**`rudd` (open, audit 2026-11-11):** Rudd's Goetia is a separate work (`provenance.md`), so it cannot silently inherit the Goetia's kings. Until Rudd's own four kings are established from Harley 6483, or the owner rules that the `goetia` readings apply, `INVOCA REGEM` under `rudd` is provisional, and a pure President under `rudd` follows this provisional reading.
 
 **A President needs his king.** `INVOCA` of a spirit whose only rank is President requires `INVOCA REGEM` of the king he obeys, earlier in the same Circle, on every path (A13). [S: Weyer ch. III, "non potest constringi, nisi rex cui paret, invocaretur", ruling 2026-11-10.] The king a spirit obeys is **the `goetia` king of his quarter** (ruling 2026-11-10): the quarter is the direction the witnesses give for the spirit (`goetia.md`), and the king is Weyer's for that quarter (`reges.md`). A President whose quarter is not stated cannot be invoked (A13). Presidents with a quarter: Gaap and Marbas (East, Amaymon); Foras, Malphas and Osé (South, Gorson); Zagan (West, Goap). Spirits of two ranks are not bound by this rule when invoked within their other rank's hours.
 
-4.6 **OFFICE.** The identifier after `AD OFFICIUM` MUST name one of the spirit's office kinds in the rite (`docs/registers/goetia.md`); an office marked `NULLUM` cannot be invoked. Each office has a fixed signature: what `PETE` may pass, and what the proposal will contain. The arguments to `PETE` MUST match it. The offices register, mapping each traditional office to computational work, is still to be written: open item §7.
+4.6 **OFFICE.** The identifier after `AD OFFICIUM` MUST name one of the spirit's office kinds in the rite (`docs/registers/goetia.md`); an office marked `NULLUM` cannot be invoked. Each office has a fixed signature: what `PETE` may pass, and what the proposal will contain. The arguments to `PETE` MUST match it (A5). The mapping from each traditional office to computer work is in `spirits.md` §6; the signatures are in `offices.md` (Part 1c, draft 1, for approval).
 
 4.7 **Rite values are bound to their Circle.** Invocations, proposals, seals, ink, entries and divine names MUST stay in the Circle that produced them. They MUST NOT be:
 - assigned to a variable declared outside that Circle;
@@ -144,7 +146,11 @@ Destinations are plain values and may leave. [O; enforces SOVEREIGNTY.]
 - Whether the budget suffices is checked while running, because loops make it unknowable beforehand.
 - The binding hours and the Moon's age (`authority.md` §8.3) are checked while running, against the clock.
 
-4.10 **EXAMINATION and JUDGEMENT.** `EXAMINA p` requires a proposal. The examiner is not written and cannot be: the Constitution's pairing decides it (`authority.md` §10). There is no expression that produces a destination except `EXAMINA` and the three literals, and a literal destination cannot commit anything: it is only a value to compare with.
+4.10 **EXAMINATION and JUDGEMENT.** `EXAMINA p` requires a proposal. It performs two separate acts of the Constitution, in order (ruling pending, audit 2026-11-11):
+1. **Examination** (`authority.md` §10): the fixed examiner gives a **verdict**, `APPROVE`, `HOLD` or `REJECT`. The verdict is recorded in the audit. It is not a program value and has no type a program can hold.
+2. **Judgement** (`authority.md` §11): the Constitution's judgement step assigns the **destination** from the verdict (`dynamic.md` §6.1). The destination is the value of `EXAMINA p`.
+
+The examiner is not written and cannot be: the Constitution's pairing decides it (`authority.md` §10). No agent and no program performs either act. There is no expression that produces a destination except `EXAMINA` and the three literals, and a literal destination cannot commit anything: it is only a value to compare with.
 
 4.11 **RELEASE: every invocation ends.** For each variable holding an invocation:
 - on **every path** through the Circle, it MUST be released exactly once, by `VADE IN PACE`, `DIMITTE` or `RELEGA`, before the Circle closes;
@@ -181,7 +187,7 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 | T5 | missing `REDDE` on some path |
 | T6 | empty sequence without a type |
 | T7 | value cannot be shown by `MANIFESTA` |
-| A1 | rite operation outside a Circle |
+| A1 | rite operation, entry or divine name outside a Circle |
 | A2 | unknown rite, or empty intention |
 | A3 | entry or label not in the rite's register |
 | A4 | invocation of an entity with no Triangle |
@@ -197,8 +203,9 @@ Both are applied in `grammar.md` and in `tools/grammar_check.py`.
 
 ## 7. Open items
 
-- **Signatures for `PETE`:** the offices register now exists (`docs/registers/goetia.md`, rules in `spirits.md`). Each office kind still needs its argument and proposal types.
+- **Signatures for `PETE`:** drafted in `offices.md`; its §7 lists what waits for the owner.
 - **Mixed ranks:** which ink class a spirit of two ranks takes.
+- **Rudd's kings** (audit 2026-11-11): establish from Harley 6483 whether Rudd gives the four kings, or have the owner rule that the `goetia` readings apply (§4.5b). Then add `rudd` entries to `reges.json`.
 - **Registers for `clavicula`, `iuratus` and `janua`.**
 - **Modules (`LIBER`, `ADHIBE`):** how files are found and what a module exports; deferred to the part on the standard library.
 - **Destination as a written type:** for passing destinations to functions, a type name is needed. The proposal is `DESTINATIO`.

@@ -259,18 +259,19 @@ Discussed with the owner, not built:
 - **Specification started:** `docs/spec/authority.md` and `docs/spec/provenance.md`.
 - **Roadmap:** now the 18 steps (`docs/ROADMAP.md`).
 
-## Next session: start here (2026-11-11)
+## Next session: start here (2026-11-11, second session)
 
-- **Read first:** `docs/ROADMAP.md`, adopted 2026-11-11. The new order is: finish the spec → minimal interpreter → demonstrate enforcement → AI-agent demo → evaluation → discipline of the Operator → VM and native backend.
-- **Current step:** step 1, completing the specification. Its outstanding list is in the roadmap; the office signatures come first.
+- **Read first:** `docs/ROADMAP.md`. The order is: finish the spec → minimal interpreter → demonstrate enforcement → AI-agent demo → evaluation → discipline of the Operator → VM and native backend.
+- **Current step:** step 1, completing the specification.
+- **Done this session:**
+  - **Office signatures**, `docs/spec/offices.md` (Part 1c, draft 1): every office kind's arguments, proposal and check, and the containment argument for helper tasks (proof obligation 1). Its §7 lists eight points for the owner.
+  - **Ruled by the owner:** `PRAETERITA` reads a **history** of the present run and the one before it, never the audit (`offices.md` §2.2a). The earlier run needs a `historia "prior" legere` grant, still to be approved.
+  - **The GPT audit**, folded in: `docs/AUDIT_SPEC_1.md`. Four findings fixed, Rudd's kings left open.
 - **Pending from the owner:**
-  - approval of the spec;
-  - the [O] readings of the Earls' and Dukes' conditions;
-  - the results of the GPT audit (`AUDIT_BRIEF.md` and `annulus-audit.zip`).
-- **New this session:**
-  - Part 1b, `docs/spec/operator.md`;
-  - the guiding principle (`authority.md` §1.5);
-  - intruders and proscription (`authority.md` §6.2a).
+  - approval of the spec, and of `offices.md` §7;
+  - the ruling that `EXAMINA` is examination then judgement, returning only the destination (`static.md` §4.10);
+  - Rudd's kings (`static.md` §4.5b);
+  - the [O] readings of the Earls' and Dukes' conditions (`dynamic.md` §5.1; see also `offices.md` §7.8).
+- **Next in step 1:** the two-layer split (roadmap item 2), then the rest of the list. The auditor recommends a second audit before approval.
 - **Data scripts:** the registers' JSON is the source of truth. Edit the JSON, then run `python3 tools/build_register.py`; CI checks that the generated `.md` files match.
 - **Tests:** `RUSTUP_TOOLCHAIN=stable cargo test --offline` (prototype, 50 tests); `python3 tools/grammar_check.py tests/grammar` (64 programs).
-

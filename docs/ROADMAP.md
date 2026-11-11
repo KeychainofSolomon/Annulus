@@ -29,7 +29,7 @@ Nothing is reported as built or tested unless it was.
 
 ## Step 1: what the specification still needs
 
-1. **Office signatures:** for each office kind (`spirits.md` §6), what `PETE` passes and what the proposal holds. This is the biggest gap: the OFFICE law, examination and helper-task containment all depend on it.
+1. **Office signatures:** for each office kind (`spirits.md` §6), what `PETE` passes and what the proposal holds. **Drafted 2026-11-11** in `docs/spec/offices.md` (Part 1c), with the containment argument for helper tasks (§3–4); its §7 lists eight points for the owner.
 2. **The two-layer split:** a small **core** (capabilities, the grant, no amplification, the Circle boundary, commits, audit, Vessel, Index) that is proven, separate from the **rite layer** (registers, offices, hours, seals, ink, apparatus), which is data and policy judged by the source rule. Tradition decides what the rite means; the core decides what is possible.
 3. **Amendment procedure:** the Constitution is versioned; changes come only through reviewed releases; every program records the Constitution version it ran under. The sources check the rite layer's fidelity; proof and attack testing check the core's safety.
 4. **Information flow:** rules beyond taint, including when tainted data may be released; no ambient authority anywhere in the standard library.
@@ -41,7 +41,7 @@ Nothing is reported as built or tested unless it was.
    - the type checker (step 2) must enforce the principle;
    - the bytecode verifier (step 7) must reject anything that breaks it;
    - a machine-checked proof over a formal model of the typing rules, plus Andras's `probatio`, must show it (step 3).
-9. **The GPT audit:** fold in its findings (`AUDIT_BRIEF.md`).
+9. **The GPT audit:** received 2026-11-11 and folded in (`docs/AUDIT_SPEC_1.md`): four findings fixed, one (Rudd's kings) open for a source check or the owner's ruling. The auditor recommends a second audit before approval.
 10. **The owner's approval** of the whole, including the [O] readings of the Earls' and Dukes' conditions (`dynamic.md` §5.1).
 
 **Exit criterion:** the owner approves the specification.
@@ -56,6 +56,7 @@ Nothing is reported as built or tested unless it was.
 6. **Dynamic semantics:** evaluation order, the effect model, failure classes. File: `docs/spec/dynamic.md` (draft 1).
 7. **The spirits:** offices as computer work, will, malice, counterbalances, apparatus, Andras's testing. File: `docs/spec/spirits.md` (Part 1a, draft 1).
 8. **The discipline of the Operator:** commitment before the work, no free channel, guardians, preparation, two keys, real-agent mode. File: `docs/spec/operator.md` (Part 1b, draft 1).
+8a. **Office signatures:** what each office kind is handed and gives back, and how helpers stay contained. File: `docs/spec/offices.md` (Part 1c, draft 1).
 9. **Registers** (generated from JSON by `tools/build_register.py`): the 72 spirits, divine names, the four kings. Files: `docs/registers/`.
 
 ## The first end-to-end working (target of steps 2-3)

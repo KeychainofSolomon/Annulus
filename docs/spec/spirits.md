@@ -51,12 +51,12 @@ The register gives each spirit one veracity class. The class names are [O]; the 
 
 A lie takes one of two forms, depending on the kind of office. [O: the mechanism.]
 
-1. **Lies of information.** These arise in the offices that tell: `PRAETERITA`, `PRAESENTIA`, `FUTURA`, `RESPONSA`, `OCCULTA`, `THESAURI`, `AMISSA`. The true answer is replaced by a different well-formed value of the same type, drawn like any choice of the will (`dynamic.md` §5.4). Nothing in its form betrays it, so examination cannot catch it. Only constraint closes it, as in the sources.
+1. **Lies of information.** These arise in the offices that tell: `PRAESENTIA`, `FUTURA`, `RESPONSA`, `OCCULTA`, `THESAURI`, `AMISSA`. The true answer is replaced by a different well-formed value of the same type, drawn like any choice of the will (`dynamic.md` §5.4). Nothing in its form betrays it, so examination cannot catch it. Only constraint closes it, as in the sources.
 2. **Lies of work.** These arise in every other office. A lie can only be a false account of what the proposal does. The examiner inspects the proposal's actual effects, so the false account is caught: `REJECT`, and the proposal goes to `INFERNUS`.
 
 ### 3.2 Belial and Berith
 
-- **Berith** tells things past, present and to come, so his lies are of the first kind. The ring of art closes `MENDACIUM` for **one hour** from its use; after the hour it is open again. [S: "compelled for an hour by a ring of art", W.]
+- **Berith** tells things past, present and to come. His lies about the present and the future are of the first kind. His lies about the past are now caught, because `PRAETERITA` is checked against the history (`offices.md` §2.2a). The ring of art closes `MENDACIUM` for **one hour** from its use; after the hour it is open again. [S: "compelled for an hour by a ring of art", W.]
 - **Belial's** offices all do work (dignities, favour, familiars), so his lies are of the second kind, and examination catches them. `MENDACIUM` closes only when **both** conditions are met: offerings, sacrifices and gifts, and then constraint by divine power. [S: W and G agree on both.]
 - **Until a program meets their conditions** with the apparatus (§4.4), every answer from either is held in `PURGATORIUM`. It is never committed, and never readable by the program, whether it happens to be true or not.
 
@@ -154,7 +154,7 @@ Beleth is the model case: if he will not enter the triangle, "rehearse the Bonds
 
 | Kind | Source office (examples) | Computer work |
 |---|---|---|
-| `PRAETERITA` | tells things past | reads history: stored records, the audit |
+| `PRAETERITA` | tells things past | reads the **history**: the present run and the one before it, never the audit itself (`offices.md` §2.2a, ruling 2026-11-11). Its answers can be checked, so a lie about the past is caught |
 | `PRAESENTIA` | tells things present | inspects current state |
 | `FUTURA` | tells things to come | forecasts and estimates; always a free act, never certain |
 | `OCCULTA` | discovers things hidden, secrets | searches for unindexed or concealed data |
@@ -186,6 +186,8 @@ Beleth is the model case: if he will not enter the triangle, "rehearse the Bonds
 | `LONGAEVITAS` | makes a man live long (Foras, W) | lengthens a lifetime: how long data is kept before it expires, or how long a task stays alive. Never beyond the faculty's budget, for no spirit gives time any more than it mints ink |
 | `PROBATIO` | **none: the owner's ruling (M), for Andras only.** His danger, to "kill the master, his servants and assistants" (W), turned under command into an office | attacks **copies** of the Operator's own program to find where it fails (§4.5) |
 | `APPELLATIO` | gives a good name (Forneus, W) | names and labels things: file names, titles, descriptions. **Partial:** "good name" means reputation, and its other half, trust, is not offered, because a fallen spirit cannot vouch for anything (axiom 1.1) |
+
+**Signatures:** what `PETE` passes and what the proposal holds for each kind are in `offices.md` (Part 1c).
 
 6.2 **Harmful kinds stay harmful.** `DISCORDIA`, `EVERSIO`, `TEMPESTAS`, `NEX`, `MORBUS`, `FURTUM` and `MENS` are real, destructive computer work: deletion, termination, corruption, disruption. They act only on what the faculty grants and only after examination. They are not softened: a spirit invoked for `NEX` really ends tasks.
 

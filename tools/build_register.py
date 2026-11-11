@@ -30,7 +30,7 @@ def angels():
 
 def outcomes(spirit):
     result = ["OBSEQUIUM", "MORA", "PARS", "RECUSATIO"]
-    if spirit["veracity"] in ("COACTUS", "MENDAX"):
+    if spirit["veracity"] in ("COACTUS", "MENDAX", "TACITUS"):
         result.append("MENDACIUM")
     if spirit["veracity"] != "FIDUS" and spirit["malice"]:
         result.append("MALITIA")

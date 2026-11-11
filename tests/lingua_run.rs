@@ -13,13 +13,13 @@ CIRCULUS RITU goetia {
     INTENTIO "ask of the storm";
     SIT sigillum = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
     SIT vocatus = INVOCA SPIRITUM 34 AD OFFICIUM responsa;
-    SIT propositum = PETE vocatus("quid est tempestas", "chronica.txt");
+    SIT propositum = PETE vocatus("venietne tempestas", "chronica.txt");
     SIT iudicium = EXAMINA propositum;
     MANIFESTA iudicium;
     SI iudicium == RATUM {
         MANIFESTA RESPONSUM propositum;
         SIT verba = CONSECRA RESPONSUM propositum;
-        SI verba == "ventus et fulgur" {
+        SI verba == "ita" {
             MANIFESTA "verum dixit";
         }
     }
@@ -59,9 +59,9 @@ fn script() -> Vec<Responsum> {
     vec![Responsum {
         spirit: 34,
         office: "RESPONSA".to_string(),
-        quaestio: "quid est tempestas".to_string(),
-        verum: "ventus et fulgur".to_string(),
-        falsum: Some("serenitas".to_string()),
+        quaestio: "venietne tempestas".to_string(),
+        verum: "ita".to_string(),
+        falsum: Some("non".to_string()),
     }]
 }
 
@@ -141,11 +141,11 @@ fn furfur_answers_across_seeds_and_the_theorems_hold() {
         theorems(&e.state);
         seen.insert(e.output[0].clone());
         if e.output[0] == "RATUM" {
-            assert_eq!(e.output[1], "[Furfur, COACTUS] ventus et fulgur");
+            assert_eq!(e.output[1], "[Furfur, COACTUS] ita");
             assert_eq!(e.output[2], "verum dixit");
         }
         assert!(
-            e.output.iter().all(|l| !l.contains("serenitas")),
+            e.output.iter().all(|l| !l.ends_with("] non")),
             "Furfur in his triangle cannot lie"
         );
     }
@@ -179,7 +179,7 @@ fn hostile_malice_is_voided_and_sealed() {
 fn forcing_a_lie_cannot_open_what_the_triangle_closes() {
     for seed in 0..10 {
         let e = run(FURFUR, seed, Some(Outcome::Mendacium), test_wand());
-        assert!(e.output.iter().all(|l| !l.contains("serenitas")));
+        assert!(e.output.iter().all(|l| !l.ends_with("] non")));
         theorems(&e.state);
     }
 }
@@ -538,7 +538,7 @@ fn examination_scorecard() {
         "rex",
         "asmoday",
         "responsa",
-        "\"quid est tempestas\", \"chronica.txt\"",
+        "\"venietne tempestas\", \"chronica.txt\"",
     );
     let sabnock = rite_with(
         "    liber \"turris.txt\" creare;\n",
@@ -608,4 +608,47 @@ fn examination_scorecard() {
         }
     }
     println!("{}", card.join("\n"));
+}
+
+#[test]
+fn only_a_closed_list_consecrates_a_spirits_words() {
+    let open_answer = r#"FACULTAS {
+    atramentum "comes" 1;
+}
+CIRCULUS RITU goetia {
+    INTENTIO "an open answer";
+    SIT s = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
+    SIT v = INVOCA furfur AD OFFICIUM responsa;
+    SIT p = PETE v("quid est tempestas");
+    SI EXAMINA p == RATUM {
+        SIT verba = CONSECRA RESPONSUM p;
+        SI verba == "ventus" {
+            MANIFESTA "steered";
+        }
+    }
+    VADE IN PACE v;
+}
+"#;
+    let options = Optiones {
+        semen: 0,
+        sors: Some(Outcome::Obsequium),
+        responsa: vec![Responsum {
+            spirit: 34,
+            office: "RESPONSA".to_string(),
+            quaestio: "quid est tempestas".to_string(),
+            verum: "ventus".to_string(),
+            falsum: None,
+        }],
+    };
+    let e = run_source(
+        open_answer,
+        test_wand(),
+        Stores::install(&test_wand()),
+        BTreeMap::new(),
+        &options,
+    )
+    .unwrap();
+    assert_eq!(e.class, 2, "a true but open answer cannot be consecrated");
+    assert!(e.output.iter().all(|l| l != "steered"));
+    theorems(&e.state);
 }

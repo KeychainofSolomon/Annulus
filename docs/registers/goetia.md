@@ -8,78 +8,78 @@ Witnesses: **W** Weyer 1577, **S** Sloane 3825, **G** 1904 edition. **F** Folger
 
 | # | Spirit | Rank (S) | Ink | Legions | Quarter, king | Veracity | Will may choose | Examiner (`rudd`) |
 |---|---|---|---|---|---|---|---|---|
-| 1 | Bael | king | "rex" | 66 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Vehuiah |
-| 2 | Agares | duke | "dux" | 31 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Jeliel |
+| 1 | Bael | king | "rex" | 66 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Vehuiah |
+| 2 | Agares | duke | "dux" | 31 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Jeliel |
 | 3 | Vassago | prince | "princeps" | 26 (S) | — | `FIDUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Sitael |
-| 4 | Samigina | marquis | "marchio" | 30 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Elemiah |
+| 4 | Samigina | marquis | "marchio" | 30 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Elemiah |
 | 5 | Marbas | president | "praeses" | 36 (W) | East, Amaymon | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Mahasiah |
 | 6 | Valefor | duke | "dux" | 10 (W) | — | `MENDAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Lelahel |
-| 7 | Amon | marquis | "marchio" | 40 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Achaiah |
-| 8 | Barbatos | duke | "dux" | 30 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Cahetel |
-| 9 | Paimon | king | "rex" | 200 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Haziel |
-| 10 | Buer | president | "praeses" | 50 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Aladiah |
+| 7 | Amon | marquis | "marchio" | 40 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Achaiah |
+| 8 | Barbatos | duke | "dux" | 30 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Cahetel |
+| 9 | Paimon | king | "rex" | 200 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Haziel |
+| 10 | Buer | president | "praeses" | 50 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Aladiah |
 | 11 | Gusion | duke | "dux" | 45 (W) | — | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Lauviah |
-| 12 | Sitri | prince | "princeps" | 60 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Hahaiah |
-| 13 | Beleth | king | "rex" | 85 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Iezalel |
-| 14 | Leraje | marquis | "marchio" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Mebahel |
-| 15 | Eligos | duke | "dux" | 60 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Hariel |
-| 16 | Zepar | duke | "dux" | 26 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Hakamiah |
+| 12 | Sitri | prince | "princeps" | 60 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Hahaiah |
+| 13 | Beleth | king | "rex" | 85 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Iezalel |
+| 14 | Leraje | marquis | "marchio" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Mebahel |
+| 15 | Eligos | duke | "dux" | 60 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Hariel |
+| 16 | Zepar | duke | "dux" | 26 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Hakamiah |
 | 17 | Botis | president and earl | "praeses" / "comes" | 60 (W) | — | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Lauviah II |
-| 18 | Bathin | duke | "dux" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Caliel |
-| 19 | Sallos | duke | "dux" | 30 (S) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Leuviah |
+| 18 | Bathin | duke | "dux" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Caliel |
+| 19 | Sallos | duke | "dux" | 30 (S) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Leuviah |
 | 20 | Purson | king | "rex" | 22 (W) | — | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Pahaliah |
-| 21 | Marax | earl and president | "comes" / "praeses" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Nelchael |
-| 22 | Ipos | earl and prince | "comes" / "princeps" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Yeiayel |
+| 21 | Marax | earl and president | "comes" / "praeses" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Nelchael |
+| 22 | Ipos | earl and prince | "comes" / "princeps" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Yeiayel |
 | 23 | Aim | duke | "dux" | 26 (W) | — | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Melahel |
-| 24 | Naberius | marquis | "marchio" | 19 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Haheuiah |
-| 25 | Glasya-Labolas | president | "praeses" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Nith-Haiah |
+| 24 | Naberius | marquis | "marchio" | 19 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Haheuiah |
+| 25 | Glasya-Labolas | president | "praeses" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Nith-Haiah |
 | 26 | Bune | duke | "dux" | 30 (W) | — | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Haaiah |
-| 27 | Ronove | marquis and earl | "marchio" / "comes" | 19 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Yerathel |
+| 27 | Ronove | marquis and earl | "marchio" / "comes" | 19 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Yerathel |
 | 28 | Berith | duke | "dux" | 26 (W) | South, Gorson | `MENDAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Seheiah |
 | 29 | Astaroth | duke | "dux" | 40 (W) | South, Gorson | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Reiyel |
-| 30 | Forneus | marquis | "marchio" | 29 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Omael |
-| 31 | Foras | president | "praeses" | 29 (W) | South, Gorson | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Lecabel |
+| 30 | Forneus | marquis | "marchio" | 29 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Omael |
+| 31 | Foras | president | "praeses" | 29 (W) | South, Gorson | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Lecabel |
 | 32 | Asmoday | king | "rex" | 72 (W) | East, Amaymon | `COACTUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Vasariah |
 | 33 | Gaap | president and prince | "praeses" / "princeps" | 66 (W) | East, Amaymon | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Yehuiah |
 | 34 | Furfur | earl | "comes" | 26 (W) | — | `COACTUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Lehahiah |
 | 35 | Marchosias | marquis | "marchio" | 30 (W) | — | `FIDUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Chavakiah |
-| 36 | Stolas | prince | "princeps" | 26 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Menadel |
+| 36 | Stolas | prince | "princeps" | 26 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Menadel |
 | 37 | Phenex | marquis | "marchio" | 20 (W) | — | `FIDUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Aniel |
-| 38 | Halphas | earl | "comes" | 26 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Haamiah |
-| 39 | Malphas | president | "praeses" | 40 (W) | South, Gorson | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Rehael |
-| 40 | Raum | earl | "comes" | 30 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Ieiazel |
-| 41 | Focalor | duke | "dux" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Hahahel |
-| 42 | Vepar | duke | "dux" | 29 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Mikael |
-| 43 | Sabnock | marquis | "marchio" | 50 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Veualiah |
+| 38 | Halphas | earl | "comes" | 26 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Haamiah |
+| 39 | Malphas | president | "praeses" | 40 (W) | South, Gorson | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Rehael |
+| 40 | Raum | earl | "comes" | 30 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Ieiazel |
+| 41 | Focalor | duke | "dux" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Hahahel |
+| 42 | Vepar | duke | "dux" | 29 (W) | East, Amaymon | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Mikael |
+| 43 | Sabnock | marquis | "marchio" | 50 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Veualiah |
 | 44 | Shax | marquis | "marchio" | 30 (W) | — | `COACTUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Yelahiah |
-| 45 | Vine | king and earl | "rex" / "comes" | 35 (S) | North, Zymymar | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Sealiah |
-| 46 | Bifrons | earl | "comes" | 26 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Ariel |
-| 47 | Vual | duke | "dux" | 37 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Asaliah |
-| 48 | Haagenti | president | "praeses" | 33 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Mihael |
-| 49 | Crocell | duke | "dux" | 48 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Vehuel |
-| 50 | Furcas | knight | "eques" | 20 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Daniel |
+| 45 | Vine | king and earl | "rex" / "comes" | 35 (S) | North, Zymymar | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Sealiah |
+| 46 | Bifrons | earl | "comes" | 26 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Ariel |
+| 47 | Vual | duke | "dux" | 37 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Asaliah |
+| 48 | Haagenti | president | "praeses" | 33 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Mihael |
+| 49 | Crocell | duke | "dux" | 48 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Vehuel |
+| 50 | Furcas | knight | "eques" | 20 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Daniel |
 | 51 | Balam | king | "rex" | 40 (W) | West, Goap | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Hahasiah |
-| 52 | Alloces | duke | "dux" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Imamiah |
+| 52 | Alloces | duke | "dux" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Imamiah |
 | 53 | Caim | president | "praeses" | 30 (W) | — | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Nanael |
-| 54 | Murmur | duke and earl | "dux" / "comes" | 30 (S) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Nithael |
+| 54 | Murmur | duke and earl | "dux" / "comes" | 30 (S) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Nithael |
 | 55 | Orobas | prince | "princeps" | 20 (W) | — | `FIDUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Mebahiah |
-| 56 | Gremory | duke | "dux" | 26 (W) | South, Gorson | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Poyel |
+| 56 | Gremory | duke | "dux" | 26 (W) | South, Gorson | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Poyel |
 | 57 | Ose | president | "praeses" | 3 (S) | South, Gorson | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Nemamiah |
-| 58 | Amy | president | "praeses" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Yeialel |
-| 59 | Orias | marquis | "marchio" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Harahel |
-| 60 | Vapula | duke | "dux" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Mitzrael |
-| 61 | Zagan | king and president | "rex" / "praeses" | 33 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Umabel |
+| 58 | Amy | president | "praeses" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Yeialel |
+| 59 | Orias | marquis | "marchio" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Harahel |
+| 60 | Vapula | duke | "dux" | 36 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Mitzrael |
+| 61 | Zagan | king and president | "rex" / "praeses" | 33 (W) | West, Goap | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Umabel |
 | 62 | Valac | president | "praeses" | 30 (W) | — | `VERAX` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Iahhel |
-| 63 | Andras | marquis | "marchio" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Anauel |
+| 63 | Andras | marquis | "marchio" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Anauel |
 | 64 | Haures | duke | "dux" | 20 (W) | — | `COACTUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Mehiel |
-| 65 | Andrealphus | marquis | "marchio" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Damabiah |
-| 66 | Cimejes | marquis | "marchio" | 20 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Manakel |
-| 67 | Amdusias | duke | "dux" | 29 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Eyael |
+| 65 | Andrealphus | marquis | "marchio" | 30 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Damabiah |
+| 66 | Cimejes | marquis | "marchio" | 20 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Manakel |
+| 67 | Amdusias | duke | "dux" | 29 (W) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Eyael |
 | 68 | Belial | king | "rex" | 80 (W) | West, Goap | `COACTUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Habuhiah |
-| 69 | Decarabia | marquis | "marchio" | 30 (W) | South, Gorson | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Rochel |
+| 69 | Decarabia | marquis | "marchio" | 30 (W) | South, Gorson | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Rochel |
 | 70 | Seere | prince | "princeps" | 26 (S) | East, Amaymon | `FIDUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Jabamiah |
-| 71 | Dantalion | duke | "dux" | 36 (S) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MALITIA` | Haiaiel |
-| 72 | Andromalius | earl | "comes" | 36 (S) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO` | Mumiah |
+| 71 | Dantalion | duke | "dux" | 36 (S) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM`, `MALITIA` | Haiaiel |
+| 72 | Andromalius | earl | "comes" | 36 (S) | — | `TACITUS` | `OBSEQUIUM`, `MORA`, `PARS`, `RECUSATIO`, `MENDACIUM` | Mumiah |
 
 ## Entries
 

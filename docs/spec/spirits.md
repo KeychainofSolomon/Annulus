@@ -25,7 +25,7 @@ Contradictions resolved by the oldest witness: Naberius (loss of dignities, not 
 | `OBSEQUIUM` | obeys fully and truly | every spirit |
 | `MORA` | obeys, but late | every spirit (Amdusias's music comes "not soon or immediately") |
 | `PARS` | obeys only in part | every spirit (Shax "promises obedience but does not fully keep it") |
-| `MENDACIUM` | answers falsely | only spirits the sources call liars, and only while the condition that compels them is unmet (§3) |
+| `MENDACIUM` | answers falsely | every spirit the sources do not call truthful or faithful: the liars, the silent (`TACITUS`, `authority.md` §1.7), and the compelled while the condition that compels them is unmet (§3) |
 | `MALITIA` | performs, unasked, a harm the witnesses give him (in his offices or his warnings) | only spirits whose offices the sources list as harmful, and only while the counterbalance is unmet (§4) |
 | `RECUSATIO` | refuses: will not appear, enter the Triangle, or answer | every spirit, until constrained (§5) |
 
@@ -43,7 +43,7 @@ The register gives each spirit one veracity class. The class names are [O]; the 
 | `COACTUS` | he answers truly only under a stated constraint; `MENDACIUM` is open until it is met | Furfur (triangle), Shax (triangle), Haures (triangle), Belial (divine power, after offerings) |
 | `MENDAX` | a liar or deceiver; any stated constraint compels him only for a limited time, or none is stated | Berith (the ring compels him for one hour, W); Valefor (deceives by familiarity, W) |
 | `FIDUS` | faithful, deceives none | Orobas ("deceives none, permits no tempting", W), Marchocias (W) |
-| `TACITUS` | the witnesses say nothing of his truthfulness | the rest; `MENDACIUM` is closed, but his answers stay unverified free acts (`authority.md` §8.4) |
+| `TACITUS` | the witnesses say nothing of his truthfulness | the rest; `MENDACIUM` is **open** (amended 2026-11-11, the owner's ruling: silence is not honesty, `authority.md` §1.7) |
 
 **The Triangle in Annulus is always present** (`authority.md` §6.4). So triangle-compelled spirits answer truly whenever properly invoked. Their lies become possible only where a rite's apparatus is incomplete, for instance where a spirit's own required figure (Furfur's triangle, Wellcome 110) is missing.
 

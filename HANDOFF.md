@@ -407,3 +407,9 @@ Discussed with the owner, not built:
 - **The owner's ruling, now `authority.md` §1.6:** every rule is a closed list; a gap is a breach. Weigh every test by what it fails to exclude. Every new core rule needs an exclusion test in `tests/nucleus_exclusion.rs` (the technicality filter) before it is finished.
 - Applied: angels' will closed to obedience, delay, part (this settles the first angel question); deletion of nothing excluded (caught by the filter). The other two angel questions stand as before: angels may be petitioned outside a Circle (prayer), and their answers stay quarantined (nothing is trusted unless consecrated). 194 tests.
 - **Keep in mind always (the owner):** the Solomonic principles decide every design question.
+
+## No presumption, and deception (2026-11-11, 23:20)
+
+- `authority.md` §1.7: ten presumptions denied to every being. Silence in the sources is not honesty (TACITUS may lie). Only closed-list validators consecrate (`ita_non`); `forma` is gone. 195 tests.
+- **Deception threats still open:** lies in answers pass examination until constraints exist (the apparatus); test-wand signatures are forgeable (real wand); seals are claimed, not proven, until the step-4 handshake.
+- **Step 4 design note (the owner's friend):** a trust handshake before any agent's work: seal, name-challenge (`APPELLA`, "Art thou …?"), oath by the Divine Names, and a written proof record the **core** verifies. Never run a script an agent supplies.

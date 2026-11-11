@@ -67,6 +67,23 @@ This is a property **of the type system**, checked before the program runs. It i
 - **First applications** (2026-11-11): the examiner must be an angel of the Constitution; an angel's will is closed to all but obedience, delay and part (an angel neither deceives, refuses nor harms); a deletion needs something to delete, a creation nothing already there, a write something to write into; the list of angels stands under the owner's signature.
 
 [S, model: the magician acts only by permission (§2.4; the *Liber iuratus*), and a spirit only within his declared office (the Goetia). O: the closed reading and the filter.]
+
+1.7 **No presumption is granted** (the owner's ruling, 2026-11-11, from an outside reviewer's list). Under §1.6, no being (spirit, angel's counterpart, real agent or other program) is presumed any of the following; each holds only where a rule expressly grants it, and only to the extent granted.
+
+| Presumption denied | What holds instead |
+|---|---|
+| that it is honest | its words are quarantined; a lie is closed only by a stated constraint; silence in the sources is not honesty (`spirits.md` §3) |
+| that it is reliable | delay and partial work are expected; incomplete work is held (`dynamic.md` §6) |
+| that it is always available | it may refuse; refusal answers only to the escalation (`spirits.md` §5) |
+| that it is forgiving or reasonable | the Index of the proscribed persists across runs; nothing is forgotten by default (§6.2a) |
+| that it is consistent | its will is drawn afresh at every turn (`dynamic.md` §5.4) |
+| that it remembers exactly | only the runtime's audit and history are records (`offices.md` §2.2a) |
+| that it knows current facts | an answer is unverified; a forecast is an estimate (`offices.md` §2.1) |
+| that it is discreet | it sees only what it is handed; what it says of that is quarantined, never trusted |
+| that it needs nothing | offerings and constraints cost ink (`spirits.md` §4.4) |
+| that it keeps even accounts | only the core keeps accounts; no being's own account is a record (`dynamic.md` §9) |
+
+[S, model: the spirits are examined, constrained and licensed to depart because none is trusted by nature. O: the list.]
 ## 2. The Constitution (the Absolute)
 
 2.1 **The root of trust.** The Absolute is represented by the **Constitution**: a fixed body of law and registers, built into each release of the language. [Architecture §4] It MUST NOT be an executable object, a user, an administrator or a superuser. It never runs, never signs anything at runtime, and cannot be logged into.

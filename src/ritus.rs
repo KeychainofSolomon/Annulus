@@ -8,25 +8,19 @@ use crate::nucleus::state::{
 use crate::nucleus::*;
 
 pub const EXAMINATOR: &str = "constitutio:angelicus";
-pub const FORMA: &str = "forma";
+pub const ITA_NON: &str = "ita_non";
 pub const RITE: &str = "goetia";
 
 pub struct Goetia {
     pub register: &'static Register,
 }
 
-fn forma(data: &str, _origin: &str, fuel: &mut u64) -> Option<bool> {
+fn ita_non(data: &str, _origin: &str, fuel: &mut u64) -> Option<bool> {
     if *fuel == 0 {
         return None;
     }
     *fuel -= 1;
-    Some(
-        !data.trim().is_empty()
-            && data.chars().count() <= 4096
-            && data
-                .chars()
-                .all(|c| !c.is_control() || c == '\n' || c == '\t'),
-    )
+    Some(matches!(data, "ita" | "non"))
 }
 
 pub fn constitution() -> Constitution {
@@ -35,15 +29,15 @@ pub fn constitution() -> Constitution {
         ..Default::default()
     };
     c.validators.insert(
-        FORMA.to_string(),
+        ITA_NON.to_string(),
         Validator {
-            code: forma,
-            name: FORMA.to_string(),
+            code: ita_non,
+            name: ITA_NON.to_string(),
             fuel: 1,
         },
     );
     c.manifest
-        .insert(FORMA.to_string(), fingerprint_validator(FORMA));
+        .insert(ITA_NON.to_string(), fingerprint_validator(ITA_NON));
     c.angels.insert(EXAMINATOR.to_string());
     c.high_consequence.insert(Verb::Dele);
     c.high_consequence.insert(Verb::Aufer);
@@ -278,9 +272,9 @@ impl Rite for Goetia {
             Outcome::Obsequium | Outcome::Mora | Outcome::Pars => true,
             Outcome::Recusatio | Outcome::Occisio => false,
             Outcome::Mendacium => match spirit.veracity.as_str() {
-                "MENDAX" => true,
+                "VERAX" | "FIDUS" => false,
                 "COACTUS" => !spirit.veracity_condition.contains("triangle"),
-                _ => false,
+                _ => true,
             },
             Outcome::Malitia => spirit.veracity != "FIDUS" && spirit.malice > 0,
         }
@@ -291,6 +285,6 @@ impl Rite for Goetia {
             .values
             .get(&value)
             .filter(|v| v.mark == Mark::Quarantined)
-            .map(|_| FORMA.to_string())
+            .map(|_| ITA_NON.to_string())
     }
 }

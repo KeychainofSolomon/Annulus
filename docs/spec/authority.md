@@ -80,6 +80,24 @@ This is a property **of the type system**, checked before the program runs. It i
 - [O] Honestly stated, the launching person is the real-world source of the Operator's standing. The specification says so rather than hiding it.
 - [S, model] In the sources the magician acts only by permission. In the *Liber iuratus*, permission for the vision is granted from above; the Key requires confession and fasting before any work.
 
+2.5 **Amendment** (draft 1, 2026-11-11, for the owner's approval). The Constitution changes only between releases, never while a program runs (§2.1).
+- **The version.** Every release carries a Constitution **version**, and a **fingerprint**: a hash of all its contents (§2.2, with the core spec, `core.md`). A program's first audit record, beside the faculty, names both.
+- **Checked under one version, run under one version.** A program checked under one version MUST be checked again before it runs under another, because the static rules read the registers. Replaying a run (`dynamic.md` §5.4) needs the same version.
+- **Who amends.** Only the owner approves a change. No program, spirit, angel or agent can amend the Constitution, and no AI session either: drafts from Claude, GPT or any other assistant are **petitions**, as a spirit's `CONSECRATIO` candidate is (`offices.md` §2.4). [O] Honestly stated, as with the faculty (§2.4), the owner is the real-world source of the Constitution's authority.
+- **Three kinds of change, by layer** (`core.md`):
+
+  | Kind | What it touches | What it needs before approval | Version step |
+  |---|---|---|---|
+  | **Core** | any core element C1–C9, or the core mechanics (effect verbs, grant kinds, ink budget, taint, failure classes), or the interface of `core.md` §3.1 | a new proof over the formal model (roadmap step 3), the attack tests passing, and an audit | major |
+  | **Rite** | registers, offices and their signatures, hours, conditions, seals, ink classes, pairings, divine names | a source check under the precedence rule (`provenance.md`), recorded with its deciding witness in the cross-check or source log, and the registers rebuilt from the JSON | minor |
+  | **Editorial** | wording only, with no change of meaning | a reading by the owner | patch |
+
+- **A rite change may not cross the line.** If a rite change would need anything the interface of `core.md` §3.1 does not already offer (a new way to grant, or to skip examination), it is a core change and needs the proof.
+- **The record of a change.** Each release lists every changed entry, the reason, the deciding source or the proof, and the date of approval (`CHANGELOG.md`).
+- **What survives an upgrade.** The Index of the proscribed and the audit persist across versions. An upgrade never lifts a proscription (`operator.md` §4). The history of the previous run (`offices.md` §2.2a) stays readable, marked with the version it ran under.
+
+[S, model: the *Liber iuratus* opens with a council of masters who decide together how the art is kept, and the book may pass only to a successor who has been tried. Changes to the law come by deliberate council and trial, never mid-work. O: versions, fingerprints and the three kinds.]
+
 ## 3. The eight laws
 
 Each law is enforced by the compiler's authority analysis, by the VM, or by both.

@@ -74,7 +74,7 @@ The Constitution's own acts (consecration, examination, judgement, the invocatio
 
 - **Roadmap step 2, the minimal interpreter:** build the core first, as its own module, with the rite reaching it only through the interface of §3.1. The registers are loaded as data. This is what keeps the code out of spaghetti: tradition can grow without touching the core.
 - **Step 3, the proof:** covers the core and §3 only.
-- **Item 3, amending the Constitution:** a change to the core needs a new proof; a change to the rite needs a source check. The amendment procedure can follow this line.
+- **Item 3, amending the Constitution:** a change to the core needs a new proof; a change to the rite needs a source check (`authority.md` §2.5).
 
 ## 6. Collisions found while splitting (for the owner)
 

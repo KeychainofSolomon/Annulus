@@ -35,6 +35,20 @@ Where no cheap certificate exists, the library recomputes instead. Where it can 
 
 3.3 **Which art each office serves** is a rite field in the register (`offices.md` §5.1).
 
-## 4. The network
+## 4. The libraries to build (approved by the owner, 2026-11-11)
+
+In the order they are needed:
+1. **`horae`, the hours:** sunrise, sunset, temporal and planetary hours, and the Moon's age at the declared place. Every time window needs it.
+2. **`registra`, the registers:** loading the registers, applying the witness precedence (`provenance.md`), and citing the deciding source.
+3. **`calendarium`, the calendar:** Julian and Gregorian conversion, and the *computus* for Easter, feasts and fasts.
+4. **`probatio`, the proof checker:** a tiny trusted checker in the manner of Metamath (1990s), small enough to trust completely, for `DOCTRINA` certificates. Then a checker for each art: parsing, formats, arithmetic.
+5. **`nomina`, names and numbers:** gematria, the variant spellings of divine names, Hebrew, Greek and Latin transliteration.
+6. **`figurae`, squares and seals:** the planetary magic squares, sigils built from them, the Sigillum Dei and the pentacles, and checking an operative seal against its exemplar.
+7. **`acta`, the Operator's tools:** reading an audit in plain language, replaying a run, and checking the Index.
+8. **`agens`, the agent bridge** (roadmap step 4): a real AI as a spirit, with its seal fingerprinted (`proscription.md` §2.1).
+
+**Outside code.** Libraries from elsewhere may be used for pure computation. Anything that touches the outside world MUST be wrapped so that it gets its authority only through the grant (§1), or rewritten. [Object-capability practice calls this "taming".] The names above are [O]: working names.
+
+## 5. The network
 
 Deferred. When added, each host is a grant of its own (`rete "host" …`), and nothing reaches the network without one.

@@ -63,8 +63,8 @@ impl Rite for TestRite {
         self.counterbalance
     }
 
-    fn ink_cost(&self, _: &State, _: &Seal) -> u64 {
-        self.ink
+    fn ink_fits(&self, _: &State, _: &Seal, class: &str) -> bool {
+        self.ink > 0 && class == "comes"
     }
 
     fn legions(&self, _: &State, _: InvId) -> usize {
@@ -162,7 +162,7 @@ fn launch_reserving(stores: Stores, wand: Wand, reserved: &[Cap]) -> State {
         auth,
         faculty,
         reserved,
-        ink: 10,
+        ink: [("comes".to_string(), 10)].into_iter().collect(),
         world,
         stores,
     })
@@ -188,6 +188,7 @@ fn spirit_turn(s: &mut State, rite: &TestRite, inv: InvId, contrib: Contrib, fin
 
 fn circle_and(s: &mut State, rite: &TestRite, seal: &str) -> (CircleId, InvId) {
     let c = op(s, |s| s.open_circle()).expect("open");
+    op(s, |s| s.inscribe(rite, &seal.to_string(), "comes")).expect("inscribe");
     let i = op(s, |s| s.invoke(rite, &seal.to_string())).expect("invoke");
     (c, i)
 }
@@ -546,6 +547,7 @@ fn a_suspected_author_is_held_and_a_proscribed_one_refused() {
         op(&mut s, |s| s.examine(&rite, p)).unwrap(),
         WorkOutcome::Suspensum
     );
+    op(&mut s, |s| s.inscribe(&rite, &MARBAS.to_string(), "comes")).unwrap();
     let r = op(&mut s, |s| s.invoke(&rite, &MARBAS.to_string()));
     assert!(matches!(r, Err(Refusal::Denied(_))));
 }
@@ -630,6 +632,7 @@ fn a_forged_seal_damns_only_the_forger() {
         .unwrap();
     assert_eq!(s.standing(&STRANGER.to_string()), Standing::Damnatus);
     assert_eq!(s.standing(&FURFUR.to_string()), Standing::Unknown);
+    op(&mut s, |s| s.inscribe(&rite, &FURFUR.to_string(), "comes")).unwrap();
     op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("Furfur is still invocable");
     check_theorems(&s);
 }
@@ -1024,7 +1027,12 @@ fn simulated_run(seed: u64) -> State {
                 0 => {
                     s.open_circle().unwrap();
                 }
-                1 | 2 => invs.push(s.invoke(&rite, &format!("goetia:{step}")).unwrap()),
+                1 | 2 => {
+                    let seal = format!("goetia:{step}");
+                    s.inscribe(&rite, &seal, "comes").unwrap();
+                    s.schedule(OPERATOR).unwrap();
+                    invs.push(s.invoke(&rite, &seal).unwrap());
+                }
                 3 | 4 => props.push(
                     s.request(
                         &rite,
@@ -1083,6 +1091,7 @@ fn a_failure_mid_circle_records_each_dismissal_newest_first() {
     let rite = TestRite::default();
     let mut s = fresh();
     let (_, first) = circle_and(&mut s, &rite, FURFUR);
+    op(&mut s, |s| s.inscribe(&rite, &MARBAS.to_string(), "comes")).unwrap();
     let second = op(&mut s, |s| s.invoke(&rite, &MARBAS.to_string())).expect("invoke");
     op(&mut s, |s| s.fail(1)).expect("fail");
     assert_eq!(
@@ -1158,4 +1167,52 @@ fn a_helper_is_held_to_its_own_narrower_set() {
         matches!(r, Err(Refusal::NotEnabled(_))),
         "the request may write notes.txt, but this helper was handed nothing"
     );
+}
+
+#[test]
+fn an_invocation_needs_a_seal_inscribed_in_its_circle() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    op(&mut s, |s| s.open_circle()).unwrap();
+    let r = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string()));
+    assert!(matches!(r, Err(Refusal::Denied(_))));
+}
+
+#[test]
+fn one_seal_serves_its_circle_and_is_paid_once() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, first) = circle_and(&mut s, &rite, FURFUR);
+    assert_eq!(s.ink_left["comes"], 9);
+    op(&mut s, |s| s.release(first)).unwrap();
+    op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("the same seal serves again");
+    assert_eq!(s.ink_left["comes"], 9, "invocation costs no ink");
+}
+
+#[test]
+fn a_seal_lapses_with_its_circle() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, inv) = circle_and(&mut s, &rite, FURFUR);
+    op(&mut s, |s| s.release(inv)).unwrap();
+    op(&mut s, |s| s.close_circle()).unwrap();
+    op(&mut s, |s| s.open_circle()).unwrap();
+    let r = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string()));
+    assert!(matches!(r, Err(Refusal::Denied(_))));
+}
+
+#[test]
+fn inscription_takes_ink_of_the_seals_class_until_it_runs_out() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    op(&mut s, |s| s.open_circle()).unwrap();
+    let wrong = op(&mut s, |s| s.inscribe(&rite, &FURFUR.to_string(), "rex"));
+    assert!(matches!(wrong, Err(Refusal::Denied(_))));
+    let mut s = fresh();
+    op(&mut s, |s| s.open_circle()).unwrap();
+    for _ in 0..10 {
+        op(&mut s, |s| s.inscribe(&rite, &FURFUR.to_string(), "comes")).unwrap();
+    }
+    let out = op(&mut s, |s| s.inscribe(&rite, &FURFUR.to_string(), "comes"));
+    assert!(matches!(out, Err(Refusal::Denied(_))));
 }

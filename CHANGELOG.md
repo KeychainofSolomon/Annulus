@@ -14,6 +14,9 @@
 - **A verb that creates may only create** (`offices.md` §1.3; second outside review, finding 1): the commit re-check voids a `creare` effect on a place that already exists. Lean: a new clause of `Recheck` and the universe field `creates`.
 - **Five more effect verbs:** `exscribe` (copy into a new place), `transfer` (arrive in a new place), `coniunge` (merge into a target), `scinde` (split into new copies), `aufer` (remove the source of a theft; high-consequence with `dele`). Offices now running: `VECTIO` (`"transfer"`, `"exscribe"`), `CONCORDIA` (first source wins every conflict, `offices.md` §2.3a.6), `DISCORDIA`, `EVERSIO`, `FURTUM` (`"aufer"`). Moves, destruction and theft wait for the second key.
 
+### Ruling R1 (the owner, 2026-11-11): a seal serves its whole Circle
+- **Ink is paid once, at inscription, by class, in the core** (`dynamic.md` §4.1, §4.3). A new core step `inscribe` takes one unit of the seal's class (the rite answers only whether the class fits the seal: either rank's class for a spirit of two ranks), and `invoke` requires a seal inscribed in its Circle and costs nothing. One count instead of two; class budgets are now real (review F3), and the rite no longer sets any price (F6). Lean: universe `InkClass`, `inkLeft` per class, `inscribed`, the `inscribe` rule and instruction, `Act.inscribe`; `BoundQ.ink` and `Inst.ink` removed.
+
 ### Core changes from the second review's findings file (2026-11-11; audit owed under the interim rule)
 - **A write needs an existing place** (F1's other half): the commit re-check voids a `scribere` effect on a place that does not exist. Lean: a fourth clause of `Recheck`, universe field `writes`.
 - **A helper is held to its own handed set** (F4, ruling R2 option (a), as `offices.md` §4.2 already says): a helper's effects must lie within what it was handed, checked at its turn. Lean: `ContribOK` for `.effects`.

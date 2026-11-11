@@ -74,6 +74,7 @@ impl State {
         if !self.auth.wand.present {
             self.faculty.clear();
             self.reserved.clear();
+            self.ink_left.clear();
         }
         let granted: BTreeSet<String> = self.faculty.iter().map(|c| c.place.clone()).collect();
         let fingerprints = granted
@@ -166,10 +167,10 @@ impl State {
             return self.deny("INVOCA outside a Circle");
         };
         let admitted = rite.admit(self, seal, circle);
-        let cost = rite.ink_cost(self, seal);
         let inv = self.fresh();
         let worker = self.fresh();
-        if !admitted || self.barred(seal) || cost > self.ink_left {
+        let sealed = self.inscribed.contains(&(seal.clone(), circle));
+        if !admitted || self.barred(seal) || !sealed {
             let dismissed = self.open_invocations();
             self.record(Label::Invoke(
                 inv,
@@ -177,7 +178,6 @@ impl State {
                 circle,
                 worker,
                 admitted,
-                cost,
                 dismissed,
             ));
             let at = self.audit.len();
@@ -190,7 +190,6 @@ impl State {
                 seal: seal.clone(),
                 circle,
                 status: InvStatus::Live,
-                ink: cost,
                 main: worker,
                 helpers: Vec::new(),
             },
@@ -206,18 +205,34 @@ impl State {
                 helper: false,
             },
         );
-        self.ink_left -= cost;
         self.record(Label::Invoke(
             inv,
             seal.clone(),
             circle,
             worker,
             true,
-            cost,
             Vec::new(),
         ));
         self.done();
         Ok(inv)
+    }
+
+    pub fn inscribe(&mut self, rite: &dyn Rite, seal: &Seal, class: &str) -> Step<()> {
+        self.operator()?;
+        let Some(&circle) = self.circles.last() else {
+            return self.deny("INSCRIBE outside a Circle");
+        };
+        if !rite.ink_fits(self, seal, class) {
+            return self.deny("this ink is not the seal's class");
+        }
+        match self.ink_left.get_mut(class) {
+            Some(left) if *left > 0 => *left -= 1,
+            _ => return self.deny("no ink of this class is left in the faculty"),
+        }
+        self.inscribed.insert((seal.clone(), circle));
+        self.record(Label::Inscribe(seal.clone(), class.to_string(), circle));
+        self.done();
+        Ok(())
     }
 
     pub fn request(&mut self, rite: &dyn Rite, to: Addressee, form: &ReqForm) -> Step<Pid> {

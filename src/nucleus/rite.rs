@@ -18,7 +18,7 @@ pub trait Rite {
     fn examiner(&self, state: &State, prop: Pid) -> Option<Seal>;
     fn verdict(&self, state: &State, prop: Pid, examiner: &Seal) -> Verdict;
     fn counterbalance(&self, state: &State, prop: Pid) -> Verdict;
-    fn ink_cost(&self, state: &State, seal: &Seal) -> u64;
+    fn ink_fits(&self, state: &State, seal: &Seal, class: &str) -> bool;
     fn legions(&self, state: &State, inv: InvId) -> usize;
     fn will_open(&self, state: &State, worker: WorkerId, outcome: Outcome) -> bool;
     fn validator(&self, state: &State, value: ValueId) -> Option<ValidatorId>;

@@ -74,7 +74,6 @@ struct Run<'p> {
     sim: Sim,
     sors: Option<Outcome>,
     responsa: &'p [Responsum],
-    ink: BTreeMap<String, i64>,
     scopes: Vec<BTreeMap<String, V>>,
     asked: BTreeMap<Pid, Asked>,
     offices: BTreeMap<InvId, String>,
@@ -91,14 +90,13 @@ pub fn run(
     world: BTreeMap<Place, (String, Mark)>,
     options: &Optiones,
 ) -> Exitus {
-    let (launch, ink) = ritus::launch(checked, wand, stores, world);
+    let launch = ritus::launch(checked, wand, stores, world);
     let mut run = Run {
         state: State::initial(launch),
         rite: Goetia::new(super::registra::goetia()),
         sim: Sim::new(options.semen),
         sors: options.sors,
         responsa: &options.responsa,
-        ink,
         scopes: vec![BTreeMap::new()],
         asked: BTreeMap::new(),
         offices: BTreeMap::new(),
@@ -111,9 +109,6 @@ pub fn run(
             Refusal::LaunchRefused(w) | Refusal::Denied(w) | Refusal::NotEnabled(w) => w,
         };
         return run.finish(2, Some(format!("the launch is refused: {why}")));
-    }
-    if !run.state.auth.wand.present {
-        run.ink.clear();
     }
     let result = program.items.iter().try_for_each(|item| match item {
         Item::Statement(s) => run.stmt(s),
@@ -527,24 +522,22 @@ impl<'p> Run<'p> {
             Expr::Inscribe(seal, ink, _) => {
                 let s = self.expr(seal)?;
                 let i = self.expr(ink)?;
-                match (s, i) {
-                    (V::SealEx(_), V::Ink(_)) => Ok(V::SealOp),
-                    _ => Err(Halt::Denial(
+                let (V::SealEx(n), V::Ink(class)) = (s, i) else {
+                    return Err(Halt::Denial(
                         "INSCRIBE of something not a seal and ink".into(),
-                    )),
-                }
+                    ));
+                };
+                let seal = self
+                    .rite
+                    .register
+                    .by_number(i64::from(n))
+                    .map(|sp| sp.seal(ritus::RITE))
+                    .ok_or_else(|| Halt::Denial("a seal not in the register".into()))?;
+                self.op(|_| true, |s, r| s.inscribe(r, &seal, &class))?;
+                Ok(V::SealOp)
             }
             Expr::Sigillum(entity, _) => Ok(V::SealEx(self.spirit(entity)?.n)),
-            Expr::Atramentum(class, _) => {
-                let left = self.ink.entry(class.clone()).or_insert(0);
-                if *left <= 0 {
-                    return Err(Halt::Denial(format!(
-                        "no ink {class:?} is left in the faculty"
-                    )));
-                }
-                *left -= 1;
-                Ok(V::Ink(class.clone()))
-            }
+            Expr::Atramentum(class, _) => Ok(V::Ink(class.clone())),
             Expr::Invoca(entity, office, _) => {
                 let spirit = self.spirit(entity)?;
                 let seal = spirit.seal(ritus::RITE);

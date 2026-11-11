@@ -42,34 +42,47 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
           sched := idle σ.sched }
 
   | invokeOk {σ : State U} {i : U.Inv} {s : U.Seal} {w : U.Worker} {ok no : U.Exec}
-      {c : U.Circle} {rest : List U.Circle} {n : Nat}
+      {c : U.Circle} {rest : List U.Circle}
       (hw : σ.sched.current = some U.operator)
       (hi : instrOf M σ = .invoke i s w ok no)
       (hs : σ.circles = c :: rest)
       (hfi : σ.invs i = none)
       (hfw : σ.workers w = none)
       (ha : R.admit σ (.invoke s c) true)
-      (hb : R.bound σ (.ink s) n)
       (hx : ¬ Barred σ s)
-      (hn : n ≤ σ.inkLeft) :
-      CoreStep M R σ (.invoke i s c w true n [])
+      (hsl : σ.inscribed s c) :
+      CoreStep M R σ (.invoke i s c w true [])
         { σ with
-          invs := upd σ.invs i (some ⟨s, c, .live, n, 0, w, []⟩),
+          invs := upd σ.invs i (some ⟨s, c, .live, 0, w, []⟩),
           workers := upd σ.workers w (some ⟨some (.spirit i), some i, (fun _ => False), [], true, false⟩),
-          inkLeft := σ.inkLeft - n,
           exec := upd σ.exec U.operator ok,
           sched := idle σ.sched }
 
   | invokeRefused {σ : State U} {i : U.Inv} {s : U.Seal} {w : U.Worker} {ok no : U.Exec}
-      {c : U.Circle} {rest : List U.Circle} {b : Bool} {n : Nat} {ds : List U.Inv}
+      {c : U.Circle} {rest : List U.Circle} {b : Bool} {ds : List U.Inv}
       (hw : σ.sched.current = some U.operator)
       (hi : instrOf M σ = .invoke i s w ok no)
       (hs : σ.circles = c :: rest)
       (ha : R.admit σ (.invoke s c) b)
-      (hb : R.bound σ (.ink s) n)
-      (hr : b = false ∨ Barred σ s ∨ σ.inkLeft < n)
+      (hr : b = false ∨ Barred σ s ∨ ¬ σ.inscribed s c)
       (hd : Dismissed σ ds) :
-      CoreStep M R σ (.invoke i s c w b n ds) (endRun σ (.failure U.denial σ.audit.length))
+      CoreStep M R σ (.invoke i s c w b ds) (endRun σ (.failure U.denial σ.audit.length))
+
+  /-- Ruling 2026-11-11 (R1 (a)): a seal is inscribed once, paid in one unit of its own
+  class, and serves for the life of its Circle; invocation costs no further ink. -/
+  | inscribe {σ : State U} {s : U.Seal} {k : U.InkClass} {e : U.Exec}
+      {c : U.Circle} {rest : List U.Circle}
+      (hw : σ.sched.current = some U.operator)
+      (hi : instrOf M σ = .inscribe s k e)
+      (hs : σ.circles = c :: rest)
+      (ha : R.admit σ (.inscribe s k) true)
+      (hn : 0 < σ.inkLeft k) :
+      CoreStep M R σ (.inscribe s k c)
+        { σ with
+          inkLeft := upd σ.inkLeft k (σ.inkLeft k - 1),
+          inscribed := fun s' c' => σ.inscribed s' c' ∨ (s' = s ∧ c' = c),
+          exec := upd σ.exec U.operator e,
+          sched := idle σ.sched }
 
   | requestSpirit {σ : State U} {i : U.Inv} {f : U.ReqForm} {q : U.Req} {p : U.Pid}
       {w : U.Worker} {e : U.Exec} {inst : Inst U} {wi : WInfo U} {asked : Power U → Prop}
@@ -368,6 +381,7 @@ def Initial (M : Core U) (prog : M.lang.Program) (σ : State U) : Prop :=
   σ.phase = .preLaunch ∧
   σ.audit = [] ∧
   σ.circles = [] ∧
+  (∀ s c, ¬ σ.inscribed s c) ∧
   (∀ p m, σ.reserved p m → σ.faculty p m) ∧
   σ.exec U.operator = M.lang.init prog ∧
   σ.workers U.operator = some ⟨none, none, (fun _ => False), [], true, false⟩ ∧

@@ -388,5 +388,5 @@ Discussed with the owner, not built:
 
 - Reviewed at `e962db6`; F1, F7 and the layering note were already fixed in `708a533`. The Lean check passed on `708a533`, so the Lean side of tonight's core changes is verified.
 - **Done now:** F1's other half (a write needs an existing place), F4 (helpers held to their own set, R2(a)), F2 by the written rule (R3(a)). 168 tests.
-- **Open:** R1, **the owner's ruling**: does an operative seal serve one invocation or many? The reviewer recommends (a): ink charged once, at inscription, by class, in the core; the seal serves for the life of its Circle ("worn as a lamen"). Then F3 and F6 follow. F5 (validators) before step 4. The ink class of a two-rank seal is still an open item.
+- **R1 ruled by the owner: (a).** A seal serves its whole Circle; ink is paid once at inscription, by class, in the core (`inscribe` step, Rust and Lean). F3 and F6 are closed by it. 173 tests. F5 (validators) before step 4. The ink class of a two-rank seal is still an open item.
 - The repository is now **public**.

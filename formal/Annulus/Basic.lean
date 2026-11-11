@@ -28,6 +28,7 @@ structure Universe where
   ReqForm : Type
   CircleRite : Type
   Decision : Type
+  InkClass : Type
   needs : Verb → Perm
   invNeeds : Verb → InvRight
   read : Perm
@@ -227,6 +228,7 @@ inductive Instr (U : Universe) where
   | compute (e : U.Exec) (ds : List U.Decision) (reads : List U.Place) (made : List (Made U))
   | openC (c : U.Circle) (e : U.Exec)
   | closeC (e : U.Exec)
+  | inscribe (s : U.Seal) (k : U.InkClass) (e : U.Exec)
   | invoke (i : U.Inv) (s : U.Seal) (w : U.Worker) (ok no : U.Exec)
   | request (to : Addressee U) (f : U.ReqForm) (q : U.Req) (p : U.Pid) (w : U.Worker) (e : U.Exec)
   | examine (p : U.Pid) (k : WorkOutcome → U.Exec)
@@ -242,7 +244,8 @@ inductive Label (U : Universe) where
   | launch (fp : U.Place → Option (U.Hash × Mark))
   | openC (c : U.Circle)
   | closeC (c : U.Circle)
-  | invoke (i : U.Inv) (s : U.Seal) (c : U.Circle) (w : U.Worker) (admitted : Bool) (ink : Nat)
+  | inscribe (s : U.Seal) (k : U.InkClass) (c : U.Circle)
+  | invoke (i : U.Inv) (s : U.Seal) (c : U.Circle) (w : U.Worker) (admitted : Bool)
       (dismissed : List U.Inv)
   | request (q : U.Req) (p : U.Pid) (to : Addressee U) (f : U.ReqForm) (w : U.Worker)
       (asked : Power U → Prop)
@@ -296,9 +299,9 @@ inductive Sealed (U : Universe) where
 
 inductive Act (U : Universe) where
   | invoke (s : U.Seal) (c : U.Circle)
+  | inscribe (s : U.Seal) (k : U.InkClass)
 
 inductive BoundQ (U : Universe) where
-  | ink (s : U.Seal)
   | legions (i : U.Inv)
 
 /-- The program's semantics, left abstract. `WellTyped` stands for `static.md`. -/

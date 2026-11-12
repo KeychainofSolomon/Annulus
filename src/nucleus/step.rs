@@ -8,8 +8,8 @@ use super::state::{
 use super::types::{
     Addressee, Cap, CircleId, CommitResult, Content, Contrib, Ending, ExamAns, Inst, InvId,
     InvStatus, IxEntry, KeyEntry, Label, Made, Mark, Outcome, PStatus, Phase, Pid, Proposal, ReqId,
-    Request, RiteAct, Seal, Sealed, Value, ValueId, Verdict, WorkOutcome, Worker, WorkerId,
-    ANGEL_OUTCOMES, DENIAL, OPERATOR,
+    Request, RiteAct, Seal, Sealed, Value, ValueId, Verdict, Will, WorkOutcome, Worker, WorkerId,
+    ANGEL_OUTCOMES, DECLARABLE, DENIAL, OPERATOR,
 };
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -424,6 +424,11 @@ impl State {
         if outcome == Outcome::Occisio || !rite.will_open(self, worker, outcome) {
             return Err(Refusal::NotEnabled("that outcome of the will is not open"));
         }
+        if !self.simulated && !DECLARABLE.contains(&outcome) {
+            return Err(Refusal::NotEnabled(
+                "an outside will can declare only obedience, part or delay",
+            ));
+        }
         if matches!(w.owner, Some(Addressee::Angel(_))) && !ANGEL_OUTCOMES.contains(&outcome) {
             return Err(Refusal::NotEnabled(
                 "an angel neither deceives, refuses nor harms",
@@ -437,7 +442,16 @@ impl State {
                 "the contribution is not of the office's form",
             ));
         }
-        let index = self.record(Label::Turn(worker, outcome, contrib.clone(), finish));
+        let index = self.record(Label::Turn(
+            worker,
+            if self.simulated {
+                Will::Known(outcome)
+            } else {
+                Will::Declared(outcome)
+            },
+            contrib.clone(),
+            finish,
+        ));
         let entry = self.props.get_mut(&prop).expect("checked above");
         match &contrib {
             Contrib::Respond(v, d) => {
@@ -491,6 +505,11 @@ impl State {
     }
 
     pub fn kill(&mut self, rite: &dyn Rite, worker: WorkerId, outcome: Outcome) -> Step<()> {
+        if !self.simulated {
+            return Err(Refusal::NotEnabled(
+                "an outside will cannot end the run by killing; only a simulated will may",
+            ));
+        }
         if !self.running() || self.current != Some(worker) {
             return Err(Refusal::NotEnabled("the worker is not scheduled"));
         }

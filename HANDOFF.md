@@ -468,3 +468,9 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 - **The hours of the sky (2026-11-12, 16:00):** `src/horae.rs` and `Goetia::refusal`; tests `tests/horae.rs`, `tests/lingua_horae.rs`. Dukes now bindable. Tests use a fixed moment, `Caelum::probatio()` (2024-04-13 16:30 Rome, Moon 4 days). Readings for the owner in `dynamic.md` §5.1. Next in the core: VIRTUTES (the angel rereads file properties), then PRAETERITA against the history.
 - **VIRTUTES (2026-11-12, 16:10):** `officia::virtutes`, `same_account`; the angel's check in `ritus.rs` `verdict`; simulated will in `exsequi::work`. Tests `tests/lingua_virtutes.rs`. Next: PRAETERITA against the history.
 - **PRAETERITA, present run (2026-11-12, 16:30):** `Goetia::historia` builds the claim lines from the audit; `officia::account_of_past`; check in `ritus.rs` `verdict`; the checker refuses `"prior"` until the history is carried between runs. Knight's hours ruled (eleventh hour). Tests `tests/lingua_praeterita.rs`. Next: carry the history between runs for `"prior"`; then Spiri72's PRAETERITA form.
+
+## 2026-11-12, evening: `step-2c` merged; the unknown outcome
+
+- `step-2c` fast-forwarded into `main` (281 tests). Work now goes on `main` through short branches, merged after CI (build and Lean) passes.
+- **Done, core change:** a turn records a `Will`: `Known` in simulated mode, `Declared` in real-agent mode (a run with an outside will). Real-agent mode declares only obedience, part or delay and cannot `kill`. Rust, Lean (`Will`, `Will.of`, `declarable`), exclusion tests, `core.md` §9.2. 284 tests. The test-wand gate on a model remains only because there is no real wand (2d).
+- **Order agreed with the owner, next:** independent audit of the 11–12 November core changes (and this one); start the proofs of P1–P9 with their correspondence to Rust; step 2d (remove the prototype, a real wand).

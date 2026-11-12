@@ -89,7 +89,7 @@ fn the_angel_catches_a_false_or_harmful_account_and_holds_a_part() {
             .audit()
             .entries()
             .iter()
-            .any(|l| matches!(l, Label::Turn(_, o, _, _) if *o == sors))
+            .any(|l| matches!(l, Label::Turn(_, Will::Known(o), _, _) if *o == sors))
         {
             assert_eq!(e.output, vec!["IRRITUM"], "{sors:?}");
         }

@@ -181,6 +181,8 @@ The definitions the proof of §8 rests on. Step 3 writes the transition rules ou
 - `step`: one step of ordinary computation; a `step` may also **end the run**, normally or by a failure (formal model, 2026-11-11);
 - `schedule`: the scheduler chooses the next worker to take a turn.
 
+**What the record knows of a turn** (2026-11-12; `authority.md` §1.7, no presumption). A `turn` records the will's outcome with its standing as knowledge. In **simulated** mode the scheduler drew it, so it is recorded as **known**. In **real-agent** mode an outside will (a model) supplies the turn, and its outcome is only its own **declaration**: whether it lied or meant harm is not known, and the record never says it is. The mode is fixed at `launch`. The rules are closed lists (`authority.md` §1.6): in real-agent mode a turn may declare only obedience, part or delay (`DECLARABLE`; no will confesses a lie, malice or refusal), and `kill` is refused, since no outside will may end the run by killing. Examination does not rely on the declared outcome in either mode: the angel judges the proposal, the request and the world.
+
 Further steps happen **outside any run**, and only with the wand's master secret (`operator.md` §8): `grant-grave` (§9.3c), `confirm-petition` (below) and the consequential acts of `operator.md` §4. Two steps change the Index during a run: `intrude`, which appends a damnation, and `examine`, which may append a suspicion (below).
 
 **What the program sees.** The program reads only places its faculty lets it read; the rest of the world is not visible to it. Marks of computed values are computed by the core from the inputs (§9.3), never taken from the program's word.

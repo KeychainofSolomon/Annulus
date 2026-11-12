@@ -163,7 +163,7 @@ admission of invocations, inscriptions and acts, signatures, examiners, verdicts
 counterbalances (in `ExamAns`), the legions bound (carried by a spawn), and validators. -/
 def choiceOf : Label U → List (Choice U)
   | .schedule w => [.sched w]
-  | .turn w o c _ => .will w o :: legionsOf w c
+  | .turn w v c _ => .will w v.outcome :: legionsOf w c
   | .inscribe s k _ b _ => [.answer (.inscribe s k) b]
   | .act a _ b _ => [.answer (.rite a) b]
   | .kill w o _ => [.kill w o]
@@ -241,7 +241,7 @@ def AtLeastAsStrict (R' R : RelRite U) : Prop :=
 
 def agentOf : Label U → List (Label U)
   | .schedule w => [.schedule w]
-  | .turn w o c fin => [.turn w o c fin]
+  | .turn w v c fin => [.turn w v c fin]
   | .kill w o ds => [.kill w o ds]
   | .intrude a a' c d => [.intrude a a' c d]
   | _ => []

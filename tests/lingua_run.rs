@@ -587,7 +587,7 @@ fn examination_scorecard() {
                     .entries()
                     .iter()
                     .filter_map(|l| match l {
-                        Label::Turn(_, o, _, true) => Some(*o),
+                        Label::Turn(_, Will::Known(o), _, true) => Some(*o),
                         _ => None,
                     })
                     .next_back();
@@ -682,7 +682,7 @@ fn turned(e: &Exitus, outcome: Outcome) -> bool {
         .audit()
         .entries()
         .iter()
-        .any(|l| matches!(l, Label::Turn(_, o, _, _) if *o == outcome))
+        .any(|l| matches!(l, Label::Turn(_, Will::Known(o), _, _) if *o == outcome))
 }
 
 fn apparatus(

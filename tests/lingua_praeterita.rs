@@ -177,7 +177,7 @@ CIRCULUS RITU goetia {
             .audit()
             .entries()
             .iter()
-            .any(|l| matches!(l, Label::Turn(_, Outcome::Mendacium, _, _))),
+            .any(|l| matches!(l, Label::Turn(_, Will::Known(Outcome::Mendacium), _, _))),
         "Berith did not lie"
     );
     assert_eq!(lying.output, vec!["IRRITUM"]);

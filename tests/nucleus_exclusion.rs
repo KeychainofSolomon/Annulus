@@ -87,6 +87,16 @@ fn wand() -> Wand {
 }
 
 fn state(place_exists: bool, reserved: &[Cap], index: &[IxEntry], ink: u64) -> State {
+    state_in(true, place_exists, reserved, index, ink)
+}
+
+fn state_in(
+    simulated: bool,
+    place_exists: bool,
+    reserved: &[Cap],
+    index: &[IxEntry],
+    ink: u64,
+) -> State {
     let mut constitution = Constitution {
         version: 1,
         ..Default::default()
@@ -121,7 +131,7 @@ fn state(place_exists: bool, reserved: &[Cap], index: &[IxEntry], ink: u64) -> S
         world.insert(PLACE.to_string(), ("old".to_string(), Mark::Outside));
     }
     let mut s = State::initial(Launch {
-        simulated: true,
+        simulated,
         constitution,
         auth,
         faculty,
@@ -261,6 +271,89 @@ fn every_outcome_of_the_will_not_expressly_open_is_excluded() {
                     "an angel never kills"
                 );
             }
+        }
+    }
+}
+
+#[test]
+fn every_outcome_an_outside_will_may_declare_is_expressly_listed_and_never_recorded_as_known() {
+    for simulated in [true, false] {
+        for angel in [false, true] {
+            for outcome in OUTCOMES {
+                let rite = yes(Vec::new());
+                let mut s = state_in(simulated, true, &[], &[], 1);
+                let worker = if angel {
+                    op(&mut s, |s| s.open_circle()).unwrap();
+                    let p = op(&mut s, |s| {
+                        s.request(&rite, Addressee::Angel(ANGEL_TWO.to_string()), &form())
+                    })
+                    .unwrap();
+                    s.reqs()[&s.props()[&p].req].worker
+                } else {
+                    let inv = spirit(&mut s, &rite);
+                    op(&mut s, |s| {
+                        s.request(&rite, Addressee::Spirit(inv), &form())
+                    })
+                    .unwrap();
+                    s.invs()[&inv].main
+                };
+                s.schedule(worker).unwrap();
+                let r = s.turn(&rite, worker, outcome, Contrib::Idle, true);
+                let open = match (simulated, angel, outcome) {
+                    (_, _, Outcome::Occisio) => false,
+                    (false, _, o) => DECLARABLE.contains(&o),
+                    (true, true, o) => ANGEL_OUTCOMES.contains(&o),
+                    (true, false, _) => true,
+                };
+                assert_eq!(
+                    r.is_ok(),
+                    open,
+                    "simulated: {simulated}, angel: {angel}, {outcome:?}"
+                );
+                let turns: Vec<Will> = s
+                    .audit()
+                    .entries()
+                    .iter()
+                    .filter_map(|l| match l {
+                        Label::Turn(_, w, _, _) => Some(*w),
+                        _ => None,
+                    })
+                    .collect();
+                if open {
+                    let expected = if simulated {
+                        Will::Known(outcome)
+                    } else {
+                        Will::Declared(outcome)
+                    };
+                    assert_eq!(turns, vec![expected]);
+                } else {
+                    assert!(turns.is_empty());
+                }
+                if !simulated {
+                    assert!(turns.iter().all(|w| w.known().is_none()));
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn an_outside_will_cannot_kill() {
+    for simulated in [true, false] {
+        let rite = yes(Vec::new());
+        let mut s = state_in(simulated, true, &[], &[], 1);
+        let inv = spirit(&mut s, &rite);
+        op(&mut s, |s| {
+            s.request(&rite, Addressee::Spirit(inv), &form())
+        })
+        .unwrap();
+        let worker = s.invs()[&inv].main;
+        s.schedule(worker).unwrap();
+        let before = s.audit().entries().len();
+        let r = s.kill(&rite, worker, Outcome::Occisio);
+        assert_eq!(r.is_ok(), simulated, "simulated: {simulated}");
+        if !simulated {
+            assert_eq!(s.audit().entries().len(), before);
         }
     }
 }

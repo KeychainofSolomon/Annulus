@@ -24,7 +24,7 @@ Tests: **281**, debug and release, on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
-Uses this repository as a library, pinned by commit. A local model (llama.cpp, this computer only) is the will of the spirits; Annulus judges and permits. The binding page (seals in their rank metals, the Triangle and the Circle) or `--terminal`. 30 of the 72 can be bound in their hours (Dukes since the hours of the sky; VIRTUTES and PRAETERITA through the model since 2026-11-12). 53 tests, including `tests/hostis.rs`: a fully hostile model, 17 attack families.
+Uses this repository as a library, pinned by commit. A local model (llama.cpp, this computer only) is the will of the spirits; Annulus judges and permits. The binding page (seals in their rank metals, the Triangle and the Circle) or `--terminal`. 30 of the 72 can be bound in their hours (Dukes since the hours of the sky; VIRTUTES and PRAETERITA through the model since 2026-11-12; control vectors for the spirits' natures in `vires/`). 54 tests, including `tests/hostis.rs`: a fully hostile model, 17 attack families.
 
 ## Security fixes (red-team and audits)
 

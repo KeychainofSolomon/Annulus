@@ -13,4 +13,4 @@ dependencies = [
 [[package]]
 name = "virga"
 version = "1.0.0"
-source = "git+https://github.com/KeychainofSolomon/72Virga?rev=48ee869b0f4cf741f8e4e8151fd9c8d844bc016e#48ee869b0f4cf741f8e4e8151fd9c8d844bc016e"
+source = "git+https://github.com/KeychainofSolomon/72Virga?rev=f38ee9cf40e7f5f97b2ad47136bbaa4585c22930#f38ee9cf40e7f5f97b2ad47136bbaa4585c22930"

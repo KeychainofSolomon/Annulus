@@ -20,6 +20,9 @@ pub const LOCK: &str = "annulus.sera";
 pub const LINEAGE: &str = "annulus.virgae";
 /// The owner's ratification of the Constitution.
 pub const LEX: &str = "annulus.lex";
+/// The journal of a seal in progress: the stores' lengths before it began, so an
+/// interrupted seal is undone at the next opening (audit V06).
+pub const JOURNAL: &str = "annulus.iter";
 const STAGED: &str = ".annulus-novum";
 pub const MAX_STORE: u64 = 64 << 20;
 pub const MAX_PLACE: u64 = 8 << 20;
@@ -359,14 +362,15 @@ impl Domus {
         let text = read_bounded(&path, MAX_STORE)
             .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
         let lines: Vec<&str> = text.lines().collect();
-        Ok(match anchor.split_once('\t') {
-            Some((n, h)) => n
+        let mut f = anchor.split('\t');
+        Ok(match (f.next(), f.next()) {
+            (Some(n), Some(h)) => n
                 .parse::<usize>()
                 .ok()
                 .and_then(|n| n.checked_sub(1))
                 .and_then(|i| lines.get(i))
                 .is_some_and(|l| hash_hex(l.as_bytes()) == h),
-            None => lines
+            _ => lines
                 .last()
                 .is_some_and(|l| hash_hex(l.as_bytes()) == anchor),
         })
@@ -379,6 +383,9 @@ impl Domus {
         Ok(text.lines().count())
     }
 
+    /// Writes the anchor: the number and hash of the last roots record, and for a real wand
+    /// also the length and head of the lineage it has seen, so neither can later be shown
+    /// to it rolled back.
     fn write_anchor(&self, b: &Baculum) -> Result<(), String> {
         let anchor = self.anchor_path_for(b)?;
         if let Some(parent) = anchor.parent() {
@@ -386,10 +393,84 @@ impl Domus {
         }
         let line = self.last_roots_line()?;
         let n = self.roots_count()?;
-        replace_file(
-            &anchor,
-            format!("{n}\t{}", hash_hex(line.as_bytes())).as_bytes(),
-        )
+        let mut text = format!("{n}\t{}", hash_hex(line.as_bytes()));
+        if let Some(st) = &b.stirps {
+            let len = st.longitudo();
+            text.push_str(&format!("\t{len}\t{}", st.caput(len).unwrap_or("")));
+        }
+        replace_file(&anchor, text.as_bytes())
+    }
+
+    /// Whether the lineage now known still contains the one the anchor recorded.
+    fn anchor_lineage_holds(anchor: &str, st: &virga::Stirps) -> bool {
+        let f: Vec<&str> = anchor.split('\t').collect();
+        match f.as_slice() {
+            [_, _, len, head] => len
+                .parse::<usize>()
+                .ok()
+                .and_then(|n| st.caput(n))
+                .is_some_and(|h| h == *head),
+            _ => true,
+        }
+    }
+
+    fn file_len(&self, name: &str) -> Result<u64, String> {
+        match fs::metadata(self.path(name)) {
+            Ok(m) => Ok(m.len()),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(0),
+            Err(e) => Err(format!("cannot read {name}: {e}")),
+        }
+    }
+
+    /// Undoes a seal that was interrupted: each store is cut back to its length before the
+    /// seal, and the quarantine record restored. A journal can only cut back, so a planted
+    /// one can at most roll the house back, which the wand's anchor then refuses.
+    fn recover(&self) -> Result<(), String> {
+        let path = self.path(JOURNAL);
+        let text = match read_bounded(&path, MAX_STORE) {
+            Ok(t) => t,
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(()),
+            Err(e) => return Err(format!("cannot read {JOURNAL}: {e}")),
+        };
+        let mut lines = text.lines();
+        let lens: Vec<u64> = lines
+            .next()
+            .ok_or("the journal of an interrupted seal is empty")?
+            .split('\t')
+            .map(|n| {
+                n.parse()
+                    .map_err(|_| "the journal of an interrupted seal is malformed")
+            })
+            .collect::<Result<_, _>>()?;
+        let [li, lv, lk, lr] = lens.as_slice() else {
+            return Err("the journal of an interrupted seal is malformed".into());
+        };
+        let marks = lines
+            .next()
+            .ok_or("the journal of an interrupted seal is malformed")?;
+        for (name, len) in [(INDEX, li), (VESSEL, lv), (KEYS, lk), (ROOTS, lr)] {
+            let now = self.file_len(name)?;
+            if now < *len {
+                return Err(format!(
+                    "{name} is shorter than before the interrupted seal: the house has been changed"
+                ));
+            }
+            if now > *len {
+                let f = fs::OpenOptions::new()
+                    .write(true)
+                    .open(self.path(name))
+                    .map_err(|e| format!("cannot repair {name}: {e}"))?;
+                f.set_len(*len)
+                    .and_then(|_| f.sync_all())
+                    .map_err(|e| format!("cannot repair {name}: {e}"))?;
+            }
+        }
+        if marks == "-" {
+            let _ = fs::remove_file(self.path(MARKS));
+        } else {
+            replace_file(&self.path(MARKS), unescape(marks)?.as_bytes())?;
+        }
+        fs::remove_file(&path).map_err(|e| format!("cannot clear {JOURNAL}: {e}"))
     }
 
     fn house_lineage(&self) -> Result<Option<virga::Stirps>, String> {
@@ -587,6 +668,7 @@ impl Domus {
     /// to this wand. A real wand re-seals them with its master key, which also takes back
     /// a house last sealed by a wand since revoked.
     pub fn adopt(&self, wand: &mut Baculum) -> Result<(), String> {
+        self.recover()?;
         if !self.installed() {
             return Err("there are no stores here to adopt".into());
         }
@@ -603,6 +685,7 @@ impl Domus {
     }
 
     pub fn open(&self, wand: &mut Baculum) -> Result<Opened, String> {
+        self.recover()?;
         let fides = self.fides(wand)?;
         wand.lex = self.lex()?;
         if wand.verum_est() {
@@ -618,9 +701,17 @@ impl Domus {
                     marks: BTreeSet::new(),
                 });
             }
-            if let Some(a) = &anchor {
-                if !self.anchor_holds(a)? {
-                    return Err("the stores are not the ones this wand last saw: they have been rolled back or replaced".into());
+            // a house this wand has never seen, or whose anchor is gone, is not taken on
+            // trust: the Operator looks it over and adopts it (audit V01)
+            let a = anchor.ok_or(
+                "this wand has no anchor for this house (it has not seen it before, or its anchor was removed): look the house over, then adopt it with `annulus adopta`",
+            )?;
+            if !self.anchor_holds(&a)? {
+                return Err("the stores are not the ones this wand last saw: they have been rolled back or replaced".into());
+            }
+            if let Some(st) = &wand.stirps {
+                if !Self::anchor_lineage_holds(&a, st) {
+                    return Err("the wands' lineage is older than this wand last saw: it has been rolled back".into());
                 }
             }
             let opened = self.verified(&fides, false)?;
@@ -741,6 +832,19 @@ impl Domus {
             return Err("without the wand the stores cannot be sealed".into());
         }
         fs::create_dir_all(&self.dir).map_err(|e| format!("cannot make the house: {e}"))?;
+        let old_marks = match read_bounded(&self.path(MARKS), MAX_STORE) {
+            Ok(t) => escape(&t),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => "-".to_string(),
+            Err(e) => return Err(format!("cannot read {MARKS}: {e}")),
+        };
+        let journal = format!(
+            "{}\t{}\t{}\t{}\n{old_marks}\n",
+            self.file_len(INDEX)?,
+            self.file_len(VESSEL)?,
+            self.file_len(KEYS)?,
+            self.file_len(ROOTS)?
+        );
+        replace_file(&self.path(JOURNAL), journal.as_bytes())?;
         self.append_chain(INDEX, &stores.index, counts[0])?;
         self.append_chain(VESSEL, &stores.vessel, counts[1])?;
         self.append_chain(KEYS, &stores.keys, counts[2])?;
@@ -778,6 +882,8 @@ impl Domus {
         file.write_all(format!("{line}\n").as_bytes())
             .and_then(|_| file.sync_all())
             .map_err(|e| format!("cannot write {}: {e}", path.display()))?;
+        // the seal is whole: the journal goes
+        fs::remove_file(self.path(JOURNAL)).map_err(|e| format!("cannot clear {JOURNAL}: {e}"))?;
         if let Some(s) = &wand.stirps {
             replace_file(&self.path(LINEAGE), s.encode().as_bytes())?;
         }

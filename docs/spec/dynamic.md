@@ -90,7 +90,7 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 - **King:** from the start of the third temporal hour to noon, and from the start of the ninth to sunset.
 - **Marquis:** from the start of the ninth temporal hour to the next sunrise; so also from midnight to sunrise.
 - **Duke:** from sunrise to noon, the sky declared clear. `TEMPESTAS` is outside the subset, so no raised storm can yet be active.
-- **Prince:** "any hour of the day" read as **daylight**, sunrise to sunset, by the same temporal-hour frame. The other reading, any hour of the 24, is open.
+- **Prince:** "any hour of the day" is **daylight**, sunrise to sunset. **Ruled by the owner (2026-11-12):** the same table sets the night apart (the Marquises' "from compline to the end of the day", the Knight's "from vespers"), so "the day" is the daylight. No longer a reading.
 - **Knight:** dawn (civil twilight) to sunrise, and *vesperae* (sunset) to the end of civil twilight, for "à vesperis usque ad finem solis". Sloane's "4 o'clock till sunset" would put *vesperae* at the tenth hour instead, which conflicts with this table's reading of *vesperae* for the Kings.
 - **Without a declared place,** no window that needs the sun can be known, so only Earls may come (doubt holds).
 - **The Moon's age** is computed from the true new moon (Meeus, ch. 49), whole days since it, for every rank.

@@ -46,7 +46,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
 | Independent audit of the core changes of 2026-11-11 and 2026-11-12 | Owed |
 | Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | Not started; open ruling for the ink |
-| The hours' readings for Prince and Knight, and Berith's ring hour | Readings to confirm (`dynamic.md` §5.1); the ring hour needs `GERE` to record its time |
+| The Knight's reading, and Berith's ring hour | Reading to confirm (`dynamic.md` §5.1); the Prince's daylight is ruled; the ring hour needs `GERE` to record its time |
 | Offices beyond telling and the five working kinds (teaching, transformation, dignities…) | Not in the subset |
 | The escalation, so `RECUSATIO` can open; spirit-specific malice | Not started |
 | Real validators before step 4; the trust handshake | Not started |

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Ruled by the owner (2026-11-12): the Princes' hours
+- "Any hour of the day" is daylight, sunrise to sunset: the same table sets the night apart for the Marquises and the Knight.
+
 ### `VIRTUTES` (2026-11-12; rite and evaluator, not the nucleus)
 - A spirit charged through `VIRTUTES` reports each handed place as `place: N bytes, M lines` or `place: absens`; the angel rereads every place and approves only an exact account. False, missing, extra or malformed accounts are `IRRITUM`; an incomplete one is held. Dates wait until the world records times [O].
 

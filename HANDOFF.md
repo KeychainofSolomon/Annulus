@@ -453,3 +453,10 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 - **Reaching beyond the grant is a petition:** a spirit that wants a host it was not granted (a link from a search result, say) makes a sealed petition naming the host; the owner turns the second key (`confirma`) and the next run may fetch it. Quarantined text never chooses a host or an address by itself.
 - **Kept, under the same rule:** quarantine marks are never removed until the operator can consecrate a file through a closed-list validator; refusals keep exit code 2.
 
+## 2026-11-12, afternoon: the will slot, and Spiri72
+
+- **The owner's decision:** the model side lives in its own repository, `KeychainofSolomon/Spiri72`, which uses Annulus as a library. Annulus keeps everything that judges and permits; Spiri72 can only propose.
+- **Done in Annulus:** `exsequi::Voluntas` (`nomen`, `age(&Petitio) -> (Outcome, Actum)`), `run_with`, `lingua::run_source_with`, `mandata::ritus_with`. The will is shown the spirit, office, question, mode, handed places, the contents of handed places the faculty lets it read, and the outcomes open to the spirit now (of `DECLARABLE`: obedience, part, delay). A declared outcome that is not open, a second delay or a failing model is a class 2 denial. Working offices still pass only with exactly the office's expected work (the honest examiner), so a model has freedom only in telling offices. `registra::GOETIA` is public for personas. Tests: `tests/lingua_will.rs` (7). 259 tests.
+- **Interim, a presumption avoided:** the core records each turn's outcome, but a model's real outcome (a lie, malice) is not knowable. Until the core can record an unknown outcome, a model's will runs only with the test wand, and its audit says each outcome is the model's own declaration. **Owed: a core change, `Outcome` unknown for a real will** (Lean, exclusion tests, audit).
+- **Not yet:** the agent's seal `goetia:N:label@agens:<hash>`; the trust handshake; the model as petitioner (writing `PETE`s).
+

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### The will slot (2026-11-12; not a core change)
+- **`Voluntas`**: an outside will (a local model, in Spiri72) may supply a spirit's turn. It sees only what the request hands it and the outcomes open to the spirit; it may declare obedience, part or delay, never more. Until the core records an unknown outcome, it runs only with the test wand, and the audit notes that outcomes are the model's declarations.
+
 ### Ruled by the owner (2026-11-12): the network grant
 - **One read-only grant per host** (`rete "<host>" legere`), one search grant (`quaerere`, results quarantined), and any other host only by a sealed petition and the second key. A grant for the whole web is refused: a request's address can carry data out.
 

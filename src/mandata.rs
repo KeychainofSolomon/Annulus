@@ -3,8 +3,8 @@ use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-use crate::lingua::exsequi::{Optiones, Responsum};
-use crate::lingua::{check_source, json, run_source};
+use crate::lingua::exsequi::{Optiones, Responsum, Voluntas};
+use crate::lingua::{check_source, json, run_source_with};
 use crate::nucleus::{Outcome, Wand};
 use crate::ritus::{faculty_of, no_wand, test_wand};
 use crate::tabularium::{self as tab, Domus};
@@ -169,6 +169,24 @@ fn render(path: &Path, errors: &[crate::lingua::Error]) -> String {
 }
 
 pub fn ritus(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result<u8, Usage> {
+    ritus_with(args, out, err, None)
+}
+
+pub fn ritus_with(
+    args: &[String],
+    out: &mut dyn Write,
+    err: &mut dyn Write,
+    mut will: Option<&mut dyn Voluntas>,
+) -> Result<u8, Usage> {
+    let notes: Vec<String> = will
+        .as_ref()
+        .map(|w| {
+            vec![format!(
+                "the will of the spirits: {}; each recorded outcome is the model's own declaration, not a known fact",
+                w.nomen()
+            )]
+        })
+        .unwrap_or_default();
     let (plain, f) = flags(
         args,
         &[
@@ -251,12 +269,13 @@ pub fn ritus(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Resul
         responsa,
         radices: opened.roots.clone(),
     };
-    let exitus = match run_source(
+    let exitus = match run_source_with(
         &source,
         wand.clone(),
         opened.stores,
         before.clone(),
         &options,
+        will.take(),
     ) {
         Ok(e) => e,
         Err(errors) => {
@@ -276,7 +295,7 @@ pub fn ritus(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Resul
     let mut class = exitus.class;
     let state = &exitus.state;
     let acta = tab::audit_path(&program, f.acta.as_deref());
-    match tab::write_audit(&acta, state.audit(), &wand) {
+    match tab::write_audit(&acta, state.audit(), &wand, &notes) {
         Ok(()) => say(format!("audit: {}", acta.display())),
         Err(e) => {
             say(format!("error: {e}"));

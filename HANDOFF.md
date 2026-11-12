@@ -435,3 +435,13 @@ Next (rest of 2c):
 - Then `agens`: the will trait in `exsequi`, the llama.cpp client (std only, HTTP on localhost), the GBNF grammar for petitions, spirit personas from `goetia.json`, the trust handshake (seal, `APPELLA`, oath) from the step-4 note above.
 
 Commits: author `Solomon <KeychainofSolomon@users.noreply.github.com>`, no co-author lines (the owner's rule).
+
+## 2026-11-12, later: the rest of 2c done
+
+- **Done:** `annulus ritus`, `confirma`, `petitiones` (`src/mandata.rs`; `main.rs` only dispatches). `src/tabularium.rs` is now tested: `tests/tabularium.rs` (20: round trip of every entry kind with tabs, newlines and backslashes; tampered, removed, appended and truncated lines; a missing or forged roots record; another wand; no wand) and `tests/ritus_cli.rs` (16, through the real binary: Furfur end to end, two runs keep an Index entry, a move waits, `confirma`, then commits; a spent key does not serve a second move; unlawful and linked places; bad flags). 252 tests, debug and release, clippy and fmt clean.
+- **Holes found in the first half and closed:** (1) a file a spirit wrote was read back next run as `outside`, which may steer, so quarantine was laundered between runs; now `annulus.signa`, its hash in the signed roots record (the record line now has six fields). (2) Links were checked only on the last part of a path. (3) The staged write `a.txt` → `a.annulus-novum` could overwrite another file; now `a.txt.annulus-novum`, created fresh. (4) Nothing stopped a write over a file changed during the run, the audit included; now refused. (5) `petitiones` hid a fingerprint forever once it had been confirmed once.
+- **Readings taken, to confirm with the owner:** marks are never removed, even when the program deletes the file or the owner rewrites it by hand (there is no way yet to clear one; that would be a consecration of a file). Store and launch refusals exit 2, the same code as a usage error and as class 2.
+- **Order at the end of a run:** audit, then seal (which records a key's spending), then petitions, then the files. A failure after sealing leaves the files unwritten and the key spent: the safe direction.
+- **Still owed:** the drift-watch CI step (diff the Python and Rust parsers' rejection positions over `tests/grammar`), now that the command line exists. An independent audit of the core changes of 2026-11-11.
+- **Next:** `agens`, as planned above. The network grant ruling, (a) or (b), is still open.
+

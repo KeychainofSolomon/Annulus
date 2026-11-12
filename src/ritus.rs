@@ -22,6 +22,7 @@ pub fn instrument(word: &str) -> Instrument {
 
 pub struct Goetia {
     pub register: &'static Register,
+    pub caelum: crate::horae::Caelum,
 }
 
 fn ita_non(data: &str, _origin: &str, fuel: &mut u64) -> Option<bool> {
@@ -137,7 +138,10 @@ fn roots_of(stores: &Stores) -> Roots {
 
 impl Goetia {
     pub fn new(register: &'static Register) -> Self {
-        Goetia { register }
+        Goetia {
+            register,
+            caelum: crate::horae::Caelum::default(),
+        }
     }
 
     pub fn spirit(&self, seal: &str) -> Option<&'static Spirit> {
@@ -186,6 +190,50 @@ impl Goetia {
         })
     }
 
+    pub fn refusal(&self, state: &State, spirit: &Spirit) -> Option<String> {
+        let open: Vec<&'static Spirit> = state
+            .invs
+            .values()
+            .filter(|i| i.status == InvStatus::Live)
+            .filter_map(|i| self.spirit(&i.seal))
+            .collect();
+        if let Some(earl) = open.iter().find(|s| Goetia::bound_as_earl(s)) {
+            return Some(format!(
+                "{} the Earl is in the Circle, and no other spirit comes while he stays",
+                earl.name
+            ));
+        }
+        let held = Goetia::held(state);
+        if !spirit
+            .instruments()
+            .iter()
+            .all(|i| held.contains(&instrument(i)))
+        {
+            return Some(format!(
+                "{} comes only before the instruments the witnesses require",
+                spirit.name
+            ));
+        }
+        let Some(t) = self.caelum.hora else {
+            return Some("the hour is not fixed".into());
+        };
+        let t = t as f64;
+        if let Err(why) = crate::horae::lunar(t) {
+            return Some(why);
+        }
+        let mut why = Vec::new();
+        for rank in &spirit.ranks {
+            match crate::horae::window(rank, t, &self.caelum) {
+                Ok(()) if rank == "earl" && !open.is_empty() => {
+                    why.push("an Earl comes only when no other spirit is in the Circle".to_string())
+                }
+                Ok(()) => return None,
+                Err(e) => why.push(e),
+            }
+        }
+        Some(why.join("; "))
+    }
+
     fn bound_as_earl(spirit: &Spirit) -> bool {
         spirit.ranks.iter().any(|r| r == "earl")
             && spirit
@@ -197,31 +245,8 @@ impl Goetia {
 
 impl Rite for Goetia {
     fn admit(&self, state: &State, seal: &Seal, _circle: CircleId) -> bool {
-        let Some(spirit) = self.spirit(seal) else {
-            return false;
-        };
-        let open: Vec<&'static Spirit> = state
-            .invs
-            .values()
-            .filter(|i| i.status == InvStatus::Live)
-            .filter_map(|i| self.spirit(&i.seal))
-            .collect();
-        if open.iter().any(|s| Goetia::bound_as_earl(s)) {
-            return false;
-        }
-        let held = Goetia::held(state);
-        if !spirit
-            .instruments()
-            .iter()
-            .all(|i| held.contains(&instrument(i)))
-        {
-            return false;
-        }
-        spirit.ranks.iter().any(|rank| match rank.as_str() {
-            "earl" => open.is_empty(),
-            "duke" | "president" => false,
-            _ => true,
-        })
+        self.spirit(seal)
+            .is_some_and(|spirit| self.refusal(state, spirit).is_none())
     }
 
     fn signature(&self, _state: &State, form: &ReqForm) -> BTreeSet<Cap> {

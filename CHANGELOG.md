@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### The hours of the sky (2026-11-12; rite and runtime, not the nucleus)
+- **`INVOCA` keeps each rank's hours and the Moon's age** (`dynamic.md` §5.1, `authority.md` §8.3): temporal hours from sunrise and sunset at the declared place, civil twilight, the true new moon. A refusal now says why in plain words. Dukes come in their hours when the sky is declared clear; this opens the 22 Dukes.
+- **Launch:** `--hora` (a fixed time, for reproducible runs), `--locus LAT,LON`, `--caelum serenum|turbidum`. Without a place, only Earls may come. Every audit records the time, place, weather and the Moon's age.
+- Readings marked [O] in `dynamic.md` §5.1 await the owner: Prince by daylight, Knight from dawn and from sunset to the end of twilight.
+
 ### The will slot (2026-11-12; not a core change)
 - **`Voluntas`**: an outside will (a local model, in Spiri72) may supply a spirit's turn. It sees only what the request hands it and the outcomes open to the spirit; it may declare obedience, part or delay, never more. Until the core records an unknown outcome, it runs only with the test wand, and the audit notes that outcomes are the model's declarations.
 

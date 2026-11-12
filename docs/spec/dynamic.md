@@ -86,6 +86,16 @@ Escalation step 4 for a spirit whose king is not stated is recorded as skipped: 
 
 A spirit of two ranks may be invoked when **either** rank's window is open. [O; the mixed-rank question stays open]
 
+**Readings taken in the implementation (2026-11-12), to confirm with the owner.** All are [O]; none is a witness's word.
+- **King:** from the start of the third temporal hour to noon, and from the start of the ninth to sunset.
+- **Marquis:** from the start of the ninth temporal hour to the next sunrise; so also from midnight to sunrise.
+- **Duke:** from sunrise to noon, the sky declared clear. `TEMPESTAS` is outside the subset, so no raised storm can yet be active.
+- **Prince:** "any hour of the day" read as **daylight**, sunrise to sunset, by the same temporal-hour frame. The other reading, any hour of the 24, is open.
+- **Knight:** dawn (civil twilight) to sunrise, and *vesperae* (sunset) to the end of civil twilight, for "à vesperis usque ad finem solis". Sloane's "4 o'clock till sunset" would put *vesperae* at the tenth hour instead, which conflicts with this table's reading of *vesperae* for the Kings.
+- **Without a declared place,** no window that needs the sun can be known, so only Earls may come (doubt holds).
+- **The Moon's age** is computed from the true new moon (Meeus, ch. 49), whole days since it, for every rank.
+- **Berith's hour:** `GERE` still records no time, so the ring does not yet close his `MENDACIUM`.
+
 5.2 **Refusal and escalation.** The spirit's will is drawn (§5.4). If it chooses `RECUSATIO`, the runtime performs the next step of the escalation in `spirits.md` §5, records it, and draws again. Each step past the first spends one unit of the seal's ink class. After the seventh step, the greater curse, the spirit is banished (`RELEGA`). The invocation still exists, but it is relegated: requests to it yield nothing, and releasing it again is recorded as already done.
 
 5.3 **Requests.** `PETE` draws the will again, among the outcomes the register leaves open:

@@ -55,9 +55,13 @@ fn folder(name: &str) -> PathBuf {
 }
 
 fn annulus(dir: &Path, args: &[&str]) -> Output {
+    let mut args: Vec<&str> = args.to_vec();
+    if args.first() == Some(&"ritus") {
+        args.extend(["--hora", "2024-04-13T14:30:00Z", "--locus", "41.9,12.5"]);
+    }
     Command::new(BINARY)
         .current_dir(dir)
-        .args(args)
+        .args(&args)
         .output()
         .expect("the binary starts")
 }
@@ -101,7 +105,12 @@ fn furfur_answers_and_the_run_is_recorded() {
     assert_eq!(stdout(&o), "RATUM\n[Furfur, COACTUS] ita\nverum dixit\n");
     let acta = fs::read_to_string(dir.join("furfur.acta")).unwrap();
     assert!(acta.starts_with("# made with the test wand"));
-    assert!(acta.lines().nth(1).unwrap().contains("Launch"));
+    assert!(acta
+        .lines()
+        .find(|l| !l.starts_with('#'))
+        .unwrap()
+        .contains("Launch"));
+    assert!(acta.contains("# the sky: 2024-04-13T14:30:00Z at 41.9,12.5, the weather undeclared; the Moon 4 days old"), "{acta}");
     for store in [INDEX, VESSEL, KEYS, ROOTS, MARKS] {
         assert!(dir.join(HOUSE).join(store).exists(), "{store}");
     }

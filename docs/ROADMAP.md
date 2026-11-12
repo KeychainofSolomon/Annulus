@@ -43,6 +43,7 @@ Nothing is reported as built or tested unless it was.
    - a machine-checked proof over a formal model of the typing rules, plus Andras's `probatio`, must show it (step 3).
 9. **The GPT audit:** received 2026-11-11 and folded in (`docs/AUDIT_SPEC_1.md`): four findings fixed, one (Rudd's kings) open for a source check or the owner's ruling. The auditor recommends a second audit before approval.
 9a. **Simulated spirits** (found and drafted 2026-11-11, `dynamic.md` §5.6: scripted answers, placeholders, forced outcomes for hostile tests): what a spirit produces when no real AI agent stands behind it. A working office can simply perform the requested work, but a telling office has no source of a true answer. Simulation mode needs a rule before the core runtime (step 2) can run a rite.
+9b. **The spirit's book** (ruled and drafted 2026-11-12, `docs/spec/liber.md`): what lasts between rites, kept by the agent bridge, written only by the bridge and the Operator, recalled one way. Not a constitutional exception: `authority.md` §1.7 now denies the presumption of forgetting. Open: recording each recall in the audit, and the wand for receiving.
 10. **The owner's approval** of the whole. The Earls' and Dukes' readings are ruled (2026-11-11), as are the eight points of `offices.md` §7.
 
 **Carried to step 2** (second audit): an independent LL(1) analysis of the EBNF (FIRST and FOLLOW sets), and a mechanical comparison of the parser against it.

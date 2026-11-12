@@ -14,7 +14,7 @@ fn house(name: &str) -> PathBuf {
 }
 
 fn awkward(s: &str) -> String {
-    format!("{s}\t\\n\n\r\\\\ ünï")
+    format!("{s}\t\\n\n\r\\\\ ünï\u{1b}]52;c;x\u{7}\u{202e}\\u{{41}}")
 }
 
 fn every_kind() -> Stores {
@@ -398,4 +398,19 @@ fn audits_are_never_overwritten() {
     assert!(fs::read_to_string(&first)
         .unwrap()
         .starts_with("# made with the test wand"));
+}
+
+#[test]
+fn no_store_holds_a_hidden_character() {
+    let dir = house("hidden");
+    seal_fresh(&dir, &every_kind(), &BTreeSet::new());
+    for name in [INDEX, VESSEL, KEYS] {
+        let text = fs::read_to_string(dir.join(name)).unwrap();
+        assert!(
+            !text
+                .chars()
+                .any(|c| c != '\n' && c != '\t' && annulus::lingua::exsequi::hidden(c)),
+            "{name}"
+        );
+    }
 }

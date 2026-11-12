@@ -16,6 +16,19 @@ pub const PETITIONS: &str = "annulus.petitiones";
 pub const MARKS: &str = "annulus.signa";
 pub const LOCK: &str = "annulus.sera";
 const STAGED: &str = ".annulus-novum";
+pub const MAX_STORE: u64 = 64 << 20;
+pub const MAX_PLACE: u64 = 8 << 20;
+
+fn read_bounded(path: &Path, max: u64) -> std::io::Result<String> {
+    let len = fs::metadata(path)?.len();
+    if len > max {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidData,
+            format!("larger than {max} bytes"),
+        ));
+    }
+    fs::read_to_string(path)
+}
 
 pub struct Domus {
     pub dir: PathBuf,
@@ -284,6 +297,9 @@ impl Domus {
             .ancorae
             .as_ref()
             .ok_or("no place outside the house to keep its anchor: set ANNULUS_ANCORAE")?;
+        if !base.is_absolute() {
+            return Err("the anchors' folder must be an absolute path".into());
+        }
         let real = match fs::canonicalize(&self.dir) {
             Ok(r) => r,
             Err(_) => {
@@ -297,12 +313,20 @@ impl Domus {
             }
         };
         let name = real.to_string_lossy().to_lowercase();
+        let base_real = match fs::canonicalize(base) {
+            Ok(b) => b,
+            Err(_) => std::path::absolute(base)
+                .map_err(|e| format!("cannot name the anchors' folder: {e}"))?,
+        };
+        if folded(&base_real).starts_with(&folded(&real)) {
+            return Err("the anchors' folder lies inside the house it guards".into());
+        }
         Ok(base.join(hash_hex(name.as_bytes())))
     }
 
     fn anchor(&self) -> Result<Option<String>, String> {
         let path = self.anchor_path()?;
-        match fs::read_to_string(&path) {
+        match read_bounded(&path, MAX_STORE) {
             Ok(t) => Ok(Some(t.trim().to_string())),
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
             Err(e) => Err(format!("cannot read the house's anchor: {e}")),
@@ -311,7 +335,7 @@ impl Domus {
 
     fn last_roots_line(&self) -> Result<String, String> {
         let path = self.path(ROOTS);
-        let text = fs::read_to_string(&path)
+        let text = read_bounded(&path, MAX_STORE)
             .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
         text.lines()
             .last()
@@ -326,7 +350,7 @@ impl Domus {
     fn read_chain<T: Record>(&self, name: &str) -> Result<Chain<T>, String> {
         let mut chain = Chain::new();
         let path = self.path(name);
-        let text = fs::read_to_string(&path)
+        let text = read_bounded(&path, MAX_STORE)
             .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
         for (n, line) in text.lines().enumerate() {
             let (hash, rest) = line
@@ -347,7 +371,7 @@ impl Domus {
 
     fn last_roots(&self, wand: &Wand) -> Result<(Roots, String), String> {
         let path = self.path(ROOTS);
-        let text = fs::read_to_string(&path)
+        let text = read_bounded(&path, MAX_STORE)
             .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
         let line = text
             .lines()
@@ -448,7 +472,7 @@ impl Domus {
         let vessel: Chain<Sealed> = self.read_chain(VESSEL)?;
         let keys: Chain<KeyEntry> = self.read_chain(KEYS)?;
         let (roots, marks_digest) = self.last_roots(wand)?;
-        let marks_text = match fs::read_to_string(self.path(MARKS)) {
+        let marks_text = match read_bounded(&self.path(MARKS), MAX_STORE) {
             Ok(t) => t,
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => String::new(),
             Err(e) => return Err(format!("cannot read {MARKS}: {e}")),
@@ -572,8 +596,17 @@ impl Domus {
             .map_err(|e| format!("cannot write {}: {e}", path.display()))
     }
 
+    pub fn faithful_description(&self, fingerprint: &str) -> Option<String> {
+        read_bounded(&self.path(PETITIONS), MAX_STORE)
+            .ok()?
+            .lines()
+            .filter_map(|l| described_petition(l).ok())
+            .find(|(f, _)| f == fingerprint)
+            .map(|(_, d)| d)
+    }
+
     pub fn petitions(&self, stores: &Stores) -> Vec<(String, String)> {
-        let described: BTreeMap<String, String> = fs::read_to_string(self.path(PETITIONS))
+        let described: BTreeMap<String, String> = read_bounded(&self.path(PETITIONS), MAX_STORE)
             .unwrap_or_default()
             .lines()
             .filter_map(|l| described_petition(l).ok())
@@ -769,6 +802,11 @@ fn read_place(path: &Path, place: &str) -> Result<Option<String>, String> {
     if path.is_dir() {
         return Err(format!("the place {place:?} is a directory"));
     }
+    if fs::metadata(path).is_ok_and(|m| m.len() > MAX_PLACE) {
+        return Err(format!(
+            "the place {place:?} is larger than {MAX_PLACE} bytes"
+        ));
+    }
     match fs::read(path) {
         Ok(bytes) => String::from_utf8(bytes)
             .map(Some)
@@ -792,6 +830,14 @@ fn replace_file(path: &Path, bytes: &[u8]) -> Result<(), String> {
     let mut staged = path.as_os_str().to_owned();
     staged.push(STAGED);
     let staged = PathBuf::from(staged);
+    if fs::symlink_metadata(&staged).is_ok() {
+        fs::remove_file(&staged).map_err(|e| {
+            format!(
+                "cannot clear a stale staging file for {}: {e}",
+                path.display()
+            )
+        })?;
+    }
     let written = fs::OpenOptions::new()
         .create_new(true)
         .write(true)

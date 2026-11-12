@@ -30,6 +30,11 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Date | Breach | Fix |
 |---|---|---|
+| 2026-11-12 | (GPT, second pass) `confirma` turned the key even when the petition's description was missing | Refused unless the exact effects are read back and match the fingerprint |
+| 2026-11-12 | (GPT, second pass) A stale staging file left by a crash blocked every later write of that file | Cleared under the house's lock, then written afresh |
+| 2026-11-12 | (GPT, second pass) The anchors' folder could be set inside the house, or by a relative path | Both refused |
+| 2026-11-12 | (GPT, second pass) Stores and handed files were read whole, however large | Stores capped at 64 MiB, handed files at 8 MiB, checked before reading |
+| 2026-11-12 | (GPT, second pass; Spiri72) A planted link at the next rite's file name was followed | Each rite file is created new, never through an existing name or link |
 | 2026-11-12 | (Outside review by GPT) A link to the house named a different anchor, so a rolled-back house opened through it was accepted | The anchor is keyed by the house's real path; a house with stores but no anchor is refused until adopted once (`annulus adopta`) |
 | 2026-11-12 | (Outside review by GPT) Two runs, or a run and `confirma`, could write the same stores at once | One run holds the house at a time (`annulus.sera`, a lock the operating system releases when the program ends) |
 | 2026-11-12 | (Outside review by GPT) The build tools were referenced by movable tags | Pinned to exact commits, in both repositories |
@@ -62,6 +67,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | `PARS` with complete work: a model can declare part and hand in the whole work, which the angel approves | **Needs the owner's ruling**: is `PARS` binding on the work, or only the model's own word? |
 | The model's seal (model file hash, settings, llama.cpp version, vectors, grammar) | Planned (`agens`); GPT's list adopted |
 | The Lean CI fetches its installer script from a moving branch | Open |
+| Between the check of a world path and its use, another process could swap a folder for a link (needs a second local process with write access to the Circle's folder) | Open (GPT, second pass): needs handle-relative file operations |
 | Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | Not started; open ruling for the ink |
 | Berith's ring hour | Needs `GERE` to record its time (the Prince's and Knight's hours are ruled) |
 | `PRAETERITA` of the previous run (`historia "prior" legere`) | Not started: the history must be carried between runs |

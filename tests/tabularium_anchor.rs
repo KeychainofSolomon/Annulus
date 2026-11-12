@@ -165,3 +165,43 @@ fn only_one_run_holds_the_house() {
     drop(first);
     assert!(d.lock().is_ok());
 }
+
+#[test]
+fn an_anchor_kept_inside_its_house_or_by_a_relative_path_is_refused() {
+    let w = test_wand();
+    let dir = house("inside");
+    let e = Domus::anchored(&dir, &dir.join("ancorae"))
+        .open(&w)
+        .err()
+        .expect("inside");
+    assert!(e.contains("inside the house"), "{e}");
+    let e = Domus::anchored(&dir, std::path::Path::new("ancorae"))
+        .open(&w)
+        .err()
+        .expect("relative");
+    assert!(e.contains("absolute"), "{e}");
+}
+
+#[test]
+fn a_stale_staging_file_does_not_block_the_next_seal() {
+    let w = test_wand();
+    let dir = house("stale");
+    let d = Domus::new(&dir);
+    let o = d.open(&w).unwrap();
+    d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
+    fs::write(dir.join(format!("{MARKS}.annulus-novum")), "half").unwrap();
+    let o = d.open(&w).unwrap();
+    d.seal(&o.stores, o.counts, &["x.txt".to_string()].into(), &w)
+        .unwrap();
+    assert!(d.open(&w).unwrap().marks.contains("x.txt"));
+}
+
+#[test]
+fn an_oversized_place_is_refused_before_it_is_read() {
+    let dir = house("huge");
+    let f = fs::File::create(dir.join("huge.txt")).unwrap();
+    f.set_len(MAX_PLACE + 1).unwrap();
+    let places: BTreeSet<String> = ["huge.txt".to_string()].into();
+    let e = read_world(&dir, &places, &BTreeSet::new()).expect_err("too large");
+    assert!(e.contains("larger than"), "{e}");
+}

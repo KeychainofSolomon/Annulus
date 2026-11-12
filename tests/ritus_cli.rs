@@ -259,6 +259,17 @@ fn a_move_waits_for_the_second_key_then_commits_in_a_later_run() {
     let listed = stdout(&annulus(&dir, &["petitiones"]));
     assert!(!listed.contains("c.txt"), "{listed}");
     assert!(listed.contains("no faithful description"), "{listed}");
+    fs::remove_file(&described).unwrap();
+    let o = annulus(&dir, &["confirma", fingerprint, "--virga-probationis"]);
+    assert_eq!(o.status.code(), Some(2));
+    assert!(
+        stderr(&o).contains("no faithful description"),
+        "{}",
+        stderr(&o)
+    );
+    fs::write(&described, honest.replace("a.txt", "c.txt")).unwrap();
+    let o = annulus(&dir, &["confirma", fingerprint, "--virga-probationis"]);
+    assert_eq!(o.status.code(), Some(2));
     fs::write(&described, honest).unwrap();
 
     let o = annulus(&dir, &["confirma", fingerprint]);

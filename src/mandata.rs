@@ -418,6 +418,13 @@ pub fn confirma(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Re
         .petitions(&opened.stores)
         .iter()
         .any(|(p, _)| p == fingerprint);
+    let Some(what) = domus.faithful_description(fingerprint) else {
+        let _ = writeln!(
+            err,
+            "the petition {fingerprint} has no faithful description: nothing is confirmed that cannot be read"
+        );
+        return Ok(EXIT_REFUSED);
+    };
     if !pending || !opened.stores.confirm_petition(fingerprint, &wand) {
         let _ = writeln!(
             err,
@@ -429,7 +436,7 @@ pub fn confirma(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Re
         let _ = writeln!(err, "error: {e}");
         return Ok(1);
     }
-    let _ = writeln!(out, "confirmed: {fingerprint}");
+    let _ = writeln!(out, "confirmed: {fingerprint}\t{what}");
     Ok(0)
 }
 

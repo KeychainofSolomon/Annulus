@@ -30,6 +30,8 @@ The audit (one file per run), the Index (`.proscriptio`), the Vessel (beginning 
 
 ## The wand, for now
 
+**Superseded 2026-11-12:** the real wand exists (`operator.md` §8.7). The test wand stays for tests, on real signatures with published keys.
+
 The real wand (`virga`) comes later, but without a wand the faculty is empty. **Proposed:** a *test wand*, a key kept in a file and marked as such everywhere, accepted only with `--virga-probationis` and refused by any installation set up with a real wand. Every audit made with it says so on its first line.
 
 ## Tests

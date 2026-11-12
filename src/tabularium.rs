@@ -4,8 +4,9 @@ use std::fs;
 use std::io::Write;
 use std::path::{Component, Path, PathBuf};
 
+use crate::baculum::{Baculum, Lex};
 use crate::nucleus::sha256::hash_hex;
-use crate::nucleus::state::{fingerprint_effects, sign_for_test, verify, Chain, Roots};
+use crate::nucleus::state::{fingerprint_effects, verify, Chain, Roots};
 use crate::nucleus::*;
 
 pub const INDEX: &str = "annulus.proscriptio";
@@ -15,6 +16,10 @@ pub const ROOTS: &str = "annulus.radices";
 pub const PETITIONS: &str = "annulus.petitiones";
 pub const MARKS: &str = "annulus.signa";
 pub const LOCK: &str = "annulus.sera";
+/// The house's copy of its wands' lineage (a real wand's house only).
+pub const LINEAGE: &str = "annulus.virgae";
+/// The owner's ratification of the Constitution.
+pub const LEX: &str = "annulus.lex";
 const STAGED: &str = ".annulus-novum";
 pub const MAX_STORE: u64 = 64 << 20;
 pub const MAX_PLACE: u64 = 8 << 20;
@@ -33,6 +38,16 @@ fn read_bounded(path: &Path, max: u64) -> std::io::Result<String> {
 pub struct Domus {
     pub dir: PathBuf,
     ancorae: Option<PathBuf>,
+}
+
+/// Whom a house trusts to have sealed its stores.
+enum Fides {
+    /// No wand in hand and no lineage: any valid signature is read (nothing is sealed).
+    Any,
+    /// A house without a lineage, opened with this (test) wand.
+    Wand(String),
+    /// A real wand's house: its lineage decides.
+    Stirps(virga::Stirps),
 }
 
 pub struct Opened {
@@ -257,10 +272,12 @@ impl Record for Sealed {
     }
 }
 
-fn digest_roots(roots: &Roots, marks: &str) -> String {
+/// The digest a roots record signs. `seq` is the record's line number, so a signed record
+/// copied to the end of the file to replay older stores does not verify there.
+fn digest_roots(roots: &Roots, marks: &str, seq: usize) -> String {
     hash_hex(
         format!(
-            "radices|{}|{}|{}|{}",
+            "radices|2|{seq}|{}|{}|{}|{}",
             roots.index, roots.vessel, roots.keys, marks
         )
         .as_bytes(),
@@ -309,13 +326,155 @@ impl Domus {
         Ok(base.join(hash_hex(name.as_bytes())))
     }
 
+    /// A real wand keeps the house's anchor on its own stick; otherwise the anchors'
+    /// folder outside the house is used.
+    fn anchor_path_for(&self, b: &Baculum) -> Result<PathBuf, String> {
+        match b.ancorae() {
+            Some(base) => {
+                let real = real_path(&self.dir)?;
+                let name = real.to_string_lossy().to_lowercase();
+                Ok(base.join(hash_hex(name.as_bytes())))
+            }
+            None => self.anchor_path(),
+        }
+    }
+
     fn anchor(&self) -> Result<Option<String>, String> {
-        let path = self.anchor_path()?;
-        match read_bounded(&path, MAX_STORE) {
+        self.anchor_at(&self.anchor_path()?)
+    }
+
+    fn anchor_at(&self, path: &Path) -> Result<Option<String>, String> {
+        match read_bounded(path, MAX_STORE) {
             Ok(t) => Ok(Some(t.trim().to_string())),
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
             Err(e) => Err(format!("cannot read the house's anchor: {e}")),
         }
+    }
+
+    /// Whether the anchor's line is in the record of roots: an anchor is `n<TAB>hash`,
+    /// the number and hash of the last line this wand sealed (an older anchor holds only
+    /// the hash of the last line).
+    fn anchor_holds(&self, anchor: &str) -> Result<bool, String> {
+        let path = self.path(ROOTS);
+        let text = read_bounded(&path, MAX_STORE)
+            .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
+        let lines: Vec<&str> = text.lines().collect();
+        Ok(match anchor.split_once('\t') {
+            Some((n, h)) => n
+                .parse::<usize>()
+                .ok()
+                .and_then(|n| n.checked_sub(1))
+                .and_then(|i| lines.get(i))
+                .is_some_and(|l| hash_hex(l.as_bytes()) == h),
+            None => lines
+                .last()
+                .is_some_and(|l| hash_hex(l.as_bytes()) == anchor),
+        })
+    }
+
+    fn roots_count(&self) -> Result<usize, String> {
+        let path = self.path(ROOTS);
+        let text = read_bounded(&path, MAX_STORE)
+            .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
+        Ok(text.lines().count())
+    }
+
+    fn write_anchor(&self, b: &Baculum) -> Result<(), String> {
+        let anchor = self.anchor_path_for(b)?;
+        if let Some(parent) = anchor.parent() {
+            fs::create_dir_all(parent).map_err(|e| format!("cannot keep the anchor: {e}"))?;
+        }
+        let line = self.last_roots_line()?;
+        let n = self.roots_count()?;
+        replace_file(
+            &anchor,
+            format!("{n}\t{}", hash_hex(line.as_bytes())).as_bytes(),
+        )
+    }
+
+    fn house_lineage(&self) -> Result<Option<virga::Stirps>, String> {
+        match read_bounded(&self.path(LINEAGE), MAX_STORE) {
+            Ok(t) => virga::Stirps::decode(&t)
+                .map(Some)
+                .map_err(|e| format!("the house's copy of the lineage is refused: {e}")),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
+            Err(e) => Err(format!("cannot read {LINEAGE}: {e}")),
+        }
+    }
+
+    /// Whom this house trusts to have sealed it, given the wand in hand. A real wand's
+    /// lineage is joined with the house's copy, and the later one is written back to both.
+    fn fides(&self, b: &mut Baculum) -> Result<Fides, String> {
+        let house = self.house_lineage()?;
+        if b.verum_est() {
+            let mine = b.stirps.clone().ok_or("the wand has no lineage")?;
+            let joined = match &house {
+                Some(h) => virga::Stirps::concilia(&mine, h).map_err(|e| {
+                    if h.genus() != mine.genus() {
+                        "this house belongs to another Operator's wands".to_string()
+                    } else {
+                        e
+                    }
+                })?,
+                None => {
+                    if self.installed() {
+                        return Err("this house was set up without a real wand (with the test wand, or before the wand was made): a real wand keeps only a house of its own, so make a new house".into());
+                    }
+                    mine.clone()
+                }
+            };
+            if house.as_ref() != Some(&joined) {
+                fs::create_dir_all(&self.dir).map_err(|e| format!("cannot make the house: {e}"))?;
+                replace_file(&self.path(LINEAGE), joined.encode().as_bytes())?;
+            }
+            if joined != mine {
+                if let Some(v) = b.virga.as_mut() {
+                    v.scribe_stirpem(&joined)?;
+                }
+            }
+            b.stirps = Some(joined.clone());
+            if !joined.vivit(&b.fingerprint) {
+                return Err("this wand has been revoked: it opens nothing".into());
+            }
+            Ok(Fides::Stirps(joined))
+        } else if let Some(h) = house {
+            if b.present {
+                return Err("this house is kept by a real wand: the test wand is refused".into());
+            }
+            Ok(Fides::Stirps(h))
+        } else if b.present {
+            Ok(Fides::Wand(b.fingerprint.clone()))
+        } else {
+            Ok(Fides::Any)
+        }
+    }
+
+    /// The owner's ratification of the Constitution, if the house has one.
+    pub fn lex(&self) -> Result<Option<Lex>, String> {
+        match read_bounded(&self.path(LEX), MAX_STORE) {
+            Ok(t) => {
+                let (owner, signature) = t
+                    .trim()
+                    .split_once('\t')
+                    .ok_or("the ratification of the Constitution is malformed")?;
+                Ok(Some(Lex {
+                    owner: owner.to_string(),
+                    signature: signature.to_string(),
+                }))
+            }
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
+            Err(e) => Err(format!("cannot read {LEX}: {e}")),
+        }
+    }
+
+    /// Ratifies the Constitution: the master key signs its digest (outside any run).
+    pub fn ratify(&self, b: &Baculum, digest: &str) -> Result<(), String> {
+        let signature = b.signa_magister(digest)?;
+        fs::create_dir_all(&self.dir).map_err(|e| format!("cannot make the house: {e}"))?;
+        replace_file(
+            &self.path(LEX),
+            format!("{}\t{signature}\n", b.fingerprint).as_bytes(),
+        )
     }
 
     fn last_roots_line(&self) -> Result<String, String> {
@@ -354,7 +513,7 @@ impl Domus {
         Ok(chain)
     }
 
-    fn last_roots(&self, wand: &Wand) -> Result<(Roots, String), String> {
+    fn last_roots(&self, fides: &Fides, adopting: bool) -> Result<(Roots, String), String> {
         let path = self.path(ROOTS);
         let text = read_bounded(&path, MAX_STORE)
             .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
@@ -363,19 +522,43 @@ impl Domus {
             .last()
             .ok_or("the record of the stores' roots is empty")?;
         let f = split(line)?;
-        let [index, vessel, keys, marks, signer, signature] = f.as_slice() else {
-            return Err("the record of the stores' roots is malformed".into());
+        let [index, vessel, keys, marks, master, signer, bond, signature] = f.as_slice() else {
+            return Err("the record of the stores' roots is malformed, or of an older kind".into());
         };
         let roots = Roots {
             index: index.clone(),
             vessel: vessel.clone(),
             keys: keys.clone(),
         };
-        if !verify(signer, &digest_roots(&roots, marks), signature) {
+        if signer != master && !virga::vinculum_valet(master, signer, bond) {
+            return Err(
+                "the record of the stores' roots is signed by a key no wand vouches for".into(),
+            );
+        }
+        if !verify(
+            signer,
+            &digest_roots(&roots, marks, text.lines().count()),
+            signature,
+        ) {
             return Err("the record of the stores' roots is not signed".into());
         }
-        if wand.present && *signer != wand.fingerprint {
-            return Err("the stores were sealed by another wand".into());
+        match fides {
+            Fides::Any => {}
+            Fides::Wand(w) => {
+                if master != w {
+                    return Err("the stores were sealed by another wand".into());
+                }
+            }
+            Fides::Stirps(s) => {
+                if !s.vivit(master) && !(adopting && s.revocata(master)) {
+                    return Err(if s.revocata(master) {
+                        "the stores were last sealed by a revoked wand: look them over, then adopt them with a remaining wand (`annulus adopta`)".into()
+                    } else {
+                        "the stores were sealed by a wand that is not of this house's lineage"
+                            .into()
+                    });
+                }
+            }
         }
         Ok((roots, marks.clone()))
     }
@@ -400,25 +583,59 @@ impl Domus {
         Ok(file)
     }
 
-    pub fn adopt(&self, wand: &Wand) -> Result<(), String> {
-        if self.anchor()?.is_some() {
-            return Err("this house already has its anchor".into());
-        }
+    /// Adopts a house the Operator has looked over: its stores are checked, then anchored
+    /// to this wand. A real wand re-seals them with its master key, which also takes back
+    /// a house last sealed by a wand since revoked.
+    pub fn adopt(&self, wand: &mut Baculum) -> Result<(), String> {
         if !self.installed() {
             return Err("there are no stores here to adopt".into());
         }
-        self.verified(wand)?;
-        let anchor = self.anchor_path()?;
-        if let Some(parent) = anchor.parent() {
-            fs::create_dir_all(parent).map_err(|e| format!("cannot keep the anchor: {e}"))?;
+        let fides = self.fides(wand)?;
+        if !wand.verum_est() {
+            if self.anchor()?.is_some() {
+                return Err("this house already has its anchor".into());
+            }
+            self.verified(&fides, false)?;
+            return self.write_anchor(wand);
         }
-        replace_file(
-            &anchor,
-            hash_hex(self.last_roots_line()?.as_bytes()).as_bytes(),
-        )
+        let opened = self.verified(&fides, true)?;
+        self.seal(&opened.stores, opened.counts, &opened.marks, wand)
     }
 
-    pub fn open(&self, wand: &Wand) -> Result<Opened, String> {
+    pub fn open(&self, wand: &mut Baculum) -> Result<Opened, String> {
+        let fides = self.fides(wand)?;
+        wand.lex = self.lex()?;
+        if wand.verum_est() {
+            let anchor = self.anchor_at(&self.anchor_path_for(wand)?)?;
+            if !self.installed() {
+                if anchor.is_some() {
+                    return Err("this house was sealed before, and its stores are gone: refusing to start afresh".into());
+                }
+                return Ok(Opened {
+                    stores: Stores::install(wand),
+                    roots: None,
+                    counts: [0, 0, 0],
+                    marks: BTreeSet::new(),
+                });
+            }
+            if let Some(a) = &anchor {
+                if !self.anchor_holds(a)? {
+                    return Err("the stores are not the ones this wand last saw: they have been rolled back or replaced".into());
+                }
+            }
+            let opened = self.verified(&fides, false)?;
+            // the wand remembers the latest stores it has seen, whoever sealed them
+            self.write_anchor(wand)?;
+            return Ok(opened);
+        }
+        if matches!(fides, Fides::Stirps(_)) {
+            // a real wand's house, opened without the wand: its anchors are on the wand,
+            // and nothing will be sealed
+            if !self.installed() {
+                return Err("a real wand's house is opened only with the wand".into());
+            }
+            return self.verified(&fides, false);
+        }
         let anchor = self.anchor()?;
         if self.installed() && anchor.is_none() {
             return Err(
@@ -433,7 +650,7 @@ impl Domus {
             );
         }
         if let Some(a) = &anchor {
-            if hash_hex(self.last_roots_line()?.as_bytes()) != *a {
+            if !self.anchor_holds(a)? {
                 return Err(
                     "the stores are not the last ones sealed: they have been rolled back or replaced"
                         .into(),
@@ -449,14 +666,14 @@ impl Domus {
                 marks: BTreeSet::new(),
             });
         }
-        self.verified(wand)
+        self.verified(&fides, false)
     }
 
-    fn verified(&self, wand: &Wand) -> Result<Opened, String> {
+    fn verified(&self, fides: &Fides, adopting: bool) -> Result<Opened, String> {
         let index: Chain<IxEntry> = self.read_chain(INDEX)?;
         let vessel: Chain<Sealed> = self.read_chain(VESSEL)?;
         let keys: Chain<KeyEntry> = self.read_chain(KEYS)?;
-        let (roots, marks_digest) = self.last_roots(wand)?;
+        let (roots, marks_digest) = self.last_roots(fides, adopting)?;
         let marks_text = match read_bounded(&self.path(MARKS), MAX_STORE) {
             Ok(t) => t,
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => String::new(),
@@ -518,7 +735,7 @@ impl Domus {
         stores: &Stores,
         counts: [usize; 3],
         marks: &BTreeSet<Place>,
-        wand: &Wand,
+        wand: &Baculum,
     ) -> Result<(), String> {
         if !wand.present {
             return Err("without the wand the stores cannot be sealed".into());
@@ -531,13 +748,25 @@ impl Domus {
         let marks_digest = hash_hex(marks_text.as_bytes());
         replace_file(&self.path(MARKS), marks_text.as_bytes())?;
         let roots = stores.roots();
-        let signature = sign_for_test(&wand.fingerprint, &digest_roots(&roots, &marks_digest));
+        let seq = match self.roots_count() {
+            Ok(n) => n + 1,
+            Err(_) if !self.path(ROOTS).exists() => 1,
+            Err(e) => return Err(e),
+        };
+        let (signer, signature) = wand.signa_ritus(&digest_roots(&roots, &marks_digest, seq))?;
+        let bond = if signer == wand.fingerprint {
+            "-".to_string()
+        } else {
+            wand.vinculum().to_string()
+        };
         let line = join(&[
             roots.index,
             roots.vessel,
             roots.keys,
             marks_digest,
             wand.fingerprint.clone(),
+            signer,
+            bond,
             signature,
         ]);
         let path = self.path(ROOTS);
@@ -549,11 +778,10 @@ impl Domus {
         file.write_all(format!("{line}\n").as_bytes())
             .and_then(|_| file.sync_all())
             .map_err(|e| format!("cannot write {}: {e}", path.display()))?;
-        let anchor = self.anchor_path()?;
-        if let Some(parent) = anchor.parent() {
-            fs::create_dir_all(parent).map_err(|e| format!("cannot keep the anchor: {e}"))?;
+        if let Some(s) = &wand.stirps {
+            replace_file(&self.path(LINEAGE), s.encode().as_bytes())?;
         }
-        replace_file(&anchor, hash_hex(line.as_bytes()).as_bytes())
+        self.write_anchor(wand)
     }
 
     pub fn note_petitions(&self, audit: &[Label]) -> Result<(), String> {

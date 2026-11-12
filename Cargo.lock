@@ -7,4 +7,10 @@ name = "annulus"
 version = "0.2.1"
 dependencies = [
  "annulus",
+ "virga",
 ]
+
+[[package]]
+name = "virga"
+version = "1.0.0"
+source = "git+https://github.com/KeychainofSolomon/72Virga?rev=48ee869b0f4cf741f8e4e8151fd9c8d844bc016e#48ee869b0f4cf741f8e4e8151fd9c8d844bc016e"

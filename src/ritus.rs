@@ -11,13 +11,14 @@ pub const EXAMINATOR: &str = "constitutio:angelicus";
 pub const ITA_NON: &str = "ita_non";
 pub const RITE: &str = "goetia";
 
-pub fn instrument(word: &str) -> Instrument {
-    match word {
+pub fn instrument(word: &str) -> Option<Instrument> {
+    Some(match word {
         "ANULUM" => Instrument::Anulum,
         "VIRGAM" => Instrument::Virgam,
         "HEXAGRAMMUM" => Instrument::Hexagrammum,
-        _ => Instrument::Pentagrammum,
-    }
+        "PENTAGRAMMUM" => Instrument::Pentagrammum,
+        _ => return None,
+    })
 }
 
 pub struct Goetia {
@@ -267,7 +268,7 @@ impl Goetia {
         if !spirit
             .instruments()
             .iter()
-            .all(|i| held.contains(&instrument(i)))
+            .all(|i| instrument(i).is_some_and(|i| held.contains(&i)))
         {
             return Some(format!(
                 "{} comes only before the instruments the witnesses require",
@@ -333,6 +334,14 @@ impl Rite for Goetia {
         let Some(req) = state.reqs.get(&p.req) else {
             return Verdict::Reject;
         };
+        let Some(class) = crate::officia::signature(&form.office).map(|s| s.class) else {
+            return Verdict::Reject;
+        };
+        match (&p.content, class) {
+            (Content::Response(..), crate::officia::Class::Working)
+            | (Content::Work(_), crate::officia::Class::Telling) => return Verdict::Reject,
+            _ => {}
+        }
         match &p.content {
             Content::Empty => Verdict::Hold,
             Content::Response(_, text) if form.office == "PRAETERITA" => {

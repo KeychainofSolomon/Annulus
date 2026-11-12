@@ -231,10 +231,7 @@ impl<'p> Run<'p> {
             }
         };
         if self.state.running() {
-            self.state.current = None;
-            if self.state.schedule(OPERATOR).is_ok() {
-                let _ = self.state.fail(class);
-            }
+            let _ = self.state.abort(class);
         }
         self.finish(class, Some(message))
     }
@@ -317,10 +314,19 @@ impl<'p> Run<'p> {
             .into_iter()
             .filter(|o| self.rite.will_open(&self.state, worker, *o))
             .collect();
+        let handed = self
+            .state
+            .props
+            .get(&prop)
+            .and_then(|pr| self.state.reqs.get(&pr.req))
+            .map(|r| r.handed.clone())
+            .unwrap_or_default();
         let legenda = asked
             .places
             .iter()
+            .filter(|p| handed.contains(&Cap::new(p, Perm::Legere)))
             .filter(|p| self.state.faculty().contains(&Cap::new(p, Perm::Legere)))
+            .filter(|p| !self.state.reserved.contains(&Cap::new(p, Perm::Legere)))
             .filter_map(|p| {
                 self.state
                     .world
@@ -818,17 +824,35 @@ impl<'p> Run<'p> {
             .ok_or_else(|| Halt::Denial("an invocation without an office".into()))?;
         let sig = crate::officia::signature(&office)
             .ok_or_else(|| Halt::Denial("an office outside the step-2 subset".into()))?;
-        let mut texts = vals.into_iter().map(|v| match v {
-            V::Text(t) => t.s,
-            _ => String::new(),
-        });
+        let mut given = Vec::new();
+        for v in vals {
+            let V::Text(t) = v else {
+                return Err(Halt::Denial("PETE takes only text".into()));
+            };
+            given.push(t);
+        }
+        let mut texts = given.into_iter();
+        let steering = |t: Option<Text>| -> Go<Option<String>> {
+            match t {
+                Some(t) if t.mark == Mark::Quarantined => Err(Halt::Denial(
+                    "a quarantined word cannot choose an office's mode or place".into(),
+                )),
+                t => Ok(t.map(|t| t.s)),
+            }
+        };
         let mode = if sig.modes.is_empty() {
             None
         } else {
-            texts.next()
+            steering(texts.next())?
         };
-        let quaestio = if sig.quaestio { texts.next() } else { None };
-        let places: Vec<String> = texts.collect();
+        let quaestio = if sig.quaestio {
+            texts.next().map(|t| t.s)
+        } else {
+            None
+        };
+        let places: Vec<String> = texts
+            .map(|t| steering(Some(t)).map(|p| p.unwrap_or_default()))
+            .collect::<Go<_>>()?;
         let form = ReqForm {
             office: office.clone(),
             mode: mode.clone(),

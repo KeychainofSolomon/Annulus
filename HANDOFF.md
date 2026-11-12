@@ -474,3 +474,9 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 - `step-2c` fast-forwarded into `main` (281 tests). Work now goes on `main` through short branches, merged after CI (build and Lean) passes.
 - **Done, core change:** a turn records a `Will`: `Known` in simulated mode, `Declared` in real-agent mode (a run with an outside will). Real-agent mode declares only obedience, part or delay and cannot `kill`. Rust, Lean (`Will`, `Will.of`, `declarable`), exclusion tests, `core.md` §9.2. 284 tests. The test-wand gate on a model remains only because there is no real wand (2d).
 - **Order agreed with the owner, next:** independent audit of the 11–12 November core changes (and this one); start the proofs of P1–P9 with their correspondence to Rust; step 2d (remove the prototype, a real wand).
+
+## 2026-11-12, night: core audit 1 and the first proofs
+
+- **Core audit 1** (`docs/AUDIT_CORE_1.md`): rollback and deletion of the house closed by an anchor outside the house (`ancorae`), the model's view bounded by its request, the wrong kind of answer rejected, petition text checked against its fingerprint, Windows spellings refused, smaller closures. Open items in `STATUS.md`.
+- **Proofs** (`formal/Annulus/Proofs.lean`): P1 (a) and three facts about declared outcomes and `kill`. CI admits theorems only there and checks their axioms.
+- **Next:** P1 (b, c) by induction over runs, then P2; the open audit items; step 2d (remove the prototype; a real wand, which also holds the anchor).

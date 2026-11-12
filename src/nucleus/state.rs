@@ -120,12 +120,18 @@ impl Stores {
     }
 
     pub fn confirm_petition(&mut self, fingerprint: &str, wand: &Wand) -> bool {
-        let sealed = self
+        let pending = self
             .keys
             .entries()
             .iter()
-            .any(|e| *e == KeyEntry::Petition(fingerprint.to_string()));
-        if !wand.present || !sealed {
+            .rev()
+            .find_map(|e| match e {
+                KeyEntry::Petition(f) if f == fingerprint => Some(true),
+                KeyEntry::Confirmed(f) if f == fingerprint => Some(false),
+                _ => None,
+            })
+            .unwrap_or(false);
+        if !wand.present || !pending {
             return false;
         }
         self.keys.push(KeyEntry::Confirmed(fingerprint.to_string()));

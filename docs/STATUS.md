@@ -1,8 +1,8 @@
 # Implementation status
 
-Last updated: 2026-11-12, 17:30 (`main`; `step-2c` merged). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-12, 18:30 (`main`). **This page is updated with every fix** (the owner's rule).
 
-**Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are tested, not proved:** P1–P9 are stated in Lean (`formal/`), with no proofs yet.
+**Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are mostly tested, not proved:** P1–P9 are stated in Lean (`formal/`); the first proofs are in `formal/Annulus/Proofs.lean`.
 
 ## What runs: `annulus ritus` (step 2a–2c)
 
@@ -30,6 +30,12 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Date | Breach | Fix |
 |---|---|---|
+| 2026-11-12 | (Core audit 1, `docs/AUDIT_CORE_1.md`) Rolling the stores back revived a spent key or lifted a damnation; deleting the house started it afresh | An anchor outside the house records the last sealed roots; launch refuses a rolled-back or missing house |
+| 2026-11-12 | (Core audit 1) A model was shown files it was never handed to read | It sees only places its request handed it `legere` |
+| 2026-11-12 | (Core audit 1) Words for a working office, or work for a telling one, could be approved | The angel rejects the wrong kind of answer |
+| 2026-11-12 | (Core audit 1) The petition text shown before `confirma` was unsigned | The effects are stored and checked against the fingerprint before they are shown |
+| 2026-11-12 | (Core audit 1) Windows spellings (case, trailing dots, `~` short names) could reach the house | Such names refused; the house compared case-blind |
+| 2026-11-12 | (Core audit 1) A petition could be confirmed twice; open instrument list; non-text `PETE` arguments | Closed |
 | 2026-11-12 | The angel saw a citation of an unhanded place only as `[locus: x]`; other spellings passed a false source | Every guise read; anything not exactly a handed place refused (`officia::cited`) |
 | 2026-11-12 | JSON nesting unbounded: a hostile model server could abort a run before its audit was written | Nesting stops at 64; doubled keys refused (`lingua::json`) |
 | 2026-11-12 | A spirit's words reached the terminal raw: clipboard (OSC 52), window title, reversed text, lines forged as Annulus's own | Hidden characters shown as `\u{..}`; every line of an answer marked (`exsequi::visible`) |
@@ -42,9 +48,13 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Area | State |
 |---|---|
-| Proofs of P1–P9 and their correspondence to the Rust core | Not started; the largest gap |
+| Proofs of P1–P9 and their correspondence to the Rust core | **Begun** (`formal/Annulus/Proofs.lean`, checked by CI with no extra axioms): P1 (a), containment at commit; an outside will's turns are declared; `kill` only in simulated mode. P1 (b, c) and P2–P9 need induction over runs; correspondence to Rust not started. Still the largest gap |
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
-| Independent audit of the core changes of 2026-11-11 and 2026-11-12 | Owed |
+| Independent audit of the core changes of 2026-11-11 and 2026-11-12 | **Done** (`docs/AUDIT_CORE_1.md`); confirmed findings fixed. The change of the evening (declared outcomes) and the anchor are not yet reviewed |
+| The audit files (`.acta`) are not signed or read back | Open (core audit 1, #5); before `PRAETERITA` of the previous run |
+| The office's form enforced in the core, not only by the angel | Open (core audit 1, #4) |
+| Rust and Lean drift: validator manifest, Circle binding of values, ink without a wand, forced outcomes, the grave store, a refused `CONSECRA` | Open (core audit 1, #8) |
+| The anchor can itself be deleted by someone with access to it | Open until a real wand (2d) |
 | Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | Not started; open ruling for the ink |
 | Berith's ring hour | Needs `GERE` to record its time (the Prince's and Knight's hours are ruled) |
 | `PRAETERITA` of the previous run (`historia "prior" legere`) | Not started: the history must be carried between runs |

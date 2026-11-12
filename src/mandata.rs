@@ -290,7 +290,11 @@ pub fn ritus_with(
     }
     let _ = out.flush();
     if let Some(m) = &exitus.message {
-        say(format!("class {}: {m}", exitus.class));
+        say(format!(
+            "class {}: {}",
+            exitus.class,
+            crate::lingua::exsequi::visible(m).replace('\n', " ")
+        ));
     }
     let mut class = exitus.class;
     let state = &exitus.state;

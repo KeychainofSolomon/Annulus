@@ -34,6 +34,7 @@ pub struct Petitio<'a> {
     pub modus: Option<&'a str>,
     pub loci: &'a [String],
     pub legenda: Vec<(String, String, Mark)>,
+    pub historia: Vec<String>,
     pub aperta: Vec<Outcome>,
 }
 
@@ -330,6 +331,11 @@ impl<'p> Run<'p> {
             modus: asked.mode.as_deref(),
             loci: &asked.places,
             legenda,
+            historia: if asked.office == "PRAETERITA" {
+                self.rite.historia(&self.state)
+            } else {
+                Vec::new()
+            },
             aperta: aperta.clone(),
         };
         let will = self.will.as_deref_mut().expect("a will is present");

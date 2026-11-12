@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-12, 16:30 (branch `step-2c`). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-12, 17:30 (`main`; `step-2c` merged). **This page is updated with every fix** (the owner's rule).
 
 **Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are tested, not proved:** P1–P9 are stated in Lean (`formal/`), with no proofs yet.
 
@@ -14,7 +14,7 @@ Last updated: 2026-11-12, 16:30 (branch `step-2c`). **This page is updated with 
 | The apparatus: ring, wand, hexagram, pentagram, offering, naming, forbidding, binding by the Divine Name | Implemented for Paimon, Belial, Asmoday, Beleth, Andras; Astaroth, Focalor, Malphas written but unreachable |
 | Stores on disk (`tabularium`): Index, Vessel, sealed petitions, signed roots record, quarantine record (`annulus.signa`), audit per run, granted files read and written | Implemented and tested: tampering, forged or missing roots, another wand, links, escapes from the folder all refuse to launch |
 | Command line: `annulus ritus`, `confirma` (second key), `petitiones` | Implemented and tested through the real binary |
-| An outside will (`Voluntas`): a local model may supply a spirit's turn | Implemented; **test wand only**, until the core can record an outcome it does not know |
+| An outside will (`Voluntas`): a local model may supply a spirit's turn | Implemented. The core records each of its turns as **declared, never known** (real-agent mode, `core.md` §9.2); it may declare only obedience, part or delay, and cannot kill. **Test wand only** until a real wand exists (step 2d) |
 | **The hours of the sky** (`src/horae.rs`): sunrise, sunset and civil twilight at the declared place; the Moon's age from the true new moon; each rank's window (`dynamic.md` §5.1); `--hora`, `--locus`, `--caelum`; every audit records the sky the run used | Implemented and tested against the 2000, 2017 and 2024 new moons and Berlin's solstices. **Dukes can now be bound.** Readings marked [O] await the owner |
 | **`VIRTUTES`**: a spirit reports each handed file's size in bytes and lines; the angel rereads them | Implemented and tested: eight kinds of false account all caught (`offices.md` §2.2). Dates left out until the world records times |
 | **`PRAETERITA`** (the present run): a spirit recounts the run's past, one claim per line in the history's words; the angel checks each against the history built from the audit | Implemented and tested: false claims and Berith's lies caught. The previous run (`"prior"`) not yet |
@@ -43,7 +43,6 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | Area | State |
 |---|---|
 | Proofs of P1–P9 and their correspondence to the Rust core | Not started; the largest gap |
-| An unknown outcome for a real will, so a model may run without the test wand | Owed (core change) |
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
 | Independent audit of the core changes of 2026-11-11 and 2026-11-12 | Owed |
 | Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | Not started; open ruling for the ink |

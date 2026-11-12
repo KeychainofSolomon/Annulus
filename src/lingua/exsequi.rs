@@ -24,7 +24,7 @@ pub struct Optiones {
     pub caelum: crate::horae::Caelum,
 }
 
-pub const DECLARABLE: [Outcome; 3] = [Outcome::Obsequium, Outcome::Pars, Outcome::Mora];
+pub use crate::nucleus::types::DECLARABLE;
 
 #[derive(Clone, Debug)]
 pub struct Petitio<'a> {
@@ -156,7 +156,8 @@ pub fn run_with(
     will: Option<&mut dyn Voluntas>,
 ) -> Exitus {
     let untested_will = will.is_some() && !wand.test;
-    let launch = ritus::launch(checked, wand, stores, world, options.radices.clone());
+    let mut launch = ritus::launch(checked, wand, stores, world, options.radices.clone());
+    launch.simulated = will.is_none();
     let mut run = Run {
         state: State::initial(launch),
         rite: Goetia {
@@ -180,7 +181,10 @@ pub fn run_with(
     if untested_will {
         return run.finish(
             2,
-            Some("a model's will runs only with the test wand until the core can record an outcome it does not know".into()),
+            Some(
+                "a model's will runs only with the test wand until a real wand exists (step 2d)"
+                    .into(),
+            ),
         );
     }
     if let Err(refusal) = run.state.launch() {

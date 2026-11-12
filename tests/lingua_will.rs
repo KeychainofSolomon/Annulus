@@ -290,3 +290,25 @@ fn a_spirits_words_cannot_command_the_operators_terminal_or_pass_as_annulus() {
     }
     assert_eq!(shown.lines().count(), 4);
 }
+
+#[test]
+fn a_model_s_outcome_is_recorded_as_declared_never_as_known() {
+    let mut will = reply(
+        Outcome::Obsequium,
+        Actum::Responsum("tempestas veniet".into()),
+    );
+    let e = run(FURFUR, &mut will, test_wand());
+    assert_eq!(e.class, 0, "{:?}", e.message);
+    assert!(!e.state.simulated());
+    let turns: Vec<Will> = e
+        .state
+        .audit()
+        .entries()
+        .iter()
+        .filter_map(|l| match l {
+            Label::Turn(_, w, _, _) => Some(*w),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(turns, vec![Will::Declared(Outcome::Obsequium)]);
+}

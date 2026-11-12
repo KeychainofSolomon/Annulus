@@ -39,6 +39,7 @@ structure Universe where
   blank : Datum
   killOutcome : Outcome → Prop
   angelOpen : Outcome → Prop
+  declarable : Outcome → Prop
   highConsequence : Verb → Prop
   creates : Verb → Prop
   writes : Verb → Prop
@@ -157,6 +158,22 @@ inductive Standing where
 
 variable {U : Universe}
 
+/-- `core.md` §9.2: what the record knows of a turn's outcome. In simulated mode the
+scheduler drew it, so it is known; in real mode it is only the outside will's own
+declaration, and the outcome itself (a lie, malice) is not known. -/
+inductive Will (U : Universe) where
+  | known (o : U.Outcome)
+  | declared (o : U.Outcome)
+
+def Will.outcome : Will U → U.Outcome
+  | .known o => o
+  | .declared o => o
+
+def Will.of (m : Mode) (o : U.Outcome) : Will U :=
+  match m with
+  | .simulated => .known o
+  | .real => .declared o
+
 /-- `offices.md` §3.1: a handed set holds (place, permission) pairs and invocation rights. -/
 inductive Power (U : Universe) where
   | cap (p : U.Place) (m : U.Perm)
@@ -257,7 +274,7 @@ inductive Label (U : Universe) where
       (dismissed : List U.Inv)
   | request (q : U.Req) (p : U.Pid) (to : Addressee U) (f : U.ReqForm) (w : U.Worker)
       (asked : Power U → Prop)
-  | turn (w : U.Worker) (o : U.Outcome) (c : Contrib U) (finish : Bool)
+  | turn (w : U.Worker) (v : Will U) (c : Contrib U) (finish : Bool)
   | kill (w : U.Worker) (o : U.Outcome) (dismissed : List U.Inv)
   | examine (p : U.Pid) (a : ExamAns U) (v : Verdict)
   | judge (p : U.Pid) (d : WorkOutcome)

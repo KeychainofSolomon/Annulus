@@ -14,6 +14,7 @@ pub const OPERATOR: WorkerId = 0;
 pub const DENIAL: u8 = 2;
 
 pub const ANGEL_OUTCOMES: [Outcome; 3] = [Outcome::Obsequium, Outcome::Mora, Outcome::Pars];
+pub const DECLARABLE: [Outcome; 3] = [Outcome::Obsequium, Outcome::Pars, Outcome::Mora];
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Perm {
@@ -211,6 +212,27 @@ pub enum Contrib {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Will {
+    Known(Outcome),
+    Declared(Outcome),
+}
+
+impl Will {
+    pub fn outcome(self) -> Outcome {
+        match self {
+            Will::Known(o) | Will::Declared(o) => o,
+        }
+    }
+
+    pub fn known(self) -> Option<Outcome> {
+        match self {
+            Will::Known(o) => Some(o),
+            Will::Declared(_) => None,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Outcome {
     Obsequium,
     Pars,
@@ -264,7 +286,7 @@ pub enum Label {
         WorkerId,
         Vec<Cap>,
     ),
-    Turn(WorkerId, Outcome, Contrib, bool),
+    Turn(WorkerId, Will, Contrib, bool),
     Kill(WorkerId, Outcome, Vec<InvId>),
     Examine(Pid, ExamAns, Verdict),
     Judge(Pid, WorkOutcome),

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Core: a model's outcome is declared, never known (2026-11-12; core change)
+- **The turn records what is known** (`core.md` §9.2): `Label::Turn` carries a `Will`, `Known` in simulated mode (the scheduler drew it) and `Declared` in real-agent mode (the model's own word). The mode is fixed at launch: a run with an outside will is real-agent mode.
+- **Closed lists:** in real-agent mode a turn may declare only obedience, part or delay; `kill` is refused. Same in Lean (`Will`, `Will.of`, `declarable`, the `turn` and `kill` rules). Exclusion tests in `tests/nucleus_exclusion.rs`; a model's run recorded as declared in `tests/lingua_will.rs`. 284 tests.
+- The test-wand gate on a model now stands only because no real wand exists yet (step 2d).
+
 ### `PRAETERITA`, the present run (2026-11-12; rite and evaluator, not the nucleus)
 - A spirit recounts the run's past, one claim per line in the history's words (`invocatus`, `petitum`, `iudicatum`, `commissum`, `dimissus`, `relegatus`, `recusatus`). The angel builds the history from the audit and checks each claim; one false claim is `IRRITUM`, omissions are not lies, an empty or incomplete account is held. Berith's lies about the past are now caught. The previous run waits; asking for it is refused by the checker.
 

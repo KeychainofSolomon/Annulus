@@ -180,9 +180,11 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hk : ¬ U.killOutcome o)
       (hang : ∀ a, wi.owner = some (.angel a) → U.angelOpen o)
       (hsim : σ.mode = .simulated → o = M.sim.will σ w ∧ (c, fin) = M.sim.turn σ w)
+      (hdecl : σ.mode = .real → U.declarable o)
       (hfin : fin = true → wi.isHelper = false)
       (hc : ContribOK R σ wi ri pi c) :
-      CoreStep M R σ (.turn w o c fin) (afterTurn σ w wi p rest pi c fin (.turn w o c fin))
+      CoreStep M R σ (.turn w (Will.of σ.mode o) c fin)
+        (afterTurn σ w wi p rest pi c fin (.turn w (Will.of σ.mode o) c fin))
 
   | kill {σ : State U} {w : U.Worker} {o : U.Outcome} {wi : WInfo U} {i : U.Inv} {ds : List U.Inv}
       (hw : σ.sched.current = some w)
@@ -191,6 +193,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hpar : wi.parent = some i)
       (ho : R.willOpen σ w o)
       (hk : U.killOutcome o)
+      (hm : σ.mode = .simulated)
       (hsim : σ.mode = .simulated → o = M.sim.will σ w)
       (hd : Dismissed σ ds) :
       CoreStep M R σ (.kill w o ds) (endRun σ .killed)

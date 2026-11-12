@@ -5,7 +5,8 @@
 ### Outside review by GPT: fixes (2026-11-12)
 - **The anchor is keyed by the house's real path**, so a link cannot name a different, empty anchor. **A house with stores but no anchor is refused** until the owner adopts it once with `annulus adopta` (signature checked first).
 - **One run at a time:** `ritus`, `confirma` and `adopta` hold the house through a lock on `annulus.sera`, released by the operating system when the program ends.
-- Build tools pinned to exact commits; `core.md` now says the core is *to be* proven. 294 tests.
+- Build tools pinned to exact commits; `core.md` now says the core is *to be* proven.
+- Second pass: `confirma` needs a faithful description; stale staging files cleared under the lock; the anchors' folder must be absolute and outside the house; size caps on stores and handed files. 297 tests.
 
 ### Core audit 1: fixes (2026-11-12)
 - An independent audit of the core changes of 11–12 November (`docs/AUDIT_CORE_1.md`). Fixed: rollback and deletion of the house (an anchor outside the house, checked at launch), a model shown unhanded files, the wrong kind of answer approved, unsigned petition text, Windows path spellings, double confirmation, the open instrument list, non-text `PETE` arguments, the evaluator writing the core's scheduler. 291 tests. Open: the audit files, the office's form in the core, six Rust–Lean drifts.

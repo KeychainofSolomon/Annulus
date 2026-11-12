@@ -300,24 +300,9 @@ impl Domus {
         if !base.is_absolute() {
             return Err("the anchors' folder must be an absolute path".into());
         }
-        let real = match fs::canonicalize(&self.dir) {
-            Ok(r) => r,
-            Err(_) => {
-                let absolute = std::path::absolute(&self.dir)
-                    .map_err(|e| format!("cannot name the house: {e}"))?;
-                let parent = absolute.parent().ok_or("the house has no parent folder")?;
-                let name = absolute.file_name().ok_or("the house has no name")?;
-                fs::canonicalize(parent)
-                    .map_err(|e| format!("cannot find the house's folder: {e}"))?
-                    .join(name)
-            }
-        };
+        let real = real_path(&self.dir)?;
         let name = real.to_string_lossy().to_lowercase();
-        let base_real = match fs::canonicalize(base) {
-            Ok(b) => b,
-            Err(_) => std::path::absolute(base)
-                .map_err(|e| format!("cannot name the anchors' folder: {e}"))?,
-        };
+        let base_real = real_path(base)?;
         if folded(&base_real).starts_with(&folded(&real)) {
             return Err("the anchors' folder lies inside the house it guards".into());
         }
@@ -813,6 +798,25 @@ fn read_place(path: &Path, place: &str) -> Result<Option<String>, String> {
             .map_err(|_| format!("the place {place:?} is not UTF-8 text")),
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(e) => Err(format!("cannot read the place {place:?}: {e}")),
+    }
+}
+
+fn real_path(path: &Path) -> Result<PathBuf, String> {
+    let absolute =
+        std::path::absolute(path).map_err(|e| format!("cannot name {}: {e}", path.display()))?;
+    let mut rest = Vec::new();
+    let mut cur = absolute.as_path();
+    loop {
+        if let Ok(real) = fs::canonicalize(cur) {
+            return Ok(rest.iter().rev().fold(real, |acc: PathBuf, n| acc.join(n)));
+        }
+        let name = cur
+            .file_name()
+            .ok_or_else(|| format!("cannot find any part of {}", path.display()))?;
+        rest.push(name.to_os_string());
+        cur = cur
+            .parent()
+            .ok_or_else(|| format!("cannot find any part of {}", path.display()))?;
     }
 }
 

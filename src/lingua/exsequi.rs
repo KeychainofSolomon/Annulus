@@ -21,6 +21,7 @@ pub struct Optiones {
     pub sors: Option<Outcome>,
     pub responsa: Vec<Responsum>,
     pub radices: Option<crate::nucleus::state::Roots>,
+    pub caelum: crate::horae::Caelum,
 }
 
 pub const DECLARABLE: [Outcome; 3] = [Outcome::Obsequium, Outcome::Pars, Outcome::Mora];
@@ -157,7 +158,13 @@ pub fn run_with(
     let launch = ritus::launch(checked, wand, stores, world, options.radices.clone());
     let mut run = Run {
         state: State::initial(launch),
-        rite: Goetia::new(super::registra::goetia()),
+        rite: Goetia {
+            register: super::registra::goetia(),
+            caelum: crate::horae::Caelum {
+                hora: Some(options.caelum.hora.unwrap_or_else(crate::horae::now)),
+                ..options.caelum
+            },
+        },
         sim: Sim::new(options.semen),
         sors: options.sors,
         responsa: options.responsa.clone(),
@@ -701,7 +708,13 @@ impl<'p> Run<'p> {
             Expr::Invoca(entity, office, _) => {
                 let spirit = self.spirit(entity)?;
                 let seal = spirit.seal(ritus::RITE);
-                let inv = self.op(|_| true, |s, r| s.invoke(r, &seal))?;
+                let why = self.rite.refusal(&self.state, spirit);
+                let inv =
+                    self.op(|_| true, |s, r| s.invoke(r, &seal))
+                        .map_err(|h| match (h, why) {
+                            (Halt::Ended(m), Some(w)) => Halt::Ended(format!("{m}: {w}")),
+                            (h, _) => h,
+                        })?;
                 self.offices.insert(inv, office.to_uppercase());
                 Ok(V::Inv(inv))
             }

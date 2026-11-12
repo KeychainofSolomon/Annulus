@@ -1,6 +1,7 @@
 pub mod ast;
 pub mod compiler;
 pub mod diagnostic;
+pub mod horae;
 pub mod lexer;
 pub mod lingua;
 pub mod mandata;

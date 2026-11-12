@@ -14,6 +14,7 @@ pub const HOUSE: &str = "annulus.domus";
 pub const USAGE: &str = "usage: annulus <source.annulus>
        annulus ritus <program.annulus> [--virga-probationis] [--semen N] [--sors OUTCOME]
                      [--responsa FILE] [--acta FILE] [--domus DIR] [--mundus DIR]
+                     [--hora 2026-11-12T15:00:00+01:00] [--locus LAT,LON] [--caelum serenum|turbidum]
        annulus confirma <fingerprint> [--virga-probationis] [--domus DIR]
        annulus petitiones [--virga-probationis] [--domus DIR]
        annulus --version";
@@ -32,6 +33,7 @@ struct Flags {
     acta: Option<PathBuf>,
     domus: Option<PathBuf>,
     mundus: Option<PathBuf>,
+    caelum: crate::horae::Caelum,
 }
 
 fn outcome(word: &str) -> Option<Outcome> {
@@ -85,6 +87,23 @@ fn flags(args: &[String], allowed: &[&str]) -> Result<(Vec<String>, Flags), Usag
             "--acta" => f.acta = Some(value.into()),
             "--domus" => f.domus = Some(value.into()),
             "--mundus" => f.mundus = Some(value.into()),
+            "--hora" => {
+                f.caelum.hora = Some(crate::horae::parse_hora(value).ok_or_else(|| {
+                    Usage(format!("--hora takes a time like 2026-11-12T15:00:00+01:00, not {value}"))
+                })?)
+            }
+            "--locus" => {
+                f.caelum.locus = Some(crate::horae::parse_locus(value).ok_or_else(|| {
+                    Usage(format!("--locus takes latitude,longitude like 52.52,13.40, not {value}"))
+                })?)
+            }
+            "--caelum" => {
+                f.caelum.serenum = Some(match value.as_str() {
+                    "serenum" => true,
+                    "turbidum" => false,
+                    _ => return Err(Usage(format!("--caelum takes serenum or turbidum, not {value}"))),
+                })
+            }
             _ => unreachable!(),
         }
     }
@@ -197,6 +216,9 @@ pub fn ritus_with(
             "--acta",
             "--domus",
             "--mundus",
+            "--hora",
+            "--locus",
+            "--caelum",
         ],
     )?;
     let [program] = plain.as_slice() else {
@@ -268,7 +290,27 @@ pub fn ritus_with(
         sors: f.sors,
         responsa,
         radices: opened.roots.clone(),
+        caelum: crate::horae::Caelum {
+            hora: Some(f.caelum.hora.unwrap_or_else(crate::horae::now)),
+            ..f.caelum
+        },
     };
+    let mut notes = notes;
+    notes.push(format!(
+        "the sky: {} at {}, {}; the Moon {} days old",
+        crate::horae::iso(options.caelum.hora.unwrap_or(0)),
+        options
+            .caelum
+            .locus
+            .map(|(a, b)| format!("{a},{b}"))
+            .unwrap_or_else(|| "an undeclared place".into()),
+        match options.caelum.serenum {
+            Some(true) => "clear",
+            Some(false) => "not clear",
+            None => "the weather undeclared",
+        },
+        crate::horae::aetas_lunae(options.caelum.hora.unwrap_or(0) as f64)
+    ));
     let exitus = match run_source_with(
         &source,
         wand.clone(),

@@ -80,7 +80,10 @@ fn run(source: &str, will: &mut Scripted, wand: Wand) -> Exitus {
         wand,
         Stores::install(&test_wand()),
         world(),
-        &Optiones::default(),
+        &Optiones {
+            caelum: annulus::horae::Caelum::probatio(),
+            ..Default::default()
+        },
         Some(will),
     )
     .unwrap_or_else(|e| panic!("refused before running: {e:?}"))

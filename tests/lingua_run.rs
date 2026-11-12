@@ -70,6 +70,7 @@ fn run(source: &str, seed: u64, sors: Option<Outcome>, wand: Wand) -> Exitus {
         semen: seed,
         sors,
         responsa: script(),
+        caelum: annulus::horae::Caelum::probatio(),
         ..Default::default()
     };
     let stores = Stores::install(&test_wand());
@@ -308,6 +309,7 @@ fn obedient(source: &str, files: &[(&str, &str)]) -> Exitus {
         semen: 0,
         sors: Some(Outcome::Obsequium),
         responsa: Vec::new(),
+        caelum: annulus::horae::Caelum::probatio(),
         ..Default::default()
     };
     match run_source(
@@ -520,6 +522,7 @@ fn forced(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome) -> Exi
         semen: seed,
         sors: Some(sors),
         responsa: script(),
+        caelum: annulus::horae::Caelum::probatio(),
         ..Default::default()
     };
     run_source(
@@ -642,6 +645,7 @@ CIRCULUS RITU goetia {
             verum: "ventus".to_string(),
             falsum: None,
         }],
+        caelum: annulus::horae::Caelum::probatio(),
         ..Default::default()
     };
     let e = run_source(
@@ -666,6 +670,7 @@ fn conducted(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome, wan
         semen: seed,
         sors: Some(sors),
         responsa: Vec::new(),
+        caelum: annulus::horae::Caelum::probatio(),
         ..Default::default()
     };
     run_source(source, wand, Stores::install(&test_wand()), world, &options)

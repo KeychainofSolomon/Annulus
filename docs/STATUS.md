@@ -48,7 +48,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Area | State |
 |---|---|
-| Proofs of P1–P9 and their correspondence to the Rust core | **Begun** (`formal/Annulus/Proofs.lean`, checked by CI with no extra axioms): P1 (a), containment at commit; an outside will's turns are declared; `kill` only in simulated mode. P1 (b, c) and P2–P9 need induction over runs; correspondence to Rust not started. Still the largest gap |
+| Proofs of P1–P9 and their correspondence to the Rust core | **Begun** (`formal/Annulus/Proofs.lean`, checked by CI with no extra axioms): **P1 (a)**, containment at commit; **P1 (b)**, every request's handed places lie in the faculty in every reachable state (an invariant over runs); an outside will's turns are declared; `kill` only in simulated mode. P1 (c) and P2–P9 remain; correspondence to Rust not started. Still the largest gap |
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
 | Independent audit of the core changes of 2026-11-11 and 2026-11-12 | **Done** (`docs/AUDIT_CORE_1.md`); confirmed findings fixed. The change of the evening (declared outcomes) and the anchor are not yet reviewed |
 | The audit files (`.acta`) are not signed or read back | Open (core audit 1, #5); before `PRAETERITA` of the previous run |

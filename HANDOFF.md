@@ -478,5 +478,5 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 ## 2026-11-12, night: core audit 1 and the first proofs
 
 - **Core audit 1** (`docs/AUDIT_CORE_1.md`): rollback and deletion of the house closed by an anchor outside the house (`ancorae`), the model's view bounded by its request, the wrong kind of answer rejected, petition text checked against its fingerprint, Windows spellings refused, smaller closures. Open items in `STATUS.md`.
-- **Proofs** (`formal/Annulus/Proofs.lean`): P1 (a) and three facts about declared outcomes and `kill`. CI admits theorems only there and checks their axioms.
-- **Next:** P1 (b, c) by induction over runs, then P2; the open audit items; step 2d (remove the prototype; a real wand, which also holds the anchor).
+- **Proofs** (`formal/Annulus/Proofs.lean`): P1 (a), P1 (b) (invariant over runs, with frame lemmas for every step) and three facts about declared outcomes and `kill`. CI admits theorems only there and checks their axioms.
+- **Next:** P1 (c) (helpers) by the same method, then P2; the open audit items; step 2d (remove the prototype; a real wand, which also holds the anchor).

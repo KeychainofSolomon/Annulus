@@ -1,8 +1,8 @@
 # The formal model of the core (Lean 4)
 
-Draft 1, 2026-11-11. The last part of roadmap step 1: `docs/spec/core.md` §9 written as a Lean 4 model, with P1–P9 **stated** as Lean propositions. **Nothing is proved.** The proofs are roadmap step 3. No security theorem of Annulus is yet established.
+Draft 1, 2026-11-11. The last part of roadmap step 1: `docs/spec/core.md` §9 written as a Lean 4 model, with P1–P9 **stated** as Lean propositions. **The first proofs** are in `Annulus/Proofs.lean` (2026-11-12): P1 (a) and P1 (b), and facts about declared outcomes. The rest of P1–P9 is roadmap step 3.
 
-**Type-checks** (2026-11-11): GitHub Actions builds it on every push (`.github/workflows/lean.yml`), and fails if any proof, `sorry` or axiom appears.
+**Type-checks** (2026-11-11): GitHub Actions builds it on every push (`.github/workflows/lean.yml`), and fails on any `sorry` or `axiom`, on a theorem outside `Proofs.lean`, or on a proof resting on an axiom beyond Lean's own (`propext`, `Classical.choice`, `Quot.sound`).
 
 ## Checking it
 

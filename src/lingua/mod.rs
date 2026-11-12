@@ -89,3 +89,21 @@ pub fn run_source(
         ))
     })
 }
+
+pub fn run_source_with(
+    source: &str,
+    wand: crate::nucleus::Wand,
+    stores: crate::nucleus::Stores,
+    world: std::collections::BTreeMap<String, (String, crate::nucleus::Mark)>,
+    options: &exsequi::Optiones,
+    will: Option<&mut dyn exsequi::Voluntas>,
+) -> Result<exsequi::Exitus, Vec<Error>> {
+    on_stack(|| {
+        let program =
+            parse::parse(lexis::tokenize(source).map_err(|e| vec![e])?).map_err(|e| vec![e])?;
+        let checked = check::check(&program, registra::goetia())?;
+        Ok(exsequi::run_with(
+            &program, &checked, wand, stores, world, options, will,
+        ))
+    })
+}

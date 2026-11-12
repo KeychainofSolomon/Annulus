@@ -502,12 +502,20 @@ pub fn audit_path(program: &Path, chosen: Option<&Path>) -> PathBuf {
         .unwrap_or(first)
 }
 
-pub fn write_audit(path: &Path, audit: &Chain<Label>, wand: &Wand) -> Result<(), String> {
+pub fn write_audit(
+    path: &Path,
+    audit: &Chain<Label>,
+    wand: &Wand,
+    notes: &[String],
+) -> Result<(), String> {
     let mut text = String::new();
     if wand.test {
         text.push_str(
             "# made with the test wand (virga probationis): not valid for a real installation\n",
         );
+    }
+    for note in notes {
+        text.push_str(&format!("# {}\n", escape(note)));
     }
     let mut replay: Chain<&Label> = Chain::new();
     for label in audit.entries() {

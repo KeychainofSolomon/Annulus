@@ -23,6 +23,31 @@ pub struct Optiones {
     pub radices: Option<crate::nucleus::state::Roots>,
 }
 
+pub const DECLARABLE: [Outcome; 3] = [Outcome::Obsequium, Outcome::Pars, Outcome::Mora];
+
+#[derive(Clone, Debug)]
+pub struct Petitio<'a> {
+    pub spirit: &'a Spirit,
+    pub officium: &'a str,
+    pub quaestio: Option<&'a str>,
+    pub modus: Option<&'a str>,
+    pub loci: &'a [String],
+    pub legenda: Vec<(String, String, Mark)>,
+    pub aperta: Vec<Outcome>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Actum {
+    Responsum(String),
+    Opera(Vec<Effect>),
+    Mora,
+}
+
+pub trait Voluntas: Send {
+    fn nomen(&self) -> String;
+    fn age(&mut self, petitio: &Petitio) -> Result<(Outcome, Actum), String>;
+}
+
 #[derive(Debug)]
 pub struct Exitus {
     pub output: Vec<String>,
@@ -74,13 +99,14 @@ struct Run<'p> {
     rite: Goetia,
     sim: Sim,
     sors: Option<Outcome>,
-    responsa: &'p [Responsum],
+    responsa: Vec<Responsum>,
     scopes: Vec<BTreeMap<String, V>>,
     asked: BTreeMap<Pid, Asked>,
     offices: BTreeMap<InvId, String>,
     delayed: BTreeSet<Pid>,
     next_value: ValueId,
     output: Vec<String>,
+    will: Option<&'p mut dyn Voluntas>,
 }
 
 pub fn run(
@@ -91,20 +117,40 @@ pub fn run(
     world: BTreeMap<Place, (String, Mark)>,
     options: &Optiones,
 ) -> Exitus {
+    run_with(program, checked, wand, stores, world, options, None)
+}
+
+pub fn run_with(
+    program: &Program,
+    checked: &Checked,
+    wand: Wand,
+    stores: Stores,
+    world: BTreeMap<Place, (String, Mark)>,
+    options: &Optiones,
+    will: Option<&mut dyn Voluntas>,
+) -> Exitus {
+    let untested_will = will.is_some() && !wand.test;
     let launch = ritus::launch(checked, wand, stores, world, options.radices.clone());
     let mut run = Run {
         state: State::initial(launch),
         rite: Goetia::new(super::registra::goetia()),
         sim: Sim::new(options.semen),
         sors: options.sors,
-        responsa: &options.responsa,
+        responsa: options.responsa.clone(),
         scopes: vec![BTreeMap::new()],
         asked: BTreeMap::new(),
         offices: BTreeMap::new(),
         delayed: BTreeSet::new(),
         next_value: 1 << 40,
         output: Vec::new(),
+        will,
     };
+    if untested_will {
+        return run.finish(
+            2,
+            Some("a model's will runs only with the test wand until the core can record an outcome it does not know".into()),
+        );
+    }
     if let Err(refusal) = run.state.launch() {
         let why = match refusal {
             Refusal::LaunchRefused(w) | Refusal::Denied(w) | Refusal::NotEnabled(w) => w,
@@ -216,7 +262,74 @@ impl<'p> Run<'p> {
         self.next_value
     }
 
+    fn willed_turn(&mut self, worker: WorkerId) -> Go<()> {
+        self.state.schedule(worker).map_err(|r| self.refused(r))?;
+        let Some(&prop) = self
+            .state
+            .workers
+            .get(&worker)
+            .and_then(|w| w.queue.front())
+        else {
+            return Err(Halt::Denial(
+                "a spirit was scheduled with no request".into(),
+            ));
+        };
+        let Some(asked) = self.asked.get(&prop) else {
+            return Err(Halt::Denial("the spirit's request is unknown".into()));
+        };
+        let aperta: Vec<Outcome> = DECLARABLE
+            .into_iter()
+            .filter(|o| self.rite.will_open(&self.state, worker, *o))
+            .collect();
+        let legenda = asked
+            .places
+            .iter()
+            .filter(|p| self.state.faculty().contains(&Cap::new(p, Perm::Legere)))
+            .filter_map(|p| {
+                self.state
+                    .world
+                    .get(p)
+                    .map(|(d, m)| (p.clone(), d.clone(), *m))
+            })
+            .collect();
+        let petitio = Petitio {
+            spirit: asked.spirit,
+            officium: &asked.office,
+            quaestio: asked.quaestio.as_deref(),
+            modus: asked.mode.as_deref(),
+            loci: &asked.places,
+            legenda,
+            aperta: aperta.clone(),
+        };
+        let will = self.will.as_deref_mut().expect("a will is present");
+        let (outcome, actum) = will
+            .age(&petitio)
+            .map_err(|e| Halt::Denial(format!("the model's will failed: {e}")))?;
+        if !aperta.contains(&outcome) {
+            return Err(Halt::Denial(format!(
+                "the model declared {outcome:?}, which is not open to this spirit now"
+            )));
+        }
+        let (contrib, finish) = match (outcome, actum) {
+            (Outcome::Mora, Actum::Mora) if self.delayed.insert(prop) => (Contrib::Idle, false),
+            (Outcome::Mora, Actum::Mora) => {
+                return Err(Halt::Denial("the spirit delays a second time".into()))
+            }
+            (_, Actum::Mora) => {
+                return Err(Halt::Denial("a delay must be declared as MORA".into()))
+            }
+            (_, Actum::Responsum(text)) => (Contrib::Respond(self.fresh_value(), text), true),
+            (_, Actum::Opera(effects)) => (Contrib::Effects(effects), true),
+        };
+        self.state
+            .turn(&self.rite, worker, outcome, contrib, finish)
+            .map_err(|r| self.refused(r))
+    }
+
     fn spirit_turn(&mut self, worker: WorkerId) -> Go<()> {
+        if self.will.is_some() {
+            return self.willed_turn(worker);
+        }
         self.state.schedule(worker).map_err(|r| self.refused(r))?;
         let forced = self
             .sors

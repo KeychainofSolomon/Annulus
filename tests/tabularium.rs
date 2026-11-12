@@ -392,8 +392,8 @@ fn audits_are_never_overwritten() {
     let first = audit_path(&program, None);
     assert_eq!(first, dir.join("opus.acta"));
     let audit: Chain<Label> = Chain::new();
-    write_audit(&first, &audit, &test_wand()).unwrap();
-    assert!(write_audit(&first, &audit, &test_wand()).is_err());
+    write_audit(&first, &audit, &test_wand(), &[]).unwrap();
+    assert!(write_audit(&first, &audit, &test_wand(), &[]).is_err());
     assert_eq!(audit_path(&program, None), dir.join("opus.2.acta"));
     assert!(fs::read_to_string(&first)
         .unwrap()

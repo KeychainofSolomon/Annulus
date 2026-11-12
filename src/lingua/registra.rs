@@ -3,7 +3,7 @@ use std::sync::OnceLock;
 
 use super::json::{self, Json};
 
-const GOETIA: &str = include_str!("../../docs/registers/goetia.json");
+pub const GOETIA: &str = include_str!("../../docs/registers/goetia.json");
 const NOMINA: &str = include_str!("../../docs/registers/nomina.json");
 
 pub const RITES: &[&str] = &[

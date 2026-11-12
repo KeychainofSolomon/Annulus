@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Step 2c, second half: the command line and the stores on disk (2026-11-12; not a core change)
+- **`annulus ritus <program>`** checks the program, opens the stores, reads the granted files, runs, prints the output, writes the audit, seals the stores, notes petitions and writes the files back; it exits with the run's class. Flags: `--virga-probationis`, `--semen`, `--sors`, `--responsa` (a JSON list of answers), `--acta`, `--domus` (default `annulus.domus` beside the program), `--mundus` (default the program's folder). **`annulus confirma <fingerprint>`** turns the second key outside a session; **`annulus petitiones`** lists what waits. The old `annulus <file>` prototype is unchanged until 2d.
+- **Quarantine survives between runs:** a file a spirit wrote is recorded in `annulus.signa` and read back quarantined, never as plain outside text. The record is covered by the signed roots record, so editing or deleting it refuses the launch. A mark is never removed (no presumption that a later file is clean).
+- **Real files, closed list:** a place must be a plain relative path; a link anywhere on its path, or a place inside the house of the stores, refuses the launch. A file changed on disk during the run is left as it is. Writes are staged as `<name>.annulus-novum`, created fresh, so staging can never overwrite another file.
+- **A petition is pending** while its last petition comes after its last confirmation, so a second identical move is listed again after the first key is spent.
+- **Tests:** `tests/tabularium.rs` (20) and `tests/ritus_cli.rs` (16). 252 tests in all, debug and release.
+
 ### Amended (approved by the owner, 2026-11-11)
 - **Entries are declined by case** (`grammar.md` §3.2, §4): `INVOCA SPIRITUM 34` (accusative), `SIGILLUM SPIRITUS 34` / `SIGILLUM ANGELI 34` (genitive), `SPIRITUS 34` alone (nominative), as `GERE ANULUM` and `INVOCA REGEM` already were. Reason: an outside review noted `INVOCA SPIRITUS` is not Latin.
 - **The axiom** reads *nulla potestas a se ipsa oritur*: *sibi ipsi* meant "for itself", not "from itself".

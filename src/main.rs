@@ -4,11 +4,24 @@ use std::io::{self, BufWriter, Read, Write};
 use std::process::ExitCode;
 use std::thread;
 
+use annulus::mandata::{self, Usage, EXIT_USAGE, USAGE};
 use annulus::{run_source, RunError, EXECUTION_STACK_BYTES};
 
-const USAGE: &str = "usage: annulus <source.annulus>\n       annulus --version";
 const EXIT_PROGRAM_FAILURE: u8 = 1;
-const EXIT_USAGE: u8 = 2;
+
+type Command = fn(&[String], &mut dyn Write, &mut dyn Write) -> Result<u8, Usage>;
+
+fn command(run: Command, args: &[String]) -> ExitCode {
+    let mut out = io::stdout().lock();
+    let mut err = io::stderr().lock();
+    match run(args, &mut out, &mut err) {
+        Ok(code) => ExitCode::from(code),
+        Err(Usage(why)) => {
+            let _ = writeln!(err, "error: {why}\n{USAGE}");
+            ExitCode::from(EXIT_USAGE)
+        }
+    }
+}
 
 fn main() -> ExitCode {
     let arguments: Vec<String> = env::args().skip(1).collect();
@@ -17,6 +30,9 @@ fn main() -> ExitCode {
             print_line(&format!("annulus {}", env!("CARGO_PKG_VERSION")))
         }
         [flag] if flag == "--help" || flag == "-h" => print_line(USAGE),
+        [name, rest @ ..] if name == "ritus" => command(mandata::ritus, rest),
+        [name, rest @ ..] if name == "confirma" => command(mandata::confirma, rest),
+        [name, rest @ ..] if name == "petitiones" => command(mandata::petitiones, rest),
         [path] if !path.starts_with('-') => run_file(path),
         _ => {
             report(USAGE);

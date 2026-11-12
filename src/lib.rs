@@ -3,6 +3,7 @@ pub mod compiler;
 pub mod diagnostic;
 pub mod lexer;
 pub mod lingua;
+pub mod mandata;
 pub mod nucleus;
 pub mod officia;
 pub mod parser;

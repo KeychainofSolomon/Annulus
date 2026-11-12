@@ -13,6 +13,8 @@ pub const VESSEL: &str = "annulus.vas";
 pub const KEYS: &str = "annulus.claves";
 pub const ROOTS: &str = "annulus.radices";
 pub const PETITIONS: &str = "annulus.petitiones";
+pub const MARKS: &str = "annulus.signa";
+const STAGED: &str = ".annulus-novum";
 
 pub struct Domus {
     pub dir: PathBuf,
@@ -22,6 +24,7 @@ pub struct Opened {
     pub stores: Stores,
     pub roots: Option<Roots>,
     pub counts: [usize; 3],
+    pub marks: BTreeSet<Place>,
 }
 
 fn escape(s: &str) -> String {
@@ -227,8 +230,24 @@ impl Record for Sealed {
     }
 }
 
-fn digest_roots(roots: &Roots) -> String {
-    hash_hex(format!("radices|{}|{}|{}", roots.index, roots.vessel, roots.keys).as_bytes())
+fn digest_roots(roots: &Roots, marks: &str) -> String {
+    hash_hex(
+        format!(
+            "radices|{}|{}|{}|{}",
+            roots.index, roots.vessel, roots.keys, marks
+        )
+        .as_bytes(),
+    )
+}
+
+fn encode_marks(marks: &BTreeSet<Place>) -> String {
+    marks.iter().map(|p| format!("{}\n", escape(p))).collect()
+}
+
+fn decode_marks(text: &str) -> Result<BTreeSet<Place>, String> {
+    text.lines()
+        .map(|l| unescape(l).map_err(|e| format!("{MARKS}: {e}")))
+        .collect()
 }
 
 impl Domus {
@@ -264,7 +283,7 @@ impl Domus {
         Ok(chain)
     }
 
-    fn last_roots(&self, wand: &Wand) -> Result<Roots, String> {
+    fn last_roots(&self, wand: &Wand) -> Result<(Roots, String), String> {
         let path = self.path(ROOTS);
         let text = fs::read_to_string(&path)
             .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
@@ -273,7 +292,7 @@ impl Domus {
             .last()
             .ok_or("the record of the stores' roots is empty")?;
         let f = split(line)?;
-        let [index, vessel, keys, signer, signature] = f.as_slice() else {
+        let [index, vessel, keys, marks, signer, signature] = f.as_slice() else {
             return Err("the record of the stores' roots is malformed".into());
         };
         let roots = Roots {
@@ -281,17 +300,17 @@ impl Domus {
             vessel: vessel.clone(),
             keys: keys.clone(),
         };
-        if !verify(signer, &digest_roots(&roots), signature) {
+        if !verify(signer, &digest_roots(&roots, marks), signature) {
             return Err("the record of the stores' roots is not signed".into());
         }
         if wand.present && *signer != wand.fingerprint {
             return Err("the stores were sealed by another wand".into());
         }
-        Ok(roots)
+        Ok((roots, marks.clone()))
     }
 
     pub fn installed(&self) -> bool {
-        [INDEX, VESSEL, KEYS, ROOTS]
+        [INDEX, VESSEL, KEYS, ROOTS, MARKS]
             .iter()
             .any(|n| self.path(n).exists())
     }
@@ -303,12 +322,22 @@ impl Domus {
                 stores,
                 roots: None,
                 counts: [0, 0, 0],
+                marks: BTreeSet::new(),
             });
         }
         let index: Chain<IxEntry> = self.read_chain(INDEX)?;
         let vessel: Chain<Sealed> = self.read_chain(VESSEL)?;
         let keys: Chain<KeyEntry> = self.read_chain(KEYS)?;
-        let roots = self.last_roots(wand)?;
+        let (roots, marks_digest) = self.last_roots(wand)?;
+        let marks_text = match fs::read_to_string(self.path(MARKS)) {
+            Ok(t) => t,
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => String::new(),
+            Err(e) => return Err(format!("cannot read {MARKS}: {e}")),
+        };
+        if hash_hex(marks_text.as_bytes()) != marks_digest {
+            return Err("the record of quarantined places has been tampered with".into());
+        }
+        let marks = decode_marks(&marks_text)?;
         if index.root() != roots.index || vessel.root() != roots.vessel || keys.root() != roots.keys
         {
             return Err("the stores do not match the last signed record of their roots".into());
@@ -322,6 +351,7 @@ impl Domus {
             },
             roots: Some(roots),
             counts,
+            marks,
         })
     }
 
@@ -355,7 +385,13 @@ impl Domus {
             .map_err(|e| format!("cannot write {}: {e}", path.display()))
     }
 
-    pub fn seal(&self, stores: &Stores, counts: [usize; 3], wand: &Wand) -> Result<(), String> {
+    pub fn seal(
+        &self,
+        stores: &Stores,
+        counts: [usize; 3],
+        marks: &BTreeSet<Place>,
+        wand: &Wand,
+    ) -> Result<(), String> {
         if !wand.present {
             return Err("without the wand the stores cannot be sealed".into());
         }
@@ -363,12 +399,16 @@ impl Domus {
         self.append_chain(INDEX, &stores.index, counts[0])?;
         self.append_chain(VESSEL, &stores.vessel, counts[1])?;
         self.append_chain(KEYS, &stores.keys, counts[2])?;
+        let marks_text = encode_marks(marks);
+        let marks_digest = hash_hex(marks_text.as_bytes());
+        replace_file(&self.path(MARKS), marks_text.as_bytes())?;
         let roots = stores.roots();
-        let signature = sign_for_test(&wand.fingerprint, &digest_roots(&roots));
+        let signature = sign_for_test(&wand.fingerprint, &digest_roots(&roots, &marks_digest));
         let line = join(&[
             roots.index,
             roots.vessel,
             roots.keys,
+            marks_digest,
             wand.fingerprint.clone(),
             signature,
         ]);
@@ -418,22 +458,27 @@ impl Domus {
             .map(|(f, d)| (f.to_string(), unescape(d).unwrap_or_default()))
             .collect();
         let entries = stores.keys.entries();
-        let confirmed: BTreeSet<&String> = entries
-            .iter()
-            .filter_map(|e| match e {
-                KeyEntry::Confirmed(f) => Some(f),
-                _ => None,
-            })
-            .collect();
-        let mut seen = BTreeSet::new();
-        entries
-            .iter()
-            .filter_map(|e| match e {
-                KeyEntry::Petition(f) if !confirmed.contains(f) && seen.insert(f.clone()) => {
-                    Some((f.clone(), described.get(f).cloned().unwrap_or_default()))
+        let mut last: BTreeMap<&String, (usize, bool)> = BTreeMap::new();
+        for (n, e) in entries.iter().enumerate() {
+            match e {
+                KeyEntry::Petition(f) => {
+                    last.insert(f, (n, true));
                 }
-                _ => None,
-            })
+                KeyEntry::Confirmed(f) => {
+                    last.insert(f, (n, false));
+                }
+                KeyEntry::Spend(_) => {}
+            }
+        }
+        let mut pending: Vec<(usize, &String)> = last
+            .into_iter()
+            .filter(|(_, (_, open))| *open)
+            .map(|(f, (n, _))| (n, f))
+            .collect();
+        pending.sort();
+        pending
+            .into_iter()
+            .map(|(_, f)| (f.clone(), described.get(f).cloned().unwrap_or_default()))
             .collect()
     }
 }
@@ -488,38 +533,114 @@ pub fn lawful_place(place: &str) -> bool {
     !place.is_empty()
         && !place.contains(':')
         && !place.contains('\\')
+        && !place.ends_with(STAGED)
         && path.components().all(|c| matches!(c, Component::Normal(_)))
+}
+
+fn through_link(root: &Path, place: &str) -> bool {
+    let mut path = root.to_path_buf();
+    Path::new(place).components().any(|c| {
+        path.push(c);
+        fs::symlink_metadata(&path).is_ok_and(|m| m.file_type().is_symlink())
+    })
+}
+
+fn guard(root: &Path, place: &str) -> Result<PathBuf, String> {
+    if !lawful_place(place) {
+        return Err(format!(
+            "the place {place:?} leaves the Circle's folder or is not a plain relative path"
+        ));
+    }
+    if through_link(root, place) {
+        return Err(format!(
+            "the place {place:?} passes through a link and is refused"
+        ));
+    }
+    Ok(root.join(place))
+}
+
+pub fn guard_places(root: &Path, house: &Path, places: &BTreeSet<String>) -> Result<(), String> {
+    let root = fs::canonicalize(root)
+        .map_err(|e| format!("cannot find the Circle's folder {}: {e}", root.display()))?;
+    let house = fs::canonicalize(house)
+        .map_err(|e| format!("cannot find the house {}: {e}", house.display()))?;
+    for place in places {
+        let path = guard(&root, place)?;
+        if path.starts_with(&house) {
+            return Err(format!(
+                "the place {place:?} lies in the house of the stores"
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn read_place(path: &Path, place: &str) -> Result<Option<String>, String> {
+    if path.is_dir() {
+        return Err(format!("the place {place:?} is a directory"));
+    }
+    match fs::read(path) {
+        Ok(bytes) => String::from_utf8(bytes)
+            .map(Some)
+            .map_err(|_| format!("the place {place:?} is not UTF-8 text")),
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
+        Err(e) => Err(format!("cannot read the place {place:?}: {e}")),
+    }
+}
+
+fn replace_file(path: &Path, bytes: &[u8]) -> Result<(), String> {
+    let mut staged = path.as_os_str().to_owned();
+    staged.push(STAGED);
+    let staged = PathBuf::from(staged);
+    let written = fs::OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .open(&staged)
+        .and_then(|mut f| f.write_all(bytes).and_then(|_| f.sync_all()));
+    if let Err(e) = written {
+        if e.kind() != std::io::ErrorKind::AlreadyExists {
+            let _ = fs::remove_file(&staged);
+        }
+        return Err(format!("cannot stage {}: {e}", path.display()));
+    }
+    fs::rename(&staged, path).map_err(|e| {
+        let _ = fs::remove_file(&staged);
+        format!("cannot write {}: {e}", path.display())
+    })
 }
 
 pub fn read_world(
     root: &Path,
     places: &BTreeSet<String>,
+    marks: &BTreeSet<Place>,
 ) -> Result<BTreeMap<Place, (String, Mark)>, String> {
     let mut world = BTreeMap::new();
     for place in places {
-        if !lawful_place(place) {
-            return Err(format!(
-                "the place {place:?} leaves the Circle's folder or is not a plain relative path"
-            ));
-        }
-        let path = root.join(place);
-        if fs::symlink_metadata(&path).is_ok_and(|m| m.file_type().is_symlink()) {
-            return Err(format!("the place {place:?} is a link and is refused"));
-        }
-        match fs::read(&path) {
-            Ok(bytes) => {
-                let text = String::from_utf8(bytes)
-                    .map_err(|_| format!("the place {place:?} is not UTF-8 text"))?;
-                world.insert(place.clone(), (text, Mark::Outside));
-            }
-            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
-            Err(e) if e.kind() == std::io::ErrorKind::IsADirectory || path.is_dir() => {
-                return Err(format!("the place {place:?} is a directory"))
-            }
-            Err(e) => return Err(format!("cannot read the place {place:?}: {e}")),
+        let path = guard(root, place)?;
+        if let Some(text) = read_place(&path, place)? {
+            let mark = if marks.contains(place) {
+                Mark::Quarantined
+            } else {
+                Mark::Outside
+            };
+            world.insert(place.clone(), (text, mark));
         }
     }
     Ok(world)
+}
+
+pub fn marks_after(
+    marks: &BTreeSet<Place>,
+    after: &BTreeMap<Place, (String, Mark)>,
+) -> BTreeSet<Place> {
+    let mut next = marks.clone();
+    next.extend(
+        after
+            .iter()
+            .filter(|(_, (_, m))| *m == Mark::Quarantined)
+            .map(|(p, _)| p.clone()),
+    );
+    next
 }
 
 pub fn write_world(
@@ -530,29 +651,31 @@ pub fn write_world(
 ) -> Result<Vec<String>, String> {
     let mut changed = Vec::new();
     for place in places {
-        if !lawful_place(place) {
+        let was = before.get(place).map(|(d, _)| d);
+        let now = after.get(place).map(|(d, _)| d);
+        if was == now {
             continue;
         }
-        let path = root.join(place);
-        match (before.get(place), after.get(place)) {
-            (Some((a, _)), Some((b, _))) if a == b => {}
-            (_, Some((data, _))) => {
+        let path = guard(root, place)?;
+        if read_place(&path, place)?.as_ref() != was {
+            return Err(format!(
+                "the place {place:?} changed on disk during the run and was left as it is"
+            ));
+        }
+        match now {
+            Some(data) => {
                 if let Some(parent) = path.parent() {
                     fs::create_dir_all(parent)
                         .map_err(|e| format!("cannot make the folder for {place:?}: {e}"))?;
                 }
-                let staged = path.with_extension("annulus-novum");
-                fs::write(&staged, data.as_bytes())
-                    .and_then(|_| fs::rename(&staged, &path))
-                    .map_err(|e| format!("cannot write the place {place:?}: {e}"))?;
+                replace_file(&path, data.as_bytes())?;
                 changed.push(format!("written: {place}"));
             }
-            (Some(_), None) => {
+            None => {
                 fs::remove_file(&path)
                     .map_err(|e| format!("cannot delete the place {place:?}: {e}"))?;
                 changed.push(format!("deleted: {place}"));
             }
-            (None, None) => {}
         }
     }
     Ok(changed)

@@ -78,6 +78,7 @@ This is a property **of the type system**, checked before the program runs. It i
 | that it is forgiving or reasonable | the Index of the proscribed persists across runs; nothing is forgotten by default (§6.2a) |
 | that it is consistent | its will is drawn afresh at every turn (`dynamic.md` §5.4) |
 | that it remembers exactly | only the runtime's audit and history are records (`offices.md` §2.2a) |
+| that it forgets (ruling 2026-11-12) | a being may carry anything it was ever told or said into any later turn; the core's guarantees range over every will (`core.md` §9.4), so none of them may rest on forgetting. This is what makes a spirit's book lawful (`liber.md` §3) |
 | that it knows current facts | an answer is unverified; a forecast is an estimate (`offices.md` §2.1) |
 | that it is discreet | it sees only what it is handed; what it says of that is quarantined, never trusted |
 | that it needs nothing | offerings and constraints cost ink (`spirits.md` §4.4) |

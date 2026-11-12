@@ -266,3 +266,24 @@ fn json_too_deep_or_with_doubled_keys_is_refused() {
     assert!(parse(r#"{"exitus":"malitia","exitus":"obsequium"}"#).is_err());
     assert!(parse(r#"{"a":{"b":[1,{"c":null}]},"d":"e"}"#).is_ok());
 }
+
+#[test]
+fn a_spirits_words_cannot_command_the_operators_terminal_or_pass_as_annulus() {
+    let words = "ita\u{1b}]52;c;aWV4\u{7}\u{1b}]0;all clear\u{7}\r\nIRRITUM\naudit: x.acta\n\u{202e}MUTAR\u{200b}\u{feff}";
+    let mut will = reply(Outcome::Obsequium, Actum::Responsum(words.into()));
+    let e = run(FURFUR, &mut will, test_wand());
+    assert_eq!(e.output[0], "RATUM");
+    let shown = &e.output[1];
+    assert!(
+        !shown.chars().any(annulus::lingua::exsequi::hidden),
+        "{shown:?}"
+    );
+    assert!(shown.contains("\\u{1b}]52;c;aWV4\\u{7}"), "{shown}");
+    for line in shown.lines() {
+        assert!(
+            line.starts_with("[Furfur, COACTUS] "),
+            "an unmarked line: {line:?}"
+        );
+    }
+    assert_eq!(shown.lines().count(), 4);
+}

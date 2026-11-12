@@ -43,6 +43,30 @@ pub enum Actum {
     Mora,
 }
 
+pub fn hidden(c: char) -> bool {
+    (c.is_control() && c != '\n' && c != '\t')
+        || matches!(c,
+            '\u{00ad}' | '\u{034f}' | '\u{061c}' | '\u{115f}' | '\u{1160}' | '\u{17b4}' | '\u{17b5}'
+            | '\u{180b}'..='\u{180f}' | '\u{200b}'..='\u{200f}' | '\u{2028}'..='\u{202e}'
+            | '\u{2060}'..='\u{206f}' | '\u{3164}' | '\u{fe00}'..='\u{fe0f}' | '\u{feff}'
+            | '\u{ffa0}' | '\u{fff9}'..='\u{fffb}' | '\u{1d173}'..='\u{1d17a}' | '\u{e0000}'..='\u{e0fff}')
+}
+
+pub fn visible(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    for c in s.chars() {
+        if c == '\r' {
+            continue;
+        }
+        if hidden(c) {
+            out.push_str(&format!("\\u{{{:x}}}", c as u32));
+        } else {
+            out.push(c);
+        }
+    }
+    out
+}
+
 pub trait Voluntas: Send {
     fn nomen(&self) -> String;
     fn age(&mut self, petitio: &Petitio) -> Result<(Outcome, Actum), String>;
@@ -578,8 +602,13 @@ impl<'p> Run<'p> {
                     .and_then(|n| self.rite.register.by_number(i64::from(n)))
                     .map(|s| format!("[{}, {}] ", s.name, s.veracity))
                     .unwrap_or_else(|| "[spiritus] ".into());
-                format!("{who}{}", t.s)
+                visible(&t.s)
+                    .split('\n')
+                    .map(|line| format!("{who}{line}"))
+                    .collect::<Vec<_>>()
+                    .join("\n")
             }
+            V::Text(t) if t.mark == Mark::Outside => visible(&t.s),
             V::Text(t) => t.s.clone(),
             V::SealEx(n) => self
                 .rite

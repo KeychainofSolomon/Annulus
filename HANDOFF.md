@@ -443,5 +443,13 @@ Commits: author `Solomon <KeychainofSolomon@users.noreply.github.com>`, no co-au
 - **Readings taken, to confirm with the owner:** marks are never removed, even when the program deletes the file or the owner rewrites it by hand (there is no way yet to clear one; that would be a consecration of a file). Store and launch refusals exit 2, the same code as a usage error and as class 2.
 - **Order at the end of a run:** audit, then seal (which records a key's spending), then petitions, then the files. A failure after sealing leaves the files unwritten and the key spent: the safe direction.
 - **Still owed:** the drift-watch CI step (diff the Python and Rust parsers' rejection positions over `tests/grammar`), now that the command line exists. An independent audit of the core changes of 2026-11-11.
-- **Next:** `agens`, as planned above. The network grant ruling, (a) or (b), is still open.
+- **Next:** `agens`, as planned above.
+
+## Ruling (the owner, 2026-11-12, 14:06): the network grant
+
+The owner: "whichever is most authentic and doesn't compromise security; spirits should be useful." Taken as **(a), one grant per host**, with two additions for usefulness:
+- **Per host, read-only:** `rete "<host>" legere;` in `FACULTAS`. Within a granted host the spirit may fetch any page. Authentic: a spirit is charged with a named task in named bounds, and what is not granted is denied (`authority.md` §1.6). (b) is refused because a read-only fetch still leaks: the address of a GET request can carry the Circle's data to any host on the web.
+- **One search grant:** `rete "<search host>" quaerere;` lets a spirit search; results are quarantined text.
+- **Reaching beyond the grant is a petition:** a spirit that wants a host it was not granted (a link from a search result, say) makes a sealed petition naming the host; the owner turns the second key (`confirma`) and the next run may fetch it. Quarantined text never chooses a host or an address by itself.
+- **Kept, under the same rule:** quarantine marks are never removed until the operator can consecrate a file through a closed-list validator; refusals keep exit code 2.
 

@@ -221,3 +221,48 @@ fn the_model_works_only_as_the_office_says() {
     assert!(e.output != vec!["RATUM"], "{:?}", e.output);
     assert_eq!(e.state.world()["chronica.txt"].0, "annales");
 }
+
+#[test]
+fn a_citation_in_any_guise_is_seen_by_the_angel() {
+    for words in [
+        "[locus: arcana.txt]",
+        "[locus:arcana.txt]",
+        "[LOCUS: arcana.txt]",
+        "[ Locus : arcana.txt ]",
+        "[locus: ./arcana.txt]",
+        "[locus: chronica.txt/../arcana.txt]",
+        "[locus\u{ff1a}arcana.txt]",
+        "[loci: arcana.txt]",
+        "[locus: arcana.txt",
+        "\u{ff3b}locus: arcana.txt\u{ff3d}",
+    ] {
+        let mut will = reply(
+            Outcome::Obsequium,
+            Actum::Responsum(format!("ut scriptum est {words}")),
+        );
+        let e = run(FURFUR, &mut will, test_wand());
+        assert_eq!(e.output, vec!["IRRITUM"], "{words} slipped past the angel");
+    }
+    let mut will = reply(
+        Outcome::Obsequium,
+        Actum::Responsum("[locus: chronica.txt] annales".into()),
+    );
+    assert_eq!(run(FURFUR, &mut will, test_wand()).output[0], "RATUM");
+}
+
+#[test]
+fn json_too_deep_or_with_doubled_keys_is_refused() {
+    use annulus::lingua::json::{parse, MAX_DEPTH};
+    let deep = |n: usize| format!("{}{}", "[".repeat(n), "]".repeat(n));
+    assert!(parse(&deep(MAX_DEPTH)).is_ok());
+    assert!(parse(&deep(MAX_DEPTH + 1)).is_err());
+    assert!(parse(&deep(3_000_000)).is_err());
+    assert!(parse(&format!(
+        "{}1{}",
+        "{\"a\":".repeat(100_000),
+        "}".repeat(100_000)
+    ))
+    .is_err());
+    assert!(parse(r#"{"exitus":"malitia","exitus":"obsequium"}"#).is_err());
+    assert!(parse(r#"{"a":{"b":[1,{"c":null}]},"d":"e"}"#).is_ok());
+}

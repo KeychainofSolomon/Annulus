@@ -436,6 +436,8 @@ Next (rest of 2c):
 
 Commits: author `Solomon <KeychainofSolomon@users.noreply.github.com>`, no co-author lines (the owner's rule).
 
+**Standing rule (the owner, 2026-11-12):** update `docs/STATUS.md` in the same commit as every fix, in Annulus and in Spiri72's README where it applies.
+
 ## 2026-11-12, later: the rest of 2c done
 
 - **Done:** `annulus ritus`, `confirma`, `petitiones` (`src/mandata.rs`; `main.rs` only dispatches). `src/tabularium.rs` is now tested: `tests/tabularium.rs` (20: round trip of every entry kind with tabs, newlines and backslashes; tampered, removed, appended and truncated lines; a missing or forged roots record; another wand; no wand) and `tests/ritus_cli.rs` (16, through the real binary: Furfur end to end, two runs keep an Index entry, a move waits, `confirma`, then commits; a spent key does not serve a second move; unlawful and linked places; bad flags). 252 tests, debug and release, clippy and fmt clean.

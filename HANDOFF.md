@@ -495,3 +495,8 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 - **For the owner, once:** build `virga` (`cargo build --release` in 72Virga), then `virga fac E:\ F:\` with two sticks, then in the program's folder `annulus sanci`, then `annulus ritus …` as before.
 - **Spiri72** still pins the older Annulus and passes `Wand`; when it moves to this commit it must pass a `Baculum` (`Baculum::verum` with the words, or `Baculum::probationis()`), and read `exitus.baculum` to seal.
 - **Next:** the other half of 2d (remove the prototype); an independent review of the wand (`virga` and its use here) before relying on it.
+
+## 2026-11-13: GPT's review of the wand
+
+- Review findings V01–V06 and the lineage point fixed (STATUS, security table). `virga` at `f38ee9c`: exact scrypt work, small-order refusal, fail-closed words, `perfice`, the Windows window (`src/fenestra.rs`, plain Win32, no crates; Annulus's words go through `virga::verba::roga_plura`). Annulus: `open` refuses a missing anchor for a real wand; anchor holds `n, hash, lineage length, lineage head`; seal journal `annulus.iter` with `recover()` at `open`/`adopt`.
+- The owner made a trial wand on D:\ with the spare in F:\VirgaSpare (to move to a stick). Made before these fixes; it stays valid (standard work, random keys).

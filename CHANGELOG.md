@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### The wand: GPT's review fixed (2026-11-13)
+- V01: a real wand refuses a house it holds no anchor for (adopt it once); V02: only the standard scrypt work; V03: small-order keys and nonces refused; V04: words never read with the echo on, and on Windows asked in the wand's window; V05: `virga perfice` finishes an interrupted making; V06: a seal journal (`annulus.iter`) undoes an interrupted seal. The anchor now also records the lineage the wand has seen. 312 tests, and 21 in `virga`.
+- The wand's window (`virga` with nothing after it): plain Windows controls, dotted word fields with counts.
+
 ### The real wand (2026-11-12, the owner's request; step 2d, first half)
 - **`virga`** (new repository `KeychainofSolomon/72Virga`, pinned by commit): the Operator's wand on a USB stick, the only key. Two secrets, master and rite, each locked by the Operator's words (scrypt + ChaCha20-Poly1305); Ed25519 signatures; no outside crates; checked against RFC 8032, 7914, 8439 and FIPS 180-4 vectors and against Python's `cryptography`. `virga fac` makes the wand and its spare at one stroke on virgin sticks; `revoca`, `adde`, `inspice`, `proba`, `quaere`.
 - **Every test signature replaced** (audit A01–A03): the nucleus's `verify` is Ed25519 over the wand's master public key, which is its fingerprint. `sign_for_test` exists only in test builds (`probatio`). The test wand signs with published keys and is refused by a real wand's house.

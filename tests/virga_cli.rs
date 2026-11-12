@@ -226,6 +226,16 @@ fn the_spare_works_the_same_house_and_a_rollback_is_caught() {
     assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
     let before = s.dir.parent().unwrap().join("old-house");
     copy_dir(&s.dir.join(HOUSE), &before);
+    // the spare has never seen this house: it is refused until the Operator adopts it
+    let o = ritus(&s, &s.spare, &[M, R]);
+    assert_eq!(o.status.code(), Some(2));
+    assert!(err(&o).contains("annulus adopta"), "{}", err(&o));
+    let o = annulus(
+        &s.dir,
+        &["adopta", "--virga", s.spare.to_str().unwrap()],
+        &[M],
+    );
+    assert_eq!(o.status.code(), Some(0), "{}", err(&o));
     let o = ritus(&s, &s.spare, &[M, R]);
     assert_eq!(
         o.status.code(),
@@ -360,4 +370,89 @@ fn a_ratification_by_a_stranger_is_refused() {
     let o = ritus(&s, &s.wand, &[M, R]);
     assert_eq!(o.status.code(), Some(2));
     assert!(err(&o).contains("not ratified"), "{}", err(&o));
+}
+
+#[test]
+fn a_removed_anchor_and_an_older_house_are_refused() {
+    // audit V01: the wand saw a later state; its anchor is deleted and an older, validly
+    // signed house put back
+    let s = scene("noanchor");
+    sanci(&s, &s.wand, &[M]);
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    let old = s.dir.parent().unwrap().join("old-house");
+    copy_dir(&s.dir.join(HOUSE), &old);
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    let v = virga::Virga::aperi(&s.wand).unwrap();
+    for e in fs::read_dir(v.ancorae()).unwrap().flatten() {
+        fs::remove_file(e.path()).unwrap();
+    }
+    fs::remove_dir_all(s.dir.join(HOUSE)).unwrap();
+    copy_dir(&old, &s.dir.join(HOUSE));
+    let o = ritus(&s, &s.wand, &[M, R]);
+    assert_eq!(o.status.code(), Some(2));
+    assert!(err(&o).contains("no anchor"), "{}", err(&o));
+}
+
+#[test]
+fn a_lineage_rolled_back_behind_the_anchor_is_refused() {
+    let s = scene("stirps");
+    sanci(&s, &s.wand, &[M]);
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    let before_house = fs::read_to_string(s.dir.join(HOUSE).join(LINEAGE)).unwrap();
+    let before_stick = fs::read_to_string(s.wand.join("VIRGA").join("stirps.txt")).unwrap();
+    // a new spare is made, and the wand sees the longer lineage
+    let mut w = virga::Virga::aperi(&s.wand).unwrap();
+    let g = s.dir.parent().unwrap().join("G");
+    fs::create_dir_all(&g).unwrap();
+    virga::adde(&mut w, &g, M, R, LEVIS).unwrap();
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    // both copies put back to the shorter lineage, which is a true, signed prefix
+    fs::write(s.dir.join(HOUSE).join(LINEAGE), before_house).unwrap();
+    fs::write(s.wand.join("VIRGA").join("stirps.txt"), before_stick).unwrap();
+    let o = ritus(&s, &s.wand, &[M, R]);
+    assert_eq!(o.status.code(), Some(2));
+    assert!(err(&o).contains("lineage"), "{}", err(&o));
+}
+
+#[test]
+fn an_interrupted_seal_is_undone_at_the_next_opening() {
+    // audit V06: a seal stopped after the stores grew but before the roots were signed
+    use annulus::tabularium::{INDEX, JOURNAL, KEYS, MARKS, VESSEL};
+    let s = scene("journal");
+    sanci(&s, &s.wand, &[M]);
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    let house = s.dir.join(HOUSE);
+    let len = |n: &str| fs::metadata(house.join(n)).map(|m| m.len()).unwrap_or(0);
+    let marks = fs::read_to_string(house.join(MARKS)).unwrap_or_default();
+    let journal = format!(
+        "{}\t{}\t{}\t{}\n{}\n",
+        len(INDEX),
+        len(VESSEL),
+        len(KEYS),
+        len(ROOTS),
+        marks.replace('\n', "\\n")
+    );
+    fs::write(house.join(JOURNAL), journal).unwrap();
+    let mut f = fs::OpenOptions::new()
+        .append(true)
+        .open(house.join(INDEX))
+        .unwrap();
+    writeln!(f, "half-written").unwrap();
+    drop(f);
+    let o = ritus(&s, &s.wand, &[M, R]);
+    assert_eq!(o.status.code(), Some(0), "{}", err(&o));
+    assert!(!house.join(JOURNAL).exists());
+}
+
+#[test]
+fn a_journal_cannot_roll_the_house_back_past_the_anchor() {
+    let s = scene("journal-attack");
+    sanci(&s, &s.wand, &[M]);
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    let house = s.dir.join(HOUSE);
+    // a planted journal cutting every store back to nothing
+    fs::write(house.join(annulus::tabularium::JOURNAL), "0\t0\t0\t0\n-\n").unwrap();
+    let o = ritus(&s, &s.wand, &[M, R]);
+    assert_eq!(o.status.code(), Some(2), "{}", err(&o));
 }

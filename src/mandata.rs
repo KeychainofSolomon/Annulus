@@ -163,12 +163,17 @@ fn wand(f: &Flags, need: Need, err: &mut dyn Write) -> Result<Baculum, String> {
     let _ = err.flush();
     // the prompts go straight to the terminal; what was said above must reach it first
     let _ = std::io::stderr().flush();
+    let title = format!("Take up the wand {}", virga::breviter(v.signum()));
     let (m, r) = match need {
-        Need::Ritus => (
-            Some(virga::verba::roga("master words")?),
-            Some(virga::verba::roga("rite words")?),
+        Need::Ritus => {
+            let mut w =
+                virga::verba::roga_plura(&title, &["master words", "rite words"])?.into_iter();
+            (w.next(), w.next())
+        }
+        Need::Magister => (
+            Some(virga::verba::roga_plura(&title, &["master words"])?.remove(0)),
+            None,
         ),
-        Need::Magister => (Some(virga::verba::roga("master words")?), None),
         Need::Nihil => (None, None),
     };
     Baculum::verum(v, m.as_deref(), r.as_deref())

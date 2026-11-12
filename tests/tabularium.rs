@@ -201,7 +201,14 @@ fn a_forged_or_unsigned_roots_record_refuses() {
     let mut f: Vec<String> = line.trim_end().split('\t').map(String::from).collect();
     f[5] = "0".repeat(64);
     fs::write(&path, f.join("\t") + "\n").unwrap();
-    assert!(refused(&dir).contains("not signed"));
+    assert!(refused(&dir).contains("rolled back or replaced"));
+    let unanchored =
+        std::env::temp_dir().join(format!("annulus-unanchored-{}", std::process::id()));
+    let e = Domus::anchored(&dir, &unanchored)
+        .open(&test_wand())
+        .err()
+        .expect("an unsigned record refuses even without an anchor");
+    assert!(e.contains("not signed"), "{e}");
 }
 
 #[test]
@@ -287,14 +294,44 @@ fn unlawful_places_are_refused() {
         "c:x.txt",
         "a\\b.txt",
         "a.txt.annulus-novum",
+        "annulus.domus./annulus.claves",
+        "a.txt ",
+        " a.txt",
+        "ANNULU~1/annulus.claves",
+        "con",
+        "NUL.txt",
+        "com1.log",
+        "a?.txt",
+        "a|b",
+        "a\u{7}b",
     ] {
         assert!(!lawful_place(place), "{place:?}");
     }
-    for place in ["a.txt", "libri/a.txt", "..a.txt", "a..txt"] {
+    for place in [
+        "a.txt",
+        "libri/a.txt",
+        "..a.txt",
+        "a..txt",
+        "console.txt",
+        "comma.txt",
+    ] {
         assert!(lawful_place(place), "{place:?}");
     }
     let dir = house("unlawful");
     assert!(read_world(&dir, &places(&["../x"]), &BTreeSet::new()).is_err());
+    let inner = dir.join("annulus.domus");
+    fs::create_dir_all(&inner).unwrap();
+    for place in [
+        "annulus.domus/annulus.claves",
+        "ANNULUS.DOMUS/annulus.claves",
+        "Annulus.Domus/x",
+    ] {
+        assert!(
+            guard_places(&dir, &inner, &places(&[place])).is_err(),
+            "{place:?}"
+        );
+    }
+    assert!(guard_places(&dir, &inner, &places(&["annulus.domus2/x"])).is_ok());
 }
 
 #[cfg(unix)]

@@ -112,6 +112,15 @@ impl State {
         self.current = None;
     }
 
+    pub fn abort(&mut self, class: u8) -> Step<()> {
+        if !self.running() {
+            return Err(Refusal::NotEnabled("the run has ended"));
+        }
+        self.current = None;
+        self.schedule(OPERATOR)?;
+        self.fail(class)
+    }
+
     pub fn eligible(&self, worker: WorkerId) -> bool {
         if worker == OPERATOR {
             return true;

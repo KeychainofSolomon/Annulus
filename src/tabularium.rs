@@ -18,6 +18,7 @@ const STAGED: &str = ".annulus-novum";
 
 pub struct Domus {
     pub dir: PathBuf,
+    ancorae: Option<PathBuf>,
 }
 
 pub struct Opened {
@@ -266,7 +267,45 @@ impl Domus {
     pub fn new(dir: &Path) -> Domus {
         Domus {
             dir: dir.to_path_buf(),
+            ancorae: ancorae_default(),
         }
+    }
+
+    pub fn anchored(dir: &Path, ancorae: &Path) -> Domus {
+        Domus {
+            dir: dir.to_path_buf(),
+            ancorae: Some(ancorae.to_path_buf()),
+        }
+    }
+
+    fn anchor_path(&self) -> Result<PathBuf, String> {
+        let base = self
+            .ancorae
+            .as_ref()
+            .ok_or("no place outside the house to keep its anchor: set ANNULUS_ANCORAE")?;
+        let absolute =
+            std::path::absolute(&self.dir).map_err(|e| format!("cannot name the house: {e}"))?;
+        let name = absolute.to_string_lossy().to_lowercase();
+        Ok(base.join(hash_hex(name.as_bytes())))
+    }
+
+    fn anchor(&self) -> Result<Option<String>, String> {
+        let path = self.anchor_path()?;
+        match fs::read_to_string(&path) {
+            Ok(t) => Ok(Some(t.trim().to_string())),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
+            Err(e) => Err(format!("cannot read the house's anchor: {e}")),
+        }
+    }
+
+    fn last_roots_line(&self) -> Result<String, String> {
+        let path = self.path(ROOTS);
+        let text = fs::read_to_string(&path)
+            .map_err(|e| format!("cannot read {}: {e}", path.display()))?;
+        text.lines()
+            .last()
+            .map(str::to_string)
+            .ok_or_else(|| "the record of the stores' roots is empty".into())
     }
 
     fn path(&self, name: &str) -> PathBuf {
@@ -328,6 +367,21 @@ impl Domus {
     }
 
     pub fn open(&self, wand: &Wand) -> Result<Opened, String> {
+        let anchor = self.anchor()?;
+        if !self.installed() && anchor.is_some() {
+            return Err(
+                "this house was sealed before, and its stores are gone: refusing to start afresh"
+                    .into(),
+            );
+        }
+        if let Some(a) = &anchor {
+            if hash_hex(self.last_roots_line()?.as_bytes()) != *a {
+                return Err(
+                    "the stores are not the last ones sealed: they have been rolled back or replaced"
+                        .into(),
+                );
+            }
+        }
         if !self.installed() {
             let stores = Stores::install(wand);
             return Ok(Opened {
@@ -432,22 +486,25 @@ impl Domus {
             .map_err(|e| format!("cannot open {}: {e}", path.display()))?;
         file.write_all(format!("{line}\n").as_bytes())
             .and_then(|_| file.sync_all())
-            .map_err(|e| format!("cannot write {}: {e}", path.display()))
+            .map_err(|e| format!("cannot write {}: {e}", path.display()))?;
+        let anchor = self.anchor_path()?;
+        if let Some(parent) = anchor.parent() {
+            fs::create_dir_all(parent).map_err(|e| format!("cannot keep the anchor: {e}"))?;
+        }
+        replace_file(&anchor, hash_hex(line.as_bytes()).as_bytes())
     }
 
     pub fn note_petitions(&self, audit: &[Label]) -> Result<(), String> {
         let mut lines = String::new();
         for label in audit {
             if let Label::Commit(_, effects, CommitResult::AwaitsKey) = label {
-                let what: Vec<String> = effects
-                    .iter()
-                    .map(|e| format!("{} {}", verb_name(e.verb), e.place))
-                    .collect();
-                lines.push_str(&format!(
-                    "{}\t{}\n",
-                    fingerprint_effects(effects),
-                    escape(&what.join(", "))
-                ));
+                let mut fields = vec![fingerprint_effects(effects)];
+                for e in effects {
+                    fields.push(verb_name(e.verb).to_string());
+                    fields.push(e.place.clone());
+                    fields.push(e.data.clone());
+                }
+                lines.push_str(&format!("{}\n", join(&fields)));
             }
         }
         if lines.is_empty() {
@@ -466,8 +523,7 @@ impl Domus {
         let described: BTreeMap<String, String> = fs::read_to_string(self.path(PETITIONS))
             .unwrap_or_default()
             .lines()
-            .filter_map(|l| l.split_once('\t'))
-            .map(|(f, d)| (f.to_string(), unescape(d).unwrap_or_default()))
+            .filter_map(|l| described_petition(l).ok())
             .collect();
         let entries = stores.keys.entries();
         let mut last: BTreeMap<&String, (usize, bool)> = BTreeMap::new();
@@ -490,9 +546,42 @@ impl Domus {
         pending.sort();
         pending
             .into_iter()
-            .map(|(_, f)| (f.clone(), described.get(f).cloned().unwrap_or_default()))
+            .map(|(_, f)| {
+                (
+                    f.clone(),
+                    described.get(f).cloned().unwrap_or_else(|| {
+                        "no faithful description: do not confirm what you cannot read".into()
+                    }),
+                )
+            })
             .collect()
     }
+}
+
+fn described_petition(line: &str) -> Result<(String, String), String> {
+    let fields = split(line)?;
+    let (fp, rest) = fields.split_first().ok_or("an empty petition line")?;
+    if rest.is_empty() || rest.len() % 3 != 0 {
+        return Err("a malformed petition line".into());
+    }
+    let effects = rest
+        .chunks(3)
+        .map(|c| {
+            Ok(Effect {
+                verb: verb_of(&c[0])?,
+                place: c[1].clone(),
+                data: c[2].clone(),
+            })
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    if fingerprint_effects(&effects) != *fp {
+        return Err("a petition's description does not match its fingerprint".into());
+    }
+    let what: Vec<String> = effects
+        .iter()
+        .map(|e| format!("{} {}", verb_name(e.verb), e.place))
+        .collect();
+    Ok((fp.clone(), what.join(", ")))
 }
 
 pub fn audit_path(program: &Path, chosen: Option<&Path>) -> PathBuf {
@@ -555,6 +644,34 @@ pub fn lawful_place(place: &str) -> bool {
         && !place.contains('\\')
         && !place.ends_with(STAGED)
         && path.components().all(|c| matches!(c, Component::Normal(_)))
+        && place.split('/').all(plain_name)
+}
+
+fn plain_name(name: &str) -> bool {
+    const DEVICES: [&str; 22] = [
+        "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8",
+        "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+    ];
+    let stem = name
+        .split('.')
+        .next()
+        .unwrap_or("")
+        .trim_end()
+        .to_uppercase();
+    !name.is_empty()
+        && !name.ends_with('.')
+        && !name.ends_with(' ')
+        && !name.starts_with(' ')
+        && !name
+            .chars()
+            .any(|c| c.is_control() || "~*?\"<>|".contains(c))
+        && !DEVICES.contains(&stem.as_str())
+}
+
+fn folded(path: &Path) -> Vec<String> {
+    path.components()
+        .map(|c| c.as_os_str().to_string_lossy().to_lowercase())
+        .collect()
 }
 
 fn through_link(root: &Path, place: &str) -> bool {
@@ -586,7 +703,7 @@ pub fn guard_places(root: &Path, house: &Path, places: &BTreeSet<String>) -> Res
         .map_err(|e| format!("cannot find the house {}: {e}", house.display()))?;
     for place in places {
         let path = guard(&root, place)?;
-        if path.starts_with(&house) {
+        if path.starts_with(&house) || folded(&path).starts_with(&folded(&house)) {
             return Err(format!(
                 "the place {place:?} lies in the house of the stores"
             ));
@@ -606,6 +723,16 @@ fn read_place(path: &Path, place: &str) -> Result<Option<String>, String> {
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(e) => Err(format!("cannot read the place {place:?}: {e}")),
     }
+}
+
+pub fn ancorae_default() -> Option<PathBuf> {
+    if let Some(d) = std::env::var_os("ANNULUS_ANCORAE") {
+        return Some(PathBuf::from(d));
+    }
+    if let Some(d) = std::env::var_os("APPDATA") {
+        return Some(PathBuf::from(d).join("Annulus").join("ancorae"));
+    }
+    std::env::var_os("HOME").map(|d| PathBuf::from(d).join(".annulus").join("ancorae"))
 }
 
 fn replace_file(path: &Path, bytes: &[u8]) -> Result<(), String> {

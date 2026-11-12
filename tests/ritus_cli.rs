@@ -219,7 +219,7 @@ fn a_forged_roots_record_refuses_to_launch() {
     let mut f: Vec<String> = line.trim_end().split('\t').map(String::from).collect();
     f[0] = "0".repeat(64);
     fs::write(&path, f.join("\t") + "\n").unwrap();
-    refused_with(&dir, "not signed");
+    refused_with(&dir, "rolled back or replaced");
 }
 
 #[test]
@@ -252,6 +252,14 @@ fn a_move_waits_for_the_second_key_then_commits_in_a_later_run() {
     let line = stdout(&listed);
     let (fingerprint, what) = line.trim_end().split_once('\t').unwrap();
     assert_eq!(what, "transfer b.txt, dele a.txt");
+
+    let described = dir.join(HOUSE).join(PETITIONS);
+    let honest = fs::read_to_string(&described).unwrap();
+    fs::write(&described, honest.replace("a.txt", "c.txt")).unwrap();
+    let listed = stdout(&annulus(&dir, &["petitiones"]));
+    assert!(!listed.contains("c.txt"), "{listed}");
+    assert!(listed.contains("no faithful description"), "{listed}");
+    fs::write(&described, honest).unwrap();
 
     let o = annulus(&dir, &["confirma", fingerprint]);
     assert_eq!(o.status.code(), Some(2));

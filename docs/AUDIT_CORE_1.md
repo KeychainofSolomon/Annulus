@@ -1,0 +1,25 @@
+# Independent audit of the core changes of 2026-11-11 and 2026-11-12
+
+Done on 2026-11-12 at `2d72b19` by a separate reviewer that had not seen the work. The reviewer read the code, the spec and the Lean model, wrote failing tests for what it could confirm, and changed nothing. This file records each finding and what was done about it.
+
+## Findings
+
+| # | Severity | Finding | Disposition |
+|---|---|---|---|
+| 1 | High | **Rolling the stores back revived a spent second key.** Only the last line of the roots record was checked, so deleting the last lines of a store and of the record together brought back an older, validly signed state: a spent key unspent, a damnation or proscription lifted, a quarantine mark gone. No key material was needed. | **Fixed.** Every seal writes an **anchor** outside the house (`%APPDATA%\Annulus\ancorae`, `~/.annulus/ancorae`, or `ANNULUS_ANCORAE`): the hash of the last roots line. Launch refuses any house whose last roots line does not match its anchor. Tests: `tests/tabularium_anchor.rs`. |
+| 2 | High | **Deleting the whole house started it afresh**, forgetting every damnation, proscription, suspicion, quarantine mark and pending petition. | **Fixed** by the same anchor: a house that has an anchor and no stores is refused. A house never sealed before still installs. |
+| 3 | Medium | **The model was shown files it was never handed**: what it saw was filtered by the program's `legere` grant, not by the request's handed set. | **Fixed.** The model sees a place only if the request handed it `legere`, the faculty grants it and it is not reserved. Test: `tests/lingua_will_bounds.rs`. |
+| 4 | Medium | **The office's form was not enforced.** A working office answered with words, or a telling office answered with work, could be approved (`RATUM` with nothing done). | **Fixed in the rite:** the angel rejects a response to a working office and work for a telling office. Test: `tests/lingua_will_bounds.rs`. Enforcing it in the core as well is left open (it needs the office's class in the core's interface and in Lean). |
+| 5 | Medium | **The audit files (`.acta`) are never verified**: hash-chained but unsigned, outside the signed roots record, and never read back. | **Open.** Nothing reads an audit yet. It must be closed before `PRAETERITA` reads the previous run. |
+| 6 | Low–medium | **Petition descriptions were unsigned**: the text shown beside a fingerprint before `confirma` could be edited to describe other effects. | **Fixed.** `annulus.petitiones` now holds the effects themselves; each is checked against its fingerprint before it is shown, and a mismatch shows "no faithful description: do not confirm what you cannot read". |
+| 7 | Medium on Windows | **The house check could be dodged by spelling**: case, trailing dots or spaces, 8.3 short names (`~`). | **Fixed.** Place names with a trailing dot or space, a leading space, `~`, `* ? " < > |`, control characters or a Windows device name (`CON`, `NUL`, `COM1`…) are refused, and the house is compared case-blind. Junctions count as links on Windows (Rust's `is_symlink` reports name-surrogate reparse points). |
+| 8 | — | **Rust and Lean have drifted** in six places: the validator manifest (name vs code), the Circle binding of values (§4.7, not in Lean), ink cleared without a wand (not in Lean), forced outcomes (`--sors`, scripted answers) under simulated mode, the grave store (in Lean, not in Rust), and a refused `CONSECRA` ending the run (continues in Lean). | **Open**, listed in `STATUS.md`. The forced outcomes are a choice of simulator: P9 replay holds when the forced outcomes are part of the run's inputs. |
+| 9 | Low | A petition could be confirmed twice; unknown instrument words became the pentagram; non-text `PETE` arguments became empty text; the evaluator wrote the core's scheduled worker directly. | **Fixed.** Only a pending petition can be confirmed; the instrument list is closed; `PETE` takes only text and refuses a quarantined mode or place at run time; the core has its own `abort`. Keys are still bound only to the effects' fingerprint, not to the proposal or run (open). |
+
+## What the reviewer found sound
+
+The commit re-check; spawning helpers within the request's handed set and the legions; angels' closed outcomes and their inability to kill or spawn; examination (an angel, never the author; suspicion holds; the counterbalance applies); the Index's standing; the stores' line encoding and tamper detection; quarantine in the checker (nine laundering probes all refused); the rite's citation, `VIRTUTES` and `PRAETERITA` checks; the rank windows of the hours; the declared-outcome check; the test-wand gate on a model.
+
+## The anchor's limit
+
+The anchor lives outside the house, so deleting or rolling back the house alone is caught. Someone who can also delete or rewrite the anchor can still start the house afresh. Closing that needs a real wand whose secret holds the latest anchor (step 2d).

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### `PRAETERITA`, the present run (2026-11-12; rite and evaluator, not the nucleus)
+- A spirit recounts the run's past, one claim per line in the history's words (`invocatus`, `petitum`, `iudicatum`, `commissum`, `dimissus`, `relegatus`, `recusatus`). The angel builds the history from the audit and checks each claim; one false claim is `IRRITUM`, omissions are not lies, an empty or incomplete account is held. Berith's lies about the past are now caught. The previous run waits; asking for it is refused by the checker.
+
+### Ruled by the owner (2026-11-12): the Knight's hours
+- Dawn to sunrise, and from the eleventh temporal hour to sunset: Sloane's "4 o'clock" is its reading of Weyer's *vesperae*, the hour Vespers was said.
+
 ### Ruled by the owner (2026-11-12): the Princes' hours
 - "Any hour of the day" is daylight, sunrise to sunset: the same table sets the night apart for the Marquises and the Knight.
 

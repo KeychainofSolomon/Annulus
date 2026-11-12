@@ -923,6 +923,15 @@ impl<'r> Checker<'r> {
             }
         }
         let given: Vec<(&Expr, &Val)> = rest.collect();
+        if kind == "PRAETERITA" {
+            if let Some((e, _)) = given
+                .iter()
+                .find(|(e, _)| matches!(e, Expr::Text(t, _) if t == "prior"))
+            {
+                self.subset(e.pos(), "the history of the prior run");
+                return Val::error();
+            }
+        }
         let Some(roles) = crate::officia::places(&kind, mode.as_deref(), given.len()) else {
             self.error(
                 "A5",

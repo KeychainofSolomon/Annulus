@@ -26,6 +26,7 @@ pub fn signature(kind: &str) -> Option<Signature> {
     };
     Some(match kind {
         "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" => telling,
+        "PRAETERITA" => telling,
         "VIRTUTES" => Signature {
             class: Class::Telling,
             modes: &[],
@@ -43,7 +44,8 @@ pub fn places(kind: &str, mode: Option<&str>, n: usize) -> Option<Vec<Vec<Perm>>
     let all = |p: Perm| vec![vec![p]; n];
     match (kind, mode) {
         (
-            "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" | "VIRTUTES",
+            "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" | "VIRTUTES"
+            | "PRAETERITA",
             _,
         ) => Some(all(Legere)),
         ("AEDIFICATIO", _) if n >= 1 => Some(all(Creare)),
@@ -106,6 +108,28 @@ pub fn same_account(given: &str, truth: &str) -> bool {
         v
     };
     lines(given) == lines(truth)
+}
+
+pub const HISTORY_WORDS: [&str; 6] = [
+    "invocatus",
+    "recusatus",
+    "petitum",
+    "iudicatum",
+    "commissum",
+    "dimissus",
+];
+
+pub fn account_of_past(given: &str, history: &[String]) -> Option<bool> {
+    let given = given.strip_suffix(INCOMPLETE).unwrap_or(given);
+    let claims: Vec<&str> = given
+        .lines()
+        .map(str::trim)
+        .filter(|l| !l.is_empty())
+        .collect();
+    if claims.is_empty() {
+        return None;
+    }
+    Some(claims.iter().all(|c| history.iter().any(|h| h == c)))
 }
 
 pub fn cited(text: &str) -> Vec<String> {

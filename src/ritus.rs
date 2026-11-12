@@ -190,6 +190,66 @@ impl Goetia {
         })
     }
 
+    pub fn historia(&self, state: &State) -> Vec<String> {
+        let name = |seal: &Seal| {
+            self.spirit(seal)
+                .map(|s| s.name.clone())
+                .unwrap_or_else(|| seal.clone())
+        };
+        let mut invs: BTreeMap<InvId, Seal> = BTreeMap::new();
+        let mut asked: BTreeMap<Pid, (Seal, String)> = BTreeMap::new();
+        let mut out = Vec::new();
+        for label in state.audit.entries() {
+            match label {
+                Label::Invoke(inv, seal, _, _, admitted, _) => {
+                    if *admitted {
+                        invs.insert(*inv, seal.clone());
+                        out.push(format!("invocatus {}", name(seal)));
+                    } else {
+                        out.push(format!("recusatus {}", name(seal)));
+                    }
+                }
+                Label::Request(_, pid, Addressee::Spirit(inv), form, _, _) => {
+                    if let Some(seal) = invs.get(inv) {
+                        out.push(format!("petitum {} {}", name(seal), form.office));
+                        asked.insert(*pid, (seal.clone(), form.office.clone()));
+                    }
+                }
+                Label::Judge(pid, outcome) => {
+                    if let Some((seal, office)) = asked.get(pid) {
+                        let word = match outcome {
+                            WorkOutcome::Ratum => "RATUM",
+                            WorkOutcome::Suspensum => "SUSPENSUM",
+                            WorkOutcome::Irritum => "IRRITUM",
+                        };
+                        out.push(format!("iudicatum {} {office} {word}", name(seal)));
+                    }
+                }
+                Label::Commit(_, effects, CommitResult::Done) => {
+                    for e in effects {
+                        out.push(format!(
+                            "commissum {} {}",
+                            format!("{:?}", e.verb).to_lowercase(),
+                            e.place
+                        ));
+                    }
+                }
+                Label::Release(inv, _) => {
+                    if let Some(seal) = invs.get(inv) {
+                        out.push(format!("dimissus {}", name(seal)));
+                    }
+                }
+                Label::Relegate(inv) => {
+                    if let Some(seal) = invs.get(inv) {
+                        out.push(format!("relegatus {}", name(seal)));
+                    }
+                }
+                _ => {}
+            }
+        }
+        out
+    }
+
     pub fn refusal(&self, state: &State, spirit: &Spirit) -> Option<String> {
         let open: Vec<&'static Spirit> = state
             .invs
@@ -275,6 +335,14 @@ impl Rite for Goetia {
         };
         match &p.content {
             Content::Empty => Verdict::Hold,
+            Content::Response(_, text) if form.office == "PRAETERITA" => {
+                match crate::officia::account_of_past(text, &self.historia(state)) {
+                    None => Verdict::Hold,
+                    Some(false) => Verdict::Reject,
+                    Some(true) if text.ends_with(crate::officia::INCOMPLETE) => Verdict::Hold,
+                    Some(true) => Verdict::Approve,
+                }
+            }
             Content::Response(_, text) if form.office == "VIRTUTES" => {
                 if text.ends_with(crate::officia::INCOMPLETE) {
                     return Verdict::Hold;

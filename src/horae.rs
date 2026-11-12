@@ -162,9 +162,9 @@ pub fn window(rank: &str, t: f64, caelum: &Caelum) -> Result<(), String> {
             in_day(&|s, h| t >= s.ortus && t < s.ortus + 6.0 * h)?
         }
         "prince" => in_day(&|s, _| t >= s.ortus && t < s.occasus)?,
-        "knight" => {
-            in_day(&|s, _| (t >= s.aurora && t < s.ortus) || (t >= s.occasus && t < s.crepusculum))?
-        }
+        "knight" => in_day(&|s, h| {
+            (t >= s.aurora && t < s.ortus) || (t >= s.ortus + 10.0 * h && t < s.occasus)
+        })?,
         "president" => {
             return Err(
                 "a President comes only after his king is called, and the kings are not built yet"

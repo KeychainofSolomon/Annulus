@@ -1,9 +1,10 @@
+use annulus::baculum::Baculum;
 use std::collections::BTreeMap;
 
 use annulus::lingua::exsequi::{Actum, Exitus, Optiones, Petitio, Voluntas};
 use annulus::lingua::run_source_with;
 use annulus::nucleus::*;
-use annulus::ritus::{no_wand, test_wand};
+use annulus::ritus::test_wand;
 
 const FURFUR: &str = r#"FACULTAS {
     liber "chronica.txt" legere;
@@ -74,7 +75,7 @@ fn world() -> BTreeMap<String, (String, Mark)> {
         .collect()
 }
 
-fn run(source: &str, will: &mut Scripted, wand: Wand) -> Exitus {
+fn run(source: &str, will: &mut Scripted, wand: Baculum) -> Exitus {
     run_source_with(
         source,
         wand,
@@ -179,18 +180,50 @@ fn a_failing_model_is_a_denial() {
 }
 
 #[test]
-fn a_model_runs_only_with_the_test_wand() {
-    let mut will = reply(Outcome::Obsequium, Actum::Responsum("x".into()));
-    let real = Wand {
-        test: false,
-        ..test_wand()
+fn a_model_runs_with_a_real_wand() {
+    let base = std::env::temp_dir().join(format!("annulus-will-wand-{}", std::process::id()));
+    let (a, b) = (base.join("a"), base.join("b"));
+    let _ = std::fs::remove_dir_all(&base);
+    std::fs::create_dir_all(&a).unwrap();
+    std::fs::create_dir_all(&b).unwrap();
+    let levis = virga::Labor {
+        log_n: 4,
+        r: 1,
+        p: 1,
     };
-    for wand in [real, no_wand()] {
-        let e = run(FURFUR, &mut will, wand);
-        assert_eq!(e.class, 2);
-        assert!(e.message.unwrap().contains("test wand"));
-    }
-    assert!(will.seen.is_empty());
+    virga::fac(
+        &a,
+        &b,
+        "the master's own words",
+        "words for the rite alone",
+        "",
+        levis,
+    )
+    .unwrap();
+    let v = virga::Virga::aperi(&a).unwrap();
+    let mut real = Baculum::verum(
+        v,
+        Some("the master's own words"),
+        Some("words for the rite alone"),
+    )
+    .unwrap();
+    let digest = annulus::nucleus::state::digest_constitution(&annulus::ritus::constitution(), &[]);
+    real.lex = Some(annulus::baculum::Lex {
+        owner: real.fingerprint.clone(),
+        signature: real.signa_magister(&digest).unwrap(),
+    });
+    let mut will = reply(Outcome::Obsequium, Actum::Responsum("x".into()));
+    let e = run(FURFUR, &mut will, real);
+    assert!(
+        !will.seen.is_empty(),
+        "the model is consulted: {:?}",
+        e.message
+    );
+    assert!(!e.state.auth().wand.test);
+    assert!(
+        !e.state.auth().wand.master_unlocked,
+        "the master is laid down before the rite"
+    );
 }
 
 #[test]

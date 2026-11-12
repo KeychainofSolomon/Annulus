@@ -3,22 +3,30 @@ use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
+use crate::baculum::Baculum;
 use crate::lingua::exsequi::{Optiones, Responsum, Voluntas};
 use crate::lingua::{check_source, json, run_source_with};
-use crate::nucleus::{Outcome, Wand};
-use crate::ritus::{faculty_of, no_wand, test_wand};
+use crate::nucleus::state::{digest_constitution, verify};
+use crate::nucleus::Outcome;
+use crate::ritus::{constitution, faculty_of, no_wand, test_wand};
 use crate::tabularium::{self as tab, Domus};
 
 pub const HOUSE: &str = "annulus.domus";
 
 pub const USAGE: &str = "usage: annulus <source.annulus>
-       annulus ritus <program.annulus> [--virga-probationis] [--semen N] [--sors OUTCOME]
+       annulus ritus <program.annulus> [--virga STICK | --virga-probationis] [--semen N] [--sors OUTCOME]
                      [--responsa FILE] [--acta FILE] [--domus DIR] [--mundus DIR]
                      [--hora 2026-11-12T15:00:00+01:00] [--locus LAT,LON] [--caelum serenum|turbidum]
-       annulus confirma <fingerprint> [--virga-probationis] [--domus DIR]
-       annulus petitiones [--virga-probationis] [--domus DIR]
-       annulus adopta [--virga-probationis] [--domus DIR]
-       annulus --version";
+       annulus sanci [--virga STICK | --virga-probationis] [--domus DIR]
+       annulus confirma <fingerprint> [--virga STICK | --virga-probationis] [--domus DIR]
+       annulus petitiones [--virga STICK | --virga-probationis] [--domus DIR]
+       annulus adopta [--virga STICK | --virga-probationis] [--domus DIR]
+       annulus --version
+The wand (made with `virga fac`) is found by itself when one is plugged in; --virga names
+its drive, for example --virga E:\\. Without a wand nothing is sealed or written.";
+
+/// The environment variable that may name the wand's stick.
+pub const VIRGA_ENV: &str = "ANNULUS_VIRGA";
 
 pub const EXIT_USAGE: u8 = 2;
 pub const EXIT_REFUSED: u8 = 2;
@@ -28,6 +36,7 @@ pub struct Usage(pub String);
 #[derive(Default)]
 struct Flags {
     test_wand: bool,
+    virga: Option<PathBuf>,
     semen: u64,
     sors: Option<Outcome>,
     responsa: Option<PathBuf>,
@@ -85,6 +94,7 @@ fn flags(args: &[String], allowed: &[&str]) -> Result<(Vec<String>, Flags), Usag
                 })?)
             }
             "--responsa" => f.responsa = Some(value.into()),
+            "--virga" => f.virga = Some(value.into()),
             "--acta" => f.acta = Some(value.into()),
             "--domus" => f.domus = Some(value.into()),
             "--mundus" => f.mundus = Some(value.into()),
@@ -111,12 +121,69 @@ fn flags(args: &[String], allowed: &[&str]) -> Result<(Vec<String>, Flags), Usag
     Ok((plain, f))
 }
 
-fn wand(f: &Flags) -> Wand {
-    if f.test_wand {
-        test_wand()
-    } else {
-        no_wand()
+/// Which of the wand's secrets an act needs.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Need {
+    /// A rite: the master words (to sign the faculty at launch), then the rite words.
+    Ritus,
+    /// An act outside any rite: the master words only.
+    Magister,
+    /// Only reading: no words.
+    Nihil,
+}
+
+fn find_virga(f: &Flags) -> Result<Option<PathBuf>, String> {
+    if let Some(p) = &f.virga {
+        return Ok(Some(p.clone()));
     }
+    if let Some(p) = std::env::var_os(VIRGA_ENV) {
+        return Ok(Some(PathBuf::from(p)));
+    }
+    match virga::quaere().as_slice() {
+        [] => Ok(None),
+        [one] => Ok(Some(one.clone())),
+        _ => Err("more than one wand is plugged in: name the one you mean with --virga".into()),
+    }
+}
+
+/// Takes up the wand: the test wand if asked for, else the real wand if one is plugged in
+/// or named, with the words the act needs, else no wand.
+fn wand(f: &Flags, need: Need, err: &mut dyn Write) -> Result<Baculum, String> {
+    if f.test_wand {
+        if f.virga.is_some() {
+            return Err("--virga and --virga-probationis exclude each other".into());
+        }
+        return Ok(test_wand());
+    }
+    let Some(stick) = find_virga(f)? else {
+        return Ok(no_wand());
+    };
+    let v = virga::Virga::aperi(&stick)?;
+    let _ = writeln!(err, "the wand {}", virga::breviter(v.signum()));
+    let _ = err.flush();
+    // the prompts go straight to the terminal; what was said above must reach it first
+    let _ = std::io::stderr().flush();
+    let (m, r) = match need {
+        Need::Ritus => (
+            Some(virga::verba::roga("master words")?),
+            Some(virga::verba::roga("rite words")?),
+        ),
+        Need::Magister => (Some(virga::verba::roga("master words")?), None),
+        Need::Nihil => (None, None),
+    };
+    Baculum::verum(v, m.as_deref(), r.as_deref())
+}
+
+/// Whether the house's ratification is the owner's signature on this Constitution.
+fn ratified(wand: &Baculum) -> bool {
+    wand.lex.as_ref().is_some_and(|lex| {
+        wand.trusts(&lex.owner)
+            && verify(
+                &lex.owner,
+                &digest_constitution(&constitution(), &wand.revocatae()),
+                &lex.signature,
+            )
+    })
 }
 
 pub fn read_responsa(path: &Path) -> Result<Vec<Responsum>, String> {
@@ -211,6 +278,7 @@ pub fn ritus_with(
         args,
         &[
             "--virga-probationis",
+            "--virga",
             "--semen",
             "--sors",
             "--responsa",
@@ -260,7 +328,6 @@ pub fn ritus_with(
         .to_path_buf();
     let mundus = f.mundus.clone().unwrap_or_else(|| beside.clone());
     let domus_dir = f.domus.clone().unwrap_or_else(|| beside.join(HOUSE));
-    let wand = wand(&f);
     let (faculty, reserved, _) = faculty_of(&checked);
     let places: BTreeSet<String> = faculty
         .iter()
@@ -282,10 +349,21 @@ pub fn ritus_with(
         Ok(l) => l,
         Err(e) => return Ok(refuse(&mut say, e)),
     };
-    let opened = match domus.open(&wand) {
+    let taken = wand(&f, Need::Ritus, &mut std::io::stderr());
+    let mut wand = match taken {
+        Ok(w) => w,
+        Err(e) => return Ok(refuse(&mut say, e)),
+    };
+    let opened = match domus.open(&mut wand) {
         Ok(o) => o,
         Err(e) => return Ok(refuse(&mut say, e)),
     };
+    if wand.verum_est() && !ratified(&wand) {
+        return Ok(refuse(
+            &mut say,
+            "this Constitution is not ratified by your wand for this house: ratify it once with `annulus sanci`".into(),
+        ));
+    }
     let before = match tab::read_world(&mundus, &places, &opened.marks) {
         Ok(w) => w,
         Err(e) => return Ok(refuse(&mut say, e)),
@@ -318,7 +396,7 @@ pub fn ritus_with(
     ));
     let exitus = match run_source_with(
         &source,
-        wand.clone(),
+        wand,
         opened.stores,
         before.clone(),
         &options,
@@ -345,8 +423,9 @@ pub fn ritus_with(
     }
     let mut class = exitus.class;
     let state = &exitus.state;
+    let wand = &exitus.baculum;
     let acta = tab::audit_path(&program, f.acta.as_deref());
-    match tab::write_audit(&acta, state.audit(), &wand, &notes) {
+    match tab::write_audit(&acta, state.audit(), wand, &notes) {
         Ok(()) => say(format!("audit: {}", acta.display())),
         Err(e) => {
             say(format!("error: {e}"));
@@ -359,7 +438,7 @@ pub fn ritus_with(
         return Ok(class);
     }
     let marks = tab::marks_after(&opened.marks, state.world());
-    if let Err(e) = domus.seal(state.stores(), opened.counts, &marks, &wand) {
+    if let Err(e) = domus.seal(state.stores(), opened.counts, &marks, wand) {
         say(format!("error: {e}"));
         say("the world is not written".into());
         return Ok(class.max(1));
@@ -386,11 +465,17 @@ fn house(f: &Flags) -> PathBuf {
 }
 
 pub fn confirma(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result<u8, Usage> {
-    let (plain, f) = flags(args, &["--virga-probationis", "--domus"])?;
+    let (plain, f) = flags(args, &["--virga-probationis", "--virga", "--domus"])?;
     let [fingerprint] = plain.as_slice() else {
         return Err(Usage("confirma takes exactly one fingerprint".into()));
     };
-    let wand = wand(&f);
+    let mut wand = match wand(&f, Need::Magister, err) {
+        Ok(w) => w,
+        Err(e) => {
+            let _ = writeln!(err, "the wand is refused: {e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
     if !wand.present {
         let _ = writeln!(err, "the second key is turned only with the wand");
         return Ok(EXIT_REFUSED);
@@ -407,7 +492,7 @@ pub fn confirma(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Re
             return Ok(EXIT_REFUSED);
         }
     };
-    let mut opened = match domus.open(&wand) {
+    let mut opened = match domus.open(&mut wand) {
         Ok(o) => o,
         Err(e) => {
             let _ = writeln!(err, "the stores are refused: {e}");
@@ -441,11 +526,17 @@ pub fn confirma(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Re
 }
 
 pub fn adopta(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result<u8, Usage> {
-    let (plain, f) = flags(args, &["--virga-probationis", "--domus"])?;
+    let (plain, f) = flags(args, &["--virga-probationis", "--virga", "--domus"])?;
     if !plain.is_empty() {
         return Err(Usage("adopta takes no program".into()));
     }
-    let wand = wand(&f);
+    let mut wand = match wand(&f, Need::Magister, err) {
+        Ok(w) => w,
+        Err(e) => {
+            let _ = writeln!(err, "the wand is refused: {e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
     if !wand.present {
         let _ = writeln!(err, "a house is adopted only with the wand");
         return Ok(EXIT_REFUSED);
@@ -458,7 +549,7 @@ pub fn adopta(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Resu
             return Ok(EXIT_REFUSED);
         }
     };
-    match domus.adopt(&wand) {
+    match domus.adopt(&mut wand) {
         Ok(()) => {
             let _ = writeln!(out, "adopted: {}", domus.dir.display());
             Ok(0)
@@ -471,7 +562,7 @@ pub fn adopta(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Resu
 }
 
 pub fn petitiones(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result<u8, Usage> {
-    let (plain, f) = flags(args, &["--virga-probationis", "--domus"])?;
+    let (plain, f) = flags(args, &["--virga-probationis", "--virga", "--domus"])?;
     if !plain.is_empty() {
         return Err(Usage("petitiones takes no program".into()));
     }
@@ -479,7 +570,14 @@ pub fn petitiones(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> 
     if !domus.installed() {
         return Ok(0);
     }
-    let opened = match domus.open(&wand(&f)) {
+    let mut wand = match wand(&f, Need::Nihil, err) {
+        Ok(w) => w,
+        Err(e) => {
+            let _ = writeln!(err, "the wand is refused: {e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
+    let opened = match domus.open(&mut wand) {
         Ok(o) => o,
         Err(e) => {
             let _ = writeln!(err, "the stores are refused: {e}");
@@ -489,5 +587,52 @@ pub fn petitiones(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> 
     for (fingerprint, what) in domus.petitions(&opened.stores) {
         let _ = writeln!(out, "{fingerprint}\t{what}");
     }
+    Ok(0)
+}
+
+/// `annulus sanci`: the owner ratifies the Constitution of this Annulus for a house, with
+/// the master secret, outside any run (`authority.md` §2.5). Until then a real wand's
+/// house refuses to launch. A revocation changes the Constitution's digest, so the
+/// remaining wand ratifies again after one.
+pub fn sanci(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result<u8, Usage> {
+    let (plain, f) = flags(args, &["--virga-probationis", "--virga", "--domus"])?;
+    if !plain.is_empty() {
+        return Err(Usage("sanci takes no program".into()));
+    }
+    let mut wand = match wand(&f, Need::Magister, err) {
+        Ok(w) => w,
+        Err(e) => {
+            let _ = writeln!(err, "the wand is refused: {e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
+    if !wand.present {
+        let _ = writeln!(err, "the Constitution is ratified only with the wand");
+        return Ok(EXIT_REFUSED);
+    }
+    let domus = Domus::new(&house(&f));
+    let _held = match domus.lock() {
+        Ok(l) => l,
+        Err(e) => {
+            let _ = writeln!(err, "the stores are refused: {e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
+    if let Err(e) = domus.open(&mut wand) {
+        let _ = writeln!(err, "the stores are refused: {e}");
+        return Ok(EXIT_REFUSED);
+    }
+    let c = constitution();
+    let digest = digest_constitution(&c, &wand.revocatae());
+    if let Err(e) = domus.ratify(&wand, &digest) {
+        let _ = writeln!(err, "the Constitution is not ratified: {e}");
+        return Ok(EXIT_REFUSED);
+    }
+    let _ = writeln!(
+        out,
+        "ratified: the Constitution, version {}, digest {digest}, for {}",
+        c.version,
+        domus.dir.display()
+    );
     Ok(0)
 }

@@ -3,6 +3,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use super::check::Checked;
 use super::registra::Spirit;
 use super::syntaxis::*;
+use crate::baculum::Baculum;
 use crate::nucleus::*;
 use crate::ritus::{self, Goetia};
 
@@ -80,6 +81,8 @@ pub struct Exitus {
     pub class: u8,
     pub message: Option<String>,
     pub state: State,
+    /// The wand, given back after the run: its rite key seals the stores.
+    pub baculum: Baculum,
 }
 
 #[derive(Clone, Debug)]
@@ -133,12 +136,13 @@ struct Run<'p> {
     next_value: ValueId,
     output: Vec<String>,
     will: Option<&'p mut dyn Voluntas>,
+    baculum: Baculum,
 }
 
 pub fn run(
     program: &Program,
     checked: &Checked,
-    wand: Wand,
+    wand: Baculum,
     stores: Stores,
     world: BTreeMap<Place, (String, Mark)>,
     options: &Optiones,
@@ -149,14 +153,13 @@ pub fn run(
 pub fn run_with(
     program: &Program,
     checked: &Checked,
-    wand: Wand,
+    mut wand: Baculum,
     stores: Stores,
     world: BTreeMap<Place, (String, Mark)>,
     options: &Optiones,
     will: Option<&mut dyn Voluntas>,
 ) -> Exitus {
-    let untested_will = will.is_some() && !wand.test;
-    let mut launch = ritus::launch(checked, wand, stores, world, options.radices.clone());
+    let mut launch = ritus::launch(checked, &mut wand, stores, world, options.radices.clone());
     launch.simulated = will.is_none();
     let mut run = Run {
         state: State::initial(launch),
@@ -177,16 +180,8 @@ pub fn run_with(
         next_value: 1 << 40,
         output: Vec::new(),
         will,
+        baculum: wand,
     };
-    if untested_will {
-        return run.finish(
-            2,
-            Some(
-                "a model's will runs only with the test wand until a real wand exists (step 2d)"
-                    .into(),
-            ),
-        );
-    }
     if let Err(refusal) = run.state.launch() {
         let why = match refusal {
             Refusal::LaunchRefused(w) | Refusal::Denied(w) | Refusal::NotEnabled(w) => w,
@@ -215,6 +210,7 @@ impl<'p> Run<'p> {
             class,
             message,
             state: self.state,
+            baculum: self.baculum,
         }
     }
 

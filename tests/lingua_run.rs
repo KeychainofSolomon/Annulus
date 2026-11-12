@@ -1,3 +1,4 @@
+use annulus::baculum::Baculum;
 use std::collections::BTreeMap;
 
 use annulus::lingua::exsequi::{Exitus, Optiones, Responsum};
@@ -65,7 +66,7 @@ fn script() -> Vec<Responsum> {
     }]
 }
 
-fn run(source: &str, seed: u64, sors: Option<Outcome>, wand: Wand) -> Exitus {
+fn run(source: &str, seed: u64, sors: Option<Outcome>, wand: Baculum) -> Exitus {
     let options = Optiones {
         semen: seed,
         sors,
@@ -661,7 +662,13 @@ CIRCULUS RITU goetia {
     theorems(&e.state);
 }
 
-fn conducted(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome, wand: Wand) -> Exitus {
+fn conducted(
+    source: &str,
+    files: &[(&str, &str)],
+    seed: u64,
+    sors: Outcome,
+    wand: Baculum,
+) -> Exitus {
     let world = files
         .iter()
         .map(|(p, d)| (p.to_string(), (d.to_string(), Mark::Outside)))

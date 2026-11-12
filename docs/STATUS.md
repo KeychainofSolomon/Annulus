@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-12, 19:00 (`main`). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-12, 23:30 (branch `virga-vera`). **This page is updated with every fix** (the owner's rule).
 
 **Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are mostly tested, not proved:** P1–P9 are stated in Lean (`formal/`); the first proofs are in `formal/Annulus/Proofs.lean`.
 
@@ -13,14 +13,15 @@ Last updated: 2026-11-12, 19:00 (`main`). **This page is updated with every fix*
 | Evaluator (`exsequi`), the `goetia` rite as data, the honest examiner (judges the proposal, never the drawn outcome) | Implemented |
 | The apparatus: ring, wand, hexagram, pentagram, offering, naming, forbidding, binding by the Divine Name | Implemented for Paimon, Belial, Asmoday, Beleth, Andras; Astaroth, Focalor, Malphas written but unreachable |
 | Stores on disk (`tabularium`): Index, Vessel, sealed petitions, signed roots record, quarantine record (`annulus.signa`), audit per run, granted files read and written | Implemented and tested: tampering, forged or missing roots, another wand, links, escapes from the folder all refuse to launch |
-| Command line: `annulus ritus`, `confirma` (second key), `petitiones` | Implemented and tested through the real binary |
-| An outside will (`Voluntas`): a local model may supply a spirit's turn | Implemented. The core records each of its turns as **declared, never known** (real-agent mode, `core.md` §9.2); it may declare only obedience, part or delay, and cannot kill. **Test wand only** until a real wand exists (step 2d) |
+| **The real wand** (`virga`, `KeychainofSolomon/72Virga`; `operator.md` §8): a `VIRGA` folder on a USB stick with the master and rite secrets, each locked by the Operator's words; made with its spare at one stroke; the spare revokes a lost wand; a remaining wand makes a new spare | **Implemented.** Ed25519 signatures everywhere the test signatures were: the faculty, the Constitution, the roots record. The master words are asked only outside a rite and the key is laid down before the nucleus launches; the rite key seals. The house keeps the lineage (`annulus.virgae`), the wand keeps the anchors. Tested: crypto against RFC vectors and an independent implementation; wrong words, a stranger's wand, the test wand in a real house, a forged or replayed roots record, a rollback, a stranger's ratification, a revoked wand |
+| Command line: `annulus ritus`, `sanci` (ratify the Constitution), `confirma` (second key), `petitiones`, `adopta` | Implemented and tested through the real binary. A plugged-in wand is found by itself, or `--virga E:\` |
+| An outside will (`Voluntas`): a local model may supply a spirit's turn | Implemented. The core records each of its turns as **declared, never known** (real-agent mode, `core.md` §9.2); it may declare only obedience, part or delay, and cannot kill. Runs with the real wand or the test wand |
 | **The hours of the sky** (`src/horae.rs`): sunrise, sunset and civil twilight at the declared place; the Moon's age from the true new moon; each rank's window (`dynamic.md` §5.1); `--hora`, `--locus`, `--caelum`; every audit records the sky the run used | Implemented and tested against the 2000, 2017 and 2024 new moons and Berlin's solstices. **Dukes can now be bound.** Readings marked [O] await the owner |
 | **`VIRTUTES`**: a spirit reports each handed file's size in bytes and lines; the angel rereads them | Implemented and tested: eight kinds of false account all caught (`offices.md` §2.2). Dates left out until the world records times |
 | **`PRAETERITA`** (the present run): a spirit recounts the run's past, one claim per line in the history's words; the angel checks each against the history built from the audit | Implemented and tested: false claims and Berith's lies caught. The previous run (`"prior"`) not yet |
 | Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
 
-Tests: **281**, debug and release, on Linux here; Windows and Linux in CI.
+Tests: **308**, debug and release (and 18 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
@@ -30,6 +31,9 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Date | Breach | Fix |
 |---|---|---|
+| 2026-11-12 | (Four-repository audit, A01–A03) Test signatures were a hash anyone could recompute, so the stores, the faculty and the Constitution could be re-signed by anyone who could write the files | The real wand: Ed25519 with secrets locked by the Operator's words (`virga`). The test wand remains, on the same signatures with published keys, refused by a real wand's house |
+| 2026-11-12 | (Found while building the wand) A signed roots record copied to the end of the file would have replayed older stores past an anchor | Each record signs its own line number |
+| 2026-11-12 | (Found while building the wand) A ratification signed by any key verified | Only a living wand of the house's lineage may ratify |
 | 2026-11-12 | (GPT, second pass) `confirma` turned the key even when the petition's description was missing | Refused unless the exact effects are read back and match the fingerprint |
 | 2026-11-12 | (GPT, second pass) A stale staging file left by a crash blocked every later write of that file | Cleared under the house's lock, then written afresh |
 | 2026-11-12 | (GPT, second pass) The anchors' folder could be set inside the house, or by a relative path | Both refused |
@@ -62,7 +66,9 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The audit files (`.acta`) are not signed or read back | Open (core audit 1, #5); before `PRAETERITA` of the previous run |
 | The office's form enforced in the core, not only by the angel | Open (core audit 1, #4) |
 | Rust and Lean drift: validator manifest, Circle binding of values, ink without a wand, forced outcomes, the grave store, a refused `CONSECRA` | Open (core audit 1, #8) |
-| The anchor can itself be deleted by someone with access to it | Open until a real wand (2d) |
+| The anchor can itself be deleted by someone with access to it | **Closed** for a real wand: the anchor is on the wand (a rollback is caught by each wand that saw the later state). The test wand still keeps it in a folder |
+| The wand's words are kept in ordinary memory while they are typed (the opened keys are wiped) | Open, minor |
+| The wand on Windows: built in CI, not yet run on a real stick | **Owed: the owner's first `virga fac`** |
 | A crash part-way through sealing leaves the house refused, with no recovery; a crash while writing the world can leave the audit ahead of the files | Open (GPT review): needs a journal and kill-after-each-write tests |
 | `PARS` with complete work: a model can declare part and hand in the whole work, which the angel approves | **Needs the owner's ruling**: is `PARS` binding on the work, or only the model's own word? |
 | The model's seal (model file hash, settings, llama.cpp version, vectors, grammar) | Planned (`agens`); GPT's list adopted |
@@ -77,4 +83,4 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The seven doubled seals other than Bune | Open ruling |
 | Drift watch: a CI step comparing the Python and Rust parsers' rejection positions | Owed |
 | Web reading, Gmail drafts, OCR for the agent | Planned; each needs the words-as-words treatment first |
-| Step 2d: remove the prototype; a real wand | Not started |
+| Step 2d: remove the prototype | Not started (the real wand is done) |

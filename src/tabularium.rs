@@ -14,6 +14,7 @@ pub const KEYS: &str = "annulus.claves";
 pub const ROOTS: &str = "annulus.radices";
 pub const PETITIONS: &str = "annulus.petitiones";
 pub const MARKS: &str = "annulus.signa";
+pub const LOCK: &str = "annulus.sera";
 const STAGED: &str = ".annulus-novum";
 
 pub struct Domus {
@@ -283,9 +284,19 @@ impl Domus {
             .ancorae
             .as_ref()
             .ok_or("no place outside the house to keep its anchor: set ANNULUS_ANCORAE")?;
-        let absolute =
-            std::path::absolute(&self.dir).map_err(|e| format!("cannot name the house: {e}"))?;
-        let name = absolute.to_string_lossy().to_lowercase();
+        let real = match fs::canonicalize(&self.dir) {
+            Ok(r) => r,
+            Err(_) => {
+                let absolute = std::path::absolute(&self.dir)
+                    .map_err(|e| format!("cannot name the house: {e}"))?;
+                let parent = absolute.parent().ok_or("the house has no parent folder")?;
+                let name = absolute.file_name().ok_or("the house has no name")?;
+                fs::canonicalize(parent)
+                    .map_err(|e| format!("cannot find the house's folder: {e}"))?
+                    .join(name)
+            }
+        };
+        let name = real.to_string_lossy().to_lowercase();
         Ok(base.join(hash_hex(name.as_bytes())))
     }
 
@@ -366,8 +377,46 @@ impl Domus {
             .any(|n| self.path(n).exists())
     }
 
+    pub fn lock(&self) -> Result<fs::File, String> {
+        fs::create_dir_all(&self.dir).map_err(|e| format!("cannot make the house: {e}"))?;
+        let path = self.path(LOCK);
+        let file = fs::OpenOptions::new()
+            .create(true)
+            .truncate(false)
+            .write(true)
+            .open(&path)
+            .map_err(|e| format!("cannot open {}: {e}", path.display()))?;
+        file.try_lock()
+            .map_err(|_| "another run holds this house; wait for it to end".to_string())?;
+        Ok(file)
+    }
+
+    pub fn adopt(&self, wand: &Wand) -> Result<(), String> {
+        if self.anchor()?.is_some() {
+            return Err("this house already has its anchor".into());
+        }
+        if !self.installed() {
+            return Err("there are no stores here to adopt".into());
+        }
+        self.verified(wand)?;
+        let anchor = self.anchor_path()?;
+        if let Some(parent) = anchor.parent() {
+            fs::create_dir_all(parent).map_err(|e| format!("cannot keep the anchor: {e}"))?;
+        }
+        replace_file(
+            &anchor,
+            hash_hex(self.last_roots_line()?.as_bytes()).as_bytes(),
+        )
+    }
+
     pub fn open(&self, wand: &Wand) -> Result<Opened, String> {
         let anchor = self.anchor()?;
+        if self.installed() && anchor.is_none() {
+            return Err(
+                "this house has no anchor: if it is yours and untouched, adopt it once with `annulus adopta`"
+                    .into(),
+            );
+        }
         if !self.installed() && anchor.is_some() {
             return Err(
                 "this house was sealed before, and its stores are gone: refusing to start afresh"
@@ -391,6 +440,10 @@ impl Domus {
                 marks: BTreeSet::new(),
             });
         }
+        self.verified(wand)
+    }
+
+    fn verified(&self, wand: &Wand) -> Result<Opened, String> {
         let index: Chain<IxEntry> = self.read_chain(INDEX)?;
         let vessel: Chain<Sealed> = self.read_chain(VESSEL)?;
         let keys: Chain<KeyEntry> = self.read_chain(KEYS)?;

@@ -5,7 +5,7 @@ Draft 1, 2026-11-11. For the owner's approval. Roadmap step 1, item 2.
 ## 0. Why the split
 
 Annulus has two kinds of rule, and they are checked in two different ways:
-- **The core** says what is *possible*. It is small, and it is **proven**: a machine-checked proof over a formal model (roadmap step 3), plus attack testing. Tradition does not decide it.
+- **The core** says what is *possible*. It is small, and it is **to be proven**: a machine-checked proof over a formal model (roadmap step 3; begun, see `formal/Annulus/Proofs.lean`), plus attack testing. Until a property is proved it is only tested. Tradition does not decide it.
 - **The rite layer** says what the work *means*: registers, offices, hours, seals, ink classes, apparatus, the will. It is data and policy, judged by the **sources** under the owner's rule (`provenance.md`). The proof does not cover it.
 
 The split is what keeps the project safe as it grows. A mistake in the rite layer, such as a misread manuscript or a wrong office, can make Annulus less faithful. It can never make it less safe, because the rite layer has no way to add authority (§3). [O]

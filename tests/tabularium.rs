@@ -205,9 +205,8 @@ fn a_forged_or_unsigned_roots_record_refuses() {
     let unanchored =
         std::env::temp_dir().join(format!("annulus-unanchored-{}", std::process::id()));
     let e = Domus::anchored(&dir, &unanchored)
-        .open(&test_wand())
-        .err()
-        .expect("an unsigned record refuses even without an anchor");
+        .adopt(&test_wand())
+        .expect_err("an unsigned record cannot be adopted");
     assert!(e.contains("not signed"), "{e}");
 }
 

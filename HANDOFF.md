@@ -482,3 +482,7 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 - **Next:** P1 (c) (helpers) by the same method, then P2; the open audit items; step 2d (remove the prototype; a real wand, which also holds the anchor).
 
 - **The wand is on hold** (the owner, 2026-11-12): do not start the real wand until he asks. Options laid out for him: a key file on a USB stick behind a passphrase, the Windows protected store, or a passphrase only.
+
+## 2026-11-12, evening: GPT's outside review
+
+- Fixed: the anchor keyed by the real path (link bypass), unanchored houses refused until `annulus adopta`, a lock per house, build tools pinned, "to be proven". Open: crash recovery (journal), the `PARS` ruling for the owner, the model's seal, the Lean installer script. 294 tests.

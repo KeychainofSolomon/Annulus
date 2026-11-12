@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-12, 18:30 (`main`). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-12, 19:00 (`main`). **This page is updated with every fix** (the owner's rule).
 
 **Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are mostly tested, not proved:** P1–P9 are stated in Lean (`formal/`); the first proofs are in `formal/Annulus/Proofs.lean`.
 
@@ -30,6 +30,9 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Date | Breach | Fix |
 |---|---|---|
+| 2026-11-12 | (Outside review by GPT) A link to the house named a different anchor, so a rolled-back house opened through it was accepted | The anchor is keyed by the house's real path; a house with stores but no anchor is refused until adopted once (`annulus adopta`) |
+| 2026-11-12 | (Outside review by GPT) Two runs, or a run and `confirma`, could write the same stores at once | One run holds the house at a time (`annulus.sera`, a lock the operating system releases when the program ends) |
+| 2026-11-12 | (Outside review by GPT) The build tools were referenced by movable tags | Pinned to exact commits, in both repositories |
 | 2026-11-12 | (Core audit 1, `docs/AUDIT_CORE_1.md`) Rolling the stores back revived a spent key or lifted a damnation; deleting the house started it afresh | An anchor outside the house records the last sealed roots; launch refuses a rolled-back or missing house |
 | 2026-11-12 | (Core audit 1) A model was shown files it was never handed to read | It sees only places its request handed it `legere` |
 | 2026-11-12 | (Core audit 1) Words for a working office, or work for a telling one, could be approved | The angel rejects the wrong kind of answer |
@@ -55,6 +58,10 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The office's form enforced in the core, not only by the angel | Open (core audit 1, #4) |
 | Rust and Lean drift: validator manifest, Circle binding of values, ink without a wand, forced outcomes, the grave store, a refused `CONSECRA` | Open (core audit 1, #8) |
 | The anchor can itself be deleted by someone with access to it | Open until a real wand (2d) |
+| A crash part-way through sealing leaves the house refused, with no recovery; a crash while writing the world can leave the audit ahead of the files | Open (GPT review): needs a journal and kill-after-each-write tests |
+| `PARS` with complete work: a model can declare part and hand in the whole work, which the angel approves | **Needs the owner's ruling**: is `PARS` binding on the work, or only the model's own word? |
+| The model's seal (model file hash, settings, llama.cpp version, vectors, grammar) | Planned (`agens`); GPT's list adopted |
+| The Lean CI fetches its installer script from a moving branch | Open |
 | Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | Not started; open ruling for the ink |
 | Berith's ring hour | Needs `GERE` to record its time (the Prince's and Knight's hours are ruled) |
 | `PRAETERITA` of the previous run (`historia "prior" legere`) | Not started: the history must be carried between runs |

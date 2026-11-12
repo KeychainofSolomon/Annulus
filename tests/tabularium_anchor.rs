@@ -114,3 +114,54 @@ fn a_petition_is_confirmed_once() {
     s.keys.push(KeyEntry::Petition("f00d".into()));
     assert!(s.confirm_petition("f00d", &w));
 }
+
+#[cfg(unix)]
+#[test]
+fn a_link_to_the_house_finds_the_same_anchor() {
+    let w = test_wand();
+    let dir = house("alias");
+    let d = Domus::new(&dir);
+    let o = d.open(&w).unwrap();
+    d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
+    let mut o = d.open(&w).unwrap();
+    o.stores.index.push(IxEntry::Damn("goetia:1:bael".into()));
+    d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
+    drop_last_line(&dir.join(INDEX));
+    drop_last_line(&dir.join(ROOTS));
+    let alias = dir.with_extension("alias");
+    let _ = fs::remove_file(&alias);
+    std::os::unix::fs::symlink(&dir, &alias).unwrap();
+    let e = Domus::new(&alias)
+        .open(&w)
+        .err()
+        .expect("a rollback through a link is refused");
+    assert!(e.contains("rolled back or replaced"), "{e}");
+}
+
+#[test]
+fn a_house_without_its_anchor_is_refused_until_adopted() {
+    let w = test_wand();
+    let dir = house("adopt");
+    let d = Domus::new(&dir);
+    let o = d.open(&w).unwrap();
+    d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
+    let elsewhere = std::env::temp_dir().join(format!("annulus-elsewhere-{}", std::process::id()));
+    let _ = fs::remove_dir_all(&elsewhere);
+    let moved = Domus::anchored(&dir, &elsewhere);
+    let e = moved.open(&w).err().expect("refused");
+    assert!(e.contains("no anchor"), "{e}");
+    moved.adopt(&w).unwrap();
+    assert!(moved.open(&w).is_ok());
+    assert!(moved.adopt(&w).is_err());
+}
+
+#[test]
+fn only_one_run_holds_the_house() {
+    let dir = house("lock");
+    let d = Domus::new(&dir);
+    let first = d.lock().unwrap();
+    let e = d.lock().expect_err("a second holder is refused");
+    assert!(e.contains("another run holds this house"), "{e}");
+    drop(first);
+    assert!(d.lock().is_ok());
+}

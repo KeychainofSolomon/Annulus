@@ -33,6 +33,7 @@ fn main() -> ExitCode {
         [name, rest @ ..] if name == "ritus" => command(mandata::ritus, rest),
         [name, rest @ ..] if name == "confirma" => command(mandata::confirma, rest),
         [name, rest @ ..] if name == "petitiones" => command(mandata::petitiones, rest),
+        [name, rest @ ..] if name == "adopta" => command(mandata::adopta, rest),
         [path] if !path.starts_with('-') => run_file(path),
         _ => {
             report(USAGE);

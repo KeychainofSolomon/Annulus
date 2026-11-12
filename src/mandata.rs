@@ -17,6 +17,7 @@ pub const USAGE: &str = "usage: annulus <source.annulus>
                      [--hora 2026-11-12T15:00:00+01:00] [--locus LAT,LON] [--caelum serenum|turbidum]
        annulus confirma <fingerprint> [--virga-probationis] [--domus DIR]
        annulus petitiones [--virga-probationis] [--domus DIR]
+       annulus adopta [--virga-probationis] [--domus DIR]
        annulus --version";
 
 pub const EXIT_USAGE: u8 = 2;
@@ -277,6 +278,10 @@ pub fn ritus_with(
         return Ok(refuse(&mut say, e));
     }
     let domus = Domus::new(&domus_dir);
+    let _held = match domus.lock() {
+        Ok(l) => l,
+        Err(e) => return Ok(refuse(&mut say, e)),
+    };
     let opened = match domus.open(&wand) {
         Ok(o) => o,
         Err(e) => return Ok(refuse(&mut say, e)),
@@ -395,6 +400,13 @@ pub fn confirma(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Re
         let _ = writeln!(err, "there are no stores in {}", domus.dir.display());
         return Ok(EXIT_REFUSED);
     }
+    let _held = match domus.lock() {
+        Ok(l) => l,
+        Err(e) => {
+            let _ = writeln!(err, "the stores are refused: {e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
     let mut opened = match domus.open(&wand) {
         Ok(o) => o,
         Err(e) => {
@@ -419,6 +431,36 @@ pub fn confirma(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Re
     }
     let _ = writeln!(out, "confirmed: {fingerprint}");
     Ok(0)
+}
+
+pub fn adopta(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result<u8, Usage> {
+    let (plain, f) = flags(args, &["--virga-probationis", "--domus"])?;
+    if !plain.is_empty() {
+        return Err(Usage("adopta takes no program".into()));
+    }
+    let wand = wand(&f);
+    if !wand.present {
+        let _ = writeln!(err, "a house is adopted only with the wand");
+        return Ok(EXIT_REFUSED);
+    }
+    let domus = Domus::new(&house(&f));
+    let _held = match domus.lock() {
+        Ok(l) => l,
+        Err(e) => {
+            let _ = writeln!(err, "the stores are refused: {e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
+    match domus.adopt(&wand) {
+        Ok(()) => {
+            let _ = writeln!(out, "adopted: {}", domus.dir.display());
+            Ok(0)
+        }
+        Err(e) => {
+            let _ = writeln!(err, "the house is not adopted: {e}");
+            Ok(EXIT_REFUSED)
+        }
+    }
 }
 
 pub fn petitiones(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result<u8, Usage> {

@@ -40,9 +40,15 @@ impl Json {
     }
 }
 
+pub const MAX_DEPTH: usize = 64;
+
 pub fn parse(source: &str) -> Result<Json, String> {
     let chars: Vec<char> = source.chars().collect();
-    let mut reader = Reader { chars, at: 0 };
+    let mut reader = Reader {
+        chars,
+        at: 0,
+        depth: 0,
+    };
     let value = reader.value()?;
     reader.space();
     if reader.at != reader.chars.len() {
@@ -54,6 +60,7 @@ pub fn parse(source: &str) -> Result<Json, String> {
 struct Reader {
     chars: Vec<char>,
     at: usize,
+    depth: usize,
 }
 
 impl Reader {
@@ -85,6 +92,19 @@ impl Reader {
 
     fn value(&mut self) -> Result<Json, String> {
         self.space();
+        if !matches!(self.chars.get(self.at), Some('{' | '[')) {
+            return self.nested();
+        }
+        if self.depth >= MAX_DEPTH {
+            return Err(format!("nested deeper than {MAX_DEPTH} at {}", self.at));
+        }
+        self.depth += 1;
+        let value = self.nested();
+        self.depth -= 1;
+        value
+    }
+
+    fn nested(&mut self) -> Result<Json, String> {
         match self.chars.get(self.at) {
             Some('{') => {
                 self.at += 1;
@@ -99,7 +119,9 @@ impl Reader {
                     let key = self.string()?;
                     self.eat(':')?;
                     let value = self.value()?;
-                    map.insert(key, value);
+                    if map.insert(key.clone(), value).is_some() {
+                        return Err(format!("the key {key:?} is given twice"));
+                    }
                     self.space();
                     match self.chars.get(self.at) {
                         Some(',') => self.at += 1,

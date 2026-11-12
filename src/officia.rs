@@ -73,9 +73,19 @@ pub fn shape(kind: &str, mode: Option<&str>) -> &'static str {
 pub const INCOMPLETE: &str = " [...]";
 
 pub fn cited(text: &str) -> Vec<String> {
-    text.split("[locus: ")
+    text.split(['[', '\u{ff3b}'])
         .skip(1)
-        .filter_map(|rest| rest.split_once(']').map(|(p, _)| p.to_string()))
+        .filter_map(|rest| {
+            let (inner, _) = rest.split_once([']', '\u{ff3d}']).unwrap_or((rest, ""));
+            let inner = inner.replace(['\u{ff1a}', '\u{fe55}', '\u{a789}'], ":");
+            let (word, place) = inner.split_once(':')?;
+            let word: String = word.chars().filter(|c| !c.is_whitespace()).collect();
+            matches!(
+                word.to_lowercase().as_str(),
+                "locus" | "loci" | "loco" | "locum"
+            )
+            .then(|| place.trim().to_string())
+        })
         .collect()
 }
 

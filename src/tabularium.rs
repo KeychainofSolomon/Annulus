@@ -35,6 +35,9 @@ fn escape(s: &str) -> String {
             '\t' => out.push_str("\\t"),
             '\n' => out.push_str("\\n"),
             '\r' => out.push_str("\\r"),
+            c if crate::lingua::exsequi::hidden(c) => {
+                out.push_str(&format!("\\u{{{:x}}}", c as u32))
+            }
             _ => out.push(c),
         }
     }
@@ -54,6 +57,15 @@ fn unescape(s: &str) -> Result<String, String> {
             Some('t') => out.push('\t'),
             Some('n') => out.push('\n'),
             Some('r') => out.push('\r'),
+            Some('u') => {
+                let rest: String = chars.by_ref().take_while(|c| *c != '}').collect();
+                let code = rest
+                    .strip_prefix('{')
+                    .and_then(|h| u32::from_str_radix(h, 16).ok())
+                    .and_then(char::from_u32)
+                    .ok_or("a broken escape")?;
+                out.push(code);
+            }
             _ => return Err("a broken escape".into()),
         }
     }

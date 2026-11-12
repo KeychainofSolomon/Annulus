@@ -480,3 +480,5 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 - **Core audit 1** (`docs/AUDIT_CORE_1.md`): rollback and deletion of the house closed by an anchor outside the house (`ancorae`), the model's view bounded by its request, the wrong kind of answer rejected, petition text checked against its fingerprint, Windows spellings refused, smaller closures. Open items in `STATUS.md`.
 - **Proofs** (`formal/Annulus/Proofs.lean`): P1 (a), P1 (b) (invariant over runs, with frame lemmas for every step) and three facts about declared outcomes and `kill`. CI admits theorems only there and checks their axioms.
 - **Next:** P1 (c) (helpers) by the same method, then P2; the open audit items; step 2d (remove the prototype; a real wand, which also holds the anchor).
+
+- **The wand is on hold** (the owner, 2026-11-12): do not start the real wand until he asks. Options laid out for him: a key file on a USB stick behind a passphrase, the Windows protected store, or a passphrase only.

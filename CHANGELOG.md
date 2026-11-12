@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Ruled by the owner (2026-11-12): the network grant
+- **One read-only grant per host** (`rete "<host>" legere`), one search grant (`quaerere`, results quarantined), and any other host only by a sealed petition and the second key. A grant for the whole web is refused: a request's address can carry data out.
+
 ### Step 2c, second half: the command line and the stores on disk (2026-11-12; not a core change)
 - **`annulus ritus <program>`** checks the program, opens the stores, reads the granted files, runs, prints the output, writes the audit, seals the stores, notes petitions and writes the files back; it exits with the run's class. Flags: `--virga-probationis`, `--semen`, `--sors`, `--responsa` (a JSON list of answers), `--acta`, `--domus` (default `annulus.domus` beside the program), `--mundus` (default the program's folder). **`annulus confirma <fingerprint>`** turns the second key outside a session; **`annulus petitiones`** lists what waits. The old `annulus <file>` prototype is unchanged until 2d.
 - **Quarantine survives between runs:** a file a spirit wrote is recorded in `annulus.signa` and read back quarantined, never as plain outside text. The record is covered by the signed roots record, so editing or deleting it refuses the launch. A mark is never removed (no presumption that a later file is clean).

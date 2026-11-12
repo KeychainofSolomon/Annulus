@@ -9,6 +9,7 @@ pub mod parser;
 pub mod program;
 pub mod ritus;
 pub mod span;
+pub mod tabularium;
 pub mod token;
 pub mod value;
 pub mod vm;

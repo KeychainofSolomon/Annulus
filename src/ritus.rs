@@ -275,6 +275,19 @@ impl Rite for Goetia {
         };
         match &p.content {
             Content::Empty => Verdict::Hold,
+            Content::Response(_, text) if form.office == "VIRTUTES" => {
+                if text.ends_with(crate::officia::INCOMPLETE) {
+                    return Verdict::Hold;
+                }
+                let truth = crate::officia::virtutes(&form.places, |place| {
+                    state.world.get(place).map(|(d, _)| d.clone())
+                });
+                if crate::officia::same_account(text, &truth) {
+                    Verdict::Approve
+                } else {
+                    Verdict::Reject
+                }
+            }
             Content::Response(_, text) => {
                 let beyond = crate::officia::cited(text)
                     .iter()

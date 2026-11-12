@@ -73,6 +73,8 @@ Rules for these kinds:
 | `FURTUM` | `"deprehende"` | places with `legere` | response: which places changed outside a recorded commit | compares with the commits in the audit (the runtime reads them, never the spirit) |
 | `MENS` | `"inspice"` | one same-Circle invocation | response: its pending request and state | reads the same state |
 
+**`VIRTUTES` as implemented (2026-11-12).** The account has one line per handed place, in any order: `place: N bytes, M lines`, or `place: absens` if the place holds nothing. Bytes are the UTF-8 length of the contents; lines are counted as text lines. The examiner rereads every handed place and compares the lines exactly: a true account is `APPROVE`, anything false, missing, extra or not in this form is `REJECT`, and an account marked incomplete is `HOLD`. **Dates are left out** [O]: the Circle's world records no times yet, so the examiner could not reread them. They join the account when it does.
+
 ### 2.2a `PRAETERITA` and the history (ruling 2026-11-11)
 
 **What he reads.** `PRAETERITA` reads the **history** (`historia`). The history is a read-only view that the runtime builds from the audit. The audit itself stays closed to every program and every spirit (`dynamic.md` §9.3).

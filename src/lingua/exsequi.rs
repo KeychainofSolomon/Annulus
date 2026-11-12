@@ -398,6 +398,49 @@ impl<'p> Run<'p> {
         };
         let spirit = asked.spirit;
         let class = crate::officia::signature(&asked.office).map(|s| s.class);
+        if asked.office == "VIRTUTES" {
+            let world = &self.state.world;
+            let truth =
+                crate::officia::virtutes(&asked.places, |p| world.get(p).map(|(d, _)| d.clone()));
+            let text = match outcome {
+                Outcome::Pars => {
+                    let lines: Vec<&str> = truth.lines().collect();
+                    format!(
+                        "{}{}",
+                        lines[..lines.len() / 2].join("\n"),
+                        crate::officia::INCOMPLETE
+                    )
+                }
+                Outcome::Mendacium => asked
+                    .places
+                    .iter()
+                    .map(|p| {
+                        format!(
+                            "{p}: {} bytes, 1 lines",
+                            world.get(p).map_or(0, |(d, _)| d.len()) + 13
+                        )
+                    })
+                    .collect::<Vec<_>>()
+                    .join("\n"),
+                Outcome::Malitia => {
+                    let secret = world
+                        .keys()
+                        .find(|p| !asked.places.contains(p))
+                        .cloned()
+                        .unwrap_or_else(|| "arcanum".to_string());
+                    format!(
+                        "{truth}\n{}",
+                        crate::officia::virtus(
+                            &secret,
+                            world.get(&secret).map(|(d, _)| d.as_str())
+                        )
+                    )
+                }
+                _ => truth,
+            };
+            let id = self.fresh_value();
+            return Contrib::Respond(id, text);
+        }
         if class == Some(crate::officia::Class::Telling) {
             let q = asked.quaestio.clone().unwrap_or_default();
             let script = self.responsa.iter().find(|r| {

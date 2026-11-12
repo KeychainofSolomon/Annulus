@@ -6,7 +6,7 @@
 - An independent audit of the core changes of 11–12 November (`docs/AUDIT_CORE_1.md`). Fixed: rollback and deletion of the house (an anchor outside the house, checked at launch), a model shown unhanded files, the wrong kind of answer approved, unsigned petition text, Windows path spellings, double confirmation, the open instrument list, non-text `PETE` arguments, the evaluator writing the core's scheduler. 291 tests. Open: the audit files, the office's form in the core, six Rust–Lean drifts.
 
 ### The first proofs (2026-11-12)
-- `formal/Annulus/Proofs.lean`: P1 (a), containment at commit; an outside will's turns recorded as declared; `kill` only in simulated mode. The Lean CI now admits proofs there only, and fails on `sorry` or any axiom beyond Lean's own.
+- `formal/Annulus/Proofs.lean`: P1 (a), containment at commit; P1 (b), every request's handed places lie in the faculty in every reachable state, by an invariant over runs; an outside will's turns recorded as declared; `kill` only in simulated mode. The Lean CI now admits proofs there only, and fails on `sorry` or any axiom beyond Lean's own.
 
 ### Core: a model's outcome is declared, never known (2026-11-12; core change)
 - **The turn records what is known** (`core.md` §9.2): `Label::Turn` carries a `Will`, `Known` in simulated mode (the scheduler drew it) and `Declared` in real-agent mode (the model's own word). The mode is fixed at launch: a run with an outside will is real-agent mode.

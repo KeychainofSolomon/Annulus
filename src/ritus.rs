@@ -101,11 +101,12 @@ pub fn launch(
     wand: Wand,
     stores: Stores,
     world: BTreeMap<Place, (String, Mark)>,
+    recorded: Option<Roots>,
 ) -> Launch {
     let constitution = constitution();
     let (faculty, reserved, ink) = faculty_of(checked);
     let owner = test_wand().fingerprint;
-    let roots = roots_of(&stores);
+    let roots = recorded.unwrap_or_else(|| roots_of(&stores));
     let revoked = Vec::new();
     let auth = Auth {
         faculty_signature: sign_for_test(

@@ -414,3 +414,24 @@ Discussed with the owner, not built:
 - **Before real agents (step 4):** make the core's `State` fields private behind read-only views (fourth outside review, D4). In simulated mode `ritus::launch` signs the roots of the stores it is given; a real launch must take them from the last run's signed record, never recompute them.
 - **Deception threats still open:** lies in answers pass examination until constraints exist (the apparatus); test-wand signatures are forgeable (real wand); seals are claimed, not proven, until the step-4 handshake.
 - **Step 4 design note (the owner's friend):** a trust handshake before any agent's work: seal, name-challenge (`APPELLA`, "Art thou …?"), oath by the Divine Names, and a written proof record the **core** verifies. Never run a script an agent supplies.
+
+## 2026-11-12: step 2c in progress, and the agent bridge (`agens`) planned
+
+Branch `step-2c`. Owner's decisions this session:
+- **The Goetic SLM is Annulus's real-agent mode** (`agens`, library item 11, roadmap step 4): a local model (Qwen3 8B class, low-refusal "abliterated" variant, run with llama.cpp Vulkan on the owner's AMD Windows PC, 16GB RAM total, kept within it) as the will of the spirits. The LLM is subject to the Constitution from its foundation. No model alignment layer: authenticity comes from the binding, not from the model's own filters.
+- **Every act is an Annulus rite.** The model's petitions are JSON for now, shaped exactly like `PETE` (spirit, `modus`, `quaestio`, `loci`); each becomes a small rite checked by `lingua::check` and run by `exsequi` with the model supplying only the spirit's turn (`--voluntas agens`). Later the model writes Annulus directly.
+- **Functions wanted:** web reading and search, Gmail drafts (sent only by the owner: a sealed petition, the second key, e.g. a prefilled Gmail compose window), PDF/image OCR (Tesseract, runtime-side as `TRANSMUTATIO`), a Latin/English lexicon (`LINGUAE`, e.g. Whitaker's Words), file work in a Circle folder, training on reading material as an index with passage-citation certificates (`library.md` §3).
+- **Planned ground-floor features:** quarantine of web/PDF text (it can never choose a place, URL or recipient); the agent's seal is `goetia:N:label@agens:<hash of model file + config>` so the Index tracks each model (Goetia::spirit must strip the suffix); legions cap helpers, ink caps tokens; Andras `PROBATIO` as the red team for roadmap step 6.
+- **Open rulings:** the network grant, (a) one `rete` grant per host or (b) one read-only grant for the whole web chosen at launch, everything fetched quarantined; the hours (`horae`) deferred.
+
+Done:
+1. **D4:** every `State` field is crate-private; read-only accessors; test-only mutators (`auth_mut`, `faculty_mut`, `world_mut`, `stores_mut`) under `probatio`. All 216 tests pass.
+2. `ritus::launch` takes the roots from the last signed record (`Optiones.radices`), recomputing only for a fresh installation.
+3. `src/tabularium.rs` (compiles, **untested**): the Index (`annulus.proscriptio`), Vessel (`annulus.vas`), sealed petitions (`annulus.claves`) on disk, one hash-chained line per entry, re-verified line by line on load; `annulus.radices`, the signed record of the roots after each run, checked at launch (fail closed); `annulus.petitiones`, a readable list of what each pending petition would do; the audit written once per run (`<program>.acta`, then `.2.acta` …, never overwritten, first line marks the test wand); real files: `read_world` / `write_world` for granted places only, plain relative paths, no links, staged writes.
+
+Next (rest of 2c):
+- Command line, keeping the prototype until 2d: `annulus ritus <program> [--virga-probationis] [--semen N] [--sors X] [--responsa FILE] [--acta FILE] [--domus DIR] [--mundus DIR]`: check, open the stores, read the world, run, print output, write the audit, seal the stores, note petitions, write the world, exit with the run's class. `annulus confirma <fingerprint>` (second key, outside a session) and `annulus petitiones`.
+- Tests: round trip of every entry kind; a tampered line, a missing or forged roots record and another wand all refuse to launch; a store keeps an Index entry across two runs; a move waits for the key, `confirma` then lets it commit in a later run; places with `..`, absolute paths or links refused.
+- Then `agens`: the will trait in `exsequi`, the llama.cpp client (std only, HTTP on localhost), the GBNF grammar for petitions, spirit personas from `goetia.json`, the trust handshake (seal, `APPELLA`, oath) from the step-4 note above.
+
+Commits: author `Solomon <KeychainofSolomon@users.noreply.github.com>`, no co-author lines (the owner's rule).

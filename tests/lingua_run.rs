@@ -70,6 +70,7 @@ fn run(source: &str, seed: u64, sors: Option<Outcome>, wand: Wand) -> Exitus {
         semen: seed,
         sors,
         responsa: script(),
+        ..Default::default()
     };
     let stores = Stores::install(&test_wand());
     match run_source(source, wand, stores, world(), &options) {
@@ -307,6 +308,7 @@ fn obedient(source: &str, files: &[(&str, &str)]) -> Exitus {
         semen: 0,
         sors: Some(Outcome::Obsequium),
         responsa: Vec::new(),
+        ..Default::default()
     };
     match run_source(
         source,
@@ -518,6 +520,7 @@ fn forced(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome) -> Exi
         semen: seed,
         sors: Some(sors),
         responsa: script(),
+        ..Default::default()
     };
     run_source(
         source,
@@ -639,6 +642,7 @@ CIRCULUS RITU goetia {
             verum: "ventus".to_string(),
             falsum: None,
         }],
+        ..Default::default()
     };
     let e = run_source(
         open_answer,
@@ -662,6 +666,7 @@ fn conducted(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome, wan
         semen: seed,
         sors: Some(sors),
         responsa: Vec::new(),
+        ..Default::default()
     };
     run_source(source, wand, Stores::install(&test_wand()), world, &options)
         .unwrap_or_else(|e| panic!("refused before running: {e:?}"))

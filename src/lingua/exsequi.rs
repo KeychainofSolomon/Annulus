@@ -20,6 +20,7 @@ pub struct Optiones {
     pub semen: u64,
     pub sors: Option<Outcome>,
     pub responsa: Vec<Responsum>,
+    pub radices: Option<crate::nucleus::state::Roots>,
 }
 
 #[derive(Debug)]
@@ -90,7 +91,7 @@ pub fn run(
     world: BTreeMap<Place, (String, Mark)>,
     options: &Optiones,
 ) -> Exitus {
-    let launch = ritus::launch(checked, wand, stores, world);
+    let launch = ritus::launch(checked, wand, stores, world, options.radices.clone());
     let mut run = Run {
         state: State::initial(launch),
         rite: Goetia::new(super::registra::goetia()),

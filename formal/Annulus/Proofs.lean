@@ -71,6 +71,38 @@ theorem cap_of_contained {σ : State U} {to : Addressee U} {pl : U.Place} {m : U
     (h : Contained σ to (.cap pl m)) : CapContained σ to pl m := by
   cases to <;> exact h
 
+abbrev Frame (σ1 σ : State U) : Prop :=
+  σ1.reqs = σ.reqs ∧ σ1.faculty = σ.faculty ∧ σ1.reserved = σ.reserved ∧ σ1.phase = σ.phase
+
+theorem frame_out {σ1 σ : State U} (h : Frame σ1 σ) :
+    σ1.reqs = σ.reqs ∧ σ1.faculty = σ.faculty ∧ σ1.reserved = σ.reserved ∧
+      (σ1.phase = σ.phase ∨ ∃ e, σ1.phase = .ended e) :=
+  ⟨h.1, h.2.1, h.2.2.1, Or.inl h.2.2.2⟩
+
+theorem frame_ite {c : Prop} [Decidable c] {a b σ : State U} (ha : Frame a σ)
+    (hb : Frame b σ) : Frame (if c then a else b) σ := by
+  by_cases h : c
+  · rw [if_pos h]; exact ha
+  · rw [if_neg h]; exact hb
+
+theorem afterTurn_frame {σ : State U} {w : U.Worker} {wi : WInfo U} {p : U.Pid}
+    {rest : List U.Pid} {pi : PInfo U} {c : Contrib U} {fin : Bool} {l : Label U} :
+    Frame (afterTurn σ w wi p rest pi c fin l) σ := by
+  unfold afterTurn
+  cases c <;> exact ⟨rfl, rfl, rfl, rfl⟩
+
+theorem afterJudge_frame {σ : State U} {p : U.Pid} {pi : PInfo U} {d : WorkOutcome}
+    {k : WorkOutcome → U.Exec} : Frame (afterJudge σ p pi d k) σ := by
+  unfold afterJudge
+  exact frame_ite ⟨rfl, rfl, rfl, rfl⟩ (frame_ite ⟨rfl, rfl, rfl, rfl⟩ ⟨rfl, rfl, rfl, rfl⟩)
+
+theorem foldl_addMade_frame (l : Label U) :
+    ∀ (ms : List (Made U)) (σ : State U), Frame (ms.foldl (addMade l) σ) σ
+  | [], _ => ⟨rfl, rfl, rfl, rfl⟩
+  | m :: ms, σ => by
+      have h := foldl_addMade_frame l ms (addMade l σ m)
+      exact ⟨h.1.trans rfl, h.2.1.trans rfl, h.2.2.1.trans rfl, h.2.2.2.trans rfl⟩
+
 /-- Every step other than `launch` and `request` leaves the requests, the faculty and the
 reserved part as they were, and either keeps the phase or ends the run. -/
 theorem step_frame {M : Core U} {R : RelRite U} {σ σ1 : State U} {l : Label U}
@@ -85,6 +117,9 @@ theorem step_frame {M : Core U} {R : RelRite U} {σ σ1 : State U} {l : Label U}
     | exact (hr _ _ _ _ _ _ rfl).elim
     | exact ⟨rfl, rfl, rfl, Or.inl rfl⟩
     | exact ⟨rfl, rfl, rfl, Or.inr ⟨_, rfl⟩⟩
+    | exact frame_out afterTurn_frame
+    | exact frame_out afterJudge_frame
+    | exact frame_out (foldl_addMade_frame _ _ _)
 
 theorem capContained_congr {σ σ1 : State U} {to : Addressee U} {pl : U.Place} {m : U.Perm}
     (hf : σ1.faculty = σ.faculty) (hr : σ1.reserved = σ.reserved)

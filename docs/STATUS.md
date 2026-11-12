@@ -1,58 +1,53 @@
-# Implementation status — v0.2.1
+# Implementation status
 
-**The specification and the code are at different stages.** The specification (`docs/spec/`, thirteen files in draft) is being completed under roadmap step 1. Two machines sit side by side until step 2d. **`annulus ritus`** (branch `step-2c`) runs the step-2 subset of the specification on the new core: checker, evaluator, nucleus, stores on disk, the second key; this is also what Spiri72 calls for every question. **`annulus <file>`** still runs the v0.2.1 prototype (a small expression language with English keywords, `docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d.
+Last updated: 2026-11-12, 15:30 (branch `step-2c`). **This page is updated with every fix** (the owner's rule).
 
-## Step 2 in progress: the nucleus
+**Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are tested, not proved:** P1–P9 are stated in Lean (`formal/`), with no proofs yet.
 
-`src/nucleus/` is the new core, built from `docs/spec/core.md` §9 and `formal/Annulus/Step.lean`: the state, one method per transition rule, the commit re-check, marks, release and abandonment, the Index, the Vessel (with its three first records), sealed petitions, the hash-chained audit, launch checks with a **test wand** (`sign_for_test`; never valid for a real installation), and SHA-256 written in-house (the project has no outside dependencies). 38 tests in `tests/nucleus_rules.rs`, each checking P1, P2, P4, P7 and the damnation law over its audit, including hostile spirits (overreach, forged seals, intrusion, injected words), suspicion by the Index's marks, angels' petitions with reserved grants, and seeded simulated runs that replay exactly (P9). Reachable from the command line as `annulus ritus` (and from Spiri72) since 2026-11-12; plain `annulus <file>` still runs the prototype below. The properties are tested, not yet proved (`formal/README.md`).
+## What runs: `annulus ritus` (step 2a–2c)
 
-## Implemented and tested (v0.2.1 prototype)
-
-| Feature | Notes |
+| Part | State |
 |---|---|
-| Lexer with line and column tracking | Section 2 of `PROTOTYPE.md` |
-| Parser with precedence, associativity and a nesting limit | Section 3 of `PROTOTYPE.md` |
-| Immutable declarations, resolved at compile time | `LET` / `DECLARE` |
-| Output | `MANIFEST` / `PRINT` |
-| Values: 64-bit integer, boolean, string | |
-| Checked integer arithmetic: `+ - * /`, unary `-` | Overflow and division by zero are errors |
-| Equality `==` across all value types | Mixed types compare as `false` |
-| Compilation to an in-memory instruction list, executed by a stack VM | Not a serialised bytecode format |
-| Diagnostics with file, line, column, phase and hints | |
-| Command line: run, `--version`, `--help`, defined exit codes | |
-| Quiet exit when output is closed | |
-| Automated tests | 50 tests (39 unit, 11 integration) |
-| Reproducible Linux build | Verified byte-identical across build folders |
-| CI: format, lint, tests on Windows and Linux, reproducibility check, packaging | Not yet run: the repository has not been pushed |
+| Nucleus (`src/nucleus/`): one method per transition rule of `Step.lean`, commit re-check, marks, release, Index, Vessel, sealed petitions, hash-chained audit, launch checks | Implemented, tested over every audit (P1, P2, P4, P7, damnation law); state private behind read-only views |
+| Front end (`src/lingua/`): lexer, parser for the whole grammar, register from `goetia.json`, checker for the step-2 subset | Implemented; agrees with the Python reference on all 69 grammar programs |
+| Evaluator (`exsequi`), the `goetia` rite as data, the honest examiner (judges the proposal, never the drawn outcome) | Implemented |
+| The apparatus: ring, wand, hexagram, pentagram, offering, naming, forbidding, binding by the Divine Name | Implemented for Paimon, Belial, Asmoday, Beleth, Andras; Astaroth, Focalor, Malphas written but unreachable |
+| Stores on disk (`tabularium`): Index, Vessel, sealed petitions, signed roots record, quarantine record (`annulus.signa`), audit per run, granted files read and written | Implemented and tested: tampering, forged or missing roots, another wand, links, escapes from the folder all refuse to launch |
+| Command line: `annulus ritus`, `confirma` (second key), `petitiones` | Implemented and tested through the real binary |
+| An outside will (`Voluntas`): a local model may supply a spirit's turn | Implemented; **test wand only**, until the core can record an outcome it does not know |
+| Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
 
-## Binaries
+Tests: **263**, debug and release, on Linux here; Windows and Linux in CI.
 
-| Binary | State |
+## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
+
+Uses this repository as a library, pinned by commit. A local model (llama.cpp, this computer only) is the will of the spirits; Annulus judges and permits. The binding page (seals in their rank metals, the Triangle and the Circle) or `--terminal`. 14 of the 72 can be bound today. 49 tests, including `tests/hostis.rs`: a fully hostile model, 16 attack families.
+
+## Security fixes (red-team and audits)
+
+| Date | Breach | Fix |
+|---|---|---|
+| 2026-11-12 | The angel saw a citation of an unhanded place only as `[locus: x]`; other spellings passed a false source | Every guise read; anything not exactly a handed place refused (`officia::cited`) |
+| 2026-11-12 | JSON nesting unbounded: a hostile model server could abort a run before its audit was written | Nesting stops at 64; doubled keys refused (`lingua::json`) |
+| 2026-11-12 | A spirit's words reached the terminal raw: clipboard (OSC 52), window title, reversed text, lines forged as Annulus's own | Hidden characters shown as `\u{..}`; every line of an answer marked (`exsequi::visible`) |
+| 2026-11-12 | Hidden characters stored raw in the Vessel | Stored as reversible `\u{..}` escapes |
+| 2026-11-12 | Quarantine lost between runs (a spirit's file read back as outside text); links in folders on a path; staging could overwrite another file; writes over files changed during a run | `annulus.signa` under the signed roots; every path part checked; fresh staging files; changed files left alone |
+| 2026-11-12 | (Spiri72) work items took extra fields; the page server took missing or doubled lengths and cut-off bodies | Exact fields; strict lengths, chunked refused |
+| 2026-11-11 | Outside reviews 1–4: mark laundering through loops, overwriting creates, store substitution, struck-out revocations, examiner not required to be an angel | Fixed in the core with tests (see `CHANGELOG.md`) |
+
+## Open
+
+| Area | State |
 |---|---|
-| `annulus-linux-x86_64` | Built and verified for this release (requires glibc 2.34+) |
-| `annulus-windows-x86_64.exe` | **Not built.** No Windows toolchain is available in the environment used for this milestone. The CI workflow builds it on a Windows runner. |
-
-## Not implemented
-
-| Area (handoff section) | State |
-|---|---|
-| Formal normative specification (12, step 2) | **In draft:** thirteen files in `docs/spec/`, plus the registers; awaiting the owner's approval (roadmap step 1) |
-| Serialised, versioned bytecode format and verifier (12, step 4) | Not started |
-| Comments | **Ruled out:** Annulus has no comment syntax (the owner's ruling) |
-| String escapes | Specified (`grammar.md` §2); not in the prototype |
-| Types beyond integer, boolean, string; composite types (10) | Not started |
-| Static type checking (10) | Not started |
-| Functions and procedures (10) | Not started |
-| Control flow and iteration (10) | Not started |
-| Scopes and modules (10) | Not started |
-| Error handling within programs (10) | Not started |
-| Controlled external effects beyond standard output (10) | Not started |
-| Standard library (1) | Not started |
-| The eight foundational laws (6) | Not started; only DECLARATION is partly reflected (names must be declared before use) |
-| Circles, capabilities, containment (6, 7) | Not started |
-| Transactional execution and examination (8) | Not started |
-| Invocation lifecycle: INVOKE, EXAMINE, LICENSE TO DEPART, DISMISS, BANISH (9) | Not started |
-| Cosmological hierarchy: the Absolute, hosts, Lucifer, operator, spirits (4) | Not started |
-| Angelic orders and ministries (5) | Not started |
-| History: War in Heaven, the Fall (5, 7) | Not started |
-| Subsystems LOGOS to EXAMINATIO (7) | Not started; LOGOS and NUMERUS exist only in the rudimentary form above |
+| Proofs of P1–P9 and their correspondence to the Rust core | Not started; the largest gap |
+| An unknown outcome for a real will, so a model may run without the test wand | Owed (core change) |
+| The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
+| Independent audit of the core changes of 2026-11-11 and 2026-11-12 | Owed |
+| Kings (`INVOCA REGEM`), so Presidents can come; hours of the sky, so Dukes can come; ink for two-rank seals | Not started; open ruling for the ink |
+| Offices beyond telling and the five working kinds (teaching, transformation, dignities…) | Not in the subset |
+| The escalation, so `RECUSATIO` can open; spirit-specific malice | Not started |
+| Real validators before step 4; the trust handshake | Not started |
+| The seven doubled seals other than Bune | Open ruling |
+| Drift watch: a CI step comparing the Python and Rust parsers' rejection positions | Owed |
+| Web reading, Gmail drafts, OCR for the agent | Planned; each needs the words-as-words treatment first |
+| Step 2d: remove the prototype; a real wand | Not started |

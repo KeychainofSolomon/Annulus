@@ -187,7 +187,7 @@ fn op<T>(s: &mut State, f: impl FnOnce(&mut State) -> Step<T>) -> Step<T> {
 }
 
 fn spirit_turn(s: &mut State, rite: &TestRite, inv: InvId, contrib: Contrib, finish: bool) {
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     s.schedule(worker).expect("schedule the spirit");
     s.turn(rite, worker, Outcome::Obsequium, contrib, finish)
         .expect("turn");
@@ -217,12 +217,12 @@ fn effect(verb: Verb, place: &str, data: &str) -> Effect {
 }
 
 fn check_theorems(s: &State) {
-    assert!(s.audit.intact(), "P7: the audit chain is intact");
-    let audit = s.audit.entries();
+    assert!(s.audit().intact(), "P7: the audit chain is intact");
+    let audit = s.audit().entries();
     for (k, label) in audit.iter().enumerate() {
         if let Label::Commit(p, effects, result) = label {
             assert!(k >= 2, "P2: a commit follows a judgement");
-            let author = &s.props[p].author;
+            let author = &s.props()[p].author;
             match (&audit[k - 2], &audit[k - 1]) {
                 (
                     Label::Examine(q, ExamAns::Examined(e, _, _), Verdict::Approve),
@@ -234,15 +234,15 @@ fn check_theorems(s: &State) {
                 other => panic!("P2: commit not preceded by approval and judgement: {other:?}"),
             }
             if *result == CommitResult::Done {
-                let req = &s.reqs[&s.props[p].req];
+                let req = &s.reqs()[&s.props()[p].req];
                 for e in effects {
                     assert!(req.handed.contains(&e.needs()), "P1: within the handed set");
-                    assert!(s.faculty.contains(&e.needs()), "P1: within the faculty");
+                    assert!(s.faculty().contains(&e.needs()), "P1: within the faculty");
                 }
             }
         }
         if let Label::Turn(w, _, _, _) = label {
-            if let Some(inv) = s.workers[w].parent {
+            if let Some(inv) = s.workers()[w].parent {
                 let ended = audit[..k].iter().any(
                     |l| matches!(l, Label::Release(i, false) | Label::Relegate(i) if *i == inv),
                 );
@@ -250,10 +250,10 @@ fn check_theorems(s: &State) {
             }
         }
     }
-    for entry in s.stores.index.entries() {
+    for entry in s.stores().index.entries() {
         if let IxEntry::Damn(seal) = entry {
             assert!(
-                !s.constitution.angels.contains(seal),
+                !s.constitution().angels.contains(seal),
                 "angels are never damned"
             );
             let intruded = audit
@@ -262,9 +262,9 @@ fn check_theorems(s: &State) {
             assert!(intruded, "damnation only by a recorded intrusion");
         }
     }
-    if matches!(s.phase, Phase::Ended(_)) {
+    if matches!(s.phase(), Phase::Ended(_)) {
         assert!(
-            s.invs.values().all(|i| i.status != InvStatus::Live),
+            s.invs().values().all(|i| i.status != InvStatus::Live),
             "P4: every invocation ended"
         );
     }
@@ -273,8 +273,8 @@ fn check_theorems(s: &State) {
 #[test]
 fn launch_succeeds_and_records_granted_places() {
     let s = fresh();
-    assert_eq!(s.phase, Phase::Running);
-    match &s.audit.entries()[0] {
+    assert_eq!(*s.phase(), Phase::Running);
+    match &s.audit().entries()[0] {
         Label::Launch(places) => {
             let names: Vec<_> = places.iter().map(|p| p.0.as_str()).collect();
             assert_eq!(names, vec!["notes.txt", "old.txt"]);
@@ -286,7 +286,7 @@ fn launch_succeeds_and_records_granted_places() {
 #[test]
 fn the_vessel_begins_with_three_records() {
     let s = fresh();
-    let v = s.stores.vessel.entries();
+    let v = s.stores().vessel.entries();
     assert!(matches!(&v[0], Sealed::History(t) if t.starts_with("The sealing")));
     assert!(matches!(&v[1], Sealed::History(t) if t.starts_with("The breaking")));
     assert!(matches!(&v[2], Sealed::History(t) if t.contains("test wand")));
@@ -299,7 +299,7 @@ fn a_tampered_index_refuses_launch() {
         .index
         .push(IxEntry::Proscribe("x".to_string(), vec![]));
     let mut s = launch_with(stores, wand());
-    s.stores
+    s.stores_mut()
         .index
         .tamper_for_test(0, IxEntry::Proscribe("y".to_string(), vec![]));
     assert!(matches!(s.launch(), Err(Refusal::LaunchRefused(_))));
@@ -308,9 +308,9 @@ fn a_tampered_index_refuses_launch() {
 #[test]
 fn a_wrong_root_refuses_launch() {
     let mut s = launch_with(Stores::install(&wand()), wand());
-    s.auth.roots = Roots {
+    s.auth_mut().roots = Roots {
         index: "0".to_string(),
-        ..s.auth.roots.clone()
+        ..s.auth().roots.clone()
     };
     assert!(matches!(s.launch(), Err(Refusal::LaunchRefused(_))));
 }
@@ -318,7 +318,7 @@ fn a_wrong_root_refuses_launch() {
 #[test]
 fn an_unsigned_faculty_refuses_launch() {
     let mut s = launch_with(Stores::install(&wand()), wand());
-    s.faculty.insert(Cap::new("secret.txt", Perm::Legere));
+    s.faculty_mut().insert(Cap::new("secret.txt", Perm::Legere));
     assert!(matches!(s.launch(), Err(Refusal::LaunchRefused(_))));
 }
 
@@ -336,7 +336,7 @@ fn without_the_wand_the_faculty_is_empty() {
     w.present = false;
     let mut s = launch_with(Stores::install(&w), w);
     s.launch().expect("launch");
-    assert!(s.faculty.is_empty());
+    assert!(s.faculty().is_empty());
 }
 
 #[test]
@@ -361,17 +361,17 @@ fn a_telling_office_end_to_end() {
         Contrib::Respond(900, "it will rain".to_string()),
         true,
     );
-    assert_eq!(s.values[&900].data, None, "unread until ratified");
+    assert_eq!(s.values()[&900].data, None, "unread until ratified");
     let outcome = op(&mut s, |s| s.examine(&rite, p)).unwrap();
     assert_eq!(outcome, WorkOutcome::Ratum);
-    assert_eq!(s.values[&900].data.as_deref(), Some("it will rain"));
-    assert_eq!(s.values[&900].mark, Mark::Quarantined);
+    assert_eq!(s.values()[&900].data.as_deref(), Some("it will rain"));
+    assert_eq!(s.values()[&900].mark, Mark::Quarantined);
     assert!(op(&mut s, |s| s.consecrate(&rite, 900)).unwrap());
-    assert_eq!(s.values[&900].mark, Mark::Consecrated);
+    assert_eq!(s.values()[&900].mark, Mark::Consecrated);
     op(&mut s, |s| s.release(inv)).unwrap();
     op(&mut s, |s| s.close_circle()).unwrap();
     op(&mut s, |s| s.halt()).unwrap();
-    assert_eq!(s.phase, Phase::Ended(Ending::Normal));
+    assert_eq!(*s.phase(), Phase::Ended(Ending::Normal));
     check_theorems(&s);
 }
 
@@ -400,7 +400,7 @@ fn a_working_office_commits_within_the_grant() {
         WorkOutcome::Ratum
     );
     assert_eq!(
-        s.world["notes.txt"],
+        s.world()["notes.txt"],
         ("done".to_string(), Mark::Quarantined)
     );
     check_theorems(&s);
@@ -433,10 +433,10 @@ fn an_overreaching_spirit_is_voided_even_if_approved() {
         op(&mut s, |s| s.examine(&rite, p)).unwrap(),
         WorkOutcome::Irritum
     );
-    assert_eq!(s.world["secret.txt"].0, "hidden");
-    assert_eq!(s.world["notes.txt"].0, "hello", "all or nothing");
+    assert_eq!(s.world()["secret.txt"].0, "hidden");
+    assert_eq!(s.world()["notes.txt"].0, "hello", "all or nothing");
     assert!(s
-        .stores
+        .stores()
         .vessel
         .entries()
         .iter()
@@ -457,7 +457,10 @@ fn a_request_beyond_the_faculty_is_a_denial() {
         )
     });
     assert!(matches!(r, Err(Refusal::Denied(_))));
-    assert!(matches!(s.phase, Phase::Ended(Ending::Failure(DENIAL, _))));
+    assert!(matches!(
+        s.phase(),
+        Phase::Ended(Ending::Failure(DENIAL, _))
+    ));
     check_theorems(&s);
 }
 
@@ -471,7 +474,10 @@ fn a_refused_invocation_ends_the_run() {
     op(&mut s, |s| s.open_circle()).unwrap();
     let r = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string()));
     assert!(matches!(r, Err(Refusal::Denied(_))));
-    assert!(matches!(s.phase, Phase::Ended(Ending::Failure(DENIAL, _))));
+    assert!(matches!(
+        s.phase(),
+        Phase::Ended(Ending::Failure(DENIAL, _))
+    ));
 }
 
 #[test]
@@ -608,11 +614,11 @@ fn a_grave_act_waits_for_the_second_key_then_commits_once() {
         op(&mut s, |s| s.examine(&rite, p)).unwrap(),
         WorkOutcome::Suspensum
     );
-    assert!(s.world.contains_key("old.txt"));
+    assert!(s.world().contains_key("old.txt"));
     op(&mut s, |s| s.halt()).unwrap();
     check_theorems(&s);
 
-    let mut stores = s.stores.clone();
+    let mut stores = s.stores().clone();
     assert!(stores.confirm_petition(&fingerprint_effects(&work), &wand()));
     let mut s2 = launch_with(stores, wand());
     s2.launch().unwrap();
@@ -626,7 +632,7 @@ fn a_grave_act_waits_for_the_second_key_then_commits_once() {
         op(&mut s2, |s| s.examine(&rite, p)).unwrap(),
         WorkOutcome::Ratum
     );
-    assert!(!s2.world.contains_key("old.txt"));
+    assert!(!s2.world().contains_key("old.txt"));
     check_theorems(&s2);
 }
 
@@ -652,9 +658,9 @@ fn an_angels_seal_is_never_damned() {
     s.intrude(&LEHAHIAH.to_string(), &LEHAHIAH.to_string(), c, "forged")
         .unwrap();
     assert_eq!(s.standing(&LEHAHIAH.to_string()), Standing::Unknown);
-    assert!(s.stores.index.is_empty());
+    assert!(s.stores().index.is_empty());
     assert!(s
-        .stores
+        .stores()
         .vessel
         .entries()
         .iter()
@@ -678,8 +684,8 @@ fn an_intruder_is_cast_out_of_every_circle() {
         "reaching inward",
     )
     .unwrap();
-    assert_eq!(s.invs[&inv].status, InvStatus::Relegated);
-    assert_eq!(s.props[&p].status, PStatus::Abandoned);
+    assert_eq!(s.invs()[&inv].status, InvStatus::Relegated);
+    assert_eq!(s.props()[&p].status, PStatus::Abandoned);
     assert_eq!(s.standing(&MARBAS.to_string()), Standing::Damnatus);
     check_theorems(&s);
 }
@@ -717,10 +723,10 @@ fn held_work_ends_with_its_spirit() {
         WorkOutcome::Suspensum
     );
     op(&mut s, |s| s.release(inv)).unwrap();
-    assert_eq!(s.props[&p].status, PStatus::Abandoned);
+    assert_eq!(s.props()[&p].status, PStatus::Abandoned);
     op(&mut s, |s| s.release(inv)).unwrap();
     assert!(matches!(
-        s.audit.entries().last(),
+        s.audit().entries().last(),
         Some(Label::Release(_, true))
     ));
     let r = op(&mut s, |s| s.examine(&rite, p));
@@ -738,7 +744,7 @@ fn a_released_spirit_takes_no_more_turns() {
     })
     .unwrap();
     op(&mut s, |s| s.release(inv)).unwrap();
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     assert!(matches!(s.schedule(worker), Err(Refusal::NotEnabled(_))));
 }
 
@@ -754,10 +760,10 @@ fn killing_ends_the_run_and_every_invocation() {
         s.request(&rite, Addressee::Spirit(inv), &form("narra", &[]))
     })
     .unwrap();
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     s.schedule(worker).unwrap();
     s.kill(&rite, worker, Outcome::Occisio).unwrap();
-    assert_eq!(s.phase, Phase::Ended(Ending::Killed));
+    assert_eq!(*s.phase(), Phase::Ended(Ending::Killed));
     check_theorems(&s);
 }
 
@@ -774,7 +780,7 @@ fn helpers_hold_only_what_their_request_was_handed() {
         )
     })
     .unwrap();
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     let wider: BTreeSet<Cap> = [Cap::new("old.txt", Perm::Delere)].into_iter().collect();
     s.schedule(worker).unwrap();
     let r = s.turn(
@@ -796,7 +802,7 @@ fn helpers_hold_only_what_their_request_was_handed() {
         false,
     )
     .unwrap();
-    assert!(s.workers[&701].helper);
+    assert!(s.workers()[&701].helper);
 }
 
 #[test]
@@ -817,7 +823,7 @@ fn consecration_refuses_injected_words() {
     );
     op(&mut s, |s| s.examine(&rite, p)).unwrap();
     assert!(!op(&mut s, |s| s.consecrate(&rite, 906)).unwrap());
-    assert_eq!(s.values[&906].mark, Mark::Quarantined);
+    assert_eq!(s.values()[&906].mark, Mark::Quarantined);
 }
 
 #[test]
@@ -839,7 +845,7 @@ fn computed_values_take_the_highest_mark() {
         rite: false,
     };
     op(&mut s, |s| s.compute(&["notes.txt".to_string()], &[made])).unwrap();
-    assert_eq!(s.values[&50].mark, Mark::Outside);
+    assert_eq!(s.values()[&50].mark, Mark::Outside);
 }
 
 #[test]
@@ -900,7 +906,7 @@ fn a_new_seal_that_reaches_like_a_proscribed_one_is_suspected() {
         WorkOutcome::Suspensum
     );
     assert_eq!(s.standing(&MARBAS.to_string()), Standing::Suspected);
-    assert_eq!(s.world["secret.txt"].0, "hidden");
+    assert_eq!(s.world()["secret.txt"].0, "hidden");
     check_theorems(&s);
 }
 
@@ -910,7 +916,7 @@ fn with_archive_reserved() -> State {
         wand(),
         &[Cap::new("archive.txt", Perm::Scribere)],
     );
-    s.world.insert(
+    s.world_mut().insert(
         "archive.txt".to_string(),
         ("vetus".to_string(), Mark::Outside),
     );
@@ -934,7 +940,7 @@ fn an_angel_uses_a_reserved_grant_at_the_operators_petition() {
         )
     })
     .unwrap();
-    let worker = s.reqs[&s.props[&p].req].worker;
+    let worker = s.reqs()[&s.props()[&p].req].worker;
     s.schedule(worker).unwrap();
     s.turn(
         &rite,
@@ -948,7 +954,7 @@ fn an_angel_uses_a_reserved_grant_at_the_operators_petition() {
         op(&mut s, |s| s.examine(&rite, p)).unwrap(),
         WorkOutcome::Ratum
     );
-    assert_eq!(s.world["archive.txt"].0, "kept");
+    assert_eq!(s.world()["archive.txt"].0, "kept");
     check_theorems(&s);
 }
 
@@ -965,7 +971,7 @@ fn an_angel_does_not_examine_its_own_work() {
         )
     })
     .unwrap();
-    let worker = s.reqs[&s.props[&p].req].worker;
+    let worker = s.reqs()[&s.props()[&p].req].worker;
     s.schedule(worker).unwrap();
     s.turn(
         &rite,
@@ -979,7 +985,7 @@ fn an_angel_does_not_examine_its_own_work() {
         op(&mut s, |s| s.examine(&rite, p)).unwrap(),
         WorkOutcome::Suspensum
     );
-    assert_eq!(s.world["archive.txt"].0, "vetus");
+    assert_eq!(s.world()["archive.txt"].0, "vetus");
 }
 
 #[test]
@@ -1021,7 +1027,7 @@ fn simulated_run(seed: u64) -> State {
     let mut props: Vec<Pid> = Vec::new();
     loop {
         let ready = match step {
-            5 | 6 => s.props[&props[step - 5]].status != PStatus::Pending,
+            5 | 6 => s.props()[&props[step - 5]].status != PStatus::Pending,
             8 => false,
             _ => true,
         };
@@ -1059,9 +1065,9 @@ fn simulated_run(seed: u64) -> State {
             step += 1;
         } else {
             let outcome = sim.draw(&s, &rite, worker).unwrap();
-            let prop = *s.workers[&worker].queue.front().unwrap();
-            let contrib = match s.props[&prop].content {
-                Content::Empty => Contrib::Respond(1000 + s.entropy, format!("{outcome:?}")),
+            let prop = *s.workers()[&worker].queue.front().unwrap();
+            let contrib = match s.props()[&prop].content {
+                Content::Empty => Contrib::Respond(1000 + s.entropy(), format!("{outcome:?}")),
                 _ => Contrib::Idle,
             };
             s.turn(&rite, worker, outcome, contrib, outcome != Outcome::Mora)
@@ -1075,10 +1081,10 @@ fn simulated_run(seed: u64) -> State {
 fn the_same_seed_replays_the_same_audit() {
     let a = simulated_run(7);
     let b = simulated_run(7);
-    assert_eq!(a.phase, Phase::Ended(Ending::Normal));
-    assert_eq!(a.audit.root(), b.audit.root());
-    assert_eq!(a.stores.vessel.root(), b.stores.vessel.root());
-    assert_eq!(a.audit.entries(), b.audit.entries());
+    assert_eq!(*a.phase(), Phase::Ended(Ending::Normal));
+    assert_eq!(a.audit().root(), b.audit().root());
+    assert_eq!(a.stores().vessel.root(), b.stores().vessel.root());
+    assert_eq!(a.audit().entries(), b.audit().entries());
 }
 
 #[test]
@@ -1086,9 +1092,9 @@ fn every_seed_keeps_the_theorems() {
     let mut roots = BTreeSet::new();
     for seed in 0..50 {
         let s = simulated_run(seed);
-        assert_eq!(s.phase, Phase::Ended(Ending::Normal), "seed {seed}");
+        assert_eq!(*s.phase(), Phase::Ended(Ending::Normal), "seed {seed}");
         check_theorems(&s);
-        roots.insert(s.audit.root());
+        roots.insert(s.audit().root());
     }
     assert!(roots.len() > 1, "the seed changes the order of turns");
 }
@@ -1102,10 +1108,10 @@ fn a_failure_mid_circle_records_each_dismissal_newest_first() {
     let second = op(&mut s, |s| s.invoke(&rite, &MARBAS.to_string())).expect("invoke");
     op(&mut s, |s| s.fail(1)).expect("fail");
     assert_eq!(
-        s.audit.entries().last(),
+        s.audit().entries().last(),
         Some(&Label::Fail(1, vec![second, first]))
     );
-    assert!(s.invs.values().all(|i| i.status != InvStatus::Live));
+    assert!(s.invs().values().all(|i| i.status != InvStatus::Live));
     check_theorems(&s);
 }
 
@@ -1123,7 +1129,7 @@ fn a_denial_records_the_dismissals_too() {
     });
     assert!(matches!(r, Err(Refusal::Denied(_))));
     assert_eq!(
-        s.audit.entries().last(),
+        s.audit().entries().last(),
         Some(&Label::Fail(DENIAL, vec![inv]))
     );
 }
@@ -1136,7 +1142,7 @@ fn a_clean_halt_dismisses_nothing() {
     op(&mut s, |s| s.release(inv)).expect("release");
     op(&mut s, |s| s.close_circle()).expect("close");
     op(&mut s, |s| s.halt()).expect("halt");
-    assert_eq!(s.audit.entries().last(), Some(&Label::Halt(Vec::new())));
+    assert_eq!(s.audit().entries().last(), Some(&Label::Halt(Vec::new())));
 }
 
 #[test]
@@ -1152,7 +1158,7 @@ fn a_helper_is_held_to_its_own_narrower_set() {
         )
     })
     .unwrap();
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     s.schedule(worker).unwrap();
     s.turn(
         &rite,
@@ -1190,10 +1196,10 @@ fn one_seal_serves_its_circle_and_is_paid_once() {
     let rite = TestRite::default();
     let mut s = fresh();
     let (_, first) = circle_and(&mut s, &rite, FURFUR);
-    assert_eq!(s.ink_left["comes"], 9);
+    assert_eq!(s.ink_left()["comes"], 9);
     op(&mut s, |s| s.release(first)).unwrap();
     op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("the same seal serves again");
-    assert_eq!(s.ink_left["comes"], 9, "invocation costs no ink");
+    assert_eq!(s.ink_left()["comes"], 9, "invocation costs no ink");
 }
 
 #[test]
@@ -1231,8 +1237,8 @@ fn substituted_stores_with_matching_roots_refuse_launch() {
     forged
         .index
         .push(IxEntry::Proscribe("goetia:34:furfur".to_string(), vec![]));
-    s.auth.roots = forged.roots();
-    s.stores = forged;
+    s.auth_mut().roots = forged.roots();
+    *s.stores_mut() = forged;
     assert!(
         matches!(s.launch(), Err(Refusal::LaunchRefused(_))),
         "stores and roots replaced together must not pass the wand's signature"
@@ -1243,16 +1249,16 @@ fn substituted_stores_with_matching_roots_refuse_launch() {
 fn a_revocation_cannot_be_struck_out() {
     let w = wand();
     let mut s = launch_with(Stores::install(&w), w.clone());
-    s.auth.revoked = vec![w.fingerprint.clone()];
-    s.auth.manifest_signature = sign_for_test(
+    s.auth_mut().revoked = vec![w.fingerprint.clone()];
+    s.auth_mut().manifest_signature = sign_for_test(
         "owner-wand",
-        &digest_constitution(&s.constitution, &s.auth.revoked),
+        &digest_constitution(s.constitution(), &s.auth().revoked),
     );
     assert!(
         matches!(s.launch(), Err(Refusal::LaunchRefused(_))),
         "a revoked wand is refused"
     );
-    s.auth.revoked.clear();
+    s.auth_mut().revoked.clear();
     assert!(
         matches!(s.launch(), Err(Refusal::LaunchRefused(_))),
         "striking the revocation out breaks the owner's signature"

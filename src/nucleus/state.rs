@@ -181,27 +181,132 @@ pub fn fingerprint_effects(effects: &[super::types::Effect]) -> String {
 
 #[derive(Clone, Debug)]
 pub struct State {
-    pub phase: Phase,
-    pub simulated: bool,
-    pub constitution: Constitution,
-    pub auth: Auth,
-    pub faculty: BTreeSet<Cap>,
-    pub reserved: BTreeSet<Cap>,
-    pub ink_left: BTreeMap<String, u64>,
-    pub inscribed: BTreeSet<(Seal, CircleId)>,
-    pub circles: Vec<CircleId>,
-    pub workers: BTreeMap<WorkerId, Worker>,
-    pub invs: BTreeMap<InvId, Inst>,
-    pub reqs: BTreeMap<ReqId, Request>,
-    pub props: BTreeMap<Pid, Proposal>,
-    pub world: BTreeMap<Place, (String, Mark)>,
-    pub values: BTreeMap<ValueId, Value>,
-    pub audit: Chain<Label>,
-    pub stores: Stores,
-    pub current: Option<WorkerId>,
-    pub order: Vec<WorkerId>,
-    pub entropy: u64,
-    pub next_id: u64,
+    pub(crate) phase: Phase,
+    pub(crate) simulated: bool,
+    pub(crate) constitution: Constitution,
+    pub(crate) auth: Auth,
+    pub(crate) faculty: BTreeSet<Cap>,
+    pub(crate) reserved: BTreeSet<Cap>,
+    pub(crate) ink_left: BTreeMap<String, u64>,
+    pub(crate) inscribed: BTreeSet<(Seal, CircleId)>,
+    pub(crate) circles: Vec<CircleId>,
+    pub(crate) workers: BTreeMap<WorkerId, Worker>,
+    pub(crate) invs: BTreeMap<InvId, Inst>,
+    pub(crate) reqs: BTreeMap<ReqId, Request>,
+    pub(crate) props: BTreeMap<Pid, Proposal>,
+    pub(crate) world: BTreeMap<Place, (String, Mark)>,
+    pub(crate) values: BTreeMap<ValueId, Value>,
+    pub(crate) audit: Chain<Label>,
+    pub(crate) stores: Stores,
+    pub(crate) current: Option<WorkerId>,
+    pub(crate) order: Vec<WorkerId>,
+    pub(crate) entropy: u64,
+    pub(crate) next_id: u64,
+}
+
+impl State {
+    pub fn phase(&self) -> &Phase {
+        &self.phase
+    }
+
+    pub fn simulated(&self) -> bool {
+        self.simulated
+    }
+
+    pub fn constitution(&self) -> &Constitution {
+        &self.constitution
+    }
+
+    pub fn auth(&self) -> &Auth {
+        &self.auth
+    }
+
+    pub fn faculty(&self) -> &BTreeSet<Cap> {
+        &self.faculty
+    }
+
+    pub fn reserved(&self) -> &BTreeSet<Cap> {
+        &self.reserved
+    }
+
+    pub fn ink_left(&self) -> &BTreeMap<String, u64> {
+        &self.ink_left
+    }
+
+    pub fn inscribed(&self) -> &BTreeSet<(Seal, CircleId)> {
+        &self.inscribed
+    }
+
+    pub fn circles(&self) -> &Vec<CircleId> {
+        &self.circles
+    }
+
+    pub fn workers(&self) -> &BTreeMap<WorkerId, Worker> {
+        &self.workers
+    }
+
+    pub fn invs(&self) -> &BTreeMap<InvId, Inst> {
+        &self.invs
+    }
+
+    pub fn reqs(&self) -> &BTreeMap<ReqId, Request> {
+        &self.reqs
+    }
+
+    pub fn props(&self) -> &BTreeMap<Pid, Proposal> {
+        &self.props
+    }
+
+    pub fn world(&self) -> &BTreeMap<Place, (String, Mark)> {
+        &self.world
+    }
+
+    pub fn values(&self) -> &BTreeMap<ValueId, Value> {
+        &self.values
+    }
+
+    pub fn audit(&self) -> &Chain<Label> {
+        &self.audit
+    }
+
+    pub fn stores(&self) -> &Stores {
+        &self.stores
+    }
+
+    pub fn current(&self) -> Option<WorkerId> {
+        self.current
+    }
+
+    pub fn order(&self) -> &Vec<WorkerId> {
+        &self.order
+    }
+
+    pub fn entropy(&self) -> u64 {
+        self.entropy
+    }
+
+    pub fn next_id(&self) -> u64 {
+        self.next_id
+    }
+}
+
+#[cfg(feature = "probatio")]
+impl State {
+    pub fn auth_mut(&mut self) -> &mut Auth {
+        &mut self.auth
+    }
+
+    pub fn faculty_mut(&mut self) -> &mut BTreeSet<Cap> {
+        &mut self.faculty
+    }
+
+    pub fn world_mut(&mut self) -> &mut BTreeMap<Place, (String, Mark)> {
+        &mut self.world
+    }
+
+    pub fn stores_mut(&mut self) -> &mut Stores {
+        &mut self.stores
+    }
 }
 
 pub struct Launch {

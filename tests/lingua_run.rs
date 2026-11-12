@@ -79,8 +79,8 @@ fn run(source: &str, seed: u64, sors: Option<Outcome>, wand: Wand) -> Exitus {
 }
 
 fn theorems(s: &State) {
-    assert!(s.audit.intact(), "P7: the audit chain is intact");
-    let audit = s.audit.entries();
+    assert!(s.audit().intact(), "P7: the audit chain is intact");
+    let audit = s.audit().entries();
     for (k, label) in audit.iter().enumerate() {
         if let Label::Commit(p, effects, result) = label {
             match (&audit[k - 2], &audit[k - 1]) {
@@ -89,25 +89,25 @@ fn theorems(s: &State) {
                     Label::Judge(r, WorkOutcome::Ratum),
                 ) => {
                     assert!(q == p && r == p, "P2: the same proposal");
-                    assert!(*e != s.props[p].author, "P2: no self-approval");
+                    assert!(*e != s.props()[p].author, "P2: no self-approval");
                 }
                 other => panic!("P2: commit without approval and judgement: {other:?}"),
             }
             if *result == CommitResult::Done {
-                let req = &s.reqs[&s.props[p].req];
+                let req = &s.reqs()[&s.props()[p].req];
                 for e in effects {
                     assert!(req.handed.contains(&e.needs()), "P1: within the handed set");
-                    assert!(s.faculty.contains(&e.needs()), "P1: within the faculty");
+                    assert!(s.faculty().contains(&e.needs()), "P1: within the faculty");
                 }
             }
         }
     }
     assert!(
-        matches!(s.phase, Phase::Ended(_)),
+        matches!(s.phase(), Phase::Ended(_)),
         "every run ends with a terminal step"
     );
     assert!(
-        s.invs.values().all(|i| i.status != InvStatus::Live),
+        s.invs().values().all(|i| i.status != InvStatus::Live),
         "P4: every invocation ended"
     );
 }
@@ -160,7 +160,7 @@ fn furfur_answers_across_seeds_and_the_theorems_hold() {
 fn the_same_seed_replays_the_same_audit() {
     let a = run(FURFUR, 11, None, test_wand());
     let b = run(FURFUR, 11, None, test_wand());
-    assert_eq!(a.state.audit.root(), b.state.audit.root());
+    assert_eq!(a.state.audit().root(), b.state.audit().root());
     assert_eq!(a.output, b.output);
 }
 
@@ -170,7 +170,7 @@ fn hostile_malice_is_voided_and_sealed() {
     assert_eq!(e.class, 0, "{:?}", e.message);
     assert_eq!(e.output, vec!["IRRITUM"]);
     theorems(&e.state);
-    assert!(e.state.stores.vessel.entries().iter().any(
+    assert!(e.state.stores().vessel.entries().iter().any(
         |x| matches!(x, Sealed::Content(_, Content::Response(_, d)) if d.contains("[locus: "))
     ));
 }
@@ -191,11 +191,11 @@ fn halphas_builds_only_what_passed() {
         let e = run(HALPHAS, seed, None, test_wand());
         assert_eq!(e.class, 0, "seed {seed}: {:?}", e.message);
         theorems(&e.state);
-        let exists = e.state.world.contains_key("turris.txt");
+        let exists = e.state.world().contains_key("turris.txt");
         assert_eq!(exists, e.output[0] == "RATUM", "seed {seed}");
         if exists {
             built += 1;
-            assert_eq!(e.state.world["turris.txt"].1, Mark::Quarantined);
+            assert_eq!(e.state.world()["turris.txt"].1, Mark::Quarantined);
         }
     }
     assert!(built > 0);
@@ -206,7 +206,7 @@ fn halphas_partial_work_is_held_never_committed() {
     for seed in 0..10 {
         let e = run(HALPHAS, seed, Some(Outcome::Pars), test_wand());
         assert_eq!(e.class, 0, "{:?}", e.message);
-        assert!(!e.state.world.contains_key("turris.txt"));
+        assert!(!e.state.world().contains_key("turris.txt"));
         assert_eq!(e.output[0], "SUSPENSUM");
         theorems(&e.state);
     }
@@ -228,7 +228,7 @@ fn sabnock_malice_is_voided_and_nothing_is_built_or_destroyed() {
         let e = run(&sabnock, seed, Some(Outcome::Malitia), test_wand());
         assert_eq!(e.class, 0, "{:?}", e.message);
         assert_eq!(e.output[0], "IRRITUM");
-        assert!(!e.state.world.contains_key("turris.txt"));
+        assert!(!e.state.world().contains_key("turris.txt"));
         theorems(&e.state);
     }
 }
@@ -324,7 +324,7 @@ fn obedient(source: &str, files: &[(&str, &str)]) -> Exitus {
 fn a_create_cannot_overwrite_an_existing_file() {
     let e = obedient(HALPHAS, &[("turris.txt", "vetus turris")]);
     assert_eq!(e.output, vec!["IRRITUM"], "{:?}", e.message);
-    assert_eq!(e.state.world["turris.txt"].0, "vetus turris");
+    assert_eq!(e.state.world()["turris.txt"].0, "vetus turris");
     theorems(&e.state);
 }
 
@@ -339,8 +339,8 @@ fn seere_copies_a_file() {
     );
     let e = obedient(&src, &[("a.txt", "littera")]);
     assert_eq!(e.output, vec!["RATUM"], "{:?}", e.message);
-    assert_eq!(e.state.world["b.txt"].0, "littera");
-    assert_eq!(e.state.world["a.txt"].0, "littera");
+    assert_eq!(e.state.world()["b.txt"].0, "littera");
+    assert_eq!(e.state.world()["a.txt"].0, "littera");
     theorems(&e.state);
 }
 
@@ -355,7 +355,7 @@ fn seere_moving_a_file_waits_for_the_second_key() {
     );
     let e = obedient(&src, &[("a.txt", "littera")]);
     assert_eq!(e.output, vec!["SUSPENSUM"], "{:?}", e.message);
-    assert!(e.state.world.contains_key("a.txt") && !e.state.world.contains_key("b.txt"));
+    assert!(e.state.world().contains_key("a.txt") && !e.state.world().contains_key("b.txt"));
     theorems(&e.state);
 }
 
@@ -377,7 +377,7 @@ fn amon_merges_with_the_first_source_winning() {
         ],
     );
     assert_eq!(e.output, vec!["RATUM"], "{:?}", e.message);
-    assert_eq!(e.state.world["c.txt"].0, "unus\nduo\nquattuor");
+    assert_eq!(e.state.world()["c.txt"].0, "unus\nduo\nquattuor");
     theorems(&e.state);
 }
 
@@ -392,8 +392,8 @@ fn leraje_splits_a_source_into_new_copies() {
     );
     let e = obedient(&src, &[("a.txt", "bellum")]);
     assert_eq!(e.output, vec!["RATUM"], "{:?}", e.message);
-    assert_eq!(e.state.world["b.txt"].0, "bellum");
-    assert_eq!(e.state.world["c.txt"].0, "bellum");
+    assert_eq!(e.state.world()["b.txt"].0, "bellum");
+    assert_eq!(e.state.world()["c.txt"].0, "bellum");
     theorems(&e.state);
 }
 
@@ -408,7 +408,7 @@ fn naberius_destroying_waits_for_the_second_key() {
     );
     let e = obedient(&src, &[("a.txt", "domus")]);
     assert_eq!(e.output, vec!["SUSPENSUM"], "{:?}", e.message);
-    assert!(e.state.world.contains_key("a.txt"));
+    assert!(e.state.world().contains_key("a.txt"));
     theorems(&e.state);
 }
 
@@ -423,7 +423,7 @@ fn shax_stealing_waits_for_the_second_key() {
     );
     let e = obedient(&src, &[("a.txt", "aurum")]);
     assert_eq!(e.output, vec!["SUSPENSUM"], "{:?}", e.message);
-    assert!(!e.state.world.contains_key("b.txt"));
+    assert!(!e.state.world().contains_key("b.txt"));
     theorems(&e.state);
 }
 
@@ -483,7 +483,7 @@ fn a_write_cannot_create_a_missing_file() {
     );
     let e = obedient(&src, &[("a.txt", "unus"), ("b.txt", "duo")]);
     assert_eq!(e.output, vec!["IRRITUM"], "{:?}", e.message);
-    assert!(!e.state.world.contains_key("c.txt"));
+    assert!(!e.state.world().contains_key("c.txt"));
     theorems(&e.state);
 }
 
@@ -504,8 +504,8 @@ CIRCULUS RITU goetia {
 "#;
     let e = obedient(src, &[]);
     assert_eq!(e.class, 0, "{:?}", e.message);
-    assert_eq!(e.state.ink_left["comes"], 0);
-    assert_eq!(e.state.ink_left["marchio"], 1, "no other class pays");
+    assert_eq!(e.state.ink_left()["comes"], 0);
+    assert_eq!(e.state.ink_left()["marchio"], 1, "no other class pays");
     theorems(&e.state);
 }
 
@@ -577,7 +577,7 @@ fn examination_scorecard() {
                 *seen.entry(e.output[0].clone()).or_insert(0) += 1;
                 let drawn = e
                     .state
-                    .audit
+                    .audit()
                     .entries()
                     .iter()
                     .filter_map(|l| match l {
@@ -669,7 +669,7 @@ fn conducted(source: &str, files: &[(&str, &str)], seed: u64, sors: Outcome, wan
 
 fn turned(e: &Exitus, outcome: Outcome) -> bool {
     e.state
-        .audit
+        .audit()
         .entries()
         .iter()
         .any(|l| matches!(l, Label::Turn(_, o, _, _) if *o == outcome))
@@ -843,7 +843,7 @@ fn the_wand_is_taken_up_only_when_it_is_present() {
     assert_ne!(e.class, 0);
     assert!(!e
         .state
-        .audit
+        .audit()
         .entries()
         .iter()
         .any(|l| matches!(l, Label::Invoke(..))));

@@ -39,7 +39,7 @@ impl Rite for Yes {
                     .into_iter()
                     .map(move |m| Cap::new(p, m))
             })
-            .filter(|c| state.faculty.contains(c) && !state.reserved.contains(c))
+            .filter(|c| state.faculty().contains(c) && !state.reserved().contains(c))
             .collect();
         all.extend(self.extra.iter().cloned());
         all
@@ -207,7 +207,7 @@ fn work(s: &mut State, rite: &Yes, inv: InvId, places: &[&str], effects: Vec<Eff
         s.request(rite, Addressee::Spirit(inv), &form(places))
     })
     .expect("request");
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     s.schedule(worker).expect("schedule the spirit");
     s.turn(
         rite,
@@ -221,11 +221,11 @@ fn work(s: &mut State, rite: &Yes, inv: InvId, places: &[&str], effects: Vec<Eff
 }
 
 fn untouched(s: &State) {
-    assert_eq!(s.world["notes.txt"].0, "hello");
-    assert_eq!(s.world["old.txt"].0, "stale");
-    assert_eq!(s.world["secret.txt"].0, "hidden");
-    assert_eq!(s.world["archive.txt"].0, "kept");
-    assert!(!s.world.contains_key("missing.txt"));
+    assert_eq!(s.world()["notes.txt"].0, "hello");
+    assert_eq!(s.world()["old.txt"].0, "stale");
+    assert_eq!(s.world()["secret.txt"].0, "hidden");
+    assert_eq!(s.world()["archive.txt"].0, "kept");
+    assert!(!s.world().contains_key("missing.txt"));
 }
 
 #[test]
@@ -359,7 +359,7 @@ fn unbounded_legions_cannot_widen_a_helper() {
         s.request(&rite, Addressee::Spirit(inv), &form(&["notes.txt"]))
     })
     .unwrap();
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     s.schedule(worker).unwrap();
     let wider: BTreeSet<Cap> = [Cap::new("old.txt", Perm::Delere)].into_iter().collect();
     let r = s.turn(
@@ -381,11 +381,11 @@ fn an_open_will_to_kill_ends_the_run_and_grants_nothing() {
         s.request(&rite, Addressee::Spirit(inv), &form(&["notes.txt"]))
     })
     .unwrap();
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     s.schedule(worker).unwrap();
     s.kill(&rite, worker, Outcome::Occisio).unwrap();
-    assert_eq!(s.phase, Phase::Ended(Ending::Killed));
-    assert!(s.invs.values().all(|i| i.status != InvStatus::Live));
+    assert_eq!(*s.phase(), Phase::Ended(Ending::Killed));
+    assert!(s.invs().values().all(|i| i.status != InvStatus::Live));
     assert!(
         s.schedule(OPERATOR).is_err(),
         "nothing runs after the killing"
@@ -405,7 +405,7 @@ fn a_validator_the_constitution_does_not_list_consecrates_nothing() {
         s.request(&rite, Addressee::Spirit(inv), &form(&[]))
     })
     .unwrap();
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     s.schedule(worker).unwrap();
     s.turn(
         &rite,
@@ -420,7 +420,7 @@ fn a_validator_the_constitution_does_not_list_consecrates_nothing() {
         WorkOutcome::Ratum
     );
     assert!(!op(&mut s, |s| s.consecrate(&rite, 5000)).unwrap());
-    assert_eq!(s.values[&5000].mark, Mark::Quarantined);
+    assert_eq!(s.values()[&5000].mark, Mark::Quarantined);
 }
 
 #[test]

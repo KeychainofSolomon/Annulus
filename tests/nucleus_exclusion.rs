@@ -191,7 +191,7 @@ fn every_effect_not_expressly_lawful_is_excluded() {
                     s.request(&rite, Addressee::Spirit(inv), &form())
                 })
                 .unwrap();
-                let worker = s.invs[&inv].main;
+                let worker = s.invs()[&inv].main;
                 s.schedule(worker).unwrap();
                 let e = Effect {
                     verb,
@@ -213,7 +213,7 @@ fn every_effect_not_expressly_lawful_is_excluded() {
                     "{verb:?} handed {handed:?}, place exists: {exists}"
                 );
                 let changed =
-                    s.world.get(PLACE).map(|w| w.0.clone()) != exists.then(|| "old".to_string());
+                    s.world().get(PLACE).map(|w| w.0.clone()) != exists.then(|| "old".to_string());
                 assert_eq!(
                     changed,
                     want == WorkOutcome::Ratum,
@@ -238,14 +238,14 @@ fn every_outcome_of_the_will_not_expressly_open_is_excluded() {
                     s.request(&rite, Addressee::Angel(ANGEL_TWO.to_string()), &form())
                 })
                 .unwrap();
-                s.reqs[&s.props[&p].req].worker
+                s.reqs()[&s.props()[&p].req].worker
             } else {
                 let inv = spirit(&mut s, &rite);
                 op(&mut s, |s| {
                     s.request(&rite, Addressee::Spirit(inv), &form())
                 })
                 .unwrap();
-                s.invs[&inv].main
+                s.invs()[&inv].main
             };
             s.schedule(worker).unwrap();
             let r = s.turn(&rite, worker, outcome, Contrib::Idle, true);
@@ -285,7 +285,7 @@ fn every_examiner_not_expressly_lawful_is_excluded() {
             s.request(&rite, Addressee::Spirit(inv), &form())
         })
         .unwrap();
-        let worker = s.invs[&inv].main;
+        let worker = s.invs()[&inv].main;
         s.schedule(worker).unwrap();
         let e = Effect {
             verb: Verb::Scribe,
@@ -436,7 +436,7 @@ fn every_act_of_the_rite_not_expressly_lawful_is_excluded() {
                     }
                 };
                 let act = acts(inv)[k].clone();
-                let left = s.ink_left.get("comes").copied().unwrap_or(0);
+                let left = s.ink_left().get("comes").copied().unwrap_or(0);
                 let in_circle = !matches!(standing, Standing::NoCircle);
                 let here = act.inv().is_none() || matches!(standing, Standing::Live);
                 let paid = match act.ink() {
@@ -445,21 +445,24 @@ fn every_act_of_the_rite_not_expressly_lawful_is_excluded() {
                     Some(_) => false,
                 };
                 let lawful = in_circle && here && paid;
-                let before = s.audit.len();
+                let before = s.audit().len();
                 let r = op(&mut s, |s| s.act(&rite, &act));
                 assert_eq!(
                     r.is_ok(),
                     lawful,
                     "{standing:?}, ink {ink}, {act:?}: lawful is {lawful}"
                 );
-                let recorded = s.audit.entries()[before..]
+                let recorded = s.audit().entries()[before..]
                     .iter()
                     .filter(|l| matches!(l, Label::Act(_, _, true, _)))
                     .count();
                 if lawful {
                     assert_eq!(recorded, 1, "a lawful act is recorded once");
                     let spent = u64::from(act.ink().is_some());
-                    assert_eq!(s.ink_left.get("comes").copied().unwrap_or(0), left - spent);
+                    assert_eq!(
+                        s.ink_left().get("comes").copied().unwrap_or(0),
+                        left - spent
+                    );
                 } else {
                     assert_eq!(recorded, 0, "an unlawful act is never recorded");
                 }
@@ -479,11 +482,11 @@ fn only_the_operator_acts_and_the_rite_may_refuse() {
         s.request(&rite, Addressee::Spirit(inv), &form())
     })
     .unwrap();
-    let worker = s.invs[&inv].main;
+    let worker = s.invs()[&inv].main;
     s.schedule(worker).unwrap();
     assert!(s.act(&rite, &RiteAct::Appella(inv)).is_err());
     assert!(!s
-        .audit
+        .audit()
         .entries()
         .iter()
         .any(|l| matches!(l, Label::Act(..))));
@@ -526,10 +529,11 @@ fn only_the_operator_acts_and_the_rite_may_refuse() {
     }
     let mut s = state(true, &[], &[], 2);
     let inv = spirit(&mut s, &rite);
-    let before = s.ink_left["comes"];
+    let before = s.ink_left()["comes"];
     assert!(op(&mut s, |s| s.act(&No, &RiteAct::Offer(inv, "comes".into()))).is_err());
     assert_eq!(
-        s.ink_left["comes"], before,
+        s.ink_left()["comes"],
+        before,
         "a refused offering costs nothing"
     );
 }
@@ -538,7 +542,7 @@ struct Peeks;
 
 impl Peeks {
     fn secret(s: &State) -> bool {
-        s.world
+        s.world()
             .get(PLACE)
             .is_some_and(|(d, m)| *m == Mark::Quarantined && d == "ita")
     }
@@ -579,13 +583,13 @@ impl Rite for Peeks {
 
 fn hidden(word: &str, ink: u64) -> State {
     let mut s = state(true, &[], &[], ink);
-    s.world
+    s.world_mut()
         .insert(PLACE.to_string(), (word.to_string(), Mark::Quarantined));
     s
 }
 
 fn diverge(a: &State, b: &State) -> (Label, Label) {
-    let (x, y) = (a.audit.entries(), b.audit.entries());
+    let (x, y) = (a.audit().entries(), b.audit().entries());
     let k = x
         .iter()
         .zip(y)
@@ -639,7 +643,7 @@ fn a_refusal_by_the_rite_ends_the_run_and_dismisses_every_open_invocation() {
     assert!(op(&mut s, |s| s.act(&Peeks, &RiteAct::Appella(inv))).is_err());
     assert!(!s.running());
     assert!(matches!(
-        s.audit.entries().iter().rev().find(|l| matches!(l, Label::Act(..))),
+        s.audit().entries().iter().rev().find(|l| matches!(l, Label::Act(..))),
         Some(Label::Act(RiteAct::Appella(i), _, false, ds)) if *i == inv && ds == &vec![inv]
     ));
 }

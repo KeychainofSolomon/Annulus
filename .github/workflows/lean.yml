@@ -24,8 +24,22 @@ jobs:
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: Build the formal model
         run: lake build
-      - name: No proofs are claimed
+      - name: No sorry and no axiom; theorems only in Proofs.lean
         run: |
-          if grep -rnE '\bsorry\b|\btheorem\b|\baxiom\b' Annulus; then
-            echo "The model must state, not prove or assume"; exit 1
+          if grep -rnE '\bsorry\b|\baxiom\b' Annulus; then
+            echo "The model must not assume"; exit 1
+          fi
+          if grep -rnE '\btheorem\b' Annulus --exclude=Proofs.lean; then
+            echo "Proofs belong in Annulus/Proofs.lean"; exit 1
+          fi
+      - name: The proofs rest only on Lean's own axioms
+        run: |
+          {
+            echo "import Annulus"
+            grep -oE '^theorem [A-Za-z0-9_]+' Annulus/Proofs.lean | sed 's/^theorem /#print axioms Annulus./'
+          } > Check.lean
+          lake env lean Check.lean | tee axioms.txt
+          test "$(grep -c 'depends on axioms\|does not depend on any axioms' axioms.txt)" -eq "$(grep -c '^#print' Check.lean)"
+          if grep -oE '\[[^]]*\]' axioms.txt | tr -d '[] ' | tr ',' '\n' | grep -v '^$' | grep -vxE 'propext|Classical\.choice|Quot\.sound'; then
+            echo "A proof rests on an axiom beyond Lean's own"; exit 1
           fi

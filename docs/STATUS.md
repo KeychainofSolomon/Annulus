@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-12, 16:00 (branch `step-2c`). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-12, 16:10 (branch `step-2c`). **This page is updated with every fix** (the owner's rule).
 
 **Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are tested, not proved:** P1–P9 are stated in Lean (`formal/`), with no proofs yet.
 
@@ -16,9 +16,10 @@ Last updated: 2026-11-12, 16:00 (branch `step-2c`). **This page is updated with 
 | Command line: `annulus ritus`, `confirma` (second key), `petitiones` | Implemented and tested through the real binary |
 | An outside will (`Voluntas`): a local model may supply a spirit's turn | Implemented; **test wand only**, until the core can record an outcome it does not know |
 | **The hours of the sky** (`src/horae.rs`): sunrise, sunset and civil twilight at the declared place; the Moon's age from the true new moon; each rank's window (`dynamic.md` §5.1); `--hora`, `--locus`, `--caelum`; every audit records the sky the run used | Implemented and tested against the 2000, 2017 and 2024 new moons and Berlin's solstices. **Dukes can now be bound.** Readings marked [O] await the owner |
+| **`VIRTUTES`**: a spirit reports each handed file's size in bytes and lines; the angel rereads them | Implemented and tested: eight kinds of false account all caught (`offices.md` §2.2). Dates left out until the world records times |
 | Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
 
-Tests: **273**, debug and release, on Linux here; Windows and Linux in CI.
+Tests: **277**, debug and release, on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 

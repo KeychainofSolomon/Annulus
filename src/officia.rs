@@ -26,6 +26,11 @@ pub fn signature(kind: &str) -> Option<Signature> {
     };
     Some(match kind {
         "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" => telling,
+        "VIRTUTES" => Signature {
+            class: Class::Telling,
+            modes: &[],
+            quaestio: false,
+        },
         "AEDIFICATIO" | "EVERSIO" | "CONCORDIA" | "DISCORDIA" => working(&[]),
         "VECTIO" => working(&["transfer", "exscribe"]),
         "FURTUM" => working(&["aufer"]),
@@ -37,9 +42,10 @@ pub fn places(kind: &str, mode: Option<&str>, n: usize) -> Option<Vec<Vec<Perm>>
     use Perm::*;
     let all = |p: Perm| vec![vec![p]; n];
     match (kind, mode) {
-        ("PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA", _) => {
-            Some(all(Legere))
-        }
+        (
+            "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" | "VIRTUTES",
+            _,
+        ) => Some(all(Legere)),
         ("AEDIFICATIO", _) if n >= 1 => Some(all(Creare)),
         ("EVERSIO", _) if n >= 1 => Some(all(Delere)),
         ("VECTIO", Some("transfer")) | ("FURTUM", Some("aufer")) if n == 2 => {
@@ -71,6 +77,36 @@ pub fn shape(kind: &str, mode: Option<&str>) -> &'static str {
 }
 
 pub const INCOMPLETE: &str = " [...]";
+
+pub const ABSENS: &str = "absens";
+
+pub fn virtus(place: &str, data: Option<&str>) -> String {
+    match data {
+        Some(d) => format!("{place}: {} bytes, {} lines", d.len(), d.lines().count()),
+        None => format!("{place}: {ABSENS}"),
+    }
+}
+
+pub fn virtutes(places: &[String], read: impl Fn(&str) -> Option<String>) -> String {
+    places
+        .iter()
+        .map(|p| virtus(p, read(p).as_deref()))
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
+pub fn same_account(given: &str, truth: &str) -> bool {
+    let lines = |s: &str| {
+        let mut v: Vec<String> = s
+            .lines()
+            .map(|l| l.trim().to_string())
+            .filter(|l| !l.is_empty())
+            .collect();
+        v.sort();
+        v
+    };
+    lines(given) == lines(truth)
+}
 
 pub fn cited(text: &str) -> Vec<String> {
     text.split(['[', '\u{ff3b}'])

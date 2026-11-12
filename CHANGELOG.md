@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### `VIRTUTES` (2026-11-12; rite and evaluator, not the nucleus)
+- A spirit charged through `VIRTUTES` reports each handed place as `place: N bytes, M lines` or `place: absens`; the angel rereads every place and approves only an exact account. False, missing, extra or malformed accounts are `IRRITUM`; an incomplete one is held. Dates wait until the world records times [O].
+
 ### The hours of the sky (2026-11-12; rite and runtime, not the nucleus)
 - **`INVOCA` keeps each rank's hours and the Moon's age** (`dynamic.md` §5.1, `authority.md` §8.3): temporal hours from sunrise and sunset at the declared place, civil twilight, the true new moon. A refusal now says why in plain words. Dukes come in their hours when the sky is declared clear; this opens the 22 Dukes.
 - **Launch:** `--hora` (a fixed time, for reproducible runs), `--locus LAT,LON`, `--caelum serenum|turbidum`. Without a place, only Earls may come. Every audit records the time, place, weather and the Moon's age.

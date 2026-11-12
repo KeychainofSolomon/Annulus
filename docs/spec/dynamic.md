@@ -91,7 +91,7 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 - **Marquis:** from the start of the ninth temporal hour to the next sunrise; so also from midnight to sunrise.
 - **Duke:** from sunrise to noon, the sky declared clear. `TEMPESTAS` is outside the subset, so no raised storm can yet be active.
 - **Prince:** "any hour of the day" is **daylight**, sunrise to sunset. **Ruled by the owner (2026-11-12):** the same table sets the night apart (the Marquises' "from compline to the end of the day", the Knight's "from vespers"), so "the day" is the daylight. No longer a reading.
-- **Knight:** dawn (civil twilight) to sunrise, and *vesperae* (sunset) to the end of civil twilight, for "à vesperis usque ad finem solis". Sloane's "4 o'clock till sunset" would put *vesperae* at the tenth hour instead, which conflicts with this table's reading of *vesperae* for the Kings.
+- **Knight:** dawn (civil twilight) to sunrise, and from the start of the **eleventh temporal hour** to sunset. **Ruled by the owner (2026-11-12): the most authentic reading.** Weyer governs, and where Sloane 3825 only restates him its clock hours are the reading of his terms (`authority.md` §8.3): Sloane renders "à vesperis" as "4 o'clock", the start of the eleventh hour at the equinox, which is also the hour at which Vespers was said in the canonical office; "usque ad finem solis" is "till sunset".
 - **Without a declared place,** no window that needs the sun can be known, so only Earls may come (doubt holds).
 - **The Moon's age** is computed from the true new moon (Meeus, ch. 49), whole days since it, for every rank.
 - **Berith's hour:** `GERE` still records no time, so the ring does not yet close his `MENDACIUM`.

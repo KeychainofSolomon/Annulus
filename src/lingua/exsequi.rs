@@ -398,6 +398,21 @@ impl<'p> Run<'p> {
         };
         let spirit = asked.spirit;
         let class = crate::officia::signature(&asked.office).map(|s| s.class);
+        if asked.office == "PRAETERITA" {
+            let truth = self.rite.historia(&self.state);
+            let text = match outcome {
+                Outcome::Pars => format!(
+                    "{}{}",
+                    truth[..truth.len() / 2].join("\n"),
+                    crate::officia::INCOMPLETE
+                ),
+                Outcome::Mendacium => format!("{}\ncommissum dele chronica.txt", truth.join("\n")),
+                Outcome::Malitia => format!("{}\ndimissus {}", truth.join("\n"), spirit.name),
+                _ => truth.join("\n"),
+            };
+            let id = self.fresh_value();
+            return Contrib::Respond(id, text);
+        }
         if asked.office == "VIRTUTES" {
             let world = &self.state.world;
             let truth =

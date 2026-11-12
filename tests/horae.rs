@@ -97,6 +97,11 @@ fn each_rank_keeps_its_hours() {
     assert!(open("prince", "12:00", None) && !open("prince", "20:15", None));
     assert!(open("knight", "06:15", None) || open("knight", "06:20", None));
     assert!(!open("knight", "12:00", None));
+    assert!(
+        open("knight", "18:00", None)
+            && !open("knight", "17:00", None)
+            && !open("knight", "20:15", None)
+    );
     assert!(!open("president", "12:00", None));
     let both = vec!["duke".to_string(), "earl".to_string()];
     assert!(admit(&both, &caelum(&format!("{day}T03:00:00+02:00"), None)).is_ok());

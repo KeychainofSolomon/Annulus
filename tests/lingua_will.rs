@@ -345,3 +345,32 @@ fn a_model_s_outcome_is_recorded_as_declared_never_as_known() {
         .collect();
     assert_eq!(turns, vec![Will::Declared(Outcome::Obsequium)]);
 }
+
+#[test]
+fn a_spirit_that_declares_part_is_never_approved() {
+    // the owner's ruling (2026-11-13): obedience in part is not obedience. A model that
+    // declares PARS and hands in the whole answer, or the whole work, is held.
+    let mut will = reply(Outcome::Pars, Actum::Responsum("tempestas veniet".into()));
+    let e = run(FURFUR, &mut will, test_wand());
+    assert_eq!(
+        e.output.first().map(String::as_str),
+        Some("SUSPENSUM"),
+        "{:?}",
+        e.output
+    );
+
+    let mut will = reply(
+        Outcome::Pars,
+        Actum::Opera(vec![Effect {
+            verb: Verb::Crea,
+            place: "turris.txt".into(),
+            data: String::new(),
+        }]),
+    );
+    let e = run(HALPHAS, &mut will, test_wand());
+    assert_eq!(e.output, vec!["SUSPENSUM"]);
+    assert!(
+        !e.state.world().contains_key("turris.txt"),
+        "nothing reaches the world"
+    );
+}

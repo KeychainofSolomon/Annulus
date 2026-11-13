@@ -21,7 +21,7 @@ Last updated: 2026-11-13, 01:30 (branch `virga-vera`). **This page is updated wi
 | **`PRAETERITA`** (the present run): a spirit recounts the run's past, one claim per line in the history's words; the angel checks each against the history built from the audit | Implemented and tested: false claims and Berith's lies caught. The previous run (`"prior"`) not yet |
 | Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
 
-Tests: **312**, debug and release (and 22 in `virga`), on Linux here; Windows and Linux in CI.
+Tests: **313**, debug and release (and 22 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
@@ -82,7 +82,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The wand's window and the Windows randomness | Compiled by CI; **owed: the owner's first use** |
 | The wand on Windows: built in CI, not yet run on a real stick | **Owed: the owner's first `virga fac`** |
 | A crash part-way through sealing leaves the house refused, with no recovery; a crash while writing the world can leave the audit ahead of the files | Open (GPT review): needs a journal and kill-after-each-write tests |
-| `PARS` with complete work: a model can declare part and hand in the whole work, which the angel approves | **Needs the owner's ruling**: is `PARS` binding on the work, or only the model's own word? |
+| `PARS` with complete work: a model could declare part and hand in the whole work, which the angel approved | **Ruled and fixed (2026-11-13):** obedience in part is not obedience. The core holds (`SUSPENSUM`) any work on which part was declared or drawn; it is never committed. **Owed: the same rule in Lean** (`PInfo.pars`, `finalVerdict`) |
 | The model's seal (model file hash, settings, llama.cpp version, vectors, grammar) | Planned (`agens`); GPT's list adopted |
 | The Lean CI fetches its installer script from a moving branch | Open |
 | Between the check of a world path and its use, another process could swap a folder for a link (needs a second local process with write access to the Circle's folder) | Open (GPT, second pass): needs handle-relative file operations |

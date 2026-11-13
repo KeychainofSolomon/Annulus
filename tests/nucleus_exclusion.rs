@@ -154,6 +154,7 @@ fn form() -> ReqForm {
         office: "opus".to_string(),
         mode: None,
         places: vec![PLACE.to_string()],
+        telling: false,
     }
 }
 

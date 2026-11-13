@@ -79,7 +79,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
 | Independent audit of the core changes of 2026-11-11 and 2026-11-12 | **Done** (`docs/AUDIT_CORE_1.md`); confirmed findings fixed. The change of the evening (declared outcomes) and the anchor are not yet reviewed |
 | The audit files (`.acta`) are not signed or read back | **Fixed (2026-11-13; CI green on Linux and Windows):** signed by the rite key, bound to the seal that follows the run; `annulus acta FILE` reads one back (chain, signature, a trusted wand, the seal exists). Still open: an audit whose run failed to seal is bound to a seal number a later run will take; `PRAETERITA "prior"` must also check the seal's roots, not only its number |
-| The office's form enforced in the core, not only by the angel | Open (core audit 1, #4) |
+| The office's form enforced in the core, not only by the angel | **Fixed (2026-11-13, branch `forma-officii`):** the office's class is part of the request's form; a wrong-form answer is held by the core (`SUSPENSUM`), never approved. Rust and Lean together (`core.md` §3.1b) |
 | Rust and Lean drift: validator manifest, Circle binding of values, ink without a wand, forced outcomes, the grave store, a refused `CONSECRA` | Open (core audit 1, #8) |
 | The anchor can itself be deleted by someone with access to it | **Closed** for a real wand: the anchor is on the wand (a rollback is caught by each wand that saw the later state). The test wand still keeps it in a folder |
 | Copies of the words made by the system or the window controls | Beyond the program's reach (its own copies are wiped) |

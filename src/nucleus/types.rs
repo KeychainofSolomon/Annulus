@@ -406,6 +406,12 @@ pub struct Proposal {
     /// obedience, so the work is never approved, only held (the owner's ruling,
     /// 2026-11-13).
     pub pars: bool,
+    /// Whether its request was for a telling office (words) or a working one (work).
+    pub telling: bool,
+    /// A turn answered in the wrong form: words for a working office, or work for a
+    /// telling one. The core holds such work and never approves it (`core.md` §3.1b;
+    /// core audit 1, #4).
+    pub misformed: bool,
 }
 
 #[derive(Clone, Debug)]

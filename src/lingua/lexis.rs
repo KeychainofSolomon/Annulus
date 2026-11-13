@@ -50,6 +50,7 @@ pub const KEYWORDS: &[&str] = &[
     "PACE",
     "DIMITTE",
     "RELEGA",
+    "MANE",
     "NOMEN",
     "SPIRITUS",
     "ANGELUS",

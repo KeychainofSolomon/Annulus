@@ -183,3 +183,33 @@ CIRCULUS RITU goetia {
     );
     assert_eq!(lying.output, vec!["IRRITUM"]);
 }
+
+#[test]
+fn a_spirit_kept_with_mane_is_retentus_not_dimissus() {
+    let kept = VASSAGO.replacen("    VADE IN PACE v;\n", "    MANE v;\n", 1);
+    let run = |words: &'static str| {
+        run_source_with(
+            &kept,
+            test_wand(),
+            Stores::install(&test_wand()),
+            world(),
+            &options(None),
+            Some(&mut Says(words)),
+        )
+        .unwrap()
+    };
+    let e = run("invocatus Vassago\nretentus Vassago");
+    assert_eq!(e.class, 0, "{:?}", e.message);
+    assert_eq!(e.output[1], "RATUM");
+    assert_eq!(run("dimissus Vassago").output[1], "IRRITUM");
+}
+
+#[test]
+fn mane_releases_like_any_release_when_the_circle_closes() {
+    let unreleased = VASSAGO.replacen("    VADE IN PACE v;\n", "", 1);
+    assert!(check_source(&unreleased).is_err());
+    let kept = VASSAGO.replacen("    VADE IN PACE v;\n", "    MANE v;\n", 1);
+    assert!(check_source(&kept).is_ok());
+    let twice = VASSAGO.replacen("    VADE IN PACE v;\n", "    MANE v;\n    MANE v;\n", 1);
+    assert!(check_source(&twice).is_err());
+}

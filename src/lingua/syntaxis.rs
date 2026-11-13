@@ -59,6 +59,7 @@ pub enum Release {
     VadeInPace,
     Dimitte,
     Relega,
+    Mane,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

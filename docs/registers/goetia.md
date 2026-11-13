@@ -92,7 +92,7 @@ Witnesses: **W** Weyer 1577, **S** Sloane 3825, **G** 1904 edition. **F** Folger
 **Offices:**
 
 - `INVISIBILITAS` (W): makes a man invisible
-- `DOCTRINA` (W): makes a man wise
+- `DOCTRINA` (W): makes a man wise *Arts:* philosophia.
 
 **Notes:**
 
@@ -152,7 +152,7 @@ Also: Gamigin, Gamygyn.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches the liberal arts
+- `DOCTRINA` (W): teaches the liberal arts *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia.
 - `MORTUI` (W): brings souls from the sea and from purgatory to appear in aerial bodies and answer
 - `MORTUI` (G): gives account of dead souls that died in sin
 
@@ -172,7 +172,7 @@ Also: Barbas.
 
 - `RESPONSA` (W): answers of hidden things
 - `MORBUS` (W): inflicts diseases and cures them
-- `DOCTRINA` (W): gives wisdom and the mechanical arts
+- `DOCTRINA` (W): gives wisdom and the mechanical arts *Arts:* philosophia, mechanica.
 - `TRANSMUTATIO` (W): changes men into other shapes
 
 **Malice:**
@@ -252,7 +252,7 @@ Also: Paymon.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches all arts and sciences and secret things
+- `DOCTRINA` (W): teaches all arts and sciences and secret things *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia, astrologia, mechanica, philosophia, poetica, chiromantia, pyromantia.
 - `OCCULTA` (G): what the Earth is, what holds it up in the waters, what Mind is and where
 - `DIGNITATES` (W): gives dignities and confirms them
 - `MENS` (W): binds men and makes them subject to the magician
@@ -277,7 +277,7 @@ Also: Paymon.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches philosophy, moral and natural, and logic
+- `DOCTRINA` (W): teaches philosophy, moral and natural, and logic *Arts:* philosophia, dialectica.
 - `VIRTUTES` (W): the virtues of all herbs and plants
 - `MORBUS` (W): heals all distempers
 - `FAMILIARES` (W): gives good familiars
@@ -483,7 +483,7 @@ Also: Morax, Foraii.
 
 **Offices:**
 
-- `DOCTRINA` (W): makes men skilled in astronomy and the liberal arts
+- `DOCTRINA` (W): makes men skilled in astronomy and the liberal arts *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia.
 - `FAMILIARES` (W): gives wise familiars
 - `VIRTUTES` (W): knows the powers of herbs and stones
 
@@ -538,7 +538,7 @@ Also: Naberus, Cerberus.
 
 **Offices:**
 
-- `DOCTRINA` (W): makes a man cunning in all arts, especially rhetoric
+- `DOCTRINA` (W): makes a man cunning in all arts, especially rhetoric *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia, astrologia, mechanica, philosophia, poetica, chiromantia, pyromantia.
 - `EVERSIO` (W): procures the loss of prelacies and dignities (prelaturarum et dignitatum iacturam parit)
 
 **Malice:**
@@ -560,7 +560,7 @@ Also: Caacrinolaas, Caassimolar.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches all arts in an instant
+- `DOCTRINA` (W): teaches all arts in an instant *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia, astrologia, mechanica, philosophia, poetica, chiromantia, pyromantia.
 - `PRAETERITA` (W): knows things past
 - `FUTURA` (W): knows things to come
 - `CONCORDIA` (W): wins the favour of friends and foes
@@ -587,7 +587,7 @@ Also: Bime, Bim.
 
 - `MORTUI` (W): makes the dead change their place, and spirits gather at the sepulchres
 - `THESAURI` (W): gives riches
-- `DOCTRINA` (W): makes a man wise and eloquent
+- `DOCTRINA` (W): makes a man wise and eloquent *Arts:* philosophia, rhetorica.
 - `RESPONSA` (W): gives true answers
 
 **Notes:**
@@ -604,7 +604,7 @@ Also: Roneve, Ronové.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches rhetoric
+- `DOCTRINA` (W): teaches rhetoric *Arts:* rhetorica.
 - `FAMILIARES` (W): gives faithful servants
 - `LINGUAE` (W): gives knowledge of tongues
 - `CONCORDIA` (W): favour of friends and foes
@@ -651,7 +651,7 @@ Also: Beale, Beal, Bofry, Bolfry.
 - `PRAESENTIA` (W): answers of things present
 - `FUTURA` (W): answers of things to come
 - `OCCULTA` (W): discovers all secrets
-- `DOCTRINA` (W): teaches the liberal sciences
+- `DOCTRINA` (W): teaches the liberal sciences *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia.
 
 **Malice:**
 
@@ -674,7 +674,7 @@ Also: Beale, Beal, Bofry, Bolfry.
 
 **Offices:**
 
-- `DOCTRINA` (W): makes a man admirable in rhetoric
+- `DOCTRINA` (W): makes a man admirable in rhetoric *Arts:* rhetorica.
 - `LINGUAE` (W): gives understanding of tongues
 - `CONCORDIA` (W): makes a man loved by friends and foes
 - `APPELLATIO` (W): gives a good name
@@ -693,7 +693,7 @@ Also: Forras, Forcas.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches logic and ethics in all their parts
+- `DOCTRINA` (W): teaches logic and ethics in all their parts *Arts:* dialectica, philosophia.
 - `VIRTUTES` (G): the virtues of herbs and precious stones
 - `INVISIBILITAS` (W): makes a man invisible
 - `MENS` (W): makes a man witty and eloquent
@@ -711,7 +711,7 @@ Also: Sydonay, Asmodai.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches geometry, arithmetic, astronomy and mechanics
+- `DOCTRINA` (W): teaches geometry, arithmetic, astronomy and mechanics *Arts:* geometria, arithmetica, astronomia, mechanica.
 - `TUTELA` (W): gives the Ring of Virtues
 - `INVISIBILITAS` (W): makes a man invisible
 - `THESAURI` (W): shows where treasure lies
@@ -747,7 +747,7 @@ Also: Tap.
 **Offices:**
 
 - `MENS` (G): makes men insensible or ignorant
-- `DOCTRINA` (G): makes them knowing in philosophy and the liberal sciences
+- `DOCTRINA` (G): makes them knowing in philosophy and the liberal sciences *Arts:* philosophia, grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia.
 - `CONCORDIA` (W): causes love
 - `DISCORDIA` (W): causes hatred
 - `INVISIBILITAS` (W): causes invisibility
@@ -821,7 +821,7 @@ Also: Stolos.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches astronomy
+- `DOCTRINA` (W): teaches astronomy *Arts:* astronomia.
 - `VIRTUTES` (W): the virtues of herbs and precious stones
 
 ### 37. Phenex
@@ -834,8 +834,8 @@ Also: Phoenix, Pheynix.
 
 **Offices:**
 
-- `DOCTRINA` (W): speaks of all wonderful sciences
-- `DOCTRINA` (W): a poet
+- `DOCTRINA` (W): speaks of all wonderful sciences *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia, astrologia, mechanica, philosophia, poetica, chiromantia, pyromantia.
+- `DOCTRINA` (W): a poet *Arts:* poetica.
 
 **Counterbalances and wards:**
 
@@ -1032,7 +1032,7 @@ Also: Bifrous, Bifrovs.
 
 **Offices:**
 
-- `DOCTRINA` (W): astrology, the mansions of the planets, geometry and measurement
+- `DOCTRINA` (W): astrology, the mansions of the planets, geometry and measurement *Arts:* astrologia, geometria.
 - `VIRTUTES` (W): the virtues of herbs, stones and woods
 - `MORTUI` (W): moves corpses to other places
 - `ILLUSIO` (W): seems to light candles on tombs
@@ -1069,7 +1069,7 @@ Also: Uvall, Voval.
 
 **Offices:**
 
-- `DOCTRINA` (W): makes men wise in everything
+- `DOCTRINA` (W): makes men wise in everything *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia, astrologia, mechanica, philosophia, poetica, chiromantia, pyromantia.
 - `TRANSMUTATIO` (W): transmutes all metals into gold; water into wine and back
 
 ### 49. Crocell
@@ -1083,7 +1083,7 @@ Also: Pucel, Procel, Crokel.
 **Offices:**
 
 - `OCCULTA` (W): speaks obscurely of hidden things
-- `DOCTRINA` (W): teaches geometry and the liberal arts
+- `DOCTRINA` (W): teaches geometry and the liberal arts *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia.
 - `ILLUSIO` (W): makes great noises, and waters roar where there are none
 - `TRANSMUTATIO` (W): warms and cools baths
 - `OCCULTA` (G): discovers baths
@@ -1100,7 +1100,7 @@ Also: Pucel, Procel, Crokel.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches philosophy, rhetoric, logic, astronomy, chiromancy and pyromancy
+- `DOCTRINA` (W): teaches philosophy, rhetoric, logic, astronomy, chiromancy and pyromancy *Arts:* philosophia, rhetorica, dialectica, astronomia, chiromantia, pyromantia.
 
 **Notes:**
 
@@ -1136,7 +1136,7 @@ Also: Alocer, Alocas.
 
 **Offices:**
 
-- `DOCTRINA` (W): makes men wonderful in astronomy and the liberal arts
+- `DOCTRINA` (W): makes men wonderful in astronomy and the liberal arts *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia.
 - `FAMILIARES` (W): gives good familiars
 
 ### 53. Caim
@@ -1150,7 +1150,7 @@ Also: Caym, Camio.
 **Offices:**
 
 - `LINGUAE` (W): gives understanding of birds, the lowing of bullocks, the barking of dogs, and the voice of waters
-- `DOCTRINA` (W): the best disputer
+- `DOCTRINA` (W): the best disputer *Arts:* dialectica.
 - `FUTURA` (W): foretells things to come
 
 **Notes:**
@@ -1168,7 +1168,7 @@ Also: Murmus, Murmux.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches philosophy
+- `DOCTRINA` (W): teaches philosophy *Arts:* philosophia.
 - `MORTUI` (W): compels the souls of the dead to come before the exorcist and answer
 
 **Notes:**
@@ -1218,7 +1218,7 @@ Also: Oze, Oso, Voso, Osé.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches the liberal arts
+- `DOCTRINA` (W): teaches the liberal arts *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia.
 - `OCCULTA` (W): reveals divine and secret things
 - `ILLUSIO` (W): transforms a man's shape so he believes he is what he is not; it lasts one hour (durat ad horam)
 
@@ -1244,7 +1244,7 @@ Also: Avnas, Hanni.
 
 **Offices:**
 
-- `DOCTRINA` (W): makes men marvellous in astrology and the liberal arts
+- `DOCTRINA` (W): makes men marvellous in astrology and the liberal arts *Arts:* astrologia, grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia.
 - `FAMILIARES` (W): gives excellent familiars
 - `THESAURI` (W): reveals treasure kept by spirits
 
@@ -1278,7 +1278,7 @@ Also: Naphula.
 
 **Offices:**
 
-- `DOCTRINA` (W): makes men subtle in mechanics, philosophy and the sciences of books
+- `DOCTRINA` (W): makes men subtle in mechanics, philosophy and the sciences of books *Arts:* mechanica, philosophia, grammatica.
 
 ### 61. Zagan
 
@@ -1377,7 +1377,7 @@ Also: Androalphus.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches geometry and measurement; makes men subtle disputers and skilled in astronomy
+- `DOCTRINA` (W): teaches geometry and measurement; makes men subtle disputers and skilled in astronomy *Arts:* geometria, dialectica, astronomia.
 - `TRANSMUTATIO` (W): transforms men into birds
 
 **Notes:**
@@ -1394,7 +1394,7 @@ Also: Cimeries, Cimeies, Kimaris.
 
 **Offices:**
 
-- `DOCTRINA` (W): teaches grammar, logic and rhetoric
+- `DOCTRINA` (W): teaches grammar, logic and rhetoric *Arts:* grammatica, dialectica, rhetorica.
 - `THESAURI` (W): reveals treasure
 - `OCCULTA` (W): reveals hidden things
 - `ILLUSIO` (W): makes a man seem turned into a soldier
@@ -1491,7 +1491,7 @@ Also: Sear, Seir.
 
 **Offices:**
 
-- `DOCTRINA` (G): teaches all arts and sciences
+- `DOCTRINA` (G): teaches all arts and sciences *Arts:* grammatica, dialectica, rhetorica, arithmetica, geometria, musica, astronomia, astrologia, mechanica, philosophia, poetica, chiromantia, pyromantia.
 - `MENS` (G): declares the secret counsel of anyone; knows the thoughts of all, and can change them at his will
 - `CONCORDIA` (G): causes love
 - `ILLUSIO` (G): shows the similitude of any person in a vision, wherever they are

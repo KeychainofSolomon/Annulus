@@ -21,7 +21,7 @@ Last updated: 2026-11-13, 01:30 (branch `virga-vera`). **This page is updated wi
 | **`PRAETERITA`** (the present run): a spirit recounts the run's past, one claim per line in the history's words; the angel checks each against the history built from the audit | Implemented and tested: false claims and Berith's lies caught. The previous run (`"prior"`) not yet |
 | Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
 
-Tests: **313**, debug and release (and 22 in `virga`), on Linux here; Windows and Linux in CI.
+Tests: **314**, debug and release (and 22 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
@@ -78,10 +78,10 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The wand's words are kept in ordinary memory while they are typed (the opened keys are wiped) | Open, minor |
 | Someone who copied the wand's stick earlier, and later holds both the stick and the house, can put both back to that earlier state together | Inherent to a plain stick (no monotonic storage); a hardware key would close it |
 | A lost wand that never learned of its revocation, with every copy of the lineage put back | Inherent (review): needs an outside witness |
-| A crash while writing the world, after the seal, leaves the stores ahead of the files | Open |
 | The wand's window and the Windows randomness | Compiled by CI; **owed: the owner's first use** |
 | The wand on Windows: built in CI, not yet run on a real stick | **Owed: the owner's first `virga fac`** |
-| A crash part-way through sealing leaves the house refused, with no recovery; a crash while writing the world can leave the audit ahead of the files | Open (GPT review): needs a journal and kill-after-each-write tests |
+| A crash part-way through sealing leaves the house refused | **Fixed:** the seal journal undoes it; a test kills the program after each of the seal's nine writes and checks the next two runs open and seal |
+| A crash while writing the world can leave the stores ahead of the files | Open |
 | `PARS` with complete work: a model could declare part and hand in the whole work, which the angel approved | **Ruled and fixed (2026-11-13):** obedience in part is not obedience. The core holds (`SUSPENSUM`) any work on which part was declared or drawn; it is never committed. **Owed: the same rule in Lean** (`PInfo.pars`, `finalVerdict`) |
 | The model's seal (model file hash, settings, llama.cpp version, vectors, grammar) | Planned (`agens`); GPT's list adopted |
 | The Lean CI fetches its installer script from a moving branch | Open |

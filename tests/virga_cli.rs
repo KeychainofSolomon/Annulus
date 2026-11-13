@@ -57,6 +57,10 @@ fn scene(name: &str) -> Scene {
 }
 
 fn annulus(dir: &Path, args: &[&str], words: &[&str]) -> Output {
+    annulus_env(dir, args, words, None)
+}
+
+fn annulus_env(dir: &Path, args: &[&str], words: &[&str], cade: Option<u32>) -> Output {
     let mut args: Vec<&str> = args.to_vec();
     if args.first() == Some(&"ritus") {
         args.extend(["--hora", "2024-04-13T14:30:00Z", "--locus", "41.9,12.5"]);
@@ -65,6 +69,10 @@ fn annulus(dir: &Path, args: &[&str], words: &[&str]) -> Output {
         .current_dir(dir)
         .args(&args)
         .env_remove("ANNULUS_VIRGA")
+        .env(
+            "ANNULUS_PROBATIO_CADE",
+            cade.map(|n| n.to_string()).unwrap_or_default(),
+        )
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -455,4 +463,41 @@ fn a_journal_cannot_roll_the_house_back_past_the_anchor() {
     fs::write(house.join(annulus::tabularium::JOURNAL), "0\t0\t0\t0\n-\n").unwrap();
     let o = ritus(&s, &s.wand, &[M, R]);
     assert_eq!(o.status.code(), Some(2), "{}", err(&o));
+}
+
+#[test]
+fn a_seal_cut_off_after_any_step_leaves_a_house_that_opens() {
+    // kill after every write of a seal (outside reviews: crash recovery); the next run
+    // must open the house and seal it whole
+    for step in 1..=9 {
+        let s = scene(&format!("cade-{step}"));
+        sanci(&s, &s.wand, &[M]);
+        assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+        let args = [
+            "ritus",
+            "furfur.annulus",
+            "--virga",
+            s.wand.to_str().unwrap(),
+            "--responsa",
+            "responsa.json",
+            "--sors",
+            "obsequium",
+        ];
+        let o = annulus_env(&s.dir, &args, &[M, R], Some(step));
+        assert_eq!(o.status.code(), Some(99), "step {step}: {}", err(&o));
+        let o = ritus(&s, &s.wand, &[M, R]);
+        assert_eq!(
+            o.status.code(),
+            Some(0),
+            "after a cut at step {step}: {}",
+            err(&o)
+        );
+        let o = ritus(&s, &s.wand, &[M, R]);
+        assert_eq!(
+            o.status.code(),
+            Some(0),
+            "and again, step {step}: {}",
+            err(&o)
+        );
+    }
 }

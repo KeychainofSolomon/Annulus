@@ -297,6 +297,22 @@ fn decode_marks(text: &str) -> Result<BTreeSet<Place>, String> {
         .collect()
 }
 
+/// Test builds only: stops the program right after step `n` of a seal, as a power cut
+/// would, when `ANNULUS_PROBATIO_CADE` is `n` (crash tests).
+#[cfg(feature = "probatio")]
+fn cade(n: u32) {
+    if std::env::var("ANNULUS_PROBATIO_CADE")
+        .ok()
+        .and_then(|v| v.parse().ok())
+        == Some(n)
+    {
+        std::process::exit(99);
+    }
+}
+
+#[cfg(not(feature = "probatio"))]
+fn cade(_: u32) {}
+
 impl Domus {
     pub fn new(dir: &Path) -> Domus {
         Domus {
@@ -845,12 +861,17 @@ impl Domus {
             self.file_len(ROOTS)?
         );
         replace_file(&self.path(JOURNAL), journal.as_bytes())?;
+        cade(1);
         self.append_chain(INDEX, &stores.index, counts[0])?;
+        cade(2);
         self.append_chain(VESSEL, &stores.vessel, counts[1])?;
+        cade(3);
         self.append_chain(KEYS, &stores.keys, counts[2])?;
+        cade(4);
         let marks_text = encode_marks(marks);
         let marks_digest = hash_hex(marks_text.as_bytes());
         replace_file(&self.path(MARKS), marks_text.as_bytes())?;
+        cade(5);
         let roots = stores.roots();
         let seq = match self.roots_count() {
             Ok(n) => n + 1,
@@ -882,12 +903,17 @@ impl Domus {
         file.write_all(format!("{line}\n").as_bytes())
             .and_then(|_| file.sync_all())
             .map_err(|e| format!("cannot write {}: {e}", path.display()))?;
+        cade(6);
         // the seal is whole: the journal goes
         fs::remove_file(self.path(JOURNAL)).map_err(|e| format!("cannot clear {JOURNAL}: {e}"))?;
+        cade(7);
         if let Some(s) = &wand.stirps {
             replace_file(&self.path(LINEAGE), s.encode().as_bytes())?;
         }
-        self.write_anchor(wand)
+        cade(8);
+        self.write_anchor(wand)?;
+        cade(9);
+        Ok(())
     }
 
     pub fn note_petitions(&self, audit: &[Label]) -> Result<(), String> {

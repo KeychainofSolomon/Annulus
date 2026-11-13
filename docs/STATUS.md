@@ -27,6 +27,8 @@ Tests: **325**, debug and release (and 24 in `virga`), on Linux here; Windows an
 
 Uses this repository as a library, pinned by commit. A local model (llama.cpp, this computer only) is the will of the spirits; Annulus judges and permits. The binding page (seals in their rank metals, the Triangle and the Circle) or `--terminal`. 30 of the 72 can be bound in their hours (Dukes since the hours of the sky; VIRTUTES and PRAETERITA through the model since 2026-11-12; control vectors for the spirits' natures in `vires/`). 54 tests, including `tests/hostis.rs`: a fully hostile model, 17 attack families.
 
+**Branch `aula-virga` (2026-11-13, CI green):** the binding page takes the real wand (`spiri72 --virga E:\`, its own house `annulus.domus.virga`); `PRAETERITA` replies bounded (16 claims of 120 characters), so they always close, and worded as the record words them (they were all `IRRITUM`); each spirit keeps its own dialogue; the page in black and white, with the Pentagram of Solomon (Euclid IV.11, nestings by 1/φ²) and the summoning shown as a descent down its nestings.
+
 ## Security fixes (red-team and audits)
 
 | Date | Breach | Fix |

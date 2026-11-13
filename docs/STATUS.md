@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-13, 01:30 (branch `virga-vera`). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-13, 14:40 (branch `acta-signata`). **This page is updated with every fix** (the owner's rule).
 
 **Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are mostly tested, not proved:** P1–P9 are stated in Lean (`formal/`); the first proofs are in `formal/Annulus/Proofs.lean`.
 
@@ -31,6 +31,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Date | Breach | Fix |
 |---|---|---|
+| 2026-11-13 | (Core audit 1, #5) The audit files were unsigned, outside the signed roots and never read back: an audit could be edited, cut short or replaced unseen | Each audit ends with the rite key's signature over its every line and the number of the seal that follows the run; `annulus acta` checks the chain, the signature, the wand against the house's lineage, and that the seal exists. Tests: `tabularium.rs` (six forgeries), `ritus_cli.rs`, `virga_cli.rs` |
 | 2026-11-13 | (GPT, third report, V-03) A revoked wand's secrets still opened | `virga` refuses to unlock a revoked wand's secrets; Annulus also refuses the wand before any act |
 | 2026-11-13 | (V-04) The words stayed in memory after use | Words are handed back as `Verba`, overwritten when dropped (copies the system makes are beyond reach) |
 | 2026-11-13 | (V-05) Two acts on one wand at once could each write the lineage | The wand is locked while its lineage is written, and the copy on the stick is read again first; the second act is refused |
@@ -75,7 +76,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | Proofs of P1–P9 and their correspondence to the Rust core | **Begun** (`formal/Annulus/Proofs.lean`, checked by CI with no extra axioms): **P1 (a)**, containment at commit; **P1 (b)**, every request's handed places lie in the faculty in every reachable state (an invariant over runs); an outside will's turns are declared; `kill` only in simulated mode. P1 (c) and P2–P9 remain; correspondence to Rust not started. Still the largest gap |
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
 | Independent audit of the core changes of 2026-11-11 and 2026-11-12 | **Done** (`docs/AUDIT_CORE_1.md`); confirmed findings fixed. The change of the evening (declared outcomes) and the anchor are not yet reviewed |
-| The audit files (`.acta`) are not signed or read back | Open (core audit 1, #5); before `PRAETERITA` of the previous run |
+| The audit files (`.acta`) are not signed or read back | **Fixed (2026-11-13, awaiting CI):** signed by the rite key, bound to the seal that follows the run; `annulus acta FILE` reads one back (chain, signature, a trusted wand, the seal exists). Still open: an audit whose run failed to seal is bound to a seal number a later run will take; `PRAETERITA "prior"` must also check the seal's roots, not only its number |
 | The office's form enforced in the core, not only by the angel | Open (core audit 1, #4) |
 | Rust and Lean drift: validator manifest, Circle binding of values, ink without a wand, forced outcomes, the grave store, a refused `CONSECRA` | Open (core audit 1, #8) |
 | The anchor can itself be deleted by someone with access to it | **Closed** for a real wand: the anchor is on the wand (a rollback is caught by each wand that saw the later state). The test wand still keeps it in a folder |

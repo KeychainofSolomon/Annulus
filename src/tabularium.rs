@@ -6,7 +6,7 @@ use std::path::{Component, Path, PathBuf};
 
 use crate::baculum::{Baculum, Lex};
 use crate::nucleus::sha256::hash_hex;
-use crate::nucleus::state::{fingerprint_effects, verify, Chain, Roots};
+use crate::nucleus::state::{fingerprint_effects, verify, Chain, Roots, GENESIS};
 use crate::nucleus::*;
 
 pub const INDEX: &str = "annulus.proscriptio";
@@ -916,6 +916,98 @@ impl Domus {
         Ok(())
     }
 
+    /// The number the next seal of this house will carry.
+    pub fn next_seal(&self) -> Result<usize, String> {
+        match self.roots_count() {
+            Ok(n) => Ok(n + 1),
+            Err(_) if !self.path(ROOTS).exists() => Ok(1),
+            Err(e) => Err(e),
+        }
+    }
+
+    /// Reads an audit back (`annulus acta`): every entry must match its chain, the last
+    /// line must be the signature of a wand this house trusts, and the seal it was bound to
+    /// must exist. Open the house with the same wand first, so its lineage is known.
+    pub fn read_audit(&self, path: &Path, wand: &Baculum) -> Result<Acta, String> {
+        let text = read_bounded(path, MAX_STORE)
+            .map_err(|e| format!("cannot read the audit {}: {e}", path.display()))?;
+        let body_end = text
+            .trim_end_matches('\n')
+            .rfind('\n')
+            .map(|i| i + 1)
+            .unwrap_or(0);
+        let (body, last) = text.split_at(body_end);
+        let last = last
+            .strip_suffix('\n')
+            .ok_or("the audit is cut off: its last line is unfinished")?;
+        let fields = last
+            .strip_prefix(SIGNUM)
+            .and_then(|r| r.strip_prefix('\t'))
+            .ok_or("the audit is not signed")?;
+        let f = split(fields)?;
+        let [version, seq, master, signer, bond, signature] = f.as_slice() else {
+            return Err("the audit's signature is malformed".into());
+        };
+        if version != "1" {
+            return Err("the audit's signature is of an unknown kind".into());
+        }
+        let seq = number(seq)? as usize;
+        if signer != master && !virga::vinculum_valet(master, signer, bond) {
+            return Err("the audit is signed by a key no wand vouches for".into());
+        }
+        if !verify(signer, &digest_acta(seq, master, body), signature) {
+            return Err("the audit has been tampered with: its signature does not hold".into());
+        }
+        match &wand.stirps {
+            Some(s) if !s.vivit(master) => {
+                return Err(if s.revocata(master) {
+                    "the audit was signed by a revoked wand".into()
+                } else {
+                    "the audit was signed by a wand that is not of this house's lineage".into()
+                })
+            }
+            Some(_) => {}
+            None if wand.test && *master == wand.fingerprint => {}
+            None => return Err("the audit was signed by another wand".into()),
+        }
+        if seq == 0 || seq > self.roots_count()? {
+            return Err(format!(
+                "the audit is bound to seal {seq}, which this house has not made"
+            ));
+        }
+        let mut entries = 0usize;
+        let mut root = hash_hex(GENESIS.as_bytes());
+        for (n, line) in body.lines().enumerate() {
+            if line.starts_with('#') {
+                if entries > 0 {
+                    return Err(format!(
+                        "the audit, line {}: a note among the entries",
+                        n + 1
+                    ));
+                }
+                continue;
+            }
+            let (hash, entry) = line
+                .split_once('\t')
+                .ok_or_else(|| format!("the audit, line {}: malformed", n + 1))?;
+            let entry = unescape(entry).map_err(|e| format!("the audit, line {}: {e}", n + 1))?;
+            root = hash_hex(format!("{root}|{entry}").as_bytes());
+            entries += 1;
+            if root != hash {
+                return Err(format!(
+                    "the audit has been tampered with: line {} does not match its chain",
+                    n + 1
+                ));
+            }
+        }
+        Ok(Acta {
+            seq,
+            master: master.clone(),
+            entries,
+            root,
+        })
+    }
+
     pub fn note_petitions(&self, audit: &[Label]) -> Result<(), String> {
         let mut lines = String::new();
         for label in audit {
@@ -1034,11 +1126,24 @@ pub fn audit_path(program: &Path, chosen: Option<&Path>) -> PathBuf {
         .unwrap_or(first)
 }
 
+/// The first field of an audit's signature line (`core.md` §8, P7; core audit 1, #5).
+pub const SIGNUM: &str = "#signum";
+
+/// The digest an audit's signature covers: its number among the house's seals, the wand,
+/// and the hash of every line above the signature, comments included.
+fn digest_acta(seq: usize, master: &str, body: &str) -> String {
+    hash_hex(format!("acta|1|{seq}|{master}|{}", hash_hex(body.as_bytes())).as_bytes())
+}
+
+/// Writes the audit of a run, never over an existing file. With the wand present it is
+/// signed with the rite key, bound to `seq`, the number of the seal that follows the run
+/// (`Domus::next_seal`); without it the audit says it is unsigned.
 pub fn write_audit(
     path: &Path,
     audit: &Chain<Label>,
-    wand: &Wand,
+    wand: &Baculum,
     notes: &[String],
+    seq: usize,
 ) -> Result<(), String> {
     let mut text = String::new();
     if wand.test {
@@ -1058,6 +1163,25 @@ pub fn write_audit(
             escape(&format!("{label:?}"))
         ));
     }
+    if wand.present {
+        let (signer, signature) = wand.signa_ritus(&digest_acta(seq, &wand.fingerprint, &text))?;
+        let bond = if signer == wand.fingerprint {
+            "-".to_string()
+        } else {
+            wand.vinculum().to_string()
+        };
+        let fields = join(&[
+            "1".into(),
+            seq.to_string(),
+            wand.fingerprint.clone(),
+            signer,
+            bond,
+            signature,
+        ]);
+        text.push_str(&format!("{SIGNUM}\t{fields}\n"));
+    } else {
+        text.push_str("# not signed: the run had no wand\n");
+    }
     let mut file = fs::OpenOptions::new()
         .create_new(true)
         .write(true)
@@ -1066,6 +1190,19 @@ pub fn write_audit(
     file.write_all(text.as_bytes())
         .and_then(|_| file.sync_all())
         .map_err(|e| format!("cannot write the audit {}: {e}", path.display()))
+}
+
+/// An audit read back and found whole.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Acta {
+    /// The number of the house's seal the run was bound to.
+    pub seq: usize,
+    /// The wand that signed it.
+    pub master: String,
+    /// The number of audit entries, each checked against its chain.
+    pub entries: usize,
+    /// The root of the audit's chain.
+    pub root: String,
 }
 
 pub fn lawful_place(place: &str) -> bool {

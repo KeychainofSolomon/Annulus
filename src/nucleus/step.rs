@@ -55,11 +55,22 @@ impl State {
             if auth.revoked.contains(&auth.wand.fingerprint) {
                 return Err("the wand is revoked");
             }
-            if !verify(
-                &auth.wand.fingerprint,
-                &digest_faculty(&self.faculty, &self.reserved, &auth.roots),
-                &auth.faculty_signature,
-            ) {
+            let digest = digest_faculty(&self.faculty, &self.reserved, &auth.roots);
+            let by_master = verify(&auth.wand.fingerprint, &digest, &auth.faculty_signature);
+            // a binding grants only reading: every work still needs the master (§8.8)
+            let by_binding = auth.ligatio.as_ref().is_some_and(|l| {
+                verify(
+                    &auth.wand.fingerprint,
+                    &super::state::digest_ligatio(&l.key, l.until),
+                    &l.signature,
+                ) && self
+                    .faculty
+                    .iter()
+                    .all(|c| c.perm == super::types::Perm::Legere)
+                    && self.reserved.is_empty()
+                    && verify(&l.key, &digest, &auth.faculty_signature)
+            });
+            if !by_master && !by_binding {
                 return Err("the faculty is not signed by the wand");
             }
         }

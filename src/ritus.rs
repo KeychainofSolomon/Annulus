@@ -100,12 +100,19 @@ pub fn launch(
     let (faculty, reserved, ink) = faculty_of(checked);
     let roots = recorded.unwrap_or_else(|| roots_of(&stores));
     let revoked = baculum.revocatae();
-    let faculty_signature = if baculum.present {
-        baculum
-            .signa_magister(&digest_faculty(&faculty, &reserved, &roots))
-            .unwrap_or_default()
+    let digest = digest_faculty(&faculty, &reserved, &roots);
+    // the master grants the faculty; without its words, a binding may grant one that only
+    // reads (§8.8), and the nucleus refuses it for anything more
+    let (faculty_signature, ligatio) = if baculum.present {
+        match baculum.signa_magister(&digest) {
+            Ok(s) => (s, None),
+            Err(_) => match baculum.signa_ligatione(&digest) {
+                Some(s) => (s, baculum.ligatio().cloned()),
+                None => (String::new(), None),
+            },
+        }
     } else {
-        String::new()
+        (String::new(), None)
     };
     let (owner, manifest_signature) = match (&baculum.lex, baculum.test) {
         (Some(lex), _) if baculum.trusts(&lex.owner) => (lex.owner.clone(), lex.signature.clone()),
@@ -126,6 +133,7 @@ pub fn launch(
         revoked,
         roots,
         wand: baculum.wand(),
+        ligatio,
     };
     Launch {
         simulated: true,

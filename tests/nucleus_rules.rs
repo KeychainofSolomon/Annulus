@@ -152,6 +152,7 @@ fn launch_reserving(stores: Stores, wand: Wand, reserved: &[Cap]) -> State {
         revoked: Vec::new(),
         roots: stores.roots(),
         wand,
+        ligatio: None,
     };
     let mut world = BTreeMap::new();
     world.insert(

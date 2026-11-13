@@ -213,6 +213,19 @@ theorem P1_requests (M : Core U) (R : RelRite U) :
   obtain ⟨prog, x, -, hrun, rfl⟩ := hr
   exact (reqInv_run hrun x.len (Nat.le_refl _)).1 q ri pl m hq hh
 
+/-- `operator.md` §8.8, proved: a launch whose faculty the master did not sign grants
+nothing but reading. So every work still needs the master; a binding asks only. -/
+theorem launch_without_master_only_reads (M : Core U) (σ : State U)
+    (hc : LaunchChecks M σ) (hp : σ.auth.wandPresent = true)
+    (hn : ¬ M.mech.verify σ.auth.wandFp
+      (M.mech.digestFaculty σ.faculty σ.reserved σ.auth.indexRoot σ.auth.graveRoot
+        σ.auth.keysRoot) σ.auth.facultySig) :
+    (∀ p m, σ.faculty p m → m = U.read) ∧ (∀ p m, ¬ σ.reserved p m) := by
+  obtain ⟨-, -, -, -, -, -, -, h⟩ := hc
+  rcases (h hp).2 with hm | ⟨_k, _t, _c, -, -, hr, hres, -⟩
+  · exact absurd hm hn
+  · exact ⟨hr, hres⟩
+
 end Annulus
 
 end

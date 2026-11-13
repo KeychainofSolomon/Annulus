@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-13, 14:40 (branch `acta-signata`). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-13, 21:40 (branch `colloquium`). **This page is updated with every fix** (the owner's rule).
 
 **Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are mostly tested, not proved:** P1–P9 are stated in Lean (`formal/`); the first proofs are in `formal/Annulus/Proofs.lean`.
 
@@ -20,8 +20,11 @@ Last updated: 2026-11-13, 14:40 (branch `acta-signata`). **This page is updated 
 | **`VIRTUTES`**: a spirit reports each handed file's size in bytes and lines; the angel rereads them | Implemented and tested: eight kinds of false account all caught (`offices.md` §2.2). Dates left out until the world records times |
 | **`PRAETERITA`** (the present run): a spirit recounts the run's past, one claim per line in the history's words; the angel checks each against the history built from the audit | Implemented and tested: false claims and Berith's lies caught. The previous run (`"prior"`) not yet |
 | Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
+| **Holds kept in the house** (audit 2, #2): `MANE` in a sealed run records the spirit and the hour of its calling in the sealed marks (`tentus:N:T0`); licence or banishment clears it; `--tentus` is refused unless the house keeps that hold | Implemented and tested through the binary (`tests/tentus_cli.rs`). Branch `colloquium` |
+| **Reading takes the lock** (audit 2, #1): `petitiones` and `acta` take `annulus.sera` before opening the house | Implemented and tested (`tests/ritus_cli.rs`). Branch `colloquium` |
+| **The binding** (`operator.md` §8.8): a calling makes a binding key the master vouches for; a later rite that only reads, asking a held spirit, is granted by it with no words; every work still needs the master, enforced by the nucleus's launch check | Implemented in Rust (`ritus_ligata`), tested (`tests/nucleus_ligatio.rs`, `tests/ligatio_run.rs`); in Lean, `LaunchChecks` carries it and `launch_without_master_only_reads` is proved with no axioms. Branch `colloquium` |
 
-Tests: **325**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
+Tests: **336**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 

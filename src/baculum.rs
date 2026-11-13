@@ -56,6 +56,8 @@ pub struct Baculum {
     pub stirps: Option<virga::Stirps>,
     /// The house's ratification of the Constitution, once read.
     pub lex: Option<Lex>,
+    /// The binding made at a calling (§8.8): its key, and the master's word for it.
+    ligatio: Option<(virga::Clavis, crate::nucleus::state::Ligatio)>,
 }
 
 impl std::fmt::Debug for Baculum {
@@ -93,6 +95,7 @@ impl Baculum {
             virga: None,
             stirps: None,
             lex: None,
+            ligatio: None,
         }
     }
 
@@ -121,6 +124,7 @@ impl Baculum {
             virga: None,
             stirps: None,
             lex: None,
+            ligatio: None,
         }
     }
 
@@ -163,6 +167,7 @@ impl Baculum {
             stirps: Some(v.stirps.clone()),
             virga: Some(v),
             lex: None,
+            ligatio: None,
         })
     }
 
@@ -205,6 +210,34 @@ impl Baculum {
             return Ok((self.wand.fingerprint.clone(), self.signa_magister(digest)?));
         }
         Err("the wand is not present".into())
+    }
+
+    /// Makes the binding (`operator.md` §8.8): a fresh key, vouched for by the master
+    /// until `until` (Unix seconds). Only while the master is open, so only at a calling.
+    pub fn liga(&mut self, until: i64) -> Result<(), String> {
+        use crate::nucleus::state::{digest_ligatio, Ligatio};
+        let key = virga::Clavis::nova()?;
+        let public = key.publica();
+        let signature = self.signa_magister(&digest_ligatio(&public, until))?;
+        self.ligatio = Some((
+            key,
+            Ligatio {
+                key: public,
+                until,
+                signature,
+            },
+        ));
+        Ok(())
+    }
+
+    /// The binding, if one was made.
+    pub fn ligatio(&self) -> Option<&crate::nucleus::state::Ligatio> {
+        self.ligatio.as_ref().map(|(_, l)| l)
+    }
+
+    /// Signs with the binding key: what a faculty that only reads may be granted by.
+    pub fn signa_ligatione(&self, digest: &str) -> Option<String> {
+        self.ligatio.as_ref().map(|(k, _)| signa(k, digest))
     }
 
     /// Lays the master key down: it is wiped, and the wand is no longer unlocked as master.

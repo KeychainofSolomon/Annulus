@@ -277,7 +277,35 @@ pub fn ritus_with(
     args: &[String],
     out: &mut dyn Write,
     err: &mut dyn Write,
+    will: Option<&mut dyn Voluntas>,
+) -> Result<u8, Usage> {
+    ritus_inner(args, out, err, will, None)
+}
+
+/// How long a binding lasts at most, from its calling (`operator.md` §8.8).
+pub const LIGATIO_SECS: i64 = 3 * 3600;
+
+/// A rite that keeps the binding (`operator.md` §8.8) in `held` between rites. With a real
+/// wand, a calling asks for the words and makes a binding; while it lasts, a rite that
+/// only reads and asks a spirit this house keeps held (`--tentus`) is granted by the
+/// binding, with no words asked. Any work asks for the words again. The binding ends when
+/// no spirit is held any more, when it lapses, or when a rite fails.
+pub fn ritus_ligata(
+    args: &[String],
+    out: &mut dyn Write,
+    err: &mut dyn Write,
+    will: Option<&mut dyn Voluntas>,
+    held: &mut Option<Baculum>,
+) -> Result<u8, Usage> {
+    ritus_inner(args, out, err, will, Some(held))
+}
+
+fn ritus_inner(
+    args: &[String],
+    out: &mut dyn Write,
+    err: &mut dyn Write,
     mut will: Option<&mut dyn Voluntas>,
+    mut held: Option<&mut Option<Baculum>>,
 ) -> Result<u8, Usage> {
     let notes: Vec<String> = will
         .as_ref()
@@ -364,10 +392,37 @@ pub fn ritus_with(
         Ok(l) => l,
         Err(e) => return Ok(refuse(&mut say, e)),
     };
-    let taken = wand(&f, Need::Ritus, &mut std::io::stderr());
-    let mut wand = match taken {
-        Ok(w) => w,
-        Err(e) => return Ok(refuse(&mut say, e)),
+    let hora = f.caelum.hora.unwrap_or_else(crate::horae::now);
+    let only_reads = faculty
+        .iter()
+        .all(|c| c.perm == crate::nucleus::Perm::Legere)
+        && reserved.is_empty();
+    let bound = held.as_deref_mut().and_then(|h| {
+        let lasts = h
+            .as_ref()
+            .and_then(|b| b.ligatio())
+            .is_some_and(|l| l.until > hora);
+        (lasts && only_reads && f.caelum.tentus.is_some())
+            .then(|| h.take())
+            .flatten()
+    });
+    let mut wand = match bound {
+        Some(b) => {
+            say("the binding holds: no words are asked".into());
+            b
+        }
+        None => {
+            let mut w = match wand(&f, Need::Ritus, &mut std::io::stderr()) {
+                Ok(w) => w,
+                Err(e) => return Ok(refuse(&mut say, e)),
+            };
+            if held.is_some() && w.verum_est() {
+                if let Err(e) = w.liga(hora + LIGATIO_SECS) {
+                    say(format!("no binding was made: {e}"));
+                }
+            }
+            w
+        }
     };
     let opened = match domus.open(&mut wand) {
         Ok(o) => o,
@@ -500,6 +555,14 @@ pub fn ritus_with(
         Err(e) => {
             say(format!("error: {e}"));
             class = class.max(1);
+        }
+    }
+    if let Some(h) = held {
+        let still_held = !tab::tenti(&marks).is_empty();
+        if still_held && exitus.baculum.ligatio().is_some() {
+            *h = Some(exitus.baculum);
+        } else if !still_held {
+            *h = None;
         }
     }
     Ok(class)

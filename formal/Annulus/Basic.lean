@@ -358,6 +358,8 @@ structure Mech (U : Universe) where
   digestFaculty : (U.Place → U.Perm → Prop) → (U.Place → U.Perm → Prop) →
     U.Hash → U.Hash → U.Hash → U.Hash
   digestManifest : (U.ValidatorId → Option U.Hash) → List U.Hash → U.Hash
+  /-- `operator.md` §8.8: what the master signs to vouch for a binding key until a time. -/
+  digestLigatio : U.Hash → Int → U.Hash
   resembles : List (IxEntry U) → U.Seal → List (Label U) → Prop
   runValidator : U.Code → U.Datum → Option (Label U) → Nat → Option Bool
   apply : Effect U → U.Datum → U.Datum

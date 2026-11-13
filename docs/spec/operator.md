@@ -78,6 +78,7 @@ Each is locked by a passphrase, the Operator's **words**. A copy of the stick wi
 | **the second key** (§4, §5.2): grave commits, grave consecration (`flow.md` §3.3), freeing another program's familiars, lifting a proscription (never a damnation) | master | only outside a session |
 | **amending the Constitution** (`authority.md` §2.5): only releases signed by the owner's wand are genuine law | master | outside any run |
 | **`GERE VIRGAM`** in a Circle: the real wand must be plugged in and its words given | rite | during the rite |
+| **the binding** (§8.8): at a calling, the master vouches for a binding key that may later grant a faculty that only reads | master | at launch, before anything runs |
 
 A program launched without the wand has no faculty, and nothing it does reaches the outside world.
 
@@ -100,6 +101,8 @@ A program launched without the wand has no faculty, and nothing it does reaches 
 - **An interrupted seal** is undone at the next opening from its journal (`annulus.iter`).
 - **What a plain stick cannot do:** someone who copied the stick earlier and later holds both stick and house can put both back together; a lost wand that never learned of its revocation, with every copy of the lineage put back, is not caught. Both need storage that only grows (a hardware key, or an outside witness).
 - **The test wand** (`--virga-probationis`) signs with Ed25519 keys grown from a published seed: forgeable by anyone, marked on every audit, refused by a real wand's house; a real wand will not take over a house the test wand set up.
+
+8.8 **The binding (`ligatio`, the owner's ruling 2026-11-13).** Speaking with a held spirit is not a work, so it does not ask for the words each time. At a calling with the real wand, the master signs a fresh **binding key** and the time it lapses (at most three hours on), and is laid down as ever (§8.3). While a spirit is held (`MANE`, kept in the house: `dynamic.md`), a rite that **only reads** (every grant `legere`, nothing reserved) and asks a spirit the house holds may be granted by the binding key, with the rite key kept from the calling: no words are asked. **Every work still needs the master**: the nucleus accepts a faculty signed by a binding key only when it grants nothing but reading, whatever the program or the layer above asks (proved in Lean: `launch_without_master_only_reads`). The binding ends when no spirit is held, when it lapses, or when a rite fails; then the words are asked again. The binding key lives in memory during sessions, so an attack during a session can reach it, but it can grant no work. [O: the owner's ruling. S, model: the spirit is constrained once at its calling and then speaks under that bond until the licence to depart; the wand commands works, not words.]
 
 ## 9. The mirror (`speculum`, ruling 2026-11-11)
 

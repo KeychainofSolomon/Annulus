@@ -147,6 +147,23 @@ pub struct Auth {
     pub owner: String,
     pub manifest_signature: String,
     pub roots: Roots,
+    /// The binding (`ligatio`, `operator.md` §8.8): a key the master vouched for at a
+    /// calling, which may sign a faculty that only reads, so a held spirit can be asked
+    /// again without the master words. Never a work.
+    pub ligatio: Option<Ligatio>,
+}
+
+/// A binding key, the hour it lapses, and the master's signature on both.
+#[derive(Clone, Debug)]
+pub struct Ligatio {
+    pub key: String,
+    pub until: i64,
+    pub signature: String,
+}
+
+/// What the master signs to vouch for a binding key.
+pub fn digest_ligatio(key: &str, until: i64) -> String {
+    hash_hex(format!("ligatio|1|{key}|{until}").as_bytes())
 }
 
 /// Whether `signature` is the Ed25519 signature of the wand whose fingerprint (its master

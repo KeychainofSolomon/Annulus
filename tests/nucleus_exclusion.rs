@@ -125,6 +125,7 @@ fn state_in(
         revoked: Vec::new(),
         roots: stores.roots(),
         wand: wand(),
+        ligatio: None,
     };
     let mut world = BTreeMap::new();
     if place_exists {

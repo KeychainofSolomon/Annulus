@@ -146,6 +146,7 @@ fn built(index: &[IxEntry], smuggle: bool) -> State {
         revoked: Vec::new(),
         roots: stores.roots(),
         wand: wand(),
+        ligatio: None,
     };
     let world: BTreeMap<Place, (String, Mark)> = [
         ("notes.txt", "hello"),

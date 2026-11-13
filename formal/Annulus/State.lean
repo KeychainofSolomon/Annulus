@@ -69,6 +69,9 @@ structure Auth (U : Universe) where
   indexRoot : U.Hash
   graveRoot : U.Hash
   keysRoot : U.Hash
+  /-- `operator.md` §8.8: the binding, if any: its key, when it lapses, and the master's
+  signature vouching for it. -/
+  ligatio : Option (U.Hash × Int × U.Hash)
 
 structure Sched (U : Universe) where
   current : Option U.Worker
@@ -464,9 +467,16 @@ def LaunchChecks (M : Core U) (σ : State U) : Prop :=
   M.mech.chainKeys σ.keys = σ.auth.keysRoot ∧
   σ.auth.wandLock ≠ .master ∧
   (σ.auth.wandPresent = true → ¬ σ.auth.wandFp ∈ σ.auth.revoked ∧
-    M.mech.verify σ.auth.wandFp
+    (M.mech.verify σ.auth.wandFp
       (M.mech.digestFaculty σ.faculty σ.reserved σ.auth.indexRoot σ.auth.graveRoot
-        σ.auth.keysRoot) σ.auth.facultySig)
+        σ.auth.keysRoot) σ.auth.facultySig ∨
+     -- `operator.md` §8.8: a binding the master vouched for grants only reading
+     ∃ k t c, σ.auth.ligatio = some (k, t, c) ∧
+       M.mech.verify σ.auth.wandFp (M.mech.digestLigatio k t) c ∧
+       (∀ p m, σ.faculty p m → m = U.read) ∧ (∀ p m, ¬ σ.reserved p m) ∧
+       M.mech.verify k
+         (M.mech.digestFaculty σ.faculty σ.reserved σ.auth.indexRoot σ.auth.graveRoot
+           σ.auth.keysRoot) σ.auth.facultySig))
 
 def GraveMatch (M : Core U) (σ : State U) (v : U.Value) (g : Nat) (kid : Option U.ValidatorId) :
     Prop :=

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Ruled by the owner (2026-11-13): a held spirit
+- The hours and the Moon govern the calling, not the stay. `--tentus N@HOUR` declares a spirit held since an open hour of its calling; its window and Moon are checked at that hour, so it may be petitioned after its hours until the Operator gives licence. A hold begun in a closed hour, dated in the future or naming another spirit does nothing. The will is told when its spirit is held past its hour (`Petitio::ultra_horam`). `dynamic.md` §5.1.
+
 ### Outside review by GPT: fixes (2026-11-12)
 - **The anchor is keyed by the house's real path**, so a link cannot name a different, empty anchor. **A house with stores but no anchor is refused** until the owner adopts it once with `annulus adopta` (signature checked first).
 - **One run at a time:** `ritus`, `confirma` and `adopta` hold the house through a lock on `annulus.sera`, released by the operating system when the program ends.

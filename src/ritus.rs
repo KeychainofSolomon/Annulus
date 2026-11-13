@@ -278,7 +278,7 @@ impl Goetia {
         let Some(t) = self.caelum.hora else {
             return Some("the hour is not fixed".into());
         };
-        let t = t as f64;
+        let t = crate::horae::tenta(&self.caelum, spirit.n as i64).unwrap_or(t) as f64;
         if let Err(why) = crate::horae::lunar(t) {
             return Some(why);
         }

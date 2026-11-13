@@ -156,6 +156,7 @@ CIRCULUS RITU goetia {
                 hora: parse_hora("2024-04-13T09:00:00+02:00"),
                 locus: Some((41.9, 12.5)),
                 serenum: Some(true),
+                tentus: None,
             },
             ..Default::default()
         };

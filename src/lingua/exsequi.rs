@@ -36,6 +36,7 @@ pub struct Petitio<'a> {
     pub legenda: Vec<(String, String, Mark)>,
     pub historia: Vec<String>,
     pub aperta: Vec<Outcome>,
+    pub ultra_horam: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -347,6 +348,11 @@ impl<'p> Run<'p> {
                 Vec::new()
             },
             aperta: aperta.clone(),
+            ultra_horam: crate::horae::ultra_horam(
+                asked.spirit.n as i64,
+                &asked.spirit.ranks,
+                &self.rite.caelum,
+            ),
         };
         let will = self.will.as_deref_mut().expect("a will is present");
         let (outcome, actum) = will

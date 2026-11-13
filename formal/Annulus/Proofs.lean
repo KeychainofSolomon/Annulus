@@ -213,6 +213,64 @@ theorem P1_requests (M : Core U) (R : RelRite U) :
   obtain ⟨prog, x, -, hrun, rfl⟩ := hr
   exact (reqInv_run hrun x.len (Nat.le_refl _)).1 q ri pl m hq hh
 
+/-! ### Part is not obedience (the owner's ruling, 2026-11-13; audit 2)
+
+A turn that declares or draws `PARS` marks its proposal, and an examination of a marked
+proposal always holds it, so its judgement is `SUSPENSUM` and it is never committed. -/
+
+theorem will_of_outcome (m : Mode) (o : U.Outcome) : (Will.of m o).outcome = o := by
+  cases m <;> rfl
+
+theorem afterTurn_props {σ : State U} {w : U.Worker} {wi : WInfo U} {p : U.Pid}
+    {rest : List U.Pid} {pi : PInfo U} {o : U.Outcome} {c : Contrib U} {fin : Bool}
+    {l : Label U} :
+    (afterTurn σ w wi p rest pi o c fin l).props p =
+      some { pi with content := turnContent pi c,
+                     status := if fin = true then .complete else pi.status,
+                     pars := pi.pars || U.partOutcome o } := by
+  unfold afterTurn
+  cases c <;> simp [spawnHelper, upd]
+
+/-- A turn whose outcome is part marks the proposal it worked on. -/
+theorem part_turn_marks (M : Core U) (R : RelRite U) :
+    ∀ σ w v c fin σ', Step M R σ (.turn w v c fin) σ' → U.partOutcome v.outcome = true →
+      ∃ p pi, σ'.props p = some pi ∧ pi.pars = true := by
+  intro σ w v c fin σ' h hpart
+  obtain ⟨σ1, hc, -, -, -, rfl⟩ := h
+  cases hc
+  rw [will_of_outcome] at hpart
+  refine ⟨_, _, afterTurn_props, ?_⟩
+  simp [hpart]
+
+/-- An examination of a proposal marked with part holds it, whatever the examiner says. -/
+theorem pars_examined_held (M : Core U) (R : RelRite U) :
+    ∀ σ p a v σ' pi, Step M R σ (.examine p a v) σ' → σ.props p = some pi →
+      pi.pars = true → v = .hold := by
+  intro σ p a v σ' pi h hp hpars
+  obtain ⟨σ1, hc, -⟩ := h
+  cases hc with
+  | examineBy _ _ hp' =>
+      rw [hp] at hp'
+      cases hp'
+      simp [finalVerdict, hpars]
+  | examineNone => rfl
+
+/-- The judgement that follows the examination of a proposal marked with part is
+`SUSPENSUM`: such work is never `RATUM`, so no commit step can follow it. -/
+theorem pars_judged_suspensum (M : Core U) (R : RelRite U) :
+    ∀ σ0 σ1 σ2 p a v d pi, Step M R σ0 (.examine p a v) σ1 → Step M R σ1 (.judge p d) σ2 →
+      σ0.props p = some pi → pi.pars = true → d = .suspensum := by
+  intro σ0 σ1 σ2 p a v d pi h0 h1 hp hpars
+  have hv : v = .hold := pars_examined_held M R σ0 p a v σ1 pi h0 hp hpars
+  obtain ⟨τ, -, -, -, -, rfl⟩ := h0
+  obtain ⟨τ', hc, -⟩ := h1
+  cases hc with
+  | judge hl =>
+      simp at hl
+      obtain ⟨-, rfl⟩ := hl
+      rw [hv]
+      rfl
+
 end Annulus
 
 end

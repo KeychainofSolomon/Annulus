@@ -434,3 +434,30 @@ fn malformed_answers_are_refused() {
         assert_eq!(o.status.code(), Some(1), "{bad}");
     }
 }
+
+// audit 2, finding 2: a reading command must not repair or rewrite a house another run holds
+#[test]
+#[ignore = "audit 2, finding 2: fails until petitiones takes the house's lock"]
+fn audit2_petitiones_does_not_touch_a_house_another_run_holds() {
+    let dir = furfur_folder("audit2-lock");
+    assert!(ask_furfur(&dir).status.success());
+    let house = dir.join(HOUSE);
+    let domus = Domus::new(&house);
+    let _held = domus.lock().expect("this test holds the house, as a sealing run would");
+    let index = house.join(INDEX);
+    let before = fs::metadata(&index).unwrap().len();
+    let journal = format!(
+        "{before}\t{}\t{}\t{}\n-\n",
+        fs::metadata(house.join(VESSEL)).map(|m| m.len()).unwrap_or(0),
+        fs::metadata(house.join(KEYS)).map(|m| m.len()).unwrap_or(0),
+        fs::metadata(house.join(ROOTS)).map(|m| m.len()).unwrap_or(0),
+    );
+    fs::write(house.join(JOURNAL), journal).unwrap();
+    let mut f = fs::OpenOptions::new().append(true).open(&index).unwrap();
+    std::io::Write::write_all(&mut f, b"half-written line of a seal in progress\n").unwrap();
+    drop(f);
+    let during = fs::metadata(&index).unwrap().len();
+    let _ = annulus(&dir, &["petitiones", "--virga-probationis"]);
+    assert!(house.join(JOURNAL).exists(), "petitiones removed the journal of a seal in progress");
+    assert_eq!(fs::metadata(&index).unwrap().len(), during, "petitiones cut back a store another run is writing");
+}

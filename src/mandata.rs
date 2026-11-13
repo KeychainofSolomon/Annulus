@@ -17,6 +17,7 @@ pub const USAGE: &str = "usage: annulus <source.annulus>
        annulus ritus <program.annulus> [--virga STICK | --virga-probationis] [--semen N] [--sors OUTCOME]
                      [--responsa FILE] [--acta FILE] [--domus DIR] [--mundus DIR]
                      [--hora 2026-11-12T15:00:00+01:00] [--locus LAT,LON] [--caelum serenum|turbidum]
+                     [--tentus N@2026-11-12T15:00:00+01:00]
        annulus sanci [--virga STICK | --virga-probationis] [--domus DIR]
        annulus confirma <fingerprint> [--virga STICK | --virga-probationis] [--domus DIR]
        annulus petitiones [--virga STICK | --virga-probationis] [--domus DIR]
@@ -114,6 +115,13 @@ fn flags(args: &[String], allowed: &[&str]) -> Result<(Vec<String>, Flags), Usag
                     "turbidum" => false,
                     _ => return Err(Usage(format!("--caelum takes serenum or turbidum, not {value}"))),
                 })
+            }
+            "--tentus" => {
+                f.caelum.tentus = Some(crate::horae::parse_tentus(value).ok_or_else(|| {
+                    Usage(format!(
+                        "--tentus takes the spirit's number and the hour of its calling, like 2@2026-11-12T15:00:00+01:00, not {value}"
+                    ))
+                })?)
             }
             _ => unreachable!(),
         }
@@ -293,6 +301,7 @@ pub fn ritus_with(
             "--hora",
             "--locus",
             "--caelum",
+            "--tentus",
         ],
     )?;
     let [program] = plain.as_slice() else {
@@ -399,6 +408,12 @@ pub fn ritus_with(
         },
         crate::horae::aetas_lunae(options.caelum.hora.unwrap_or(0) as f64)
     ));
+    if let Some((n, t0)) = options.caelum.tentus {
+        notes.push(format!(
+            "spirit {n} is held since its calling at {}, and has not had licence to depart; its hours are those of its calling",
+            crate::horae::iso(t0)
+        ));
+    }
     let exitus = match run_source_with(
         &source,
         wand,

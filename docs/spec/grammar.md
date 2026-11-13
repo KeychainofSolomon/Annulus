@@ -104,6 +104,7 @@ All [O].
 | `RATUM` / `SUSPENSUM` / `IRRITUM` | "ratified" / "suspended" / "void" | the three outcomes of judged work (`authority.md` §11.2) | [O] ruling 2026-11-11: Paradise, Purgatory and Hell are for beings only (§11.2a) |
 | `VADE IN PACE` | "go in peace" | licence to depart | [S] Arbatel Aph. XXI, "vade in pace ad ordines tuos" |
 | `DIMITTE` | "send away" | dismiss | [O] (kept, ruled 2026-11-10) |
+| `MANE` | "remain" | ends the sitting, the spirit kept held | [O] (ruled 2026-11-13) |
 | `RELEGA` | "banish" | banish; results go to the Vessel | [O] word (kept, ruled 2026-11-10); [S] act: the fire curse (BnF 1524 p215) |
 | `NOMEN` | "name" | references a divine name in the Constitution | [S] binding "by" the names |
 | `SPIRITUS` / `ANGELUS` | "spirit" / "angel" | register types; also refer to an entry by number, declined by its place: nominative `SPIRITUS 34` / `ANGELUS 34` alone, accusative `INVOCA SPIRITUM 34` / `ANGELUM 34`, genitive `SIGILLUM SPIRITUS 34` / `SIGILLUM ANGELI 34` (amended 2026-11-11, as `GERE ANULUM` and `INVOCA REGEM` already are) | [O] |
@@ -161,7 +162,7 @@ attempt        = "TENTA" , block , "CAPE" , identifier , block ;
 
 circle         = "CIRCULUS" , "RITU" , identifier , "{" , intent , { statement } , "}" ;
 intent         = "INTENTIO" , string , ";" ;
-release        = ( "VADE" , "IN" , "PACE" | "DIMITTE" | "RELEGA" ) , expression , ";" ;
+release        = ( "VADE" , "IN" , "PACE" | "DIMITTE" | "RELEGA" | "MANE" ) , expression , ";" ;
 apparatus      = "GERE" , ( "ANULUM" | "VIRGAM" | "HEXAGRAMMUM" | "PENTAGRAMMUM" ) , ";"
                | ( "OFFER" | "APPELLA" | "VETA" ) , expression , ";"
                | "CONSTRINGE" , expression , "PER" , "NOMEN" , string , ";" ;

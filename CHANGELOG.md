@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Ruled by the owner (2026-11-13): a held spirit
+- The hours and the Moon govern the calling, not the stay. `--tentus N@HOUR` declares a spirit held since an open hour of its calling; its window and Moon are checked at that hour, so it may be petitioned after its hours until the Operator gives licence. A hold begun in a closed hour, dated in the future or naming another spirit does nothing. The will is told when its spirit is held past its hour (`Petitio::ultra_horam`). `dynamic.md` §5.1.
+- **`MANE` ("remain")**, a fourth way to end a sitting: the run releases the spirit as `VADE IN PACE` does (A9 and §3.1 unchanged), but records a rite act, so the history says `retentus`, not `dimissus`. `VADE IN PACE` is kept for the licence to depart.
+
 ### Ruled by the owner (2026-11-13): `PARS` is never approved
 - Obedience in part is not obedience. A turn that declares or draws part marks its proposal (`Proposal::pars`); the core then holds it at examination, whatever the work, so it never reaches the world. Test: `lingua_will.rs`. Lean: `PInfo.pars`, `afterTurn` takes the outcome, `finalVerdict` holds (`core.md` §3.1a).
 

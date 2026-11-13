@@ -62,6 +62,7 @@ fn caelum(hora: &str, serenum: Option<bool>) -> Caelum {
         hora: parse_hora(hora),
         locus: Some((41.9, 12.5)),
         serenum,
+        tentus: None,
     }
 }
 
@@ -122,6 +123,7 @@ fn without_a_place_only_earls_may_come() {
         hora: parse_hora("2024-04-13T14:00:00Z"),
         locus: None,
         serenum: Some(true),
+        tentus: None,
     };
     assert!(admit(&rank("earl"), &c).is_ok());
     for r in ["king", "duke", "prince", "marquis", "knight"] {
@@ -158,4 +160,23 @@ fn times_and_places_are_read_strictly() {
     assert_eq!(parse_locus("41.9, 12.5"), Some((41.9, 12.5)));
     assert_eq!(parse_locus("91,0"), None);
     assert_eq!(parse_locus("41.9"), None);
+}
+
+#[test]
+fn a_held_spirit_knows_when_it_is_past_its_hour() {
+    let held = |hora: &str| Caelum {
+        tentus: parse_tentus("11@2024-04-13T09:00:00+02:00"),
+        ..caelum(hora, Some(true))
+    };
+    let duke = rank("duke");
+    assert!(ultra_horam(11, &duke, &held("2024-04-13T15:00:00+02:00")));
+    assert!(!ultra_horam(11, &duke, &held("2024-04-13T10:00:00+02:00")));
+    assert!(!ultra_horam(12, &duke, &held("2024-04-13T15:00:00+02:00")));
+    assert!(!ultra_horam(
+        11,
+        &duke,
+        &caelum("2024-04-13T15:00:00+02:00", Some(true))
+    ));
+    assert!(admit_spiritum(11, &duke, &held("2024-04-20T15:00:00+02:00")).is_ok());
+    assert!(admit_spiritum(11, &duke, &held("2024-04-13T05:00:00+02:00")).is_err());
 }

@@ -337,6 +337,7 @@ impl State {
                 content: Content::Empty,
                 status: PStatus::Pending,
                 carries: vec![author.clone()],
+                pars: false,
             },
         );
         match &to {
@@ -462,6 +463,9 @@ impl State {
             finish,
         ));
         let entry = self.props.get_mut(&prop).expect("checked above");
+        if outcome == Outcome::Pars {
+            entry.pars = true;
+        }
         match &contrib {
             Contrib::Respond(v, d) => {
                 entry.content = Content::Response(*v, d.clone());
@@ -554,7 +558,7 @@ impl State {
             Some(e) if *e != p.author && !p.carries.contains(e) && self.angelic(e) => {
                 let v0 = rite.verdict(self, prop, e);
                 let cb = rite.counterbalance(self, prop);
-                let v = if suspect || self.doubtful(&p.author) {
+                let v = if suspect || self.doubtful(&p.author) || p.pars {
                     Verdict::Hold
                 } else {
                     v0.meet(cb)

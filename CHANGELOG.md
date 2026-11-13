@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+### Ruled by the owner (2026-11-13): `PARS` is never approved
+- Obedience in part is not obedience. A turn that declares or draws part marks its proposal (`Proposal::pars`); the core then holds it at examination, whatever the work, so it never reaches the world. Test: `lingua_will.rs`. Lean: `PInfo.pars`, `afterTurn` takes the outcome, `finalVerdict` holds (`core.md` §3.1a).
+
+### The wand: GPT's review fixed (2026-11-13)
+- V01: a real wand refuses a house it holds no anchor for (adopt it once); V02: only the standard scrypt work; V03: small-order keys and nonces refused; V04: words never read with the echo on, and on Windows asked in the wand's window; V05: `virga perfice` finishes an interrupted making; V06: a seal journal (`annulus.iter`) undoes an interrupted seal. The anchor now also records the lineage the wand has seen. 312 tests, and 21 in `virga`.
+- The wand's window (`virga` with nothing after it): plain Windows controls, dotted word fields with counts.
+
+### The real wand (2026-11-12, the owner's request; step 2d, first half)
+- **`virga`** (new repository `KeychainofSolomon/72Virga`, pinned by commit): the Operator's wand on a USB stick, the only key. Two secrets, master and rite, each locked by the Operator's words (scrypt + ChaCha20-Poly1305); Ed25519 signatures; no outside crates; checked against RFC 8032, 7914, 8439 and FIPS 180-4 vectors and against Python's `cryptography`. `virga fac` makes the wand and its spare at one stroke on virgin sticks; `revoca`, `adde`, `inspice`, `proba`, `quaere`.
+- **Every test signature replaced** (audit A01–A03): the nucleus's `verify` is Ed25519 over the wand's master public key, which is its fingerprint. `sign_for_test` exists only in test builds (`probatio`). The test wand signs with published keys and is refused by a real wand's house.
+- **The master secret is never held in a rite:** asked at launch, it signs the faculty and is laid down before the nucleus is built. The rite key makes the wand present for `GERE VIRGAM` and seals the stores; the master's bond vouches for it in the roots record.
+- **`annulus sanci`:** the owner ratifies the Constitution for a house (`annulus.lex`). A real wand's house refuses to launch without it, or with one signed by a key outside the lineage.
+- **Lineage and anchors:** the house keeps the wands' lineage (`annulus.virgae`) and passes revocations to every wand; the anchors live on the wand, which now remembers the latest stores it has seen. Roots records sign their own line number, so an old record replayed at the end is refused.
+- **A model's will runs with the real wand** (the test-wand gate is gone).
+- **Format change:** stores sealed before this change (test-wand houses only) are refused; make a new house. 308 tests, and 18 in `virga`.
+
 ### Outside review by GPT: fixes (2026-11-12)
 - **The anchor is keyed by the house's real path**, so a link cannot name a different, empty anchor. **A house with stores but no anchor is refused** until the owner adopts it once with `annulus adopta` (signature checked first).
 - **One run at a time:** `ritus`, `confirma` and `adopta` hold the house through a lock on `annulus.sera`, released by the operating system when the program ends.

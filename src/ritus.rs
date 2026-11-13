@@ -199,6 +199,7 @@ impl Goetia {
         };
         let mut invs: BTreeMap<InvId, Seal> = BTreeMap::new();
         let mut asked: BTreeMap<Pid, (Seal, String)> = BTreeMap::new();
+        let mut retained: BTreeSet<InvId> = BTreeSet::new();
         let mut out = Vec::new();
         for label in state.audit.entries() {
             match label {
@@ -235,6 +236,13 @@ impl Goetia {
                         ));
                     }
                 }
+                Label::Act(RiteAct::Mane(inv), _, true, _) => {
+                    if let Some(seal) = invs.get(inv) {
+                        out.push(format!("retentus {}", name(seal)));
+                        retained.insert(*inv);
+                    }
+                }
+                Label::Release(inv, _) if retained.contains(inv) => {}
                 Label::Release(inv, _) => {
                     if let Some(seal) = invs.get(inv) {
                         out.push(format!("dimissus {}", name(seal)));
@@ -487,7 +495,9 @@ impl Rite for Goetia {
             RiteAct::Constringe(inv, name) => {
                 spirit_of(inv).is_some() && crate::lingua::registra::divine_names().contains(name)
             }
-            RiteAct::Appella(inv) | RiteAct::Veta(inv) => spirit_of(inv).is_some(),
+            RiteAct::Appella(inv) | RiteAct::Veta(inv) | RiteAct::Mane(inv) => {
+                spirit_of(inv).is_some()
+            }
         }
     }
 

@@ -366,6 +366,9 @@ impl Parser {
         if self.accept("RELEGA") {
             return self.release(Release::Relega, pos);
         }
+        if self.accept("MANE") {
+            return self.release(Release::Mane, pos);
+        }
         if self.accept("GERE") {
             let instrument = if self.accept("ANULUM") {
                 Instrument::Anulum

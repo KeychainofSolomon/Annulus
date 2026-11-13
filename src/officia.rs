@@ -110,13 +110,14 @@ pub fn same_account(given: &str, truth: &str) -> bool {
     lines(given) == lines(truth)
 }
 
-pub const HISTORY_WORDS: [&str; 6] = [
+pub const HISTORY_WORDS: [&str; 7] = [
     "invocatus",
     "recusatus",
     "petitum",
     "iudicatum",
     "commissum",
     "dimissus",
+    "retentus",
 ];
 
 pub fn account_of_past(given: &str, history: &[String]) -> Option<bool> {

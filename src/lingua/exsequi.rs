@@ -634,6 +634,17 @@ impl<'p> Run<'p> {
                 let inv = self.inv_of(e)?;
                 match kind {
                     Release::Relega => self.op(|_| true, |s, _| s.relegate(inv)),
+                    Release::Mane => {
+                        let live = self
+                            .state
+                            .invs
+                            .get(&inv)
+                            .is_some_and(|i| i.status == crate::nucleus::InvStatus::Live);
+                        if live {
+                            self.op(|_| true, |s, r| s.act(r, &RiteAct::Mane(inv)))?;
+                        }
+                        self.op(|_| true, |s, _| s.release(inv))
+                    }
                     _ => self.op(|_| true, |s, _| s.release(inv)),
                 }
             }

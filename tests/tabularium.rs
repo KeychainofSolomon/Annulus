@@ -1,3 +1,4 @@
+use annulus::baculum::Baculum;
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -87,7 +88,7 @@ fn every_entry_kind_survives_the_round_trip() {
     let stores = every_kind();
     let marks: BTreeSet<Place> = [awkward("q.txt")].into();
     seal_fresh(&dir, &stores, &marks);
-    let opened = Domus::new(&dir).open(&test_wand()).unwrap();
+    let opened = Domus::new(&dir).open(&mut test_wand()).unwrap();
     assert_eq!(opened.stores.index.entries(), stores.index.entries());
     assert_eq!(opened.stores.vessel.entries(), stores.vessel.entries());
     assert_eq!(opened.stores.keys.entries(), stores.keys.entries());
@@ -102,14 +103,14 @@ fn appending_keeps_earlier_entries_and_their_chain() {
     let mut stores = every_kind();
     seal_fresh(&dir, &stores, &BTreeSet::new());
     let domus = Domus::new(&dir);
-    let opened = domus.open(&test_wand()).unwrap();
+    let opened = domus.open(&mut test_wand()).unwrap();
     stores
         .index
         .push(IxEntry::Suspect("goetia:2:agares".into()));
     domus
         .seal(&stores, opened.counts, &BTreeSet::new(), &test_wand())
         .unwrap();
-    let again = domus.open(&test_wand()).unwrap();
+    let again = domus.open(&mut test_wand()).unwrap();
     assert_eq!(again.stores.index.entries(), stores.index.entries());
     assert_eq!(
         fs::read_to_string(dir.join(INDEX)).unwrap().lines().count(),
@@ -118,7 +119,7 @@ fn appending_keeps_earlier_entries_and_their_chain() {
 }
 
 fn refused(dir: &Path) -> String {
-    match Domus::new(dir).open(&test_wand()) {
+    match Domus::new(dir).open(&mut test_wand()) {
         Ok(_) => panic!("tampered stores were opened"),
         Err(e) => e,
     }
@@ -199,13 +200,13 @@ fn a_forged_or_unsigned_roots_record_refuses() {
     let path = dir.join(ROOTS);
     let line = fs::read_to_string(&path).unwrap();
     let mut f: Vec<String> = line.trim_end().split('\t').map(String::from).collect();
-    f[5] = "0".repeat(64);
+    f[7] = "0".repeat(128);
     fs::write(&path, f.join("\t") + "\n").unwrap();
     assert!(refused(&dir).contains("rolled back or replaced"));
     let unanchored =
         std::env::temp_dir().join(format!("annulus-unanchored-{}", std::process::id()));
     let e = Domus::anchored(&dir, &unanchored)
-        .adopt(&test_wand())
+        .adopt(&mut test_wand())
         .expect_err("an unsigned record cannot be adopted");
     assert!(e.contains("not signed"), "{e}");
 }
@@ -213,15 +214,12 @@ fn a_forged_or_unsigned_roots_record_refuses() {
 #[test]
 fn stores_sealed_by_another_wand_refuse() {
     let dir = house("otherwand");
-    let other = Wand {
-        fingerprint: "alia-virga".into(),
-        ..test_wand()
-    };
+    let mut other = Baculum::probationis_nominis("alia-virga");
     Domus::new(&dir)
         .seal(&every_kind(), [0, 0, 0], &BTreeSet::new(), &other)
         .unwrap();
     assert!(refused(&dir).contains("another wand"));
-    assert!(Domus::new(&dir).open(&other).is_ok());
+    assert!(Domus::new(&dir).open(&mut other).is_ok());
 }
 
 #[test]
@@ -247,7 +245,7 @@ fn without_the_wand_nothing_is_sealed() {
 #[test]
 fn a_fresh_house_installs_the_vessel() {
     let dir = house("fresh");
-    let opened = Domus::new(&dir).open(&test_wand()).unwrap();
+    let opened = Domus::new(&dir).open(&mut test_wand()).unwrap();
     assert!(opened.roots.is_none());
     assert_eq!(opened.stores.vessel.len(), 3);
 }

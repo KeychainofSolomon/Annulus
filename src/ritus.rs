@@ -1,10 +1,9 @@
 use std::collections::{BTreeMap, BTreeSet};
 
+use crate::baculum::Baculum;
 use crate::lingua::check::Checked;
 use crate::lingua::registra::{Register, Spirit};
-use crate::nucleus::state::{
-    digest_constitution, digest_faculty, fingerprint_validator, sign_for_test, Roots,
-};
+use crate::nucleus::state::{digest_constitution, digest_faculty, fingerprint_validator, Roots};
 use crate::nucleus::*;
 
 pub const EXAMINATOR: &str = "constitutio:angelicus";
@@ -55,22 +54,12 @@ pub fn constitution() -> Constitution {
     c
 }
 
-pub fn test_wand() -> Wand {
-    Wand {
-        fingerprint: "virga-probationis".to_string(),
-        present: true,
-        master_unlocked: false,
-        test: true,
-    }
+pub fn test_wand() -> Baculum {
+    Baculum::probationis()
 }
 
-pub fn no_wand() -> Wand {
-    Wand {
-        fingerprint: String::new(),
-        present: false,
-        master_unlocked: false,
-        test: false,
-    }
+pub fn no_wand() -> Baculum {
+    Baculum::nullum()
 }
 
 pub fn faculty_of(checked: &Checked) -> (BTreeSet<Cap>, BTreeSet<Cap>, BTreeMap<String, u64>) {
@@ -98,28 +87,45 @@ pub fn faculty_of(checked: &Checked) -> (BTreeSet<Cap>, BTreeSet<Cap>, BTreeMap<
     (faculty, reserved, ink)
 }
 
+/// Prepares the launch: the master key signs the faculty, then is laid down before the
+/// nucleus is built, so that no Circle ever opens while it is held.
 pub fn launch(
     checked: &Checked,
-    wand: Wand,
+    baculum: &mut Baculum,
     stores: Stores,
     world: BTreeMap<Place, (String, Mark)>,
     recorded: Option<Roots>,
 ) -> Launch {
     let constitution = constitution();
     let (faculty, reserved, ink) = faculty_of(checked);
-    let owner = test_wand().fingerprint;
     let roots = recorded.unwrap_or_else(|| roots_of(&stores));
-    let revoked = Vec::new();
-    let auth = Auth {
-        faculty_signature: sign_for_test(
-            &wand.fingerprint,
-            &digest_faculty(&faculty, &reserved, &roots),
+    let revoked = baculum.revocatae();
+    let faculty_signature = if baculum.present {
+        baculum
+            .signa_magister(&digest_faculty(&faculty, &reserved, &roots))
+            .unwrap_or_default()
+    } else {
+        String::new()
+    };
+    let (owner, manifest_signature) = match (&baculum.lex, baculum.test) {
+        (Some(lex), _) if baculum.trusts(&lex.owner) => (lex.owner.clone(), lex.signature.clone()),
+        (Some(_), _) => (String::new(), String::new()),
+        (None, true) => (
+            baculum.fingerprint.clone(),
+            baculum
+                .signa_magister(&digest_constitution(&constitution, &revoked))
+                .unwrap_or_default(),
         ),
-        manifest_signature: sign_for_test(&owner, &digest_constitution(&constitution, &revoked)),
+        (None, false) => (String::new(), String::new()),
+    };
+    baculum.dimitte_magistrum();
+    let auth = Auth {
+        faculty_signature,
+        manifest_signature,
         owner,
         revoked,
         roots,
-        wand,
+        wand: baculum.wand(),
     };
     Launch {
         simulated: true,

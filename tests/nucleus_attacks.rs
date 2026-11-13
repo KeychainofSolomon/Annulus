@@ -1,7 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use annulus::nucleus::state::{
-    digest_constitution, digest_faculty, fingerprint_validator, sign_for_test,
+    digest_constitution, digest_faculty, fingerprint_validator, sign_for_test, test_key,
 };
 use annulus::nucleus::*;
 
@@ -88,7 +88,7 @@ fn brevis(data: &str, _origin: &str, fuel: &mut u64) -> Option<bool> {
 
 fn wand() -> Wand {
     Wand {
-        fingerprint: "test-wand".to_string(),
+        fingerprint: test_key("test-wand"),
         present: true,
         master_unlocked: false,
         test: true,
@@ -141,7 +141,7 @@ fn built(index: &[IxEntry], smuggle: bool) -> State {
             "test-wand",
             &digest_faculty(&faculty, &reserved, &stores.roots()),
         ),
-        owner: "owner-wand".to_string(),
+        owner: test_key("owner-wand"),
         manifest_signature: sign_for_test("owner-wand", &digest_constitution(&signed, &[])),
         revoked: Vec::new(),
         roots: stores.roots(),

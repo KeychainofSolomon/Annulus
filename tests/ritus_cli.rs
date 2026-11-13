@@ -1,3 +1,4 @@
+use annulus::baculum::Baculum;
 use std::collections::BTreeSet;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -154,7 +155,7 @@ fn an_index_entry_survives_two_runs() {
         let o = ask_furfur(&dir);
         assert_eq!(o.status.code(), Some(0), "{}", stderr(&o));
     }
-    let opened = Domus::new(&house).open(&test_wand()).unwrap();
+    let opened = Domus::new(&house).open(&mut test_wand()).unwrap();
     assert_eq!(
         opened.stores.index.entries().first(),
         Some(&IxEntry::Proscribe("goetia:1:bael".into(), vec![]))
@@ -195,10 +196,7 @@ fn a_missing_roots_record_refuses_to_launch() {
 #[test]
 fn a_roots_record_of_another_wand_refuses_to_launch() {
     let dir = furfur_folder("otherwand");
-    let other = Wand {
-        fingerprint: "alia-virga".into(),
-        ..test_wand()
-    };
+    let other = Baculum::probationis_nominis("alia-virga");
     Domus::new(&dir.join(HOUSE))
         .seal(
             &Stores::install(&other),

@@ -500,3 +500,11 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 
 - Review findings V01–V06 and the lineage point fixed (STATUS, security table). `virga` at `f38ee9c`: exact scrypt work, small-order refusal, fail-closed words, `perfice`, the Windows window (`src/fenestra.rs`, plain Win32, no crates; Annulus's words go through `virga::verba::roga_plura`). Annulus: `open` refuses a missing anchor for a real wand; anchor holds `n, hash, lineage length, lineage head`; seal journal `annulus.iter` with `recover()` at `open`/`adopt`.
 - The owner made a trial wand on D:\ with the spare in F:\VirgaSpare (to move to a stick). Made before these fixes; it stays valid (standard work, random keys).
+
+## 2026-11-13, night (the owner asleep; "keep fixing this batch")
+
+- Ruled by the owner: `PARS` is never approved (core `Proposal::pars`, held at examination; Lean `PInfo.pars`, `afterTurn` takes the outcome, `finalVerdict`; `core.md` §3.1a). Lean CI passes.
+- Crash tests: test builds stop after any of the seal's nine writes (`ANNULUS_PROBATIO_CADE`); the next runs recover and seal (`virga_cli.rs`).
+- `virga` 331e77f: no planted-link writes, revoked wands give no key, words wiped (`Verba`), a lock on the wand for lineage writes, words at most 256 characters. CI green on Windows and Linux for both repositories.
+- Spiri72: the book is read one bounded line at a time (pushed to `main`); branch `virga-vera` pins Annulus to this pull request, 86 tests pass; merge it after this one.
+- Not done, open: crash while writing the world after the seal; Spiri72's sessions still use the test wand for each rite.

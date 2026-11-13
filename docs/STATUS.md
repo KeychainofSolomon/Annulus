@@ -21,7 +21,7 @@ Last updated: 2026-11-13, 01:30 (branch `virga-vera`). **This page is updated wi
 | **`PRAETERITA`** (the present run): a spirit recounts the run's past, one claim per line in the history's words; the angel checks each against the history built from the audit | Implemented and tested: false claims and Berith's lies caught. The previous run (`"prior"`) not yet |
 | Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
 
-Tests: **314**, debug and release (and 22 in `virga`), on Linux here; Windows and Linux in CI.
+Tests: **314**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
@@ -31,6 +31,10 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Date | Breach | Fix |
 |---|---|---|
+| 2026-11-13 | (GPT, third report, V-03) A revoked wand's secrets still opened | `virga` refuses to unlock a revoked wand's secrets; Annulus also refuses the wand before any act |
+| 2026-11-13 | (V-04) The words stayed in memory after use | Words are handed back as `Verba`, overwritten when dropped (copies the system makes are beyond reach) |
+| 2026-11-13 | (V-05) Two acts on one wand at once could each write the lineage | The wand is locked while its lineage is written, and the copy on the stick is read again first; the second act is refused |
+| 2026-11-13 | (Second review, Spiri72) The spirit's book was read whole, then indexed again | Read one bounded line at a time; recall keeps only the question's terms |
 | 2026-11-13 | (GPT, second review) The wand rewrote its lineage through a fixed temporary name, so a link planted there redirected the write | Temporary files get an unpredictable name and are created new, never through an existing name |
 | 2026-11-13 | (GPT review of the wand, V01) A wand whose anchor was deleted accepted an older, validly signed house | A real wand refuses a house it holds no anchor for; the Operator adopts it (`annulus adopta`). A spare's first use of a house is an adoption |
 | 2026-11-13 | (V02) A doctored wand file could ask for 2 GiB of scrypt work before the words were tried | Only the standard work is admitted |
@@ -75,7 +79,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The office's form enforced in the core, not only by the angel | Open (core audit 1, #4) |
 | Rust and Lean drift: validator manifest, Circle binding of values, ink without a wand, forced outcomes, the grave store, a refused `CONSECRA` | Open (core audit 1, #8) |
 | The anchor can itself be deleted by someone with access to it | **Closed** for a real wand: the anchor is on the wand (a rollback is caught by each wand that saw the later state). The test wand still keeps it in a folder |
-| The wand's words are kept in ordinary memory while they are typed (the opened keys are wiped) | Open, minor |
+| Copies of the words made by the system or the window controls | Beyond the program's reach (its own copies are wiped) |
 | Someone who copied the wand's stick earlier, and later holds both the stick and the house, can put both back to that earlier state together | Inherent to a plain stick (no monotonic storage); a hardware key would close it |
 | A lost wand that never learned of its revocation, with every copy of the lineage put back | Inherent (review): needs an outside witness |
 | The wand's window and the Windows randomness | Compiled by CI; **owed: the owner's first use** |

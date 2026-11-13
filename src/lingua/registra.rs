@@ -40,6 +40,9 @@ pub struct Spirit {
     pub label: String,
     pub ranks: Vec<String>,
     pub offices: Vec<String>,
+    /// The arts its teaching offices name (`offices.md` §5.1), in register
+    /// order, each once.
+    pub artes: Vec<String>,
     pub legions: u32,
     pub veracity: String,
     pub veracity_condition: String,
@@ -153,6 +156,16 @@ pub fn load(rite: &'static str, source: &str) -> Result<Register, String> {
             .iter()
             .filter_map(|o| o.get("kind").and_then(Json::text).map(str::to_string))
             .collect();
+        let mut artes: Vec<String> = Vec::new();
+        for office in entry.get("offices").map(Json::list).unwrap_or(&[]) {
+            for art in office.get("artes").map(Json::list).unwrap_or(&[]) {
+                if let Some(a) = art.text() {
+                    if !artes.iter().any(|x| x == a) {
+                        artes.push(a.to_string());
+                    }
+                }
+            }
+        }
         let aliases = entry
             .get("aliases")
             .map(Json::list)
@@ -179,6 +192,7 @@ pub fn load(rite: &'static str, source: &str) -> Result<Register, String> {
             label,
             ranks,
             offices,
+            artes,
             legions: entry.get("legions").and_then(Json::number).unwrap_or(1.0) as u32,
             veracity: text("veracity"),
             veracity_condition: text("veracity_condition"),

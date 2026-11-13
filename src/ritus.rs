@@ -23,6 +23,10 @@ pub fn instrument(word: &str) -> Option<Instrument> {
 pub struct Goetia {
     pub register: &'static Register,
     pub caelum: crate::horae::Caelum,
+    /// The question of each request, kept by the rite layer for its own
+    /// examiner. The core never sees it: a question chooses nothing that is
+    /// touched (A14); it only tells the teaching examiner what was asked.
+    pub quaestiones: BTreeMap<Pid, String>,
 }
 
 fn ita_non(data: &str, _origin: &str, fuel: &mut u64) -> Option<bool> {
@@ -148,6 +152,7 @@ impl Goetia {
         Goetia {
             register,
             caelum: crate::horae::Caelum::default(),
+            quaestiones: BTreeMap::new(),
         }
     }
 
@@ -378,6 +383,20 @@ impl Rite for Goetia {
                 } else {
                     Verdict::Reject
                 }
+            }
+            Content::Response(_, text) if form.office == "DOCTRINA" => {
+                let beyond = crate::officia::cited(text)
+                    .iter()
+                    .any(|place| !req.handed.contains(&Cap::new(place, Perm::Legere)));
+                if beyond {
+                    return Verdict::Reject;
+                }
+                let artes = self
+                    .spirit(&p.author)
+                    .map(|s| s.artes.clone())
+                    .unwrap_or_default();
+                let quaestio = self.quaestiones.get(&prop).map_or("", String::as_str);
+                crate::doctrina::verdict(quaestio, text, &artes)
             }
             Content::Response(_, text) => {
                 let beyond = crate::officia::cited(text)

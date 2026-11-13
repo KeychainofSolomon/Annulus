@@ -14,6 +14,10 @@ KINDS = {
     "INVISIBILITAS", "ILLUSIO", "TRANSMUTATIO", "AEDIFICATIO", "EVERSIO", "TEMPESTAS", "NEX", "MORBUS",
     "MORTUI", "MENS", "CUSTODIA", "CONSECRATIO", "TUTELA", "LONGAEVITAS", "APPELLATIO", "PROBATIO", "NULLUM",
 }
+ARTES = {
+    "grammatica", "dialectica", "rhetorica", "arithmetica", "geometria", "musica", "astronomia",
+    "astrologia", "mechanica", "philosophia", "poetica", "chiromantia", "pyromantia",
+}
 VERACITY = {"VERAX", "COACTUS", "MENDAX", "FIDUS", "TACITUS"}
 WITNESSES = {"W", "S", "G", "M", "K", "F", "A"}
 QUARTER_KINGS = {"East": "Amaymon", "South": "Gorson", "North": "Zymymar", "West": "Goap"}
@@ -62,6 +66,12 @@ def validate(register):
         for office in s["offices"]:
             if office["kind"] not in KINDS:
                 errors.append(f"{tag}: unknown office kind {office['kind']}")
+            artes = office.get("artes")
+            if office["kind"] == "DOCTRINA":
+                if not artes or any(a not in ARTES for a in artes) or len(set(artes)) != len(artes):
+                    errors.append(f"{tag}: a DOCTRINA office needs its arts (offices.md §5.1)")
+            elif artes is not None:
+                errors.append(f"{tag}: only DOCTRINA names arts")
     return errors
 
 
@@ -107,7 +117,8 @@ def render(register, names):
         lines.append("**Offices:**")
         lines.append("")
         for o in s["offices"]:
-            lines.append(f"- `{o['kind']}` ({o['witness']}): {o['text']}")
+            artes = f" *Arts:* {', '.join(o['artes'])}." if o.get("artes") else ""
+            lines.append(f"- `{o['kind']}` ({o['witness']}): {o['text']}{artes}")
         lines.append("")
         if s["malice"]:
             lines.append("**Malice:**")

@@ -170,6 +170,7 @@ pub fn run_with(
                 hora: Some(options.caelum.hora.unwrap_or_else(crate::horae::now)),
                 ..options.caelum
             },
+            quaestiones: BTreeMap::new(),
         },
         sim: Sim::new(options.semen),
         sors: options.sors,
@@ -470,6 +471,54 @@ impl<'p> Run<'p> {
                     )
                 }
                 _ => truth,
+            };
+            let id = self.fresh_value();
+            return Contrib::Respond(id, text);
+        }
+        if asked.office == "DOCTRINA" {
+            // The simulated teacher answers every asked claim with the
+            // library's own value; the liar adds a digit to each, so every
+            // claim is false; the partial one gives half and says so.
+            let q = asked.quaestio.clone().unwrap_or_default();
+            let solved: Vec<(String, String)> = crate::doctrina::asked(&q)
+                .iter()
+                .filter_map(|c| {
+                    let v = crate::doctrina::solve(c)?;
+                    Some((format!("{}: {}", c.kind, c.what), v))
+                })
+                .collect();
+            let lines = |claims: &[(String, String)], lie: bool| {
+                claims
+                    .iter()
+                    .map(|(what, v)| format!("{what} = {v}{}", if lie { "1" } else { "" }))
+                    .collect::<Vec<_>>()
+                    .join("\n")
+            };
+            let lesson = |claims: &str| {
+                format!(
+                    "[simulatum: {}, DOCTRINA, {q:?}]\n{}\n{claims}",
+                    spirit.name,
+                    crate::doctrina::TESTIMONIUM
+                )
+            };
+            let text = match outcome {
+                Outcome::Pars => format!(
+                    "{}{}",
+                    lesson(&lines(&solved[..solved.len() / 2], false)),
+                    crate::officia::INCOMPLETE
+                ),
+                Outcome::Mendacium => lesson(&lines(&solved, true)),
+                Outcome::Malitia => {
+                    let secret = self
+                        .state
+                        .world
+                        .keys()
+                        .find(|p| !asked.places.contains(p))
+                        .cloned()
+                        .unwrap_or_else(|| "arcanum".to_string());
+                    format!("[locus: {secret}] {}", lesson(&lines(&solved, false)))
+                }
+                _ => lesson(&lines(&solved, false)),
             };
             let id = self.fresh_value();
             return Contrib::Respond(id, text);
@@ -872,6 +921,9 @@ impl<'p> Run<'p> {
             places: places.clone(),
         };
         let prop = self.op(|_| true, |s, r| s.request(r, Addressee::Spirit(inv), &form))?;
+        if let Some(q) = &quaestio {
+            self.rite.quaestiones.insert(prop, q.clone());
+        }
         self.asked.insert(
             prop,
             Asked {

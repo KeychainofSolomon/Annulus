@@ -25,7 +25,9 @@ pub fn signature(kind: &str) -> Option<Signature> {
         quaestio: false,
     };
     Some(match kind {
-        "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" => telling,
+        "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" | "DOCTRINA" => {
+            telling
+        }
         "PRAETERITA" => telling,
         "VIRTUTES" => Signature {
             class: Class::Telling,
@@ -45,7 +47,7 @@ pub fn places(kind: &str, mode: Option<&str>, n: usize) -> Option<Vec<Vec<Perm>>
     match (kind, mode) {
         (
             "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" | "VIRTUTES"
-            | "PRAETERITA",
+            | "PRAETERITA" | "DOCTRINA",
             _,
         ) => Some(all(Legere)),
         ("AEDIFICATIO", _) if n >= 1 => Some(all(Creare)),

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### `DOCTRINA`: the spirits teach, and the angel checks the lesson (2026-11-13)
+- Every teaching office names its arts in the register (`artes`, `offices.md` §5.1); the builder refuses one without them. Interpretive readings are marked [O] for the owner.
+- A lesson ends with a certificate (`TESTIMONIUM`) of claims the library recomputes: exact arithmetic, plane geometry, and for astronomy the computus (Gregorian and Julian Easter), weekdays, Julian dates and the Moon's age. Every asked claim answered and every claim true is `APPROVE`; a false claim or a citation beyond the handed places is `REJECT`; anything else holds (`library.md` §3.1). `src/doctrina.rs`; tests `doctrina.rs`, `lingua_doctrina.rs`.
+- The rite layer keeps each request's question for its examiner; the core's request form is unchanged.
+
 ### Ruled by the owner (2026-11-13): a held spirit
 - The hours and the Moon govern the calling, not the stay. `--tentus N@HOUR` declares a spirit held since an open hour of its calling; its window and Moon are checked at that hour, so it may be petitioned after its hours until the Operator gives licence. A hold begun in a closed hour, dated in the future or naming another spirit does nothing. The will is told when its spirit is held past its hour (`Petitio::ultra_horam`). `dynamic.md` §5.1.
 - **`MANE` ("remain")**, a fourth way to end a sitting: the run releases the spirit as `VADE IN PACE` does (A9 and §3.1 unchanged), but records a rite act, so the history says `retentus`, not `dimissus`. `VADE IN PACE` is kept for the licence to depart.

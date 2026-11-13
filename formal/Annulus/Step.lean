@@ -144,7 +144,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       CoreStep M R σ (.request q p (.spirit i) f inst.main asked)
         { σ with
           reqs := upd σ.reqs q (some ⟨.spirit i, f, asked, p, inst.main⟩),
-          props := upd σ.props p (some ⟨inst.spiritSeal, q, .empty, .pending, [inst.spiritSeal], false⟩),
+          props := upd σ.props p (some ⟨inst.spiritSeal, q, .empty, .pending, [inst.spiritSeal], false, U.telling f, false⟩),
           workers := upd σ.workers inst.main (some { wi with queue := wi.queue ++ [p] }),
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }
@@ -162,7 +162,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       CoreStep M R σ (.request q p (.angel a) f w asked)
         { σ with
           reqs := upd σ.reqs q (some ⟨.angel a, f, asked, p, w⟩),
-          props := upd σ.props p (some ⟨a, q, .empty, .pending, [a], false⟩),
+          props := upd σ.props p (some ⟨a, q, .empty, .pending, [a], false, U.telling f, false⟩),
           workers := upd σ.workers w (some ⟨some (.angel a), none, asked, [p], true, false⟩),
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }

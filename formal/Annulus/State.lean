@@ -41,6 +41,10 @@ structure PInfo (U : Universe) where
   carries : List U.Seal
   /-- A turn on it declared or drew part: its work is never approved, only held. -/
   pars : Bool
+  /-- Its request was for a telling office (words) rather than a working one (work). -/
+  telling : Bool
+  /-- A turn answered in the wrong form (core audit 1, #4): held, never approved. -/
+  misformed : Bool
 
 /-- §9.3a: a validator entry, with its work limit as fuel. -/
 structure Validator (U : Universe) where
@@ -224,7 +228,7 @@ def damnIfMortal (s : U.Seal) (X : List (IxEntry U)) : List (IxEntry U) :=
   if U.angelic s then X else X ++ [.damn s]
 
 def finalVerdict (M : Core U) (σ : State U) (pi : PInfo U) (v0 cb : Verdict) : Verdict :=
-  if Doubtful M σ pi.author ∨ pi.pars = true then .hold else v0.meet cb
+  if Doubtful M σ pi.author ∨ pi.pars = true ∨ pi.misformed = true then .hold else v0.meet cb
 
 def madeMark (σ : State U) (m : Made U) : Mark :=
   joinAll (m.ins.map σ.mark ++ m.places.map (fun p => (σ.world p).2) ++
@@ -335,11 +339,18 @@ def turnContent (pi : PInfo U) : Contrib U → Content U
        | _ => .work es)
   | _ => pi.content
 
+/-- §3.1b: words for a working office, or work for a telling one. -/
+def wrongForm (pi : PInfo U) : Contrib U → Bool
+  | .respond _ _ => !pi.telling
+  | .effects _ => pi.telling
+  | _ => false
+
 def afterTurn (σ : State U) (w : U.Worker) (wi : WInfo U) (p : U.Pid) (rest : List U.Pid)
     (pi : PInfo U) (o : U.Outcome) (c : Contrib U) (fin : Bool) (l : Label U) : State U :=
   let pi' : PInfo U :=
     { pi with content := turnContent pi c, status := if fin = true then .complete else pi.status,
-              pars := pi.pars || U.partOutcome o }
+              pars := pi.pars || U.partOutcome o,
+              misformed := pi.misformed || wrongForm pi c }
   let wi' : WInfo U := if fin = true then { wi with queue := rest } else wi
   let σa : State U :=
     { σ with

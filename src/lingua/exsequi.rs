@@ -870,6 +870,7 @@ impl<'p> Run<'p> {
             office: office.clone(),
             mode: mode.clone(),
             places: places.clone(),
+            telling: sig.class == crate::officia::Class::Telling,
         };
         let prop = self.op(|_| true, |s, r| s.request(r, Addressee::Spirit(inv), &form))?;
         self.asked.insert(

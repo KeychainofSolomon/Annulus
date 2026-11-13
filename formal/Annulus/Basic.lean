@@ -40,6 +40,9 @@ structure Universe where
   killOutcome : Outcome → Prop
   /-- The outcome `PARS`: obedience only in part (the owner's ruling, 2026-11-13). -/
   partOutcome : Outcome → Bool
+  /-- The office's class, fixed by the language (`offices.md` §1, `core.md` §3.1b):
+  `true` for a telling office (answered in words), `false` for a working one. -/
+  telling : ReqForm → Bool
   angelOpen : Outcome → Prop
   declarable : Outcome → Prop
   highConsequence : Verb → Prop

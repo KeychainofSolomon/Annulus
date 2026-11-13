@@ -185,6 +185,14 @@ fn form(places: &[&str]) -> ReqForm {
         office: "opus".to_string(),
         mode: None,
         places: places.iter().map(|p| p.to_string()).collect(),
+        telling: false,
+    }
+}
+
+fn told() -> ReqForm {
+    ReqForm {
+        telling: true,
+        ..form(&[])
     }
 }
 
@@ -402,7 +410,7 @@ fn a_validator_the_constitution_does_not_list_consecrates_nothing() {
     let mut s = launched(&[]);
     let inv = invoked(&mut s, &rite, FURFUR);
     let p = op(&mut s, |s| {
-        s.request(&rite, Addressee::Spirit(inv), &form(&[]))
+        s.request(&rite, Addressee::Spirit(inv), &told())
     })
     .unwrap();
     let worker = s.invs()[&inv].main;

@@ -467,3 +467,57 @@ fn malformed_answers_are_refused() {
         assert_eq!(o.status.code(), Some(1), "{bad}");
     }
 }
+
+// audit 2, #1: a reading command takes the lock like any other
+#[test]
+fn petitiones_does_not_touch_a_house_another_run_holds() {
+    let dir = furfur_folder("audit2-lock");
+    assert!(ask_furfur(&dir).status.success());
+    let house = dir.join(HOUSE);
+    let domus = Domus::new(&house);
+    let _held = domus
+        .lock()
+        .expect("this test holds the house, as a sealing run would");
+    let index = house.join(INDEX);
+    let before = fs::metadata(&index).unwrap().len();
+    let journal = format!(
+        "{before}\t{}\t{}\t{}\n-\n",
+        fs::metadata(house.join(VESSEL))
+            .map(|m| m.len())
+            .unwrap_or(0),
+        fs::metadata(house.join(KEYS)).map(|m| m.len()).unwrap_or(0),
+        fs::metadata(house.join(ROOTS))
+            .map(|m| m.len())
+            .unwrap_or(0),
+    );
+    fs::write(house.join(JOURNAL), journal).unwrap();
+    let mut f = fs::OpenOptions::new().append(true).open(&index).unwrap();
+    std::io::Write::write_all(&mut f, b"half-written line of a seal in progress\n").unwrap();
+    drop(f);
+    let during = fs::metadata(&index).unwrap().len();
+    let _ = annulus(&dir, &["petitiones", "--virga-probationis"]);
+    assert!(
+        house.join(JOURNAL).exists(),
+        "petitiones removed the journal of a seal in progress"
+    );
+    assert_eq!(
+        fs::metadata(&index).unwrap().len(),
+        during,
+        "petitiones cut back a store another run is writing"
+    );
+}
+
+#[test]
+fn acta_waits_for_a_house_another_run_holds() {
+    let dir = furfur_folder("acta-lock");
+    assert!(ask_furfur(&dir).status.success());
+    let domus = Domus::new(&dir.join(HOUSE));
+    let _held = domus.lock().unwrap();
+    let o = annulus(&dir, &["acta", "furfur.acta", "--virga-probationis"]);
+    assert_ne!(o.status.code(), Some(0));
+    assert!(
+        stderr(&o).contains("another run holds this house"),
+        "{}",
+        stderr(&o)
+    );
+}

@@ -373,6 +373,17 @@ pub fn ritus_with(
         Ok(o) => o,
         Err(e) => return Ok(refuse(&mut say, e)),
     };
+    if let Some((n, t0)) = f.caelum.tentus {
+        if !tab::tentus_est(&opened.marks, n, t0) {
+            return Ok(refuse(
+                &mut say,
+                format!(
+                    "this house keeps no hold of spirit {n} since {}: a spirit is held only when a sealed run kept it with MANE",
+                    crate::horae::iso(t0)
+                ),
+            ));
+        }
+    }
     if wand.verum_est() && !ratified(&wand) {
         return Ok(refuse(
             &mut say,
@@ -466,7 +477,12 @@ pub fn ritus_with(
         say("without the wand nothing is sealed and nothing is written".into());
         return Ok(class);
     }
-    let marks = tab::marks_after(&opened.marks, state.world());
+    let marks = tab::tenti_after(
+        &tab::marks_after(&opened.marks, state.world()),
+        state.audit().entries(),
+        options.caelum.hora.unwrap_or(0),
+        options.caelum.tentus,
+    );
     if let Err(e) = domus.seal(state.stores(), opened.counts, &marks, wand) {
         say(format!("error: {e}"));
         say("the world is not written".into());
@@ -599,6 +615,14 @@ pub fn petitiones(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> 
     if !domus.installed() {
         return Ok(0);
     }
+    // reading opens the house, and opening can repair it: never while another run holds it
+    let _held = match domus.lock() {
+        Ok(l) => l,
+        Err(e) => {
+            let _ = writeln!(err, "{e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
     let mut wand = match wand(&f, Need::Nihil, err) {
         Ok(w) => w,
         Err(e) => {
@@ -631,6 +655,14 @@ pub fn acta(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result
         let _ = writeln!(err, "there are no stores in {}", domus.dir.display());
         return Ok(EXIT_REFUSED);
     }
+    // reading opens the house, and opening can repair it: never while another run holds it
+    let _held = match domus.lock() {
+        Ok(l) => l,
+        Err(e) => {
+            let _ = writeln!(err, "{e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
     let mut wand = match wand(&f, Need::Nihil, err) {
         Ok(w) => w,
         Err(e) => {

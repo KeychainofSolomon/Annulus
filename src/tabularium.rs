@@ -1376,6 +1376,79 @@ pub fn read_world(
     Ok(world)
 }
 
+/// The spirits held with `MANE`, kept in the sealed marks under names no place can take
+/// (a place never holds `:`): `tentus:N:T0`, spirit `N` held since its calling at `T0`
+/// (Unix seconds). A hold is believed only when the house has it (audit 2, #2).
+const TENTUS: &str = "tentus";
+
+fn tentus_mark(n: i64, t0: i64) -> Place {
+    format!("{TENTUS}:{n}:{t0}")
+}
+
+fn tentus_of(mark: &str) -> Option<(i64, i64)> {
+    let mut parts = mark.split(':');
+    (parts.next()? == TENTUS).then_some(())?;
+    let n = parts.next()?.parse().ok()?;
+    let t0 = parts.next()?.parse().ok()?;
+    parts.next().is_none().then_some((n, t0))
+}
+
+/// The holds this house keeps: each spirit's number and the hour of its calling.
+pub fn tenti(marks: &BTreeSet<Place>) -> Vec<(i64, i64)> {
+    marks.iter().filter_map(|m| tentus_of(m)).collect()
+}
+
+/// Whether the house keeps spirit `n` as held since its calling at `t0`.
+pub fn tentus_est(marks: &BTreeSet<Place>, n: i64, t0: i64) -> bool {
+    marks.contains(&tentus_mark(n, t0))
+}
+
+/// The holds after a run: a spirit kept with `MANE` is held from the hour of its calling
+/// (the hour it was first called, when it was held already); a spirit given licence to
+/// depart, or banished, is held no more.
+pub fn tenti_after(
+    marks: &BTreeSet<Place>,
+    entries: &[Label],
+    hora: i64,
+    tentus: Option<(i64, i64)>,
+) -> BTreeSet<Place> {
+    let number = |seal: &str| -> Option<i64> { seal.split(':').nth(1)?.parse().ok() };
+    let mut next = marks.clone();
+    let mut invs: BTreeMap<InvId, i64> = BTreeMap::new();
+    let mut kept: BTreeSet<InvId> = BTreeSet::new();
+    let forget = |next: &mut BTreeSet<Place>, n: i64| {
+        next.retain(|m| tentus_of(m).is_none_or(|(k, _)| k != n));
+    };
+    for label in entries {
+        match label {
+            Label::Invoke(inv, seal, _, _, true, _) => {
+                if let Some(n) = number(seal) {
+                    invs.insert(*inv, n);
+                }
+            }
+            Label::Act(RiteAct::Mane(inv), _, true, _) => {
+                if let Some(&n) = invs.get(inv) {
+                    let t0 = match tentus {
+                        Some((m, t0)) if m == n => t0,
+                        _ => hora,
+                    };
+                    forget(&mut next, n);
+                    next.insert(tentus_mark(n, t0));
+                    kept.insert(*inv);
+                }
+            }
+            Label::Release(inv, _) if kept.contains(inv) => {}
+            Label::Release(inv, _) | Label::Relegate(inv) => {
+                if let Some(&n) = invs.get(inv) {
+                    forget(&mut next, n);
+                }
+            }
+            _ => {}
+        }
+    }
+    next
+}
+
 pub fn marks_after(
     marks: &BTreeSet<Place>,
     after: &BTreeMap<Place, (String, Mark)>,

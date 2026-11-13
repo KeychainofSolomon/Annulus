@@ -486,3 +486,25 @@ The owner: "whichever is most authentic and doesn't compromise security; spirits
 ## 2026-11-12, evening: GPT's outside review
 
 - Fixed: the anchor keyed by the real path (link bypass), unanchored houses refused until `annulus adopta`, a lock per house, build tools pinned, "to be proven". Open: crash recovery (journal), the `PARS` ruling for the owner, the model's seal, the Lean installer script. 294 tests.
+
+## 2026-11-12, late night: the real wand
+
+- **The owner asked for the wand** (lifting the hold): "the skeleton key, the only key", on a USB stick. Built in a new repository, **`KeychainofSolomon/72Virga`** (crate `virga`, library and command), which Annulus uses pinned by commit (`Cargo.toml`). When `virga` changes, update the `rev` there.
+- **As built:** `operator.md` §8.7. In Annulus: `src/baculum.rs` (the wand in hand: nucleus view, master and rite keys, the test wand); `nucleus::state::verify` is Ed25519; `ritus::launch` signs the faculty with the master and lays it down; `tabularium` signs roots with the rite key (8 fields: roots, marks, master, signer, bond, signature; the digest includes the line number), keeps `annulus.virgae` and `annulus.lex`, anchors on the wand; `mandata` finds the wand, asks the words, `annulus sanci`.
+- **Tests:** `tests/virga_cli.rs` (11, through the binary: ratify, run, seal, spare, rollback, replay, revocation and re-adoption, a stranger's wand and ratification, the test wand refused); `lingua_will.rs` runs a model with a real wand. 308 in all.
+- **For the owner, once:** build `virga` (`cargo build --release` in 72Virga), then `virga fac E:\ F:\` with two sticks, then in the program's folder `annulus sanci`, then `annulus ritus …` as before.
+- **Spiri72** still pins the older Annulus and passes `Wand`; when it moves to this commit it must pass a `Baculum` (`Baculum::verum` with the words, or `Baculum::probationis()`), and read `exitus.baculum` to seal.
+- **Next:** the other half of 2d (remove the prototype); an independent review of the wand (`virga` and its use here) before relying on it.
+
+## 2026-11-13: GPT's review of the wand
+
+- Review findings V01–V06 and the lineage point fixed (STATUS, security table). `virga` at `f38ee9c`: exact scrypt work, small-order refusal, fail-closed words, `perfice`, the Windows window (`src/fenestra.rs`, plain Win32, no crates; Annulus's words go through `virga::verba::roga_plura`). Annulus: `open` refuses a missing anchor for a real wand; anchor holds `n, hash, lineage length, lineage head`; seal journal `annulus.iter` with `recover()` at `open`/`adopt`.
+- The owner made a trial wand on D:\ with the spare in F:\VirgaSpare (to move to a stick). Made before these fixes; it stays valid (standard work, random keys).
+
+## 2026-11-13, night (the owner asleep; "keep fixing this batch")
+
+- Ruled by the owner: `PARS` is never approved (core `Proposal::pars`, held at examination; Lean `PInfo.pars`, `afterTurn` takes the outcome, `finalVerdict`; `core.md` §3.1a). Lean CI passes.
+- Crash tests: test builds stop after any of the seal's nine writes (`ANNULUS_PROBATIO_CADE`); the next runs recover and seal (`virga_cli.rs`).
+- `virga` 331e77f: no planted-link writes, revoked wands give no key, words wiped (`Verba`), a lock on the wand for lineage writes, words at most 256 characters. CI green on Windows and Linux for both repositories.
+- Spiri72: the book is read one bounded line at a time (pushed to `main`); branch `virga-vera` pins Annulus to this pull request, 86 tests pass; merge it after this one.
+- Not done, open: crash while writing the world after the seal; Spiri72's sessions still use the test wand for each rite.

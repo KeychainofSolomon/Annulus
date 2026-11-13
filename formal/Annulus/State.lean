@@ -39,6 +39,8 @@ structure PInfo (U : Universe) where
   content : Content U
   status : PStatus
   carries : List U.Seal
+  /-- A turn on it declared or drew part: its work is never approved, only held. -/
+  pars : Bool
 
 /-- §9.3a: a validator entry, with its work limit as fuel. -/
 structure Validator (U : Universe) where
@@ -222,7 +224,7 @@ def damnIfMortal (s : U.Seal) (X : List (IxEntry U)) : List (IxEntry U) :=
   if U.angelic s then X else X ++ [.damn s]
 
 def finalVerdict (M : Core U) (σ : State U) (pi : PInfo U) (v0 cb : Verdict) : Verdict :=
-  if Doubtful M σ pi.author then .hold else v0.meet cb
+  if Doubtful M σ pi.author ∨ pi.pars = true then .hold else v0.meet cb
 
 def madeMark (σ : State U) (m : Made U) : Mark :=
   joinAll (m.ins.map σ.mark ++ m.places.map (fun p => (σ.world p).2) ++
@@ -334,9 +336,10 @@ def turnContent (pi : PInfo U) : Contrib U → Content U
   | _ => pi.content
 
 def afterTurn (σ : State U) (w : U.Worker) (wi : WInfo U) (p : U.Pid) (rest : List U.Pid)
-    (pi : PInfo U) (c : Contrib U) (fin : Bool) (l : Label U) : State U :=
+    (pi : PInfo U) (o : U.Outcome) (c : Contrib U) (fin : Bool) (l : Label U) : State U :=
   let pi' : PInfo U :=
-    { pi with content := turnContent pi c, status := if fin = true then .complete else pi.status }
+    { pi with content := turnContent pi c, status := if fin = true then .complete else pi.status,
+              pars := pi.pars || U.partOutcome o }
   let wi' : WInfo U := if fin = true then { wi with queue := rest } else wi
   let σa : State U :=
     { σ with

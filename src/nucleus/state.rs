@@ -149,13 +149,15 @@ pub struct Auth {
     pub roots: Roots,
 }
 
-pub fn sign_for_test(key_fingerprint: &str, digest: &str) -> String {
-    hash_hex(format!("test-signature|{key_fingerprint}|{digest}").as_bytes())
+/// Whether `signature` is the Ed25519 signature of the wand whose fingerprint (its master
+/// public key) is `key`, on `digest`. This is the concrete mechanism behind the Lean
+/// model's `verify`: unforgeable without the key's secret (`virga`, RFC 8032).
+pub fn verify(key: &str, digest: &str, signature: &str) -> bool {
+    virga::verifica(key, &crate::baculum::message(digest), signature)
 }
 
-pub fn verify(key_fingerprint: &str, digest: &str, signature: &str) -> bool {
-    sign_for_test(key_fingerprint, digest) == signature
-}
+#[cfg(feature = "probatio")]
+pub use crate::baculum::{sign_for_test, test_key};
 
 pub fn digest_faculty(faculty: &BTreeSet<Cap>, reserved: &BTreeSet<Cap>, roots: &Roots) -> String {
     hash_hex(

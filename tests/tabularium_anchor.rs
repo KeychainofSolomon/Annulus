@@ -29,18 +29,18 @@ fn unspent_confirmed(s: &Stores, fp: &str) -> bool {
 
 #[test]
 fn a_rollback_cannot_revive_a_spent_second_key() {
-    let w = test_wand();
+    let mut w = test_wand();
     let dir = house("rollback");
     let d = Domus::new(&dir);
     let fp = "f00d".to_string();
     let none = BTreeSet::new();
-    let mut o = d.open(&w).unwrap();
+    let mut o = d.open(&mut w).unwrap();
     o.stores.keys.push(KeyEntry::Petition(fp.clone()));
     d.seal(&o.stores, o.counts, &none, &w).unwrap();
-    let mut o = d.open(&w).unwrap();
+    let mut o = d.open(&mut w).unwrap();
     assert!(o.stores.confirm_petition(&fp, &w));
     d.seal(&o.stores, o.counts, &none, &w).unwrap();
-    let mut o = d.open(&w).unwrap();
+    let mut o = d.open(&mut w).unwrap();
     let n = o
         .stores
         .keys
@@ -50,55 +50,55 @@ fn a_rollback_cannot_revive_a_spent_second_key() {
         .unwrap();
     o.stores.keys.push(KeyEntry::Spend(n));
     d.seal(&o.stores, o.counts, &none, &w).unwrap();
-    assert!(!unspent_confirmed(&d.open(&w).unwrap().stores, &fp));
+    assert!(!unspent_confirmed(&d.open(&mut w).unwrap().stores, &fp));
     drop_last_line(&dir.join(KEYS));
     drop_last_line(&dir.join(ROOTS));
-    let e = d.open(&w).err().expect("a rollback is refused");
+    let e = d.open(&mut w).err().expect("a rollback is refused");
     assert!(e.contains("rolled back or replaced"), "{e}");
 }
 
 #[test]
 fn a_deleted_house_is_refused_not_started_afresh() {
-    let w = test_wand();
+    let mut w = test_wand();
     let dir = house("wipe");
     let d = Domus::new(&dir);
-    let mut o = d.open(&w).unwrap();
+    let mut o = d.open(&mut w).unwrap();
     o.stores.index.push(IxEntry::Damn("goetia:1:bael".into()));
     let marks: BTreeSet<String> = ["spirit.txt".to_string()].into();
     d.seal(&o.stores, o.counts, &marks, &w).unwrap();
     for f in [INDEX, VESSEL, KEYS, ROOTS, MARKS] {
         fs::remove_file(dir.join(f)).unwrap();
     }
-    let e = d.open(&w).err().expect("a deleted house is refused");
+    let e = d.open(&mut w).err().expect("a deleted house is refused");
     assert!(e.contains("refusing to start afresh"), "{e}");
 }
 
 #[test]
 fn a_rolled_back_index_cannot_lift_a_damnation() {
-    let w = test_wand();
+    let mut w = test_wand();
     let dir = house("lift");
     let d = Domus::new(&dir);
-    let o = d.open(&w).unwrap();
+    let o = d.open(&mut w).unwrap();
     d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
-    let mut o = d.open(&w).unwrap();
+    let mut o = d.open(&mut w).unwrap();
     o.stores.index.push(IxEntry::Damn("goetia:1:bael".into()));
     d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
     drop_last_line(&dir.join(INDEX));
     drop_last_line(&dir.join(ROOTS));
-    let e = d.open(&w).err().expect("refused");
+    let e = d.open(&mut w).err().expect("refused");
     assert!(e.contains("rolled back or replaced"), "{e}");
 }
 
 #[test]
 fn an_unchanged_house_opens_and_seals_across_runs() {
-    let w = test_wand();
+    let mut w = test_wand();
     let dir = house("steady");
     let d = Domus::new(&dir);
     for _ in 0..3 {
-        let o = d.open(&w).unwrap();
+        let o = d.open(&mut w).unwrap();
         d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
     }
-    assert!(d.open(&w).unwrap().roots.is_some());
+    assert!(d.open(&mut w).unwrap().roots.is_some());
 }
 
 #[test]
@@ -118,12 +118,12 @@ fn a_petition_is_confirmed_once() {
 #[cfg(unix)]
 #[test]
 fn a_link_to_the_house_finds_the_same_anchor() {
-    let w = test_wand();
+    let mut w = test_wand();
     let dir = house("alias");
     let d = Domus::new(&dir);
-    let o = d.open(&w).unwrap();
+    let o = d.open(&mut w).unwrap();
     d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
-    let mut o = d.open(&w).unwrap();
+    let mut o = d.open(&mut w).unwrap();
     o.stores.index.push(IxEntry::Damn("goetia:1:bael".into()));
     d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
     drop_last_line(&dir.join(INDEX));
@@ -132,7 +132,7 @@ fn a_link_to_the_house_finds_the_same_anchor() {
     let _ = fs::remove_file(&alias);
     std::os::unix::fs::symlink(&dir, &alias).unwrap();
     let e = Domus::new(&alias)
-        .open(&w)
+        .open(&mut w)
         .err()
         .expect("a rollback through a link is refused");
     assert!(e.contains("rolled back or replaced"), "{e}");
@@ -140,19 +140,19 @@ fn a_link_to_the_house_finds_the_same_anchor() {
 
 #[test]
 fn a_house_without_its_anchor_is_refused_until_adopted() {
-    let w = test_wand();
+    let mut w = test_wand();
     let dir = house("adopt");
     let d = Domus::new(&dir);
-    let o = d.open(&w).unwrap();
+    let o = d.open(&mut w).unwrap();
     d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
     let elsewhere = std::env::temp_dir().join(format!("annulus-elsewhere-{}", std::process::id()));
     let _ = fs::remove_dir_all(&elsewhere);
     let moved = Domus::anchored(&dir, &elsewhere);
-    let e = moved.open(&w).err().expect("refused");
+    let e = moved.open(&mut w).err().expect("refused");
     assert!(e.contains("no anchor"), "{e}");
-    moved.adopt(&w).unwrap();
-    assert!(moved.open(&w).is_ok());
-    assert!(moved.adopt(&w).is_err());
+    moved.adopt(&mut w).unwrap();
+    assert!(moved.open(&mut w).is_ok());
+    assert!(moved.adopt(&mut w).is_err());
 }
 
 #[test]
@@ -168,15 +168,15 @@ fn only_one_run_holds_the_house() {
 
 #[test]
 fn an_anchor_kept_inside_its_house_or_by_a_relative_path_is_refused() {
-    let w = test_wand();
+    let mut w = test_wand();
     let dir = house("inside");
     let e = Domus::anchored(&dir, &dir.join("ancorae"))
-        .open(&w)
+        .open(&mut w)
         .err()
         .expect("inside");
     assert!(e.contains("inside the house"), "{e}");
     let e = Domus::anchored(&dir, std::path::Path::new("ancorae"))
-        .open(&w)
+        .open(&mut w)
         .err()
         .expect("relative");
     assert!(e.contains("absolute"), "{e}");
@@ -184,16 +184,16 @@ fn an_anchor_kept_inside_its_house_or_by_a_relative_path_is_refused() {
 
 #[test]
 fn a_stale_staging_file_does_not_block_the_next_seal() {
-    let w = test_wand();
+    let mut w = test_wand();
     let dir = house("stale");
     let d = Domus::new(&dir);
-    let o = d.open(&w).unwrap();
+    let o = d.open(&mut w).unwrap();
     d.seal(&o.stores, o.counts, &BTreeSet::new(), &w).unwrap();
     fs::write(dir.join(format!("{MARKS}.annulus-novum")), "half").unwrap();
-    let o = d.open(&w).unwrap();
+    let o = d.open(&mut w).unwrap();
     d.seal(&o.stores, o.counts, &["x.txt".to_string()].into(), &w)
         .unwrap();
-    assert!(d.open(&w).unwrap().marks.contains("x.txt"));
+    assert!(d.open(&mut w).unwrap().marks.contains("x.txt"));
 }
 
 #[test]

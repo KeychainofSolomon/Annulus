@@ -21,7 +21,7 @@ Last updated: 2026-11-13, 14:40 (branch `acta-signata`). **This page is updated 
 | **`PRAETERITA`** (the present run): a spirit recounts the run's past, one claim per line in the history's words; the angel checks each against the history built from the audit | Implemented and tested: false claims and Berith's lies caught. The previous run (`"prior"`) not yet |
 | Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
 
-Tests: **314**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
+Tests: **325**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
@@ -76,7 +76,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | Proofs of P1–P9 and their correspondence to the Rust core | **Begun** (`formal/Annulus/Proofs.lean`, checked by CI with no extra axioms): **P1 (a)**, containment at commit; **P1 (b)**, every request's handed places lie in the faculty in every reachable state (an invariant over runs); an outside will's turns are declared; `kill` only in simulated mode. P1 (c) and P2–P9 remain; correspondence to Rust not started. Still the largest gap |
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
 | Independent audit of the core changes of 2026-11-11 and 2026-11-12 | **Done** (`docs/AUDIT_CORE_1.md`); confirmed findings fixed. The change of the evening (declared outcomes) and the anchor are not yet reviewed |
-| The audit files (`.acta`) are not signed or read back | **Fixed (2026-11-13, awaiting CI):** signed by the rite key, bound to the seal that follows the run; `annulus acta FILE` reads one back (chain, signature, a trusted wand, the seal exists). Still open: an audit whose run failed to seal is bound to a seal number a later run will take; `PRAETERITA "prior"` must also check the seal's roots, not only its number |
+| The audit files (`.acta`) are not signed or read back | **Fixed (2026-11-13; CI green on Linux and Windows):** signed by the rite key, bound to the seal that follows the run; `annulus acta FILE` reads one back (chain, signature, a trusted wand, the seal exists). Still open: an audit whose run failed to seal is bound to a seal number a later run will take; `PRAETERITA "prior"` must also check the seal's roots, not only its number |
 | The office's form enforced in the core, not only by the angel | Open (core audit 1, #4) |
 | Rust and Lean drift: validator manifest, Circle binding of values, ink without a wand, forced outcomes, the grave store, a refused `CONSECRA` | Open (core audit 1, #8) |
 | The anchor can itself be deleted by someone with access to it | **Closed** for a real wand: the anchor is on the wand (a rollback is caught by each wand that saw the later state). The test wand still keeps it in a folder |

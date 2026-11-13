@@ -352,6 +352,7 @@ The names in the form are references to Constitution entries (section 2.3).
 |---|---|---|
 | `VADE IN PACE` (licence to depart) | orderly completion; temporary capabilities revoked | 1446 p216 L; Arbatel XXI, "vade in pace ad ordines tuos"; Goetia licence |
 | `DIMITTE` (dismiss) | ends the invocation without completion; uncommitted effects are discarded | [Architecture §12] |
+| `MANE` (remain) | ends the sitting as `VADE IN PACE` does, but the spirit is not given licence: it stays held between runs (`dynamic.md` §5.1) and the history records it `retentus` | [O] (ruled 2026-11-13) |
 | `RELEGA` (banish) | forced termination: capabilities revoked, child tasks terminated, uncommitted effects discarded, results quarantined in the **Vessel** | fire curse (1446 p215 R); "Spirits chaine" (Sloane 3825); the Brass Vessel (Sloane 3825) |
 
 **[O]** the Vessel is the quarantine store named after Solomon's brass vessel (ruling 2026-11-11; Weyer's glass recorded in §6.2a).

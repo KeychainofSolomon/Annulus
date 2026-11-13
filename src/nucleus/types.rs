@@ -316,6 +316,7 @@ pub enum RiteAct {
     Appella(InvId),
     Veta(InvId),
     Constringe(InvId, String),
+    Mane(InvId),
 }
 
 impl RiteAct {
@@ -325,7 +326,8 @@ impl RiteAct {
             RiteAct::Offer(i, _)
             | RiteAct::Appella(i)
             | RiteAct::Veta(i)
-            | RiteAct::Constringe(i, _) => Some(*i),
+            | RiteAct::Constringe(i, _)
+            | RiteAct::Mane(i) => Some(*i),
         }
     }
 

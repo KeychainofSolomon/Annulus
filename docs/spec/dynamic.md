@@ -96,6 +96,8 @@ A spirit of two ranks may be invoked when **either** rank's window is open. [O; 
 - **The Moon's age** is computed from the true new moon (Meeus, ch. 49), whole days since it, for every rank.
 - **Berith's hour:** `GERE` still records no time, so the ring does not yet close his `MENDACIUM`.
 
+**A held spirit** (ruled by the owner, 2026-11-13). The hours and the Moon govern the **calling**, not the stay: the Goetia leaves the end of a working to the magician's licence to depart, and sets no limit on how long a spirit is kept before it. So a spirit called in an open hour stays **held** until the Operator gives licence, and may be petitioned again in later runs outside its hours. The Operator declares the hold at launch with `--tentus N@HOUR` (the spirit's number and the hour of its calling). The runtime then checks that spirit's window and Moon at the hour of its calling, not at the present hour: a hold whose calling hour was not itself open is refused, a calling hour later than the present is no hold, and a hold serves its own spirit only. Every other check (the instruments, an Earl alone in the Circle, the angel's examination of each answer) stands unchanged, and each run still releases every invocation before the Circle closes (§3.1, A9): the hold is the Operator's standing bond between runs, ended when he gives licence, or when a rite is refused or broken off. A sitting of a held spirit ends with `MANE` ("remain"), recorded `retentus`; `VADE IN PACE` is kept for the licence itself. While the present hour is outside the spirit's own, its will is told so (`Petitio::ultra_horam`). A declared hold is an Operator's declaration like `--hora`, so it cannot widen anything a spirit could reach. [S: the licence to depart as the end of a working. O: the declaration and its checks.]
+
 5.2 **Refusal and escalation.** The spirit's will is drawn (§5.4). If it chooses `RECUSATIO`, the runtime performs the next step of the escalation in `spirits.md` §5, records it, and draws again. Each step past the first spends one unit of the seal's ink class. After the seventh step, the greater curse, the spirit is banished (`RELEGA`). The invocation still exists, but it is relegated: requests to it yield nothing, and releasing it again is recorded as already done.
 
 5.3 **Requests.** `PETE` draws the will again, among the outcomes the register leaves open:
@@ -158,6 +160,7 @@ A proposal in `RATUM` or `IRRITUM` cannot be examined again; trying is a denial.
 |---|---|
 | `VADE IN PACE` | orderly end: temporary capabilities revoked; any proposal unfinished or still `SUSPENSUM` is abandoned, its record sealed in the Vessel (`core.md` §9.2) |
 | `DIMITTE` | the same, with the invocation recorded as ended without completion |
+| `MANE` | the same as `VADE IN PACE` for the run, recorded as a rite act (`retentus` in the history, not `dimissus`): the spirit is kept held, not given licence |
 | `RELEGA` | forced end: sub-tasks ended, every held proposal sealed in the Vessel |
 
 Seals inscribed in ink drawn from the invocation lapse with it (`authority.md` §7.3).

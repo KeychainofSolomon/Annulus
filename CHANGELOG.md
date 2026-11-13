@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Ruled by the owner (2026-11-13): `PARS` is never approved
+- Obedience in part is not obedience. A turn that declares or draws part marks its proposal (`Proposal::pars`); the core then holds it at examination, whatever the work, so it never reaches the world. Test: `lingua_will.rs`. The Lean model is owed the same rule.
+
 ### The wand: GPT's review fixed (2026-11-13)
 - V01: a real wand refuses a house it holds no anchor for (adopt it once); V02: only the standard scrypt work; V03: small-order keys and nonces refused; V04: words never read with the echo on, and on Windows asked in the wand's window; V05: `virga perfice` finishes an interrupted making; V06: a seal journal (`annulus.iter`) undoes an interrupted seal. The anchor now also records the lineage the wand has seen. 312 tests, and 21 in `virga`.
 - The wand's window (`virga` with nothing after it): plain Windows controls, dotted word fields with counts.

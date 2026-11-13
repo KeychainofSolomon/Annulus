@@ -400,6 +400,10 @@ pub struct Proposal {
     pub content: Content,
     pub status: PStatus,
     pub carries: Vec<Seal>,
+    /// A turn on it declared or drew part (`PARS`): obedience only in part is not
+    /// obedience, so the work is never approved, only held (the owner's ruling,
+    /// 2026-11-13).
+    pub pars: bool,
 }
 
 #[derive(Clone, Debug)]

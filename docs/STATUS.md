@@ -21,7 +21,7 @@ Last updated: 2026-11-13, 01:30 (branch `virga-vera`). **This page is updated wi
 | **`PRAETERITA`** (the present run): a spirit recounts the run's past, one claim per line in the history's words; the angel checks each against the history built from the audit | Implemented and tested: false claims and Berith's lies caught. The previous run (`"prior"`) not yet |
 | Seals: all 72 traced from the 1916 plates, with provenance (`docs/sources/goetia-seals/traced/`) | Done; Sloane 3825 not yet compared |
 
-Tests: **312**, debug and release (and 21 in `virga`), on Linux here; Windows and Linux in CI.
+Tests: **312**, debug and release (and 22 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
@@ -31,6 +31,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Date | Breach | Fix |
 |---|---|---|
+| 2026-11-13 | (GPT, second review) The wand rewrote its lineage through a fixed temporary name, so a link planted there redirected the write | Temporary files get an unpredictable name and are created new, never through an existing name |
 | 2026-11-13 | (GPT review of the wand, V01) A wand whose anchor was deleted accepted an older, validly signed house | A real wand refuses a house it holds no anchor for; the Operator adopts it (`annulus adopta`). A spare's first use of a house is an adoption |
 | 2026-11-13 | (V02) A doctored wand file could ask for 2 GiB of scrypt work before the words were tried | Only the standard work is admitted |
 | 2026-11-13 | (V03) Small-order public keys and nonces were accepted by the verifier | Refused |

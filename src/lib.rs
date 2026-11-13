@@ -2,6 +2,7 @@ pub mod ast;
 pub mod baculum;
 pub mod compiler;
 pub mod diagnostic;
+pub mod doctrina;
 pub mod horae;
 pub mod lexer;
 pub mod lingua;

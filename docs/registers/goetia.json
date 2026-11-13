@@ -18,7 +18,10 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes a man wise"
+    "text": "makes a man wise",
+    "artes": [
+     "philosophia"
+    ]
    }
   ],
   "malice": [],
@@ -162,7 +165,16 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches the liberal arts"
+    "text": "teaches the liberal arts",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia"
+    ]
    },
    {
     "kind": "MORTUI",
@@ -214,7 +226,11 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "gives wisdom and the mechanical arts"
+    "text": "gives wisdom and the mechanical arts",
+    "artes": [
+     "philosophia",
+     "mechanica"
+    ]
    },
    {
     "kind": "TRANSMUTATIO",
@@ -396,7 +412,22 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches all arts and sciences and secret things"
+    "text": "teaches all arts and sciences and secret things",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia",
+     "astrologia",
+     "mechanica",
+     "philosophia",
+     "poetica",
+     "chiromantia",
+     "pyromantia"
+    ]
    },
    {
     "kind": "OCCULTA",
@@ -460,7 +491,11 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches philosophy, moral and natural, and logic"
+    "text": "teaches philosophy, moral and natural, and logic",
+    "artes": [
+     "philosophia",
+     "dialectica"
+    ]
    },
    {
     "kind": "VIRTUTES",
@@ -944,7 +979,16 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes men skilled in astronomy and the liberal arts"
+    "text": "makes men skilled in astronomy and the liberal arts",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia"
+    ]
    },
    {
     "kind": "FAMILIARES",
@@ -1068,7 +1112,22 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes a man cunning in all arts, especially rhetoric"
+    "text": "makes a man cunning in all arts, especially rhetoric",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia",
+     "astrologia",
+     "mechanica",
+     "philosophia",
+     "poetica",
+     "chiromantia",
+     "pyromantia"
+    ]
    },
    {
     "kind": "EVERSIO",
@@ -1112,7 +1171,22 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches all arts in an instant"
+    "text": "teaches all arts in an instant",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia",
+     "astrologia",
+     "mechanica",
+     "philosophia",
+     "poetica",
+     "chiromantia",
+     "pyromantia"
+    ]
    },
    {
     "kind": "PRAETERITA",
@@ -1182,7 +1256,11 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes a man wise and eloquent"
+    "text": "makes a man wise and eloquent",
+    "artes": [
+     "philosophia",
+     "rhetorica"
+    ]
    },
    {
     "kind": "RESPONSA",
@@ -1217,7 +1295,10 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches rhetoric"
+    "text": "teaches rhetoric",
+    "artes": [
+     "rhetorica"
+    ]
    },
    {
     "kind": "FAMILIARES",
@@ -1347,7 +1428,16 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches the liberal sciences"
+    "text": "teaches the liberal sciences",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia"
+    ]
    }
   ],
   "malice": [
@@ -1391,7 +1481,10 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes a man admirable in rhetoric"
+    "text": "makes a man admirable in rhetoric",
+    "artes": [
+     "rhetorica"
+    ]
    },
    {
     "kind": "LINGUAE",
@@ -1436,7 +1529,11 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches logic and ethics in all their parts"
+    "text": "teaches logic and ethics in all their parts",
+    "artes": [
+     "dialectica",
+     "philosophia"
+    ]
    },
    {
     "kind": "VIRTUTES",
@@ -1494,7 +1591,13 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches geometry, arithmetic, astronomy and mechanics"
+    "text": "teaches geometry, arithmetic, astronomy and mechanics",
+    "artes": [
+     "geometria",
+     "arithmetica",
+     "astronomia",
+     "mechanica"
+    ]
    },
    {
     "kind": "TUTELA",
@@ -1591,7 +1694,17 @@
    {
     "kind": "DOCTRINA",
     "witness": "G",
-    "text": "makes them knowing in philosophy and the liberal sciences"
+    "text": "makes them knowing in philosophy and the liberal sciences",
+    "artes": [
+     "philosophia",
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia"
+    ]
    },
    {
     "kind": "CONCORDIA",
@@ -1768,7 +1881,10 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches astronomy"
+    "text": "teaches astronomy",
+    "artes": [
+     "astronomia"
+    ]
    },
    {
     "kind": "VIRTUTES",
@@ -1801,12 +1917,30 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "speaks of all wonderful sciences"
+    "text": "speaks of all wonderful sciences",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia",
+     "astrologia",
+     "mechanica",
+     "philosophia",
+     "poetica",
+     "chiromantia",
+     "pyromantia"
+    ]
    },
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "a poet"
+    "text": "a poet",
+    "artes": [
+     "poetica"
+    ]
    }
   ],
   "malice": [],
@@ -2255,7 +2389,11 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "astrology, the mansions of the planets, geometry and measurement"
+    "text": "astrology, the mansions of the planets, geometry and measurement",
+    "artes": [
+     "astrologia",
+     "geometria"
+    ]
    },
    {
     "kind": "VIRTUTES",
@@ -2349,7 +2487,22 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes men wise in everything"
+    "text": "makes men wise in everything",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia",
+     "astrologia",
+     "mechanica",
+     "philosophia",
+     "poetica",
+     "chiromantia",
+     "pyromantia"
+    ]
    },
    {
     "kind": "TRANSMUTATIO",
@@ -2385,7 +2538,16 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches geometry and the liberal arts"
+    "text": "teaches geometry and the liberal arts",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia"
+    ]
    },
    {
     "kind": "ILLUSIO",
@@ -2427,7 +2589,15 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches philosophy, rhetoric, logic, astronomy, chiromancy and pyromancy"
+    "text": "teaches philosophy, rhetoric, logic, astronomy, chiromancy and pyromancy",
+    "artes": [
+     "philosophia",
+     "rhetorica",
+     "dialectica",
+     "astronomia",
+     "chiromantia",
+     "pyromantia"
+    ]
    }
   ],
   "malice": [],
@@ -2509,7 +2679,16 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes men wonderful in astronomy and the liberal arts"
+    "text": "makes men wonderful in astronomy and the liberal arts",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia"
+    ]
    },
    {
     "kind": "FAMILIARES",
@@ -2544,7 +2723,10 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "the best disputer"
+    "text": "the best disputer",
+    "artes": [
+     "dialectica"
+    ]
    },
    {
     "kind": "FUTURA",
@@ -2583,7 +2765,10 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches philosophy"
+    "text": "teaches philosophy",
+    "artes": [
+     "philosophia"
+    ]
    },
    {
     "kind": "MORTUI",
@@ -2724,7 +2909,16 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches the liberal arts"
+    "text": "teaches the liberal arts",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia"
+    ]
    },
    {
     "kind": "OCCULTA",
@@ -2777,7 +2971,17 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes men marvellous in astrology and the liberal arts"
+    "text": "makes men marvellous in astrology and the liberal arts",
+    "artes": [
+     "astrologia",
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia"
+    ]
    },
    {
     "kind": "FAMILIARES",
@@ -2859,7 +3063,12 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "makes men subtle in mechanics, philosophy and the sciences of books"
+    "text": "makes men subtle in mechanics, philosophy and the sciences of books",
+    "artes": [
+     "mechanica",
+     "philosophia",
+     "grammatica"
+    ]
    }
   ],
   "malice": [],
@@ -3075,7 +3284,12 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches geometry and measurement; makes men subtle disputers and skilled in astronomy"
+    "text": "teaches geometry and measurement; makes men subtle disputers and skilled in astronomy",
+    "artes": [
+     "geometria",
+     "dialectica",
+     "astronomia"
+    ]
    },
    {
     "kind": "TRANSMUTATIO",
@@ -3111,7 +3325,12 @@
    {
     "kind": "DOCTRINA",
     "witness": "W",
-    "text": "teaches grammar, logic and rhetoric"
+    "text": "teaches grammar, logic and rhetoric",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica"
+    ]
    },
    {
     "kind": "THESAURI",
@@ -3341,7 +3560,22 @@
    {
     "kind": "DOCTRINA",
     "witness": "G",
-    "text": "teaches all arts and sciences"
+    "text": "teaches all arts and sciences",
+    "artes": [
+     "grammatica",
+     "dialectica",
+     "rhetorica",
+     "arithmetica",
+     "geometria",
+     "musica",
+     "astronomia",
+     "astrologia",
+     "mechanica",
+     "philosophia",
+     "poetica",
+     "chiromantia",
+     "pyromantia"
+    ]
    },
    {
     "kind": "MENS",

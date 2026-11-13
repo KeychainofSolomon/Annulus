@@ -391,9 +391,17 @@ impl Rite for Goetia {
                 let beyond = crate::officia::cited(text)
                     .iter()
                     .any(|place| !req.handed.contains(&Cap::new(place, Perm::Legere)));
+                // A computing office (DOCTRINA) must carry a certificate a domain
+                // library checks; until that library exists, a well-formed answer
+                // is held, never approved (`library.md` §3, `offices.md` §5.2).
+                let computing =
+                    crate::officia::signature(&form.office).is_some_and(|s| s.computing);
                 if beyond {
                     Verdict::Reject
-                } else if text.trim().is_empty() || text.ends_with(crate::officia::INCOMPLETE) {
+                } else if computing
+                    || text.trim().is_empty()
+                    || text.ends_with(crate::officia::INCOMPLETE)
+                {
                     Verdict::Hold
                 } else {
                     Verdict::Approve

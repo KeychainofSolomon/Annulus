@@ -11,6 +11,10 @@ pub struct Signature {
     pub class: Class,
     pub modes: &'static [&'static str],
     pub quaestio: bool,
+    /// A computing office (`offices.md` §2.2): its answer carries a certificate
+    /// a domain library checks (`library.md` §3). Until that library exists a
+    /// well-formed answer is held, never approved (`offices.md` §5.2).
+    pub computing: bool,
 }
 
 pub fn signature(kind: &str) -> Option<Signature> {
@@ -18,19 +22,29 @@ pub fn signature(kind: &str) -> Option<Signature> {
         class: Class::Telling,
         modes: &[],
         quaestio: true,
+        computing: false,
     };
     let working = |modes| Signature {
         class: Class::Working,
         modes,
         quaestio: false,
+        computing: false,
     };
     Some(match kind {
         "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" => telling,
         "PRAETERITA" => telling,
+        // A teaching office: a response, but a computing one — it must carry a
+        // certificate a domain library checks. Until that library is built its
+        // answers are held, never approved (`offices.md` §5.2, `library.md` §3).
+        "DOCTRINA" => Signature {
+            computing: true,
+            ..telling
+        },
         "VIRTUTES" => Signature {
             class: Class::Telling,
             modes: &[],
             quaestio: false,
+            computing: false,
         },
         "AEDIFICATIO" | "EVERSIO" | "CONCORDIA" | "DISCORDIA" => working(&[]),
         "VECTIO" => working(&["transfer", "exscribe"]),
@@ -45,7 +59,7 @@ pub fn places(kind: &str, mode: Option<&str>, n: usize) -> Option<Vec<Vec<Perm>>
     match (kind, mode) {
         (
             "PRAESENTIA" | "FUTURA" | "OCCULTA" | "THESAURI" | "AMISSA" | "RESPONSA" | "VIRTUTES"
-            | "PRAETERITA",
+            | "PRAETERITA" | "DOCTRINA",
             _,
         ) => Some(all(Legere)),
         ("AEDIFICATIO", _) if n >= 1 => Some(all(Creare)),
@@ -203,5 +217,33 @@ pub fn expected(
                 .collect()
         }
         _ => Vec::new(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn doctrina_is_a_computing_telling_office() {
+        let s = signature("DOCTRINA").expect("DOCTRINA is an office");
+        assert_eq!(s.class, Class::Telling);
+        assert!(s.quaestio, "a teaching office answers a question");
+        assert!(
+            s.computing,
+            "DOCTRINA must carry a certificate (library.md §3)"
+        );
+        // it reads any handed places, like the other telling offices
+        assert_eq!(places("DOCTRINA", None, 1), Some(vec![vec![Perm::Legere]]));
+    }
+
+    #[test]
+    fn the_free_telling_offices_are_not_computing() {
+        for o in ["RESPONSA", "FUTURA", "OCCULTA", "PRAETERITA", "VIRTUTES"] {
+            assert!(
+                !signature(o).unwrap().computing,
+                "{o} should not be computing"
+            );
+        }
     }
 }

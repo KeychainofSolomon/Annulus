@@ -86,8 +86,8 @@ theorem frame_ite {c : Prop} [Decidable c] {a b σ : State U} (ha : Frame a σ)
   · rw [if_neg h]; exact hb
 
 theorem afterTurn_frame {σ : State U} {w : U.Worker} {wi : WInfo U} {p : U.Pid}
-    {rest : List U.Pid} {pi : PInfo U} {c : Contrib U} {fin : Bool} {l : Label U} :
-    Frame (afterTurn σ w wi p rest pi c fin l) σ := by
+    {rest : List U.Pid} {pi : PInfo U} {o : U.Outcome} {c : Contrib U} {fin : Bool}
+    {l : Label U} : Frame (afterTurn σ w wi p rest pi o c fin l) σ := by
   unfold afterTurn
   cases c <;> exact ⟨rfl, rfl, rfl, rfl⟩
 

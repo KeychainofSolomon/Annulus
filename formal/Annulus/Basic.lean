@@ -38,6 +38,8 @@ structure Universe where
   operator : Worker
   blank : Datum
   killOutcome : Outcome → Prop
+  /-- The outcome `PARS`: obedience only in part (the owner's ruling, 2026-11-13). -/
+  partOutcome : Outcome → Bool
   angelOpen : Outcome → Prop
   declarable : Outcome → Prop
   highConsequence : Verb → Prop

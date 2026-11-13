@@ -16,6 +16,7 @@ name = "annulus"
 path = "src/main.rs"
 
 [dependencies]
+virga = { git = "https://github.com/KeychainofSolomon/72Virga", rev = "331e77f6bfb3ab1cfc3163188c945fe6d3318165" }
 
 [profile.release]
 opt-level = 3
@@ -31,3 +32,4 @@ probatio = []
 
 [dev-dependencies]
 annulus = { path = ".", features = ["probatio"] }
+virga = { git = "https://github.com/KeychainofSolomon/72Virga", rev = "331e77f6bfb3ab1cfc3163188c945fe6d3318165", features = ["probatio"] }

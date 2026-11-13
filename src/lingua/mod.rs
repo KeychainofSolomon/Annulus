@@ -75,7 +75,7 @@ pub fn check_source(source: &str) -> Result<check::Checked, Vec<Error>> {
 
 pub fn run_source(
     source: &str,
-    wand: crate::nucleus::Wand,
+    wand: crate::baculum::Baculum,
     stores: crate::nucleus::Stores,
     world: std::collections::BTreeMap<String, (String, crate::nucleus::Mark)>,
     options: &exsequi::Optiones,
@@ -92,7 +92,7 @@ pub fn run_source(
 
 pub fn run_source_with(
     source: &str,
-    wand: crate::nucleus::Wand,
+    wand: crate::baculum::Baculum,
     stores: crate::nucleus::Stores,
     world: std::collections::BTreeMap<String, (String, crate::nucleus::Mark)>,
     options: &exsequi::Optiones,

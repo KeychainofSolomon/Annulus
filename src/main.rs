@@ -34,6 +34,7 @@ fn main() -> ExitCode {
         [name, rest @ ..] if name == "confirma" => command(mandata::confirma, rest),
         [name, rest @ ..] if name == "petitiones" => command(mandata::petitiones, rest),
         [name, rest @ ..] if name == "adopta" => command(mandata::adopta, rest),
+        [name, rest @ ..] if name == "sanci" => command(mandata::sanci, rest),
         [path] if !path.starts_with('-') => run_file(path),
         _ => {
             report(USAGE);

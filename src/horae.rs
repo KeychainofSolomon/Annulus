@@ -8,6 +8,7 @@ pub struct Caelum {
     pub hora: Option<i64>,
     pub locus: Option<(f64, f64)>,
     pub serenum: Option<bool>,
+    pub tentus: Option<(i64, i64)>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -197,6 +198,7 @@ impl Caelum {
             hora: Some(1_713_018_600),
             locus: Some((41.9, 12.5)),
             serenum: None,
+            tentus: None,
         }
     }
 }
@@ -232,6 +234,40 @@ pub fn admit(ranks: &[String], caelum: &Caelum) -> Result<(), String> {
         }
     }
     Err(why.join("; "))
+}
+
+pub fn tenta(caelum: &Caelum, n: i64) -> Option<i64> {
+    let now = caelum.hora?;
+    match caelum.tentus {
+        Some((m, t0)) if m == n && t0 <= now => Some(t0),
+        _ => None,
+    }
+}
+
+pub fn admit_spiritum(n: i64, ranks: &[String], caelum: &Caelum) -> Result<(), String> {
+    match tenta(caelum, n) {
+        Some(t0) => admit(
+            ranks,
+            &Caelum {
+                hora: Some(t0),
+                ..*caelum
+            },
+        ),
+        None => admit(ranks, caelum),
+    }
+}
+
+pub fn ultra_horam(n: i64, ranks: &[String], caelum: &Caelum) -> bool {
+    tenta(caelum, n).is_some()
+        && admit_spiritum(n, ranks, caelum).is_ok()
+        && admit(ranks, caelum).is_err()
+}
+
+pub fn parse_tentus(s: &str) -> Option<(i64, i64)> {
+    let (n, hora) = s.split_once('@')?;
+    let n: i64 = n.trim().parse().ok()?;
+    (1..=72).contains(&n).then_some(())?;
+    Some((n, parse_hora(hora)?))
 }
 
 pub fn now() -> i64 {

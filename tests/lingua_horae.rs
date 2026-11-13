@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use annulus::horae::{parse_hora, Caelum};
+use annulus::horae::{parse_hora, parse_tentus, Caelum};
 use annulus::lingua::exsequi::{Exitus, Optiones};
 use annulus::lingua::run_source;
 use annulus::nucleus::*;
@@ -13,6 +13,10 @@ fn rite(spirit: &str, ink: &str, office: &str) -> String {
 }
 
 fn at(source: &str, hora: &str, serenum: Option<bool>) -> Exitus {
+    held_at(source, hora, serenum, None)
+}
+
+fn held_at(source: &str, hora: &str, serenum: Option<bool>, tentus: Option<&str>) -> Exitus {
     let world: BTreeMap<String, (String, Mark)> = [(
         "chronica.txt".to_string(),
         ("annales".to_string(), Mark::Outside),
@@ -24,6 +28,7 @@ fn at(source: &str, hora: &str, serenum: Option<bool>) -> Exitus {
             hora: parse_hora(hora),
             locus: Some((41.9, 12.5)),
             serenum,
+            tentus: tentus.map(|t| parse_tentus(t).expect("a hold")),
         },
         ..Default::default()
     };
@@ -118,6 +123,7 @@ fn without_a_place_only_an_earl_comes() {
                 hora: parse_hora("2024-04-13T16:30:00+02:00"),
                 locus: None,
                 serenum: None,
+                tentus: None,
             },
             ..Default::default()
         };
@@ -134,4 +140,59 @@ fn without_a_place_only_an_earl_comes() {
             assert!(e.message.unwrap().contains("place is not declared"));
         }
     }
+}
+
+#[test]
+fn a_held_spirit_keeps_the_hours_of_its_calling() {
+    let gusion = rite("gusion", "dux", "praesentia");
+    let held = Some("11@2024-04-13T09:00:00+02:00");
+    for hora in ["2024-04-13T15:00:00+02:00", "2024-04-14T23:00:00+02:00"] {
+        let e = held_at(&gusion, hora, Some(true), held);
+        assert_eq!(
+            (e.class, e.output.as_slice()),
+            (0, &["RATUM".to_string()][..]),
+            "{hora}: {:?}",
+            e.message
+        );
+    }
+}
+
+#[test]
+fn a_hold_begins_only_in_an_open_hour() {
+    let gusion = rite("gusion", "dux", "praesentia");
+    refused(
+        &held_at(
+            &gusion,
+            "2024-04-13T16:00:00+02:00",
+            Some(true),
+            Some("11@2024-04-13T15:00:00+02:00"),
+        ),
+        "not the hour of a duke",
+    );
+    refused(
+        &held_at(
+            &gusion,
+            "2024-04-12T09:00:00+02:00",
+            Some(true),
+            Some("11@2024-04-13T09:00:00+02:00"),
+        ),
+        "Moon is 3 days old",
+    );
+}
+
+#[test]
+fn a_hold_serves_only_its_own_spirit() {
+    let amon = rite("amon", "marchio", "futura");
+    refused(
+        &held_at(
+            &amon,
+            "2024-04-13T10:00:00+02:00",
+            None,
+            Some("11@2024-04-13T09:00:00+02:00"),
+        ),
+        "not the hour of a marquis",
+    );
+    assert!(parse_tentus("0@2024-04-13T09:00:00+02:00").is_none());
+    assert!(parse_tentus("73@2024-04-13T09:00:00+02:00").is_none());
+    assert!(parse_tentus("11").is_none());
 }

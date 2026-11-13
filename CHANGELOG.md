@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Core audit 1, #5: the audit is signed and read back (2026-11-13)
+- Every audit (`.acta`) written with the wand present ends with a `#signum` line: the rite key's signature (with the master's bond) over every line above it and the number of the seal that follows the run (`Domus::next_seal`). Without the wand it says `# not signed`.
+- **`annulus acta FILE`** reads an audit back: each entry against its chain, the signature, the wand against the house's lineage (a revoked or foreign wand refused), and that the seal it names exists. `Domus::read_audit`, `tabularium::Acta`.
+- Tests: six forgeries refused (an entry, a note, a dropped entry, a dropped signature, another seal number, a cut-off last line), an audit bound to an unmade seal, an unsigned audit; the CLI round trip; a real wand's audit signed by its rite key. `dynamic.md` §1.1.
+
 ### Ruled by the owner (2026-11-13): a held spirit
 - The hours and the Moon govern the calling, not the stay. `--tentus N@HOUR` declares a spirit held since an open hour of its calling; its window and Moon are checked at that hour, so it may be petitioned after its hours until the Operator gives licence. A hold begun in a closed hour, dated in the future or naming another spirit does nothing. The will is told when its spirit is held past its hour (`Petitio::ultra_horam`). `dynamic.md` §5.1.
 - **`MANE` ("remain")**, a fourth way to end a sitting: the run releases the spirit as `VADE IN PACE` does (A9 and §3.1 unchanged), but records a rite act, so the history says `retentus`, not `dimissus`. `VADE IN PACE` is kept for the licence to depart.

@@ -8,7 +8,7 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, Output, Stdio};
 
 use annulus::mandata::HOUSE;
-use annulus::tabularium::{LEX, LINEAGE, ROOTS};
+use annulus::tabularium::{LEX, LINEAGE, ROOTS, SIGNUM};
 
 const BINARY: &str = env!("CARGO_BIN_EXE_annulus");
 const M: &str = "the master's own words";
@@ -138,6 +138,12 @@ fn a_real_wand_ratifies_then_runs_and_seals() {
     assert_eq!(f[4], v.magister);
     assert_eq!(f[5], v.ritus);
     assert_eq!(f[6], v.vinculum);
+    // the audit is signed the same way (core audit 1, #5)
+    let signum: Vec<&str> = acta.lines().last().unwrap().split('\t').collect();
+    assert_eq!(signum[0], SIGNUM);
+    assert_eq!(signum[3], v.magister);
+    assert_eq!(signum[4], v.ritus);
+    assert_eq!(signum[5], v.vinculum);
     // the house keeps the lineage; the wand keeps the anchor
     assert!(s.dir.join(HOUSE).join(LINEAGE).exists());
     assert_eq!(fs::read_dir(v.ancorae()).unwrap().count(), 1);

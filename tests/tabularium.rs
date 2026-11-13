@@ -426,12 +426,85 @@ fn audits_are_never_overwritten() {
     let first = audit_path(&program, None);
     assert_eq!(first, dir.join("opus.acta"));
     let audit: Chain<Label> = Chain::new();
-    write_audit(&first, &audit, &test_wand(), &[]).unwrap();
-    assert!(write_audit(&first, &audit, &test_wand(), &[]).is_err());
+    write_audit(&first, &audit, &test_wand(), &[], 1).unwrap();
+    assert!(write_audit(&first, &audit, &test_wand(), &[], 1).is_err());
     assert_eq!(audit_path(&program, None), dir.join("opus.2.acta"));
     assert!(fs::read_to_string(&first)
         .unwrap()
         .starts_with("# made with the test wand"));
+}
+
+fn sealed_with_audit(name: &str) -> (PathBuf, PathBuf) {
+    let dir = house(name);
+    let mut audit: Chain<Label> = Chain::new();
+    audit.push(Label::OpenC(1));
+    audit.push(Label::CloseC(1));
+    let acta = dir.join("opus.acta");
+    let domus = Domus::new(&dir);
+    let seq = domus.next_seal().unwrap();
+    assert_eq!(seq, 1);
+    write_audit(&acta, &audit, &test_wand(), &[awkward("nota")], seq).unwrap();
+    seal_fresh(&dir, &every_kind(), &BTreeSet::new());
+    (dir, acta)
+}
+
+fn read_back(dir: &Path, acta: &Path) -> Result<Acta, String> {
+    let mut wand = test_wand();
+    let domus = Domus::new(dir);
+    domus.open(&mut wand).unwrap();
+    domus.read_audit(acta, &wand)
+}
+
+#[test]
+fn a_signed_audit_reads_back_whole() {
+    let (dir, acta) = sealed_with_audit("acta-whole");
+    let a = read_back(&dir, &acta).unwrap();
+    assert_eq!((a.seq, a.entries), (1, 2));
+    assert_eq!(a.master, test_wand().fingerprint);
+}
+
+#[test]
+fn a_tampered_audit_is_refused() {
+    let (dir, acta) = sealed_with_audit("acta-tamper");
+    let text = fs::read_to_string(&acta).unwrap();
+    let cases = [
+        text.replace("OpenC(1)", "OpenC(2)"),
+        text.replace("# nota", "# alia nota"),
+        text.lines()
+            .filter(|l| !l.contains("CloseC"))
+            .map(|l| format!("{l}\n"))
+            .collect(),
+        text.lines()
+            .filter(|l| !l.starts_with(SIGNUM))
+            .map(|l| format!("{l}\n"))
+            .collect(),
+        text.replace(&format!("{SIGNUM}\t1\t1\t"), &format!("{SIGNUM}\t1\t2\t")),
+        text.trim_end_matches('\n').to_string(),
+    ];
+    for (n, forged) in cases.iter().enumerate() {
+        assert_ne!(*forged, text, "case {n} changed nothing");
+        let path = dir.join(format!("forged{n}.acta"));
+        fs::write(&path, forged).unwrap();
+        assert!(read_back(&dir, &path).is_err(), "case {n} was accepted");
+    }
+}
+
+#[test]
+fn an_audit_bound_to_an_unmade_seal_is_refused() {
+    let (dir, _) = sealed_with_audit("acta-unmade");
+    let acta = dir.join("later.acta");
+    write_audit(&acta, &Chain::new(), &test_wand(), &[], 2).unwrap();
+    let e = read_back(&dir, &acta).unwrap_err();
+    assert!(e.contains("seal 2"), "{e}");
+}
+
+#[test]
+fn an_audit_without_the_wand_says_it_is_unsigned() {
+    let (dir, _) = sealed_with_audit("acta-nullum");
+    let acta = dir.join("sine.acta");
+    write_audit(&acta, &Chain::new(), &no_wand(), &[], 1).unwrap();
+    assert!(fs::read_to_string(&acta).unwrap().contains("# not signed"));
+    assert!(read_back(&dir, &acta).unwrap_err().contains("not signed"));
 }
 
 #[test]

@@ -11,7 +11,7 @@ This part says what happens **while a program runs**. A program reaches this poi
 - the sky at the place (`--caelum serenum` for clear, `--caelum turbidum` for not clear), as the launching person observes it; needed only for Dukes (§5.1);
 - a fixed clock (`--hora` with a date and time), for reproducible runs and tests;
 - an entropy seed (`--semen`), to replay a recorded run exactly (§5.4);
-- the audit file (`--acta`; default: the program's name with `.acta` added);
+- the audit file (`--acta`; default: the program's name with `.acta` added). With the wand present its last line is a signature by the rite key over every line above it and the number of the seal that follows the run, so an audit cannot be edited, cut short or moved to another point of the house's history; `annulus acta` reads one back and checks it (`library.md` §4, `acta`). Without the wand the audit says it is unsigned;
 - the mode of the spirits' will (`--voluntas simulata`, the default, or `--voluntas agens` for real agents, roadmap step 4), with its options (§5.6).
 
 1.2 **The faculty is granted first.** The runtime shows the program's `FACULTAS` request. The launching person grants all of it, part of it, or none (`authority.md` §2.4). The grant is the first audit record. Nothing in the program runs before it.

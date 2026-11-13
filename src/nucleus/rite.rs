@@ -10,6 +10,9 @@ pub struct ReqForm {
     pub office: String,
     pub mode: Option<String>,
     pub places: Vec<String>,
+    /// The office's class, fixed by the language, not by the rite (`offices.md` §1,
+    /// `core.md` §3.1b): a telling office is answered in words, a working one in work.
+    pub telling: bool,
 }
 
 pub trait Rite {

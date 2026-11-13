@@ -205,6 +205,7 @@ fn form(office: &str, places: &[&str]) -> ReqForm {
         office: office.to_string(),
         mode: None,
         places: places.iter().map(|p| p.to_string()).collect(),
+        telling: office == "narra",
     }
 }
 
@@ -1263,4 +1264,53 @@ fn a_revocation_cannot_be_struck_out() {
         matches!(s.launch(), Err(Refusal::LaunchRefused(_))),
         "striking the revocation out breaks the owner's signature"
     );
+}
+
+// core audit 1, #4: the office's form is enforced in the core, whatever the rite says
+#[test]
+fn words_for_a_working_office_are_held_by_the_core() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, inv) = circle_and(&mut s, &rite, MARBAS);
+    let p = op(&mut s, |s| {
+        s.request(
+            &rite,
+            Addressee::Spirit(inv),
+            &form("scribe", &["notes.txt"]),
+        )
+    })
+    .unwrap();
+    spirit_turn(
+        &mut s,
+        &rite,
+        inv,
+        Contrib::Respond(910, "done, trust me".to_string()),
+        true,
+    );
+    assert!(s.props()[&p].misformed);
+    let outcome = op(&mut s, |s| s.examine(&rite, p)).unwrap();
+    assert_eq!(outcome, WorkOutcome::Suspensum);
+    check_theorems(&s);
+}
+
+#[test]
+fn work_for_a_telling_office_is_held_by_the_core() {
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, inv) = circle_and(&mut s, &rite, FURFUR);
+    let p = op(&mut s, |s| {
+        s.request(&rite, Addressee::Spirit(inv), &form("narra", &[]))
+    })
+    .unwrap();
+    spirit_turn(
+        &mut s,
+        &rite,
+        inv,
+        Contrib::Effects(vec![effect(Verb::Scribe, "notes.txt", "x")]),
+        true,
+    );
+    assert!(s.props()[&p].misformed);
+    let outcome = op(&mut s, |s| s.examine(&rite, p)).unwrap();
+    assert_eq!(outcome, WorkOutcome::Suspensum);
+    check_theorems(&s);
 }

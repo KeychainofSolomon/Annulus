@@ -22,6 +22,7 @@ pub const USAGE: &str = "usage: annulus <source.annulus>
        annulus confirma <fingerprint> [--virga STICK | --virga-probationis] [--domus DIR]
        annulus petitiones [--virga STICK | --virga-probationis] [--domus DIR]
        annulus adopta [--virga STICK | --virga-probationis] [--domus DIR]
+       annulus acta <audit.acta> [--virga STICK | --virga-probationis] [--domus DIR]
        annulus --version
 The wand (made with `virga fac`) is found by itself when one is plugged in; --virga names
 its drive, for example --virga E:\\. Without a wand nothing is sealed or written.";
@@ -445,7 +446,15 @@ pub fn ritus_with(
     let state = &exitus.state;
     let wand = &exitus.baculum;
     let acta = tab::audit_path(&program, f.acta.as_deref());
-    match tab::write_audit(&acta, state.audit(), wand, &notes) {
+    let seq = match domus.next_seal() {
+        Ok(n) => n,
+        Err(e) => {
+            say(format!("error: {e}"));
+            say("the stores are not sealed and the world is not written".into());
+            return Ok(class.max(1));
+        }
+    };
+    match tab::write_audit(&acta, state.audit(), wand, &notes, seq) {
         Ok(()) => say(format!("audit: {}", acta.display())),
         Err(e) => {
             say(format!("error: {e}"));
@@ -608,6 +617,45 @@ pub fn petitiones(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> 
         let _ = writeln!(out, "{fingerprint}\t{what}");
     }
     Ok(0)
+}
+
+/// `annulus acta`: reads an audit back and checks it whole: its chain, the signature of a
+/// wand the house trusts, and the seal it was bound to (core audit 1, #5).
+pub fn acta(args: &[String], out: &mut dyn Write, err: &mut dyn Write) -> Result<u8, Usage> {
+    let (plain, f) = flags(args, &["--virga-probationis", "--virga", "--domus"])?;
+    let [file] = plain.as_slice() else {
+        return Err(Usage("acta takes exactly one audit".into()));
+    };
+    let domus = Domus::new(&house(&f));
+    if !domus.installed() {
+        let _ = writeln!(err, "there are no stores in {}", domus.dir.display());
+        return Ok(EXIT_REFUSED);
+    }
+    let mut wand = match wand(&f, Need::Nihil, err) {
+        Ok(w) => w,
+        Err(e) => {
+            let _ = writeln!(err, "the wand is refused: {e}");
+            return Ok(EXIT_REFUSED);
+        }
+    };
+    if let Err(e) = domus.open(&mut wand) {
+        let _ = writeln!(err, "the stores are refused: {e}");
+        return Ok(EXIT_REFUSED);
+    }
+    match domus.read_audit(Path::new(file), &wand) {
+        Ok(a) => {
+            let _ = writeln!(
+                out,
+                "{file}: whole; {} entries, root {}; bound to seal {}; signed by the wand {}",
+                a.entries, a.root, a.seq, a.master
+            );
+            Ok(0)
+        }
+        Err(e) => {
+            let _ = writeln!(err, "{file}: refused: {e}");
+            Ok(EXIT_REFUSED)
+        }
+    }
 }
 
 /// `annulus sanci`: the owner ratifies the Constitution of this Annulus for a house, with

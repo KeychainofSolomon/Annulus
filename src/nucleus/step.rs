@@ -338,6 +338,8 @@ impl State {
                 status: PStatus::Pending,
                 carries: vec![author.clone()],
                 pars: false,
+                telling: form.telling,
+                misformed: false,
             },
         );
         match &to {
@@ -466,6 +468,14 @@ impl State {
         if outcome == Outcome::Pars {
             entry.pars = true;
         }
+        let wrong_form = match &contrib {
+            Contrib::Respond(..) => !entry.telling,
+            Contrib::Effects(_) => entry.telling,
+            _ => false,
+        };
+        if wrong_form {
+            entry.misformed = true;
+        }
         match &contrib {
             Contrib::Respond(v, d) => {
                 entry.content = Content::Response(*v, d.clone());
@@ -558,7 +568,7 @@ impl State {
             Some(e) if *e != p.author && !p.carries.contains(e) && self.angelic(e) => {
                 let v0 = rite.verdict(self, prop, e);
                 let cb = rite.counterbalance(self, prop);
-                let v = if suspect || self.doubtful(&p.author) || p.pars {
+                let v = if suspect || self.doubtful(&p.author) || p.pars || p.misformed {
                     Verdict::Hold
                 } else {
                     v0.meet(cb)

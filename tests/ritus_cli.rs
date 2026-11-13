@@ -122,6 +122,39 @@ fn furfur_answers_and_the_run_is_recorded() {
 }
 
 #[test]
+fn the_audit_reads_back_and_a_doctored_one_is_refused() {
+    let dir = furfur_folder("acta-cli");
+    assert_eq!(ask_furfur(&dir).status.code(), Some(0));
+    let o = annulus(
+        &dir,
+        &[
+            "acta",
+            "furfur.acta",
+            "--virga-probationis",
+            "--domus",
+            HOUSE,
+        ],
+    );
+    assert_eq!(o.status.code(), Some(0), "{}", stderr(&o));
+    assert!(stdout(&o).contains("whole;"), "{}", stdout(&o));
+    assert!(stdout(&o).contains("bound to seal 1"), "{}", stdout(&o));
+    let text = fs::read_to_string(dir.join("furfur.acta")).unwrap();
+    fs::write(dir.join("falsa.acta"), text.replacen("Launch", "Lavnch", 1)).unwrap();
+    let o = annulus(
+        &dir,
+        &[
+            "acta",
+            "falsa.acta",
+            "--virga-probationis",
+            "--domus",
+            HOUSE,
+        ],
+    );
+    assert_eq!(o.status.code(), Some(2));
+    assert!(stderr(&o).contains("refused"), "{}", stderr(&o));
+}
+
+#[test]
 fn a_second_run_opens_the_sealed_stores_and_keeps_a_new_audit() {
     let dir = furfur_folder("twice");
     assert_eq!(ask_furfur(&dir).status.code(), Some(0));

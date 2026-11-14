@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Lean: seven of the obligations proved (2026-11-14)
+- `formal/Annulus/Proofs.lean` now proves, for any language and any rite, with no axiom beyond Lean's own: **P1** (adding (c): a helper holds a subset of the request it serves), **P2** (no self-approval), **P4** (each invocation has one terminal step and nothing uses it afterwards), **P6 (b)** (a stricter rite adds no behaviour), **P7** (the audit is the run's labels), **P8** (fail closed) and **the damnation law**. Only proofs were added; the model and the statements are unchanged.
+- Found while proving: **P9 is false as stated.** `Dismissed σ ds` does not fix the order of `ds`, so two replays may close with records that differ in that order alone. Open ruling. P3 and P5 remain unprovable until `Lang` models the type checker (as `formal/README.md` already said).
+
 ### Outside audit 3 (GPT), findings #2, #4, #5 (2026-11-14)
 - **#4, the lineage check failed open.** A real wand's anchor that lacked its lineage fields skipped the lineage check; cutting the anchor down let a rolled-back lineage open the house (reproduced). Now a real wand's anchor must carry four fields, or the house is refused until adopted.
 - **#5, audits bound to the seal itself.** The roots record gains a ninth field, `A/W`: the digest of the run's audit and of its world plan (`-` for none), under a new signed digest (`radices|3`); lines of the older kind still open. `annulus acta` refuses an audit its seal does not name, or a seal that names none.

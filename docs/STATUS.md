@@ -1,8 +1,8 @@
 # Implementation status
 
-Last updated: 2026-11-14 (branch `audit-3`: outside audit 3, findings #2, #4, #5). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-14 (branch `probationes`: the Lean proofs; on top of `audit-3`). **This page is updated with every fix** (the owner's rule).
 
-**Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are mostly tested, not proved:** P1–P9 are stated in Lean (`formal/`); the first proofs are in `formal/Annulus/Proofs.lean`.
+**Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are proved of the Lean model, and tested, not proved, of the Rust program:** P1, P2, P4, P6 (b), P7, P8 and the damnation law are proved in `formal/Annulus/Proofs.lean`; P3, P5 and P9 are not (see Open).
 
 ## What runs: `annulus ritus` (step 2a–2c)
 
@@ -83,7 +83,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Area | State |
 |---|---|
-| Proofs of P1–P9 and their correspondence to the Rust core | **Begun** (`formal/Annulus/Proofs.lean`, checked by CI with no extra axioms): **P1 (a)**, containment at commit; **P1 (b)**, every request's handed places lie in the faculty in every reachable state (an invariant over runs); an outside will's turns are declared; `kill` only in simulated mode. P1 (c) and P2–P9 remain; correspondence to Rust not started. Still the largest gap |
+| Proofs of P1–P9 and their correspondence to the Rust core | **Proved (2026-11-14, `formal/Annulus/Proofs.lean`, 104 theorems, no added axioms), for any language and any rite: P1 whole, P2, P4, P6 (b), P7, P8, the damnation law.** Not proved: **P3** and **P5** need a model of the type checker (`Lang` is abstract); **P9 is false as stated**: the closing record's list of dismissed invocations has no fixed order in the model (open ruling: fix the order). P6 (a) waits on these. Correspondence to Rust not started: still the largest gap; none of this says the Rust program matches the model |
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
 | Independent audit of the core changes of 2026-11-11 and 2026-11-12 | **Done** (`docs/AUDIT_CORE_1.md`); confirmed findings fixed. The change of the evening (declared outcomes) and the anchor are not yet reviewed |
 | The audit files (`.acta`) are not signed or read back | **Fixed (2026-11-13; CI green on Linux and Windows):** signed by the rite key, bound to the seal that follows the run; `annulus acta FILE` reads one back (chain, signature, a trusted wand, the seal exists). The audit whose run failed to seal: **fixed (2026-11-14)**, the seal names its audit. Still open: `PRAETERITA "prior"` must also check the seal's roots, not only its number |

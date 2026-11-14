@@ -135,9 +135,14 @@ fn a_real_wand_ratifies_then_runs_and_seals() {
     let v = virga::Virga::aperi(&s.wand).unwrap();
     let roots = fs::read_to_string(s.dir.join(HOUSE).join(ROOTS)).unwrap();
     let f: Vec<&str> = roots.lines().last().unwrap().split('\t').collect();
-    assert_eq!(f[4], v.magister);
-    assert_eq!(f[5], v.ritus);
-    assert_eq!(f[6], v.vinculum);
+    // and the seal names this run's audit (audit 3, #5)
+    assert_eq!(
+        f[4],
+        format!("{}/-", annulus::nucleus::sha256::hash_hex(acta.as_bytes()))
+    );
+    assert_eq!(f[5], v.magister);
+    assert_eq!(f[6], v.ritus);
+    assert_eq!(f[7], v.vinculum);
     // the audit is signed the same way (core audit 1, #5)
     let signum: Vec<&str> = acta.lines().last().unwrap().split('\t').collect();
     assert_eq!(signum[0], SIGNUM);
@@ -426,6 +431,41 @@ fn a_lineage_rolled_back_behind_the_anchor_is_refused() {
     let o = ritus(&s, &s.wand, &[M, R]);
     assert_eq!(o.status.code(), Some(2));
     assert!(err(&o).contains("lineage"), "{}", err(&o));
+}
+
+#[test]
+fn a_lineage_rolled_back_behind_a_cut_down_anchor_is_refused() {
+    // audit 3, #4: the same rollback as above, with the anchor cut to its first two
+    // fields so the lineage it saw is gone
+    let s = scene("stirps-cut");
+    sanci(&s, &s.wand, &[M]);
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    let before_house = fs::read_to_string(s.dir.join(HOUSE).join(LINEAGE)).unwrap();
+    let before_stick = fs::read_to_string(s.wand.join("VIRGA").join("stirps.txt")).unwrap();
+    let mut w = virga::Virga::aperi(&s.wand).unwrap();
+    let g = s.dir.parent().unwrap().join("G");
+    fs::create_dir_all(&g).unwrap();
+    virga::adde(&mut w, &g, M, R, LEVIS).unwrap();
+    assert_eq!(ritus(&s, &s.wand, &[M, R]).status.code(), Some(0));
+    fs::write(s.dir.join(HOUSE).join(LINEAGE), before_house).unwrap();
+    fs::write(s.wand.join("VIRGA").join("stirps.txt"), before_stick).unwrap();
+    let v = virga::Virga::aperi(&s.wand).unwrap();
+    let mut cut = 0;
+    for e in fs::read_dir(v.ancorae()).unwrap().flatten() {
+        let a = fs::read_to_string(e.path()).unwrap();
+        let f: Vec<&str> = a.trim().split('\t').collect();
+        assert_eq!(f.len(), 4, "a real wand's anchor records the lineage");
+        fs::write(e.path(), format!("{}\t{}", f[0], f[1])).unwrap();
+        cut += 1;
+    }
+    assert_eq!(cut, 1);
+    let o = ritus(&s, &s.wand, &[M, R]);
+    assert_eq!(o.status.code(), Some(2));
+    assert!(
+        err(&o).contains("does not record the lineage"),
+        "{}",
+        err(&o)
+    );
 }
 
 #[test]

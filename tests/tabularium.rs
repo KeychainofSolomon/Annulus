@@ -200,7 +200,8 @@ fn a_forged_or_unsigned_roots_record_refuses() {
     let path = dir.join(ROOTS);
     let line = fs::read_to_string(&path).unwrap();
     let mut f: Vec<String> = line.trim_end().split('\t').map(String::from).collect();
-    f[7] = "0".repeat(128);
+    let last = f.len() - 1;
+    f[last] = "0".repeat(128);
     fs::write(&path, f.join("\t") + "\n").unwrap();
     assert!(refused(&dir).contains("rolled back or replaced"));
     let unanchored =
@@ -443,8 +444,17 @@ fn sealed_with_audit(name: &str) -> (PathBuf, PathBuf) {
     let domus = Domus::new(&dir);
     let seq = domus.next_seal().unwrap();
     assert_eq!(seq, 1);
-    write_audit(&acta, &audit, &test_wand(), &[awkward("nota")], seq).unwrap();
-    seal_fresh(&dir, &every_kind(), &BTreeSet::new());
+    let d = write_audit(&acta, &audit, &test_wand(), &[awkward("nota")], seq).unwrap();
+    domus
+        .seal_acta(
+            &every_kind(),
+            [0, 0, 0],
+            &BTreeSet::new(),
+            &test_wand(),
+            Some(&d),
+            None,
+        )
+        .unwrap();
     (dir, acta)
 }
 
@@ -520,4 +530,36 @@ fn no_store_holds_a_hidden_character() {
             "{name}"
         );
     }
+}
+
+#[test]
+fn an_audit_whose_run_never_sealed_is_not_bound_to_the_next_seal() {
+    // audit 3, #5: a run writes its audit for seal 2 and fails before sealing; the next
+    // run takes seal 2 with its own audit. The first audit must not read as seal 2's.
+    let (dir, _) = sealed_with_audit("acta-orphan");
+    let domus = Domus::new(&dir);
+    let mut audit: Chain<Label> = Chain::new();
+    audit.push(Label::OpenC(7));
+    let orphan = dir.join("orphan.acta");
+    write_audit(&orphan, &audit, &test_wand(), &[], 2).unwrap();
+    let next = dir.join("next.acta");
+    let d = write_audit(&next, &Chain::new(), &test_wand(), &[], 2).unwrap();
+    let mut wand = test_wand();
+    let o = domus.open(&mut wand).unwrap();
+    domus
+        .seal_acta(&o.stores, o.counts, &o.marks, &wand, Some(&d), None)
+        .unwrap();
+    assert_eq!(read_back(&dir, &next).unwrap().seq, 2);
+    let e = read_back(&dir, &orphan).unwrap_err();
+    assert!(e.contains("names another audit"), "{e}");
+}
+
+#[test]
+fn an_audit_against_a_seal_that_names_none_is_refused() {
+    let dir = house("acta-none");
+    let acta = dir.join("opus.acta");
+    write_audit(&acta, &Chain::new(), &test_wand(), &[], 1).unwrap();
+    seal_fresh(&dir, &every_kind(), &BTreeSet::new());
+    let e = read_back(&dir, &acta).unwrap_err();
+    assert!(e.contains("names no audit"), "{e}");
 }

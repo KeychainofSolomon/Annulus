@@ -521,3 +521,110 @@ fn acta_waits_for_a_house_another_run_holds() {
         stderr(&o)
     );
 }
+
+#[test]
+fn a_run_cut_off_after_its_seal_finishes_its_world_at_the_next_opening() {
+    // audit 3, #2: the stores are sealed and the program dies before the world is
+    // written; the next opening carries the sealed plan through
+    let dir = folder("cut-world");
+    fs::write(dir.join("move.annulus"), moving()).unwrap();
+    fs::write(dir.join("a.txt"), "littera").unwrap();
+    let args = [
+        "ritus",
+        "move.annulus",
+        "--virga-probationis",
+        "--sors",
+        "obsequium",
+        "--hora",
+        "2024-04-13T14:30:00Z",
+        "--locus",
+        "41.9,12.5",
+    ];
+    let run = |cade: &str| {
+        Command::new(BINARY)
+            .current_dir(&dir)
+            .args(args)
+            .env("ANNULUS_PROBATIO_CADE", cade)
+            .output()
+            .unwrap()
+    };
+    assert_eq!(run("").status.code(), Some(0));
+    let line = stdout(&annulus(&dir, &["petitiones"]));
+    let fingerprint = line.split('\t').next().unwrap().to_string();
+    let o = annulus(&dir, &["confirma", &fingerprint, "--virga-probationis"]);
+    assert_eq!(o.status.code(), Some(0), "{}", stderr(&o));
+    let o = run("10");
+    assert_eq!(o.status.code(), Some(99), "{}", stderr(&o));
+    assert!(dir.join("a.txt").exists() && !dir.join("b.txt").exists());
+    assert!(dir.join(HOUSE).join(WORLD_JOURNAL).exists());
+    // any opening carries it through: here, only listing the petitions
+    let o = annulus(&dir, &["petitiones"]);
+    assert_eq!(o.status.code(), Some(0), "{}", stderr(&o));
+    assert!(!dir.join("a.txt").exists());
+    assert_eq!(fs::read_to_string(dir.join("b.txt")).unwrap(), "littera");
+    assert!(!dir.join(HOUSE).join(WORLD_JOURNAL).exists());
+}
+
+#[test]
+fn a_place_changed_after_the_cut_is_not_overwritten_and_the_house_waits() {
+    let dir = folder("cut-world-changed");
+    fs::write(dir.join("move.annulus"), moving()).unwrap();
+    fs::write(dir.join("a.txt"), "littera").unwrap();
+    let args = [
+        "ritus",
+        "move.annulus",
+        "--virga-probationis",
+        "--sors",
+        "obsequium",
+        "--hora",
+        "2024-04-13T14:30:00Z",
+        "--locus",
+        "41.9,12.5",
+    ];
+    let run = |cade: &str| {
+        Command::new(BINARY)
+            .current_dir(&dir)
+            .args(args)
+            .env("ANNULUS_PROBATIO_CADE", cade)
+            .output()
+            .unwrap()
+    };
+    assert_eq!(run("").status.code(), Some(0));
+    let line = stdout(&annulus(&dir, &["petitiones"]));
+    let fingerprint = line.split('\t').next().unwrap().to_string();
+    annulus(&dir, &["confirma", &fingerprint, "--virga-probationis"]);
+    assert_eq!(run("10").status.code(), Some(99));
+    fs::write(dir.join("a.txt"), "alia littera").unwrap();
+    let o = annulus(&dir, &["petitiones"]);
+    assert_eq!(o.status.code(), Some(2), "{}", stderr(&o));
+    assert!(
+        stderr(&o).contains("could not finish its world"),
+        "{}",
+        stderr(&o)
+    );
+    assert_eq!(
+        fs::read_to_string(dir.join("a.txt")).unwrap(),
+        "alia littera"
+    );
+    assert!(!dir.join("b.txt").exists());
+}
+
+#[test]
+fn a_planted_world_journal_writes_nothing() {
+    let dir = furfur_folder("planted-world");
+    assert_eq!(ask_furfur(&dir).status.code(), Some(0));
+    let root = std::path::absolute(&dir).unwrap();
+    let plan = format!(
+        "mundus\t1\t1\t{}\nchronica.txt\t{}\t+\tfalsum\n",
+        root.display().to_string().replace('\\', "\\\\"),
+        annulus::nucleus::sha256::hash_hex(b"annales")
+    );
+    fs::write(dir.join(HOUSE).join(WORLD_JOURNAL), plan).unwrap();
+    let o = ask_furfur(&dir);
+    assert_eq!(o.status.code(), Some(2), "{}", stderr(&o));
+    assert!(stderr(&o).contains("is not the plan"), "{}", stderr(&o));
+    assert_eq!(
+        fs::read_to_string(dir.join("chronica.txt")).unwrap(),
+        "annales"
+    );
+}

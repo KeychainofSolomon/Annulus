@@ -520,14 +520,17 @@ fn ritus_inner(
             return Ok(class.max(1));
         }
     };
-    match tab::write_audit(&acta, state.audit(), wand, &notes, seq) {
-        Ok(()) => say(format!("audit: {}", acta.display())),
+    let acta_digest = match tab::write_audit(&acta, state.audit(), wand, &notes, seq) {
+        Ok(d) => {
+            say(format!("audit: {}", acta.display()));
+            d
+        }
         Err(e) => {
             say(format!("error: {e}"));
             say("the stores are not sealed and the world is not written".into());
             return Ok(class.max(1));
         }
-    }
+    };
     if !wand.present {
         say("without the wand nothing is sealed and nothing is written".into());
         return Ok(class);
@@ -538,7 +541,33 @@ fn ritus_inner(
         options.caelum.hora.unwrap_or(0),
         options.caelum.tentus,
     );
-    if let Err(e) = domus.seal(state.stores(), opened.counts, &marks, wand) {
+    // the world is planned before the seal, and the seal names the plan: a run cut off
+    // after sealing is carried through at the next opening (audit 3, #2)
+    let plan = match tab::plan_world(&mundus, &before, state.world(), &places, seq) {
+        Ok(p) => p,
+        Err(e) => {
+            say(format!("error: {e}"));
+            say("the stores are not sealed and the world is not written".into());
+            return Ok(class.max(1));
+        }
+    };
+    let plan_digest = match domus.keep_world_plan(&plan) {
+        Ok(d) => d,
+        Err(e) => {
+            say(format!("error: {e}"));
+            say("the stores are not sealed and the world is not written".into());
+            return Ok(class.max(1));
+        }
+    };
+    if let Err(e) = domus.seal_acta(
+        state.stores(),
+        opened.counts,
+        &marks,
+        wand,
+        Some(&acta_digest),
+        plan_digest.as_deref(),
+    ) {
+        domus.drop_world_plan();
         say(format!("error: {e}"));
         say("the world is not written".into());
         return Ok(class.max(1));
@@ -550,7 +579,9 @@ fn ritus_inner(
     for (fingerprint, what) in domus.petitions(state.stores()) {
         say(format!("awaits the second key: {fingerprint} ({what})"));
     }
-    match tab::write_world(&mundus, &before, state.world(), &places) {
+    // a cut here leaves a sealed run whose world is not yet written (tests only)
+    tab::cade(10);
+    match domus.apply_world(&plan) {
         Ok(changed) => changed.into_iter().for_each(&mut say),
         Err(e) => {
             say(format!("error: {e}"));

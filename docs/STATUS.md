@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-14 (DOCTRINA bindable, PR #5). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-14 (branch `audit-3`: outside audit 3, findings #2, #4, #5). **This page is updated with every fix** (the owner's rule).
 
 **Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are mostly tested, not proved:** P1–P9 are stated in Lean (`formal/`); the first proofs are in `formal/Annulus/Proofs.lean`.
 
@@ -24,7 +24,7 @@ Last updated: 2026-11-14 (DOCTRINA bindable, PR #5). **This page is updated with
 | **Reading takes the lock** (audit 2, #1): `petitiones` and `acta` take `annulus.sera` before opening the house | Implemented and tested (`tests/ritus_cli.rs`). Branch `colloquium` |
 | **The binding** (`operator.md` §8.8): a calling makes a binding key the master vouches for; a later rite that only reads, asking a held spirit, is granted by it with no words; every work still needs the master, enforced by the nucleus's launch check | Implemented in Rust (`ritus_ligata`), tested (`tests/nucleus_ligatio.rs`, `tests/ligatio_run.rs`); in Lean, `LaunchChecks` carries it and `launch_without_master_only_reads` is proved with no axioms. Branch `colloquium` |
 
-Tests: **339**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
+Tests: **345**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
@@ -38,6 +38,9 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 
 | Date | Breach | Fix |
 |---|---|---|
+| 2026-11-14 | (GPT, audit 3, #4) A real wand's anchor cut to its first two fields switched the lineage check off, so a rolled-back lineage opened (reproduced: the house opened) | A real wand's anchor must record the lineage it saw; a short one is refused until the Operator adopts the house again (`tests/virga_cli.rs`) |
+| 2026-11-14 | (GPT, audit 3, #5) An audit whose run never sealed read as belonging to the next run's seal of the same number | Each seal names its run's audit by digest; `annulus acta` refuses an audit its seal does not name |
+| 2026-11-14 | (GPT, audit 3, #2) A run that sealed and then failed part-way through the world left the stores ahead of the files | The world is planned and checked before the seal, the plan is kept in the house (`annulus.mundus`) and named by the seal; the next opening carries it through, all places or none. A planted plan writes nothing; a place changed by someone else since is not overwritten and the house waits for the Operator |
 | 2026-11-13 | (Core audit 1, #5) The audit files were unsigned, outside the signed roots and never read back: an audit could be edited, cut short or replaced unseen | Each audit ends with the rite key's signature over its every line and the number of the seal that follows the run; `annulus acta` checks the chain, the signature, the wand against the house's lineage, and that the seal exists. Tests: `tabularium.rs` (six forgeries), `ritus_cli.rs`, `virga_cli.rs` |
 | 2026-11-13 | (GPT, third report, V-03) A revoked wand's secrets still opened | `virga` refuses to unlock a revoked wand's secrets; Annulus also refuses the wand before any act |
 | 2026-11-13 | (V-04) The words stayed in memory after use | Words are handed back as `Verba`, overwritten when dropped (copies the system makes are beyond reach) |
@@ -83,7 +86,7 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | Proofs of P1–P9 and their correspondence to the Rust core | **Begun** (`formal/Annulus/Proofs.lean`, checked by CI with no extra axioms): **P1 (a)**, containment at commit; **P1 (b)**, every request's handed places lie in the faculty in every reachable state (an invariant over runs); an outside will's turns are declared; `kill` only in simulated mode. P1 (c) and P2–P9 remain; correspondence to Rust not started. Still the largest gap |
 | The agent's seal (model file and settings hash), recorded per rite | Planned (`agens`) |
 | Independent audit of the core changes of 2026-11-11 and 2026-11-12 | **Done** (`docs/AUDIT_CORE_1.md`); confirmed findings fixed. The change of the evening (declared outcomes) and the anchor are not yet reviewed |
-| The audit files (`.acta`) are not signed or read back | **Fixed (2026-11-13; CI green on Linux and Windows):** signed by the rite key, bound to the seal that follows the run; `annulus acta FILE` reads one back (chain, signature, a trusted wand, the seal exists). Still open: an audit whose run failed to seal is bound to a seal number a later run will take; `PRAETERITA "prior"` must also check the seal's roots, not only its number |
+| The audit files (`.acta`) are not signed or read back | **Fixed (2026-11-13; CI green on Linux and Windows):** signed by the rite key, bound to the seal that follows the run; `annulus acta FILE` reads one back (chain, signature, a trusted wand, the seal exists). The audit whose run failed to seal: **fixed (2026-11-14)**, the seal names its audit. Still open: `PRAETERITA "prior"` must also check the seal's roots, not only its number |
 | The office's form enforced in the core, not only by the angel | **Fixed (2026-11-13, branch `forma-officii`):** the office's class is part of the request's form; a wrong-form answer is held by the core (`SUSPENSUM`), never approved. Rust and Lean together (`core.md` §3.1b) |
 | Rust and Lean drift: validator manifest, Circle binding of values, ink without a wand, forced outcomes, the grave store, a refused `CONSECRA` | Open (core audit 1, #8) |
 | The anchor can itself be deleted by someone with access to it | **Closed** for a real wand: the anchor is on the wand (a rollback is caught by each wand that saw the later state). The test wand still keeps it in a folder |
@@ -93,11 +96,11 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The wand's window and the Windows randomness | Compiled by CI; **owed: the owner's first use** |
 | The wand on Windows: built in CI, not yet run on a real stick | **Owed: the owner's first `virga fac`** |
 | A crash part-way through sealing leaves the house refused | **Fixed:** the seal journal undoes it; a test kills the program after each of the seal's nine writes and checks the next two runs open and seal |
-| A crash while writing the world can leave the stores ahead of the files | Open |
+| A crash while writing the world can leave the stores ahead of the files | **Fixed (2026-11-14, audit 3, #2):** the world journal (`annulus.mundus`), named by the seal and carried through at the next opening |
 | `PARS` with complete work: a model could declare part and hand in the whole work, which the angel approved | **Ruled and fixed (2026-11-13):** obedience in part is not obedience. The core holds (`SUSPENSUM`) any work on which part was declared or drawn; it is never committed. Same rule in Lean (`PInfo.pars`, `afterTurn`, `finalVerdict`; `core.md` §3.1a) |
 | The model's seal (model file hash, settings, llama.cpp version, vectors, grammar) | Planned (`agens`); GPT's list adopted |
 | The Lean CI fetches its installer script from a moving branch | Open |
-| Between the check of a world path and its use, another process could swap a folder for a link (needs a second local process with write access to the Circle's folder) | Open (GPT, second pass): needs handle-relative file operations |
+| Between the check of a world path and its use, another process could swap a folder for a link (needs a second local process with write access to the Circle's folder) | Open (GPT, second pass; audit 3, #3): needs handle-relative file operations, separately for Windows and Linux |
 | Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | Not started; open ruling for the ink |
 | Berith's ring hour | Needs `GERE` to record its time (the Prince's and Knight's hours are ruled) |
 | `PRAETERITA` of the previous run (`historia "prior" legere`) | Not started: the history must be carried between runs |

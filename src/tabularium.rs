@@ -23,6 +23,9 @@ pub const LEX: &str = "annulus.lex";
 /// The journal of a seal in progress: the stores' lengths before it began, so an
 /// interrupted seal is undone at the next opening (audit V06).
 pub const JOURNAL: &str = "annulus.iter";
+/// The journal of the world's writes: written before the seal and named by it, so a run cut
+/// off after sealing is carried through at the next opening (audit 3, #2).
+pub const WORLD_JOURNAL: &str = "annulus.mundus";
 const STAGED: &str = ".annulus-novum";
 pub const MAX_STORE: u64 = 64 << 20;
 pub const MAX_PLACE: u64 = 8 << 20;
@@ -287,6 +290,75 @@ fn digest_roots(roots: &Roots, marks: &str, seq: usize) -> String {
     )
 }
 
+/// The seal's digest when it also names the audit of its run (`-` for a seal no run's
+/// audit precedes): an audit is then bound to the seal that took it, not to a number a
+/// later run might take (audit 3, #5).
+fn digest_roots_acta(roots: &Roots, marks: &str, acta: &str, seq: usize) -> String {
+    hash_hex(
+        format!(
+            "radices|3|{seq}|{}|{}|{}|{}|{acta}",
+            roots.index, roots.vessel, roots.keys, marks
+        )
+        .as_bytes(),
+    )
+}
+
+/// One line of the record of roots, its signature checked: the roots, the marks' digest,
+/// the audit it names (none on a line of the older kind), and the wand that sealed it.
+struct RootsLine {
+    roots: Roots,
+    marks: String,
+    acta: Option<String>,
+    mundus: Option<String>,
+    master: String,
+}
+
+fn parse_roots_line(line: &str, seq: usize) -> Result<RootsLine, String> {
+    let f = split(line)?;
+    let (index, vessel, keys, marks, acta, master, signer, bond, signature) = match f.as_slice() {
+        [i, v, k, m, a, ma, si, b, sg] => (i, v, k, m, Some(a), ma, si, b, sg),
+        [i, v, k, m, ma, si, b, sg] => (i, v, k, m, None, ma, si, b, sg),
+        _ => {
+            return Err("the record of the stores' roots is malformed, or of an older kind".into())
+        }
+    };
+    let roots = Roots {
+        index: index.clone(),
+        vessel: vessel.clone(),
+        keys: keys.clone(),
+    };
+    if signer != master && !virga::vinculum_valet(master, signer, bond) {
+        return Err(
+            "the record of the stores' roots is signed by a key no wand vouches for".into(),
+        );
+    }
+    let digest = match acta {
+        Some(a) => digest_roots_acta(&roots, marks, a, seq),
+        None => digest_roots(&roots, marks, seq),
+    };
+    if !verify(signer, &digest, signature) {
+        return Err("the record of the stores' roots is not signed".into());
+    }
+    // the ninth field names the run's audit and its world plan, `A/W`, `-` for none
+    let (a, w) = match acta {
+        Some(f) => {
+            let (a, w) = f
+                .split_once('/')
+                .ok_or("the record of the stores' roots is malformed")?;
+            let some = |x: &str| (x != "-").then(|| x.to_string());
+            (some(a), some(w))
+        }
+        None => (None, None),
+    };
+    Ok(RootsLine {
+        roots,
+        marks: marks.clone(),
+        acta: a,
+        mundus: w,
+        master: master.clone(),
+    })
+}
+
 fn encode_marks(marks: &BTreeSet<Place>) -> String {
     marks.iter().map(|p| format!("{}\n", escape(p))).collect()
 }
@@ -300,7 +372,7 @@ fn decode_marks(text: &str) -> Result<BTreeSet<Place>, String> {
 /// Test builds only: stops the program right after step `n` of a seal, as a power cut
 /// would, when `ANNULUS_PROBATIO_CADE` is `n` (crash tests).
 #[cfg(feature = "probatio")]
-fn cade(n: u32) {
+pub(crate) fn cade(n: u32) {
     if std::env::var("ANNULUS_PROBATIO_CADE")
         .ok()
         .and_then(|v| v.parse().ok())
@@ -311,7 +383,7 @@ fn cade(n: u32) {
 }
 
 #[cfg(not(feature = "probatio"))]
-fn cade(_: u32) {}
+pub(crate) fn cade(_: u32) {}
 
 impl Domus {
     pub fn new(dir: &Path) -> Domus {
@@ -426,7 +498,9 @@ impl Domus {
                 .ok()
                 .and_then(|n| st.caput(n))
                 .is_some_and(|h| h == *head),
-            _ => true,
+            // a real wand's anchor always carries the lineage it saw: a shorter one is
+            // malformed or cut down, and never switches the check off (audit 3, #4)
+            _ => false,
         }
     }
 
@@ -442,6 +516,77 @@ impl Domus {
     /// seal, and the quarantine record restored. A journal can only cut back, so a planted
     /// one can at most roll the house back, which the wand's anchor then refuses.
     fn recover(&self) -> Result<(), String> {
+        self.recover_seal()?;
+        self.recover_world()
+    }
+
+    /// Carries a sealed run's world writes through, or drops the plan of a run that never
+    /// sealed. The plan is acted on only if the seal of its number names it, so a planted
+    /// journal writes nothing; a place someone else changed since is not overwritten, and
+    /// the house is refused until the Operator looks it over.
+    fn recover_world(&self) -> Result<(), String> {
+        let path = self.path(WORLD_JOURNAL);
+        let text = match read_bounded(&path, MAX_STORE) {
+            Ok(t) => t,
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(()),
+            Err(e) => return Err(format!("cannot read {WORLD_JOURNAL}: {e}")),
+        };
+        let plan = WorldPlan::decode(&text)?;
+        let count = if self.path(ROOTS).exists() {
+            self.roots_count()?
+        } else {
+            0
+        };
+        if plan.seq == 0 || plan.seq > count {
+            // the run never sealed, so it wrote nothing to the world
+            return fs::remove_file(&path)
+                .map_err(|e| format!("cannot clear {WORLD_JOURNAL}: {e}"));
+        }
+        let rtext = read_bounded(&self.path(ROOTS), MAX_STORE)
+            .map_err(|e| format!("cannot read {ROOTS}: {e}"))?;
+        let line = rtext
+            .lines()
+            .nth(plan.seq - 1)
+            .ok_or("the record of roots is short")?;
+        let sealed = parse_roots_line(line, plan.seq)?;
+        if sealed.mundus.as_deref() != Some(hash_hex(text.as_bytes()).as_str()) {
+            return Err(format!(
+                "{WORLD_JOURNAL} is not the plan seal {} names: it is refused, and nothing in the world is written (look it over, then remove it)",
+                plan.seq
+            ));
+        }
+        self.apply_world(&plan).map(|_| ())
+    }
+
+    /// Writes a sealed run's world, place by place; a place already as planned is passed
+    /// over, so it can be carried through again after a crash. The journal goes at the end.
+    pub fn apply_world(&self, plan: &WorldPlan) -> Result<Vec<String>, String> {
+        let changed = apply_plan(plan)?;
+        match fs::remove_file(self.path(WORLD_JOURNAL)) {
+            Ok(()) => {}
+            Err(x) if x.kind() == std::io::ErrorKind::NotFound => {}
+            Err(x) => return Err(format!("cannot clear {WORLD_JOURNAL}: {x}")),
+        }
+        Ok(changed)
+    }
+
+    /// Keeps the plan in the house before the seal; returns its digest for the seal to name.
+    /// A plan that changes nothing is not kept, and the seal names none.
+    pub fn keep_world_plan(&self, plan: &WorldPlan) -> Result<Option<String>, String> {
+        if plan.entries.is_empty() {
+            return Ok(None);
+        }
+        let text = plan.encode();
+        replace_file(&self.path(WORLD_JOURNAL), text.as_bytes())?;
+        Ok(Some(hash_hex(text.as_bytes())))
+    }
+
+    /// Drops a kept plan whose run did not seal.
+    pub fn drop_world_plan(&self) {
+        let _ = fs::remove_file(self.path(WORLD_JOURNAL));
+    }
+
+    fn recover_seal(&self) -> Result<(), String> {
         let path = self.path(JOURNAL);
         let text = match read_bounded(&path, MAX_STORE) {
             Ok(t) => t,
@@ -618,27 +763,13 @@ impl Domus {
             .lines()
             .last()
             .ok_or("the record of the stores' roots is empty")?;
-        let f = split(line)?;
-        let [index, vessel, keys, marks, master, signer, bond, signature] = f.as_slice() else {
-            return Err("the record of the stores' roots is malformed, or of an older kind".into());
-        };
-        let roots = Roots {
-            index: index.clone(),
-            vessel: vessel.clone(),
-            keys: keys.clone(),
-        };
-        if signer != master && !virga::vinculum_valet(master, signer, bond) {
-            return Err(
-                "the record of the stores' roots is signed by a key no wand vouches for".into(),
-            );
-        }
-        if !verify(
-            signer,
-            &digest_roots(&roots, marks, text.lines().count()),
-            signature,
-        ) {
-            return Err("the record of the stores' roots is not signed".into());
-        }
+        let RootsLine {
+            roots,
+            marks,
+            master,
+            ..
+        } = parse_roots_line(line, text.lines().count())?;
+        let master = &master;
         match fides {
             Fides::Any => {}
             Fides::Wand(w) => {
@@ -657,7 +788,7 @@ impl Domus {
                 }
             }
         }
-        Ok((roots, marks.clone()))
+        Ok((roots, marks))
     }
 
     pub fn installed(&self) -> bool {
@@ -725,10 +856,18 @@ impl Domus {
             if !self.anchor_holds(&a)? {
                 return Err("the stores are not the ones this wand last saw: they have been rolled back or replaced".into());
             }
-            if let Some(st) = &wand.stirps {
-                if !Self::anchor_lineage_holds(&a, st) {
-                    return Err("the wands' lineage is older than this wand last saw: it has been rolled back".into());
-                }
+            let st = wand
+                .stirps
+                .as_ref()
+                .ok_or("a real wand without its lineage cannot open a house")?;
+            if a.split('\t').count() != 4 {
+                return Err("this wand's anchor for the house does not record the lineage it saw (cut down or malformed): look the house over, then adopt it with `annulus adopta`".into());
+            }
+            if !Self::anchor_lineage_holds(&a, st) {
+                return Err(
+                    "the wands' lineage is older than this wand last saw: it has been rolled back"
+                        .into(),
+                );
             }
             let opened = self.verified(&fides, false)?;
             // the wand remembers the latest stores it has seen, whoever sealed them
@@ -844,6 +983,20 @@ impl Domus {
         marks: &BTreeSet<Place>,
         wand: &Baculum,
     ) -> Result<(), String> {
+        self.seal_acta(stores, counts, marks, wand, None, None)
+    }
+
+    /// Seals, naming the audit of the run (its digest, as `write_audit` returns it), so the
+    /// audit is bound to this very seal.
+    pub fn seal_acta(
+        &self,
+        stores: &Stores,
+        counts: [usize; 3],
+        marks: &BTreeSet<Place>,
+        wand: &Baculum,
+        acta: Option<&str>,
+        mundus: Option<&str>,
+    ) -> Result<(), String> {
         if !wand.present {
             return Err("without the wand the stores cannot be sealed".into());
         }
@@ -878,7 +1031,9 @@ impl Domus {
             Err(_) if !self.path(ROOTS).exists() => 1,
             Err(e) => return Err(e),
         };
-        let (signer, signature) = wand.signa_ritus(&digest_roots(&roots, &marks_digest, seq))?;
+        let acta = format!("{}/{}", acta.unwrap_or("-"), mundus.unwrap_or("-"));
+        let (signer, signature) =
+            wand.signa_ritus(&digest_roots_acta(&roots, &marks_digest, &acta, seq))?;
         let bond = if signer == wand.fingerprint {
             "-".to_string()
         } else {
@@ -889,6 +1044,7 @@ impl Domus {
             roots.vessel,
             roots.keys,
             marks_digest,
+            acta,
             wand.fingerprint.clone(),
             signer,
             bond,
@@ -974,6 +1130,28 @@ impl Domus {
             return Err(format!(
                 "the audit is bound to seal {seq}, which this house has not made"
             ));
+        }
+        // the seal must name this very audit: a run that wrote its audit and failed to seal
+        // leaves an audit that the next run's seal of the same number does not name
+        let rpath = self.path(ROOTS);
+        let rtext = read_bounded(&rpath, MAX_STORE)
+            .map_err(|e| format!("cannot read {}: {e}", rpath.display()))?;
+        let line = rtext.lines().nth(seq - 1).ok_or_else(|| {
+            format!("the audit is bound to seal {seq}, which this house has not made")
+        })?;
+        let sealed = parse_roots_line(line, seq)?;
+        match sealed.acta {
+            Some(a) if a == hash_hex(text.as_bytes()) => {}
+            Some(_) => {
+                return Err(format!(
+                    "seal {seq} names another audit: this one belongs to a run that was never sealed, or has been altered"
+                ))
+            }
+            None => {
+                return Err(format!(
+                    "seal {seq} names no audit (it was made before seals named their audits, or by a rite with none): this audit cannot be bound to it"
+                ))
+            }
         }
         let mut entries = 0usize;
         let mut root = hash_hex(GENESIS.as_bytes());
@@ -1144,7 +1322,7 @@ pub fn write_audit(
     wand: &Baculum,
     notes: &[String],
     seq: usize,
-) -> Result<(), String> {
+) -> Result<String, String> {
     let mut text = String::new();
     if wand.test {
         text.push_str(
@@ -1189,7 +1367,8 @@ pub fn write_audit(
         .map_err(|e| format!("cannot create the audit {}: {e}", path.display()))?;
     file.write_all(text.as_bytes())
         .and_then(|_| file.sync_all())
-        .map_err(|e| format!("cannot write the audit {}: {e}", path.display()))
+        .map_err(|e| format!("cannot write the audit {}: {e}", path.display()))?;
+    Ok(hash_hex(text.as_bytes()))
 }
 
 /// An audit read back and found whole.
@@ -1463,40 +1642,164 @@ pub fn marks_after(
     next
 }
 
+/// Writes the world of a run at once, with no house to keep its plan (tests and tools).
 pub fn write_world(
     root: &Path,
     before: &BTreeMap<Place, (String, Mark)>,
     after: &BTreeMap<Place, (String, Mark)>,
     places: &BTreeSet<String>,
 ) -> Result<Vec<String>, String> {
+    apply_plan(&plan_world(root, before, after, places, 0)?)
+}
+
+fn apply_plan(plan: &WorldPlan) -> Result<Vec<String>, String> {
+    // first every place is checked, then written: one place changed by someone else and
+    // none is written, so the world is never left half done by this program
+    let mut todo = Vec::new();
+    let mut left = Vec::new();
+    for e in &plan.entries {
+        let path = guard(&plan.root, &e.place)?;
+        let disk = read_place(&path, &e.place)?;
+        let disk_h = disk.as_ref().map(|d| hash_hex(d.as_bytes()));
+        if disk_h == e.after.as_ref().map(|d| hash_hex(d.as_bytes())) {
+            continue;
+        }
+        if disk_h != e.before {
+            left.push(format!("{:?}", e.place));
+            continue;
+        }
+        todo.push((e, path));
+    }
+    if !left.is_empty() {
+        return Err(format!(
+            "sealed run {} could not finish its world: {} changed on disk since, so nothing more was written; the plan is kept in {WORLD_JOURNAL} (look it over, then remove it)",
+            plan.seq,
+            left.join(", ")
+        ));
+    }
     let mut changed = Vec::new();
+    for (e, path) in todo {
+        match &e.after {
+            Some(data) => {
+                if let Some(parent) = path.parent() {
+                    fs::create_dir_all(parent)
+                        .map_err(|x| format!("cannot make the folder for {:?}: {x}", e.place))?;
+                }
+                replace_file(&path, data.as_bytes())?;
+                changed.push(format!("written: {}", e.place));
+            }
+            None => {
+                fs::remove_file(&path)
+                    .map_err(|x| format!("cannot delete the place {:?}: {x}", e.place))?;
+                changed.push(format!("deleted: {}", e.place));
+            }
+        }
+    }
+    Ok(changed)
+}
+
+/// One place a sealed run changes: its hash before (none if it was absent) and its text
+/// after (none if it goes).
+pub struct WorldEntry {
+    pub place: String,
+    pub before: Option<String>,
+    pub after: Option<String>,
+}
+
+/// The world writes of a run, planned before the seal (audit 3, #2).
+pub struct WorldPlan {
+    pub seq: usize,
+    pub root: PathBuf,
+    pub entries: Vec<WorldEntry>,
+}
+
+impl WorldPlan {
+    fn encode(&self) -> String {
+        let opt = |o: &Option<String>| o.as_deref().map(escape).unwrap_or_else(|| "-".into());
+        let mut t = join(&[
+            "mundus".into(),
+            "1".into(),
+            self.seq.to_string(),
+            escape(&self.root.to_string_lossy()),
+        ]);
+        t.push('\n');
+        for e in &self.entries {
+            t.push_str(&join(&[
+                escape(&e.place),
+                e.before.clone().unwrap_or_else(|| "-".into()),
+                if e.after.is_some() {
+                    "+".into()
+                } else {
+                    "-".into()
+                },
+                opt(&e.after),
+            ]));
+            t.push('\n');
+        }
+        t
+    }
+
+    fn decode(text: &str) -> Result<WorldPlan, String> {
+        let bad = || format!("{WORLD_JOURNAL} is malformed");
+        let mut lines = text.lines();
+        let head = split(lines.next().ok_or_else(bad)?)?;
+        let [kind, version, seq, root] = head.as_slice() else {
+            return Err(bad());
+        };
+        if kind != "mundus" || version != "1" {
+            return Err(bad());
+        }
+        let seq = seq.parse::<usize>().map_err(|_| bad())?;
+        let root = PathBuf::from(unescape(root)?);
+        let mut entries = Vec::new();
+        for line in lines {
+            let f = split(line)?;
+            let [place, before, has, after] = f.as_slice() else {
+                return Err(bad());
+            };
+            entries.push(WorldEntry {
+                place: unescape(place)?,
+                before: (before != "-").then(|| before.clone()),
+                after: match has.as_str() {
+                    "+" => Some(unescape(after)?),
+                    "-" => None,
+                    _ => return Err(bad()),
+                },
+            });
+        }
+        Ok(WorldPlan { seq, root, entries })
+    }
+}
+
+/// Plans the world writes of a run before it seals: every place that changes must still
+/// be on disk as the run read it, or nothing is sealed and nothing is written.
+pub fn plan_world(
+    root: &Path,
+    before: &BTreeMap<Place, (String, Mark)>,
+    after: &BTreeMap<Place, (String, Mark)>,
+    places: &BTreeSet<String>,
+    seq: usize,
+) -> Result<WorldPlan, String> {
+    let root =
+        std::path::absolute(root).map_err(|e| format!("cannot name the Circle's folder: {e}"))?;
+    let mut entries = Vec::new();
     for place in places {
         let was = before.get(place).map(|(d, _)| d);
         let now = after.get(place).map(|(d, _)| d);
         if was == now {
             continue;
         }
-        let path = guard(root, place)?;
+        let path = guard(&root, place)?;
         if read_place(&path, place)?.as_ref() != was {
             return Err(format!(
                 "the place {place:?} changed on disk during the run and was left as it is"
             ));
         }
-        match now {
-            Some(data) => {
-                if let Some(parent) = path.parent() {
-                    fs::create_dir_all(parent)
-                        .map_err(|e| format!("cannot make the folder for {place:?}: {e}"))?;
-                }
-                replace_file(&path, data.as_bytes())?;
-                changed.push(format!("written: {place}"));
-            }
-            None => {
-                fs::remove_file(&path)
-                    .map_err(|e| format!("cannot delete the place {place:?}: {e}"))?;
-                changed.push(format!("deleted: {place}"));
-            }
-        }
+        entries.push(WorldEntry {
+            place: place.clone(),
+            before: was.map(|d| hash_hex(d.as_bytes())),
+            after: now.cloned(),
+        });
     }
-    Ok(changed)
+    Ok(WorldPlan { seq, root, entries })
 }

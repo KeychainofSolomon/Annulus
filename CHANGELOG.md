@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Outside audit 3 (GPT), findings #2, #4, #5 (2026-11-14)
+- **#4, the lineage check failed open.** A real wand's anchor that lacked its lineage fields skipped the lineage check; cutting the anchor down let a rolled-back lineage open the house (reproduced). Now a real wand's anchor must carry four fields, or the house is refused until adopted.
+- **#5, audits bound to the seal itself.** The roots record gains a ninth field, `A/W`: the digest of the run's audit and of its world plan (`-` for none), under a new signed digest (`radices|3`); lines of the older kind still open. `annulus acta` refuses an audit its seal does not name, or a seal that names none.
+- **#2, the world written whole.** `plan_world` checks every changed place before the seal; the plan is kept as `annulus.mundus` and named by the seal; `apply_world` checks every place, then writes, so none is written if one was changed by someone else. The next opening carries a cut-off run through, drops the plan of a run that never sealed, and refuses a plan its seal does not name.
+- Tests: a cut-down anchor; an orphaned audit and a seal naming none; a cut after the seal carried through by the next opening; a place changed after the cut; a planted plan.
+
 ### Core audit 1, #5: the audit is signed and read back (2026-11-13)
 - Every audit (`.acta`) written with the wand present ends with a `#signum` line: the rite key's signature (with the master's bond) over every line above it and the number of the seal that follows the run (`Domus::next_seal`). Without the wand it says `# not signed`.
 - **`annulus acta FILE`** reads an audit back: each entry against its chain, the signature, the wand against the house's lineage (a revoked or foreign wand refused), and that the seal it names exists. `Domus::read_audit`, `tabularium::Acta`.

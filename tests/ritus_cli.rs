@@ -616,7 +616,7 @@ fn a_planted_world_journal_writes_nothing() {
     let root = std::path::absolute(&dir).unwrap();
     let plan = format!(
         "mundus\t1\t1\t{}\nchronica.txt\t{}\t+\tfalsum\n",
-        root.display(),
+        root.display().to_string().replace('\\', "\\\\"),
         annulus::nucleus::sha256::hash_hex(b"annales")
     );
     fs::write(dir.join(HOUSE).join(WORLD_JOURNAL), plan).unwrap();

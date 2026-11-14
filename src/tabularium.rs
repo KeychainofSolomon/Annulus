@@ -1715,24 +1715,23 @@ pub struct WorldPlan {
 
 impl WorldPlan {
     fn encode(&self) -> String {
-        let opt = |o: &Option<String>| o.as_deref().map(escape).unwrap_or_else(|| "-".into());
         let mut t = join(&[
             "mundus".into(),
             "1".into(),
             self.seq.to_string(),
-            escape(&self.root.to_string_lossy()),
+            self.root.to_string_lossy().into_owned(),
         ]);
         t.push('\n');
         for e in &self.entries {
             t.push_str(&join(&[
-                escape(&e.place),
+                e.place.clone(),
                 e.before.clone().unwrap_or_else(|| "-".into()),
                 if e.after.is_some() {
                     "+".into()
                 } else {
                     "-".into()
                 },
-                opt(&e.after),
+                e.after.clone().unwrap_or_default(),
             ]));
             t.push('\n');
         }
@@ -1750,7 +1749,7 @@ impl WorldPlan {
             return Err(bad());
         }
         let seq = seq.parse::<usize>().map_err(|_| bad())?;
-        let root = PathBuf::from(unescape(root)?);
+        let root = PathBuf::from(root);
         let mut entries = Vec::new();
         for line in lines {
             let f = split(line)?;
@@ -1758,10 +1757,10 @@ impl WorldPlan {
                 return Err(bad());
             };
             entries.push(WorldEntry {
-                place: unescape(place)?,
+                place: place.clone(),
                 before: (before != "-").then(|| before.clone()),
                 after: match has.as_str() {
-                    "+" => Some(unescape(after)?),
+                    "+" => Some(after.clone()),
                     "-" => None,
                     _ => return Err(bad()),
                 },

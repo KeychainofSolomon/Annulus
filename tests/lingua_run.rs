@@ -911,3 +911,53 @@ fn andras_harm_is_open_until_the_pentagram() {
         theorems(&e.state);
     }
 }
+
+#[test]
+fn doctrina_is_held_not_approved_without_a_certificate() {
+    // DOCTRINA is a computing office: until a domain library can check its
+    // certificate, a well-formed teaching answer is held, never approved
+    // (`offices.md` §5.2, `library.md` §3). Bifrons (46) is a pure Earl, so he
+    // is admitted at the test sky, and he teaches (DOCTRINA).
+    let source = r#"FACULTAS {
+    liber "stellae.txt" legere;
+    atramentum "comes" 1;
+}
+CIRCULUS RITU goetia {
+    INTENTIO "learn of the stars";
+    SIT sigillum = INSCRIBE SIGILLUM bifrons ATRAMENTO CONSECRA ATRAMENTUM "comes";
+    SIT vocatus = INVOCA SPIRITUM 46 AD OFFICIUM doctrina;
+    SIT propositum = PETE vocatus("doce me de astris", "stellae.txt");
+    SIT iudicium = EXAMINA propositum;
+    MANIFESTA iudicium;
+    VADE IN PACE vocatus;
+}
+"#;
+    let mut world = BTreeMap::new();
+    world.insert(
+        "stellae.txt".to_string(),
+        ("tabulae caelorum".to_string(), Mark::Outside),
+    );
+    let options = Optiones {
+        semen: 0,
+        sors: Some(Outcome::Obsequium),
+        responsa: vec![Responsum {
+            spirit: 46,
+            office: "DOCTRINA".to_string(),
+            quaestio: "doce me de astris".to_string(),
+            verum: "astra inclinant, non necessitant".to_string(),
+            falsum: Some("astra nihil valent".to_string()),
+        }],
+        caelum: annulus::horae::Caelum::probatio(),
+        ..Default::default()
+    };
+    let stores = Stores::install(&test_wand());
+    let e =
+        run_source(source, test_wand(), stores, world, &options).expect("the DOCTRINA rite runs");
+    assert_eq!(e.class, 0, "{:?}", e.message);
+    assert_eq!(
+        e.output.first().map(String::as_str),
+        Some("SUSPENSUM"),
+        "a well-formed DOCTRINA answer is held, never approved: {:?}",
+        e.output
+    );
+}

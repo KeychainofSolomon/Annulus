@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-13, 21:40 (branch `colloquium`). **This page is updated with every fix** (the owner's rule).
+Last updated: 2026-11-14 (DOCTRINA bindable, PR #5). **This page is updated with every fix** (the owner's rule).
 
 **Two machines sit side by side until step 2d.** `annulus ritus` runs the step-2 subset of the specification on the new core. `annulus <file>` still runs the v0.2.1 prototype (`docs/PROTOTYPE.md`), which implements none of the specification and is removed in 2d. The specification (`docs/spec/`, thirteen files) is in draft. **The authority properties are mostly tested, not proved:** P1–P9 are stated in Lean (`formal/`); the first proofs are in `formal/Annulus/Proofs.lean`.
 
@@ -24,7 +24,7 @@ Last updated: 2026-11-13, 21:40 (branch `colloquium`). **This page is updated wi
 | **Reading takes the lock** (audit 2, #1): `petitiones` and `acta` take `annulus.sera` before opening the house | Implemented and tested (`tests/ritus_cli.rs`). Branch `colloquium` |
 | **The binding** (`operator.md` §8.8): a calling makes a binding key the master vouches for; a later rite that only reads, asking a held spirit, is granted by it with no words; every work still needs the master, enforced by the nucleus's launch check | Implemented in Rust (`ritus_ligata`), tested (`tests/nucleus_ligatio.rs`, `tests/ligatio_run.rs`); in Lean, `LaunchChecks` carries it and `launch_without_master_only_reads` is proved with no axioms. Branch `colloquium` |
 
-Tests: **336**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
+Tests: **339**, debug and release (and 24 in `virga`), on Linux here; Windows and Linux in CI.
 
 ## Spiri72 (the model side, `KeychainofSolomon/Spiri72`)
 
@@ -99,7 +99,8 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | Not started; open ruling for the ink |
 | Berith's ring hour | Needs `GERE` to record its time (the Prince's and Knight's hours are ruled) |
 | `PRAETERITA` of the previous run (`historia "prior" legere`) | Not started: the history must be carried between runs |
-| Offices beyond telling and the five working kinds (teaching, transformation, dignities…) | Not in the subset |
+| **`DOCTRINA`** (teaching): a telling office that is also *computing* (`offices.md` §2.2) | **Bindable (2026-11-14, PR #5):** the teaching spirits can be bound through it; a well-formed lesson is **held (`SUSPENSUM`), never approved**, until a domain library checks its certificate (`offices.md` §5.2, `library.md` §3); a citation beyond the handed places is rejected. The checking library is PR #3 (to be rebased onto this) |
+| Offices beyond telling, teaching and the five working kinds (transformation, dignities…) | Not in the subset |
 | The escalation, so `RECUSATIO` can open; spirit-specific malice | Not started |
 | Real validators before step 4; the trust handshake | Not started |
 | The seven doubled seals other than Bune | Open ruling |

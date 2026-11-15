@@ -428,6 +428,27 @@ impl Parser {
         let pos = self.pos();
         self.expect("SI")?;
         let cond = self.expression()?;
+        if self.accept("IN") {
+            let Expr::Unary(Unary::Consecra, value, _) = cond else {
+                return self.fail("IN after SI belongs to the form SI CONSECRA … IN name");
+            };
+            let name = self.identifier()?.0;
+            let then = self.block()?;
+            if !self.is("ALITER") {
+                return self.fail(
+                    "SI CONSECRA … IN needs its ALITER block: say what is done with unfit words",
+                );
+            }
+            self.expect("ALITER")?;
+            let otherwise = self.block()?;
+            return Ok(Stmt::SiConsecra {
+                value: *value,
+                name,
+                then,
+                otherwise,
+                pos,
+            });
+        }
         let then = self.block()?;
         let otherwise = if self.accept("ALITER") {
             if self.is("SI") {

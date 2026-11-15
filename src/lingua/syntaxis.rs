@@ -93,6 +93,15 @@ pub enum Stmt {
         otherwise: Option<Vec<Stmt>>,
         pos: Pos,
     },
+    /// `SI CONSECRA v IN name { … } ALITER { … }`: the name exists, consecrated, only
+    /// where the consecration succeeded (`flow.md` §3.5).
+    SiConsecra {
+        value: Expr,
+        name: String,
+        then: Vec<Stmt>,
+        otherwise: Vec<Stmt>,
+        pos: Pos,
+    },
     Dum {
         cond: Expr,
         body: Vec<Stmt>,

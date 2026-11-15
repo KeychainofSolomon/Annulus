@@ -192,6 +192,16 @@ fn collect(stmt: &Stmt, names: &mut BTreeSet<String>) {
                 all(o);
             }
         }
+        Stmt::SiConsecra {
+            name,
+            then,
+            otherwise,
+            ..
+        } => {
+            all(then);
+            all(otherwise);
+            names.insert(name.clone());
+        }
         Stmt::Dum { body, .. } | Stmt::Circulus { body, .. } => all(body),
         _ => {}
     }
@@ -474,6 +484,73 @@ impl<'r> Checker<'r> {
                 }
                 let after_else = self.flow.clone();
                 self.merge(after_then, after_else, existing, cond.pos());
+            }
+            Stmt::SiConsecra {
+                value,
+                name,
+                then,
+                otherwise,
+                pos,
+            } => {
+                let val = self.expr(value);
+                if val.ty != Ty::Text && val.ty != Ty::Error {
+                    self.error(
+                        "T1",
+                        *pos,
+                        format!(
+                            "SI CONSECRA … IN takes a spirit's words, not {}",
+                            val.ty.shown()
+                        ),
+                    );
+                } else if val.ty == Ty::Text && val.mark != Mark::Quarantined {
+                    self.error(
+                        "A17",
+                        *pos,
+                        "SI CONSECRA … IN is for a spirit's words, and this value is not quarantined"
+                            .into(),
+                    );
+                }
+                if let Some(spirit) = self.register.by_label(name) {
+                    self.error(
+                        "N5",
+                        *pos,
+                        format!(
+                            "{name} is the name of {}; a spirit's name belongs to the spirit",
+                            spirit.name
+                        ),
+                    );
+                }
+                if self.visible(name).is_some() {
+                    self.error("N3", *pos, format!("{name} is already declared"));
+                }
+                let before = self.flow.clone();
+                let existing = self.vars.len();
+                // The name exists, consecrated and fixed, only where consecration succeeded.
+                self.open_scope();
+                let id = self.vars.len();
+                self.vars.push(Var {
+                    name: name.clone(),
+                    ty: Ty::Text,
+                    mark: Mark::Consecrated,
+                    mutable: false,
+                    constant: None,
+                    spirit: None,
+                    ink: None,
+                    office: None,
+                    root: id,
+                    pos: *pos,
+                });
+                if let Some(scope) = self.scopes.last_mut() {
+                    scope.push(id);
+                }
+                for s in then {
+                    self.stmt(s);
+                }
+                self.close_scope();
+                let after_then = std::mem::replace(&mut self.flow, before);
+                self.block(otherwise);
+                let after_else = self.flow.clone();
+                self.merge(after_then, after_else, existing, *pos);
             }
             Stmt::Dum { cond, body, pos } => {
                 let before = self.flow.clone();

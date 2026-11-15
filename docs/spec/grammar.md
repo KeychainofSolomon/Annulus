@@ -154,7 +154,8 @@ statement      = declaration | output | conditional | loop | iteration
 simple         = expression , [ "=" , expression ] , ";" ;      (* assignment if "=" *)
 declaration    = "SIT" , [ "MUTABILIS" ] , identifier , [ ":" , type ] , "=" , expression , ";" ;
 output         = "MANIFESTA" , expression , ";" ;
-conditional    = "SI" , expression , block , [ "ALITER" , ( conditional | block ) ] ;
+conditional    = "SI" , expression , block , [ "ALITER" , ( conditional | block ) ]
+               | "SI" , "CONSECRA" , expression , "IN" , identifier , block , "ALITER" , block ;   (* flow.md §3.5 *)
 loop           = "DUM" , expression , block ;
 iteration      = "PER" , identifier , "IN" , expression , block ;
 return         = "REDDE" , [ expression ] , ";" ;

@@ -111,4 +111,5 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The seven doubled seals other than Bune | Open ruling |
 | Drift watch: a CI step comparing the Python and Rust parsers' rejection positions | Owed |
 | Web reading, Gmail drafts, OCR for the agent | Planned; each needs the words-as-words treatment first |
+| The practice book (`usus`) and its web (`tela`): a spirit learning its office's software, shown live | Planned, design only (`docs/USUS_PLAN.md`, 2026-11-15); to be built after the drift is closed; four points for the owner (§9) |
 | Step 2d: remove the prototype | Not started (the real wand is done) |

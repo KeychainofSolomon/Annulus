@@ -93,6 +93,15 @@ pub enum Stmt {
         otherwise: Option<Vec<Stmt>>,
         pos: Pos,
     },
+    /// `SI CONSECRA v IN name { … } ALITER { … }`: the name exists, consecrated, only
+    /// where the consecration succeeded (`flow.md` §3.5).
+    SiConsecra {
+        value: Expr,
+        name: String,
+        then: Vec<Stmt>,
+        otherwise: Vec<Stmt>,
+        pos: Pos,
+    },
     Dum {
         cond: Expr,
         body: Vec<Stmt>,
@@ -121,6 +130,8 @@ pub enum Stmt {
     },
     Release(Release, Expr, Pos),
     Gere(Instrument, Pos),
+    /// `GERE SIGILLUM x;`: a kept seal worn again (`core.md` §9.3d).
+    GereSigillum(Entity, Pos),
     Command(Command, Expr, Pos),
     Constringe(Expr, String, Pos),
     Expr(Expr, Pos),

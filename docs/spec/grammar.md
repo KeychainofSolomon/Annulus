@@ -126,6 +126,8 @@ All [O].
 
 The instruments are declined as Latin objects (`GERE ANULUM`), as `ATRAMENTO` is after `INSCRIBE`.
 
+**`GERE SIGILLUM x`** ("bear the seal"; the owner's ruling, 2026-11-15) wears the kept seal of a spirit held from an earlier run, in place of a new inscription (`core.md` §9.3d). [S: the seal is "to be worn as a Lamen", Sloane 3825. O: the keeping.] It MUST be declared in the `FACULTAS` as `sigillum "x" tentum;` ("the seal of x, held"), so that the wand signs it at launch.
+
 **Reserved for later parts:** `HORA` (hour), `DIES` (day), `ADVOCA` (call an angel through its channel), `TRIANGULUM` (a spirit-specific containment figure), `VAS` (the Vessel).
 
 ## 4. Syntax
@@ -154,7 +156,8 @@ statement      = declaration | output | conditional | loop | iteration
 simple         = expression , [ "=" , expression ] , ";" ;      (* assignment if "=" *)
 declaration    = "SIT" , [ "MUTABILIS" ] , identifier , [ ":" , type ] , "=" , expression , ";" ;
 output         = "MANIFESTA" , expression , ";" ;
-conditional    = "SI" , expression , block , [ "ALITER" , ( conditional | block ) ] ;
+conditional    = "SI" , expression , block , [ "ALITER" , ( conditional | block ) ]
+               | "SI" , "CONSECRA" , expression , "IN" , identifier , block , "ALITER" , block ;   (* flow.md §3.5 *)
 loop           = "DUM" , expression , block ;
 iteration      = "PER" , identifier , "IN" , expression , block ;
 return         = "REDDE" , [ expression ] , ";" ;
@@ -163,7 +166,7 @@ attempt        = "TENTA" , block , "CAPE" , identifier , block ;
 circle         = "CIRCULUS" , "RITU" , identifier , "{" , intent , { statement } , "}" ;
 intent         = "INTENTIO" , string , ";" ;
 release        = ( "VADE" , "IN" , "PACE" | "DIMITTE" | "RELEGA" | "MANE" ) , expression , ";" ;
-apparatus      = "GERE" , ( "ANULUM" | "VIRGAM" | "HEXAGRAMMUM" | "PENTAGRAMMUM" ) , ";"
+apparatus      = "GERE" , ( "ANULUM" | "VIRGAM" | "HEXAGRAMMUM" | "PENTAGRAMMUM" | "SIGILLUM" , entity ) , ";"
                | ( "OFFER" | "APPELLA" | "VETA" ) , expression , ";"
                | "CONSTRINGE" , expression , "PER" , "NOMEN" , string , ";" ;
 

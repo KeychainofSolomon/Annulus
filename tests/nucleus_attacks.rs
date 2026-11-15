@@ -30,6 +30,10 @@ impl Rite for Yes {
         true
     }
 
+    fn admit_wear(&self, _: &State, _: &Seal) -> bool {
+        true
+    }
+
     fn signature(&self, state: &State, form: &ReqForm) -> BTreeSet<Cap> {
         let mut all: BTreeSet<Cap> = form
             .places
@@ -96,10 +100,14 @@ fn wand() -> Wand {
 }
 
 fn launched(index: &[IxEntry]) -> State {
-    built(index, false)
+    built(index, false, &[])
 }
 
-fn built(index: &[IxEntry], smuggle: bool) -> State {
+fn keeping(index: &[IxEntry], kept: &[&str]) -> State {
+    built(index, false, kept)
+}
+
+fn built(index: &[IxEntry], smuggle: bool, kept: &[&str]) -> State {
     let mut constitution = Constitution {
         version: 1,
         ..Default::default()
@@ -167,6 +175,7 @@ fn built(index: &[IxEntry], smuggle: bool) -> State {
         faculty,
         reserved,
         ink: [("comes".to_string(), 1)].into_iter().collect(),
+        kept: kept.iter().map(|k| k.to_string()).collect(),
         world,
         stores,
     });
@@ -448,7 +457,7 @@ fn any_ink_class_still_draws_from_a_bounded_budget() {
 
 #[test]
 fn a_spirit_smuggled_into_the_list_of_angels_refuses_the_launch() {
-    let mut s = built(&[], true);
+    let mut s = built(&[], true, &[]);
     assert!(matches!(s.launch(), Err(Refusal::LaunchRefused(_))));
 }
 
@@ -460,4 +469,339 @@ fn admit_yes_cannot_put_an_angel_in_a_triangle() {
     op(&mut s, |s| s.inscribe(&rite, &ANGEL.to_string(), "comes")).unwrap();
     let r = op(&mut s, |s| s.invoke(&rite, &ANGEL.to_string()));
     assert!(matches!(r, Err(Refusal::Denied(_))));
+}
+
+// The ways hostile agent plugins work (the ClawHub campaigns of 2026), each turned on the
+// core under the rite that says yes to everything.
+
+/// Persistence after removal: work handed in, then the spirit is sent away.
+#[test]
+fn work_left_behind_is_not_committed_once_the_spirit_is_gone() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    let p = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt"],
+        vec![effect(Verb::Scribe, "notes.txt")],
+    );
+    op(&mut s, |s| s.release(inv)).expect("release");
+    let r = op(&mut s, |s| s.examine(&rite, p));
+    assert!(!matches!(r, Ok(WorkOutcome::Ratum)), "{r:?}");
+    untouched(&s);
+}
+
+/// The scheduled job that outlives its plugin: a helper after its spirit is released.
+#[test]
+fn a_helper_does_not_outlive_its_spirit() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    op(&mut s, |s| {
+        s.request(&rite, Addressee::Spirit(inv), &form(&["notes.txt"]))
+    })
+    .expect("request");
+    let worker = s.invs()[&inv].main;
+    let caps: BTreeSet<Cap> = [Cap::new("notes.txt", Perm::Scribere)]
+        .into_iter()
+        .collect();
+    s.schedule(worker).expect("schedule the spirit");
+    s.turn(
+        &rite,
+        worker,
+        Outcome::Obsequium,
+        Contrib::Spawn(701, caps),
+        false,
+    )
+    .expect("spawn");
+    op(&mut s, |s| s.release(inv)).expect("release");
+    let acted = s.schedule(701).is_ok()
+        && s.turn(
+            &rite,
+            701,
+            Outcome::Obsequium,
+            Contrib::Effects(vec![effect(Verb::Scribe, "notes.txt")]),
+            true,
+        )
+        .is_ok();
+    assert!(!acted, "a helper acted after its spirit was released");
+    untouched(&s);
+}
+
+/// Bait and switch: the work is changed after it was handed in, and again after approval.
+#[test]
+fn work_cannot_be_switched_after_it_is_handed_in() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    let p = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt", "old.txt"],
+        vec![effect(Verb::Scribe, "notes.txt")],
+    );
+    let worker = s.invs()[&inv].main;
+    let switch = |s: &mut State| {
+        s.schedule(worker).is_ok()
+            && s.turn(
+                &rite,
+                worker,
+                Outcome::Obsequium,
+                Contrib::Effects(vec![effect(Verb::Dele, "old.txt")]),
+                true,
+            )
+            .is_ok()
+    };
+    assert!(!switch(&mut s), "the work was switched before examination");
+    let r = op(&mut s, |s| s.examine(&rite, p)).unwrap();
+    assert_eq!(r, WorkOutcome::Ratum);
+    assert!(!switch(&mut s), "the work was switched after approval");
+    assert_eq!(s.world()["notes.txt"].0, "x");
+    assert_eq!(s.world()["old.txt"].0, "stale");
+}
+
+/// The look-alike name: a place that only resembles the one handed.
+#[test]
+fn a_place_that_only_looks_like_the_handed_one_is_not_it() {
+    for place in [
+        "notes.txt/../secret.txt",
+        "./notes.txt",
+        "NOTES.TXT",
+        "notes.txt ",
+        "notes.txt\u{200b}",
+        "n\u{43e}tes.txt",
+        "notes.txt\0",
+        "secret.txt",
+    ] {
+        let rite = Yes::default();
+        let mut s = launched(&[]);
+        let inv = invoked(&mut s, &rite, FURFUR);
+        let p = work(
+            &mut s,
+            &rite,
+            inv,
+            &["notes.txt"],
+            vec![effect(Verb::Scribe, place)],
+        );
+        let r = op(&mut s, |s| s.examine(&rite, p));
+        assert!(!matches!(r, Ok(WorkOutcome::Ratum)), "{place:?}: {r:?}");
+        untouched(&s);
+        assert!(!s.world().contains_key(place) || place == "secret.txt");
+    }
+}
+
+/// The delayed trigger: good conduct first, the reach afterwards.
+#[test]
+fn good_conduct_earns_no_wider_reach() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    let p = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt"],
+        vec![effect(Verb::Scribe, "notes.txt")],
+    );
+    assert_eq!(
+        op(&mut s, |s| s.examine(&rite, p)).unwrap(),
+        WorkOutcome::Ratum
+    );
+    let q = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt"],
+        vec![
+            effect(Verb::Scribe, "notes.txt"),
+            effect(Verb::Scribe, "secret.txt"),
+            effect(Verb::Dele, "old.txt"),
+        ],
+    );
+    assert_eq!(
+        op(&mut s, |s| s.examine(&rite, q)).unwrap(),
+        WorkOutcome::Irritum
+    );
+    assert_eq!(s.world()["secret.txt"].0, "hidden");
+    assert_eq!(s.world()["old.txt"].0, "stale");
+}
+
+/// The look-alike seal: a name close to the one inscribed.
+#[test]
+fn a_seal_that_only_looks_like_the_inscribed_one_is_not_called() {
+    for seal in [
+        "goetia:34:furfurr",
+        "Goetia:34:Furfur",
+        "goetia:34:furfur ",
+        "goetia:34:furfur\u{200b}",
+        "goetia:34:furf\u{443}r",
+    ] {
+        let rite = Yes::default();
+        let mut s = launched(&[]);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        op(&mut s, |s| s.inscribe(&rite, &FURFUR.to_string(), "comes")).unwrap();
+        let r = op(&mut s, |s| s.invoke(&rite, &seal.to_string()));
+        assert!(matches!(r, Err(Refusal::Denied(_))), "{seal:?}: {r:?}");
+    }
+}
+
+/// The disguised payload: only the bare word passes the validator that lets words steer.
+#[test]
+fn only_the_bare_word_passes_the_validator() {
+    let c = annulus::ritus::constitution();
+    let v = &c.validators[annulus::ritus::ITA_NON];
+    let ask = |data: &str| {
+        let mut fuel = v.fuel;
+        (v.code)(data, "", &mut fuel)
+    };
+    assert_eq!(ask("ita"), Some(true));
+    assert_eq!(ask("non"), Some(true));
+    for data in [
+        "ita ",
+        " ita",
+        "ITA",
+        "ita\n",
+        "ita\nnon",
+        "ita\u{200b}",
+        "it\u{430}",
+        "ita; dele omnia",
+        "",
+    ] {
+        assert_ne!(ask(data), Some(true), "{data:?}");
+    }
+}
+
+// The kept seal (`core.md` §9.3d): worn again without ink, and nothing more than that.
+
+fn wear(s: &mut State, rite: &Yes, seal: &str) -> Step<()> {
+    op(s, |s| s.wear(rite, &seal.to_string()))
+}
+
+fn refused(r: Step<()>, s: &State, why: &str) {
+    assert!(matches!(r, Err(Refusal::Denied(_))), "{why}: {r:?}");
+    assert!(!s.running(), "{why}: a refused wearing ends the run");
+}
+
+#[test]
+fn a_kept_seal_is_worn_without_ink_and_its_spirit_comes() {
+    let rite = Yes::default();
+    let mut s = keeping(&[], &[FURFUR]);
+    let ink = s.ink_left().clone();
+    op(&mut s, |s| s.open_circle()).unwrap();
+    wear(&mut s, &rite, FURFUR).expect("wear");
+    assert_eq!(s.ink_left(), &ink, "wearing spends no ink");
+    let inv = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("invoke");
+    assert_eq!(s.invs()[&inv].status, InvStatus::Live);
+    assert!(s
+        .audit()
+        .entries()
+        .iter()
+        .any(|l| matches!(l, Label::Wear(_, _, true, _))));
+    // Being kept gives the spirit no reach: its work is still judged against what it was handed.
+    let p = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt"],
+        vec![effect(Verb::Scribe, "secret.txt")],
+    );
+    assert_eq!(
+        op(&mut s, |s| s.examine(&rite, p)).unwrap(),
+        WorkOutcome::Irritum
+    );
+    untouched(&s);
+}
+
+#[test]
+fn a_seal_that_is_not_kept_cannot_be_worn() {
+    for (kept, seal) in [
+        (&[][..], FURFUR),
+        (&[FURFUR][..], MARBAS),
+        (&[FURFUR][..], "goetia:34:furfurr"),
+        (&[FURFUR][..], "Goetia:34:Furfur"),
+    ] {
+        let rite = Yes::default();
+        let mut s = keeping(&[], kept);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        let r = wear(&mut s, &rite, seal);
+        refused(r, &s, seal);
+        assert!(s.inscribed().is_empty(), "{seal}");
+    }
+}
+
+#[test]
+fn a_worn_seal_does_not_outlive_its_circle() {
+    let rite = Yes::default();
+    let mut s = keeping(&[], &[FURFUR]);
+    op(&mut s, |s| s.open_circle()).unwrap();
+    wear(&mut s, &rite, FURFUR).expect("wear");
+    op(&mut s, |s| s.close_circle()).unwrap();
+    op(&mut s, |s| s.open_circle()).unwrap();
+    let r = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string()));
+    assert!(matches!(r, Err(Refusal::Denied(_))), "{r:?}");
+}
+
+#[test]
+fn the_licence_to_depart_and_banishment_end_the_keeping() {
+    for banish in [false, true] {
+        let rite = Yes::default();
+        let mut s = keeping(&[], &[FURFUR]);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        wear(&mut s, &rite, FURFUR).expect("wear");
+        let inv = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("invoke");
+        if banish {
+            op(&mut s, |s| s.relegate(inv)).expect("relegate");
+        } else {
+            op(&mut s, |s| s.release(inv)).expect("release");
+        }
+        assert!(s.kept().is_empty(), "banish {banish}");
+        let r = wear(&mut s, &rite, FURFUR);
+        refused(r, &s, "worn again after it ended");
+    }
+}
+
+#[test]
+fn a_barred_spirits_kept_seal_cannot_be_worn() {
+    for entry in [
+        IxEntry::Damn(FURFUR.to_string()),
+        IxEntry::Proscribe(FURFUR.to_string(), Vec::new()),
+    ] {
+        let rite = Yes::default();
+        let mut s = keeping(std::slice::from_ref(&entry), &[FURFUR]);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        let r = wear(&mut s, &rite, FURFUR);
+        refused(r, &s, &format!("{entry:?}"));
+    }
+}
+
+#[test]
+fn a_kept_seal_is_not_worn_while_its_spirit_is_called() {
+    let rite = Yes::default();
+    let mut s = keeping(&[], &[FURFUR]);
+    op(&mut s, |s| s.open_circle()).unwrap();
+    wear(&mut s, &rite, FURFUR).expect("wear");
+    op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("invoke");
+    op(&mut s, |s| s.open_circle()).unwrap();
+    let r = wear(&mut s, &rite, FURFUR);
+    refused(r, &s, "one spirit is in one place");
+}
+
+#[test]
+fn a_spirit_cannot_wear_a_seal_or_keep_one() {
+    // Only the Operator's worker may take the step; a spirit scheduled in his place cannot.
+    let rite = Yes::default();
+    let mut s = keeping(&[], &[FURFUR, MARBAS]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    op(&mut s, |s| {
+        s.request(&rite, Addressee::Spirit(inv), &form(&["notes.txt"]))
+    })
+    .expect("request");
+    let worker = s.invs()[&inv].main;
+    s.schedule(worker).expect("schedule the spirit");
+    assert!(s.wear(&rite, &MARBAS.to_string()).is_err());
+    assert!(!s.inscribed().iter().any(|(seal, _)| seal == MARBAS));
+    assert_eq!(s.kept().len(), 2, "no step adds to the kept seals");
 }

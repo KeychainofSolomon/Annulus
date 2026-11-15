@@ -47,6 +47,8 @@ This part says what happens **while a program runs**. A program reaches this poi
 
 4.2 **Consecration.** `CONSECRA` turns raw ink into consecrated ink. The act is the Constitution's, not the program's (`authority.md` §7.4): the runtime performs it and records it.
 
+**In the step-2 subset** (2026-11-15; core audit 1, #8). The core step `consecrate` returns its answer and, on refusal, changes nothing else (`core.md` §9.3a), in Rust as in the Lean model. The subset has no form by which a program takes a refusal, and a value the checker typed as consecrated must never go on quarantined. So the interpreter ends the run (class 2) on a refused `CONSECRA`, after the core has recorded the refusal. Open for the owner: the form by which a program receives a refusal and continues.
+
 4.3 **Inscription** (amended 2026-11-11, the owner's ruling R1 (a)). `INSCRIBE` spends one unit of the faculty's grant of the ink's class, in the core, and produces the operative seal. The class must be one the seal takes (the class of one of the spirit's ranks); otherwise, or when the grant of that class is exhausted, it is a denial (class 2). The seal then serves for the life of its Circle, as a lamen is worn: any number of invocations of that spirit in that Circle, at no further cost. It lapses when the Circle closes. [S: Bael's character "is to be worne as a Lamen" (Sloane 3825). O: the accounting.]
 
 ## 4a. The apparatus at runtime

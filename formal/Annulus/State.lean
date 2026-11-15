@@ -176,9 +176,19 @@ def Barred (σ : State U) (s : U.Seal) : Prop :=
 def Live (σ : State U) (i : U.Inv) : Prop :=
   ∃ inst, σ.invs i = some inst ∧ inst.status = .live
 
-/-- `dynamic.md` §3.1: the record that ends a run names every invocation it dismisses, each once. -/
+/-- The invocations admitted so far, in the order they were called, read from the audit. -/
+def invokedOrder (a : List (Label U)) : List U.Inv :=
+  a.filterMap (fun l => match l with
+    | .invoke i _ _ _ true _ => some i
+    | _ => none)
+
+/-- `dynamic.md` §3.1: the record that ends a run names the invocations it dismisses,
+**the last called first** (2026-11-15; before this the order was left open, which made
+P9 false). It is the live part of the order of calling, reversed, so it is fixed by the
+state alone. -/
 def Dismissed (σ : State U) (ds : List U.Inv) : Prop :=
-  ds.Pairwise (· ≠ ·) ∧ ∀ i, i ∈ ds ↔ Live σ i
+  ∃ live : U.Inv → Bool, (∀ i, live i = true ↔ Live σ i) ∧
+    ds = (invokedOrder σ.audit).reverse.filter live
 
 /-- §9.2, `authority.md` §6.2a: invited in Circle c. -/
 def Invited (σ : State U) (a : U.Seal) (c : U.Circle) : Prop :=

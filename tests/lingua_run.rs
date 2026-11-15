@@ -660,6 +660,14 @@ CIRCULUS RITU goetia {
     assert_eq!(e.class, 2, "a true but open answer cannot be consecrated");
     assert!(e.output.iter().all(|l| l != "steered"));
     theorems(&e.state);
+    assert!(
+        e.state
+            .audit()
+            .entries()
+            .iter()
+            .any(|l| matches!(l, Label::Consecrate(_, _, false))),
+        "the refusal is recorded before the run ends (core.md §9.3a)"
+    );
 }
 
 fn conducted(

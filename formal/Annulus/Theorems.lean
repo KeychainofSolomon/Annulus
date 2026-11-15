@@ -220,6 +220,9 @@ def P8 (M : Core U) (R : RelRite U) : Prop :=
   (∀ σ f σ', Step M R σ (.launch f) σ' → LaunchChecks M σ) ∧
   (∀ σ f σ', Step M R σ (.launch f) σ' → σ.auth.wandPresent = false →
     ∀ p m, ¬ σ'.faculty p m) ∧
+  -- Ink is part of the faculty: without the wand none is left (core audit 1, #8).
+  (∀ σ f σ', Step M R σ (.launch f) σ' → σ.auth.wandPresent = false →
+    ∀ k, σ'.inkLeft k = 0) ∧
   (∀ σ p a v σ', Reachable M R σ → Step M R σ (.examine p a v) σ' →
     ((∃ e, a = .noExaminer e) ∨ (∃ pi, σ.props p = some pi ∧ Doubtful M σ pi.author)) →
     v = .hold)

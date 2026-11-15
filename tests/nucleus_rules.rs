@@ -339,6 +339,7 @@ fn without_the_wand_the_faculty_is_empty() {
     let mut s = launch_with(Stores::install(&w), w);
     s.launch().expect("launch");
     assert!(s.faculty().is_empty());
+    assert!(s.ink_left().is_empty(), "ink is part of the faculty");
 }
 
 #[test]
@@ -1145,6 +1146,21 @@ fn a_clean_halt_dismisses_nothing() {
     op(&mut s, |s| s.close_circle()).expect("close");
     op(&mut s, |s| s.halt()).expect("halt");
     assert_eq!(s.audit().entries().last(), Some(&Label::Halt(Vec::new())));
+}
+
+#[test]
+fn the_last_called_is_dismissed_first() {
+    // dynamic.md §3.1: "in reverse order of invocation"; Lean: `Dismissed`.
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, first) = circle_and(&mut s, &rite, FURFUR);
+    op(&mut s, |s| s.inscribe(&rite, &MARBAS.to_string(), "comes")).expect("inscribe");
+    let second = op(&mut s, |s| s.invoke(&rite, &MARBAS.to_string())).expect("invoke");
+    op(&mut s, |s| s.halt()).expect("halt");
+    assert_eq!(
+        s.audit().entries().last(),
+        Some(&Label::Halt(vec![second, first]))
+    );
 }
 
 #[test]

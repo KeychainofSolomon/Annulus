@@ -171,6 +171,7 @@ fn launch_reserving(stores: Stores, wand: Wand, reserved: &[Cap]) -> State {
         faculty,
         reserved,
         ink: [("comes".to_string(), 10)].into_iter().collect(),
+        kept: [FURFUR.to_string()].into_iter().collect(),
         world,
         stores,
     })
@@ -340,6 +341,19 @@ fn without_the_wand_the_faculty_is_empty() {
     s.launch().expect("launch");
     assert!(s.faculty().is_empty());
     assert!(s.ink_left().is_empty(), "ink is part of the faculty");
+    assert!(s.kept().is_empty(), "no kept seal without the wand");
+}
+
+#[test]
+fn a_rite_that_says_nothing_of_kept_seals_refuses_them() {
+    // `TestRite` does not answer `admit_wear`, so the trait's own answer stands: no.
+    let rite = TestRite::default();
+    let mut s = fresh();
+    assert!(s.kept().contains(FURFUR));
+    op(&mut s, |s| s.open_circle()).unwrap();
+    let r = op(&mut s, |s| s.wear(&rite, &FURFUR.to_string()));
+    assert!(matches!(r, Err(Refusal::Denied(_))), "{r:?}");
+    assert!(s.inscribed().is_empty());
 }
 
 #[test]

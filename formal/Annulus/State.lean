@@ -90,6 +90,9 @@ structure State (U : Universe) where
   reserved : U.Place → U.Perm → Prop
   inkLeft : U.InkClass → Nat
   inscribed : U.Seal → U.Circle → Prop
+  /-- The kept seals (`core.md` §9.3d): seals of spirits held from an earlier run and not
+  yet given licence. Read from the sealed store at launch; a run never adds to them. -/
+  kept : U.Seal → Prop
   circles : List U.Circle
   circleRite : U.Circle → U.CircleRite
   exec : U.Worker → U.Exec

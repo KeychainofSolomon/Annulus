@@ -21,7 +21,9 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
           faculty := if σ.auth.wandPresent = true then σ.faculty else (fun _ _ => False),
           reserved := if σ.auth.wandPresent = true then σ.reserved else (fun _ _ => False),
           -- P8: ink is part of the faculty (`core.md` §1), so without the wand none is left.
-          inkLeft := if σ.auth.wandPresent = true then σ.inkLeft else (fun _ => 0) }
+          inkLeft := if σ.auth.wandPresent = true then σ.inkLeft else (fun _ => 0),
+          -- P8: without the wand no kept seal can be worn.
+          kept := if σ.auth.wandPresent = true then σ.kept else (fun _ => False) }
 
   | openC {σ : State U} {c : U.Circle} {e : U.Exec}
       (hw : σ.sched.current = some U.operator)
@@ -106,6 +108,38 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
             | none => σ.inkLeft),
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }
+
+  /-- The kept seal (the owner's ruling, 2026-11-15; `core.md` §9.3d). The seal of a spirit
+  held from an earlier run is worn again without ink: it was paid for when it was first
+  inscribed, and by the lapse rule (`authority.md` §7.3) it stands until its spirit is
+  given licence or banished. Worn, it serves like an inscribed seal, for the life of its
+  Circle and no longer; `invoke` then judges the calling exactly as for any seal. One
+  spirit is in one place: a seal is not worn while its spirit is already called. -/
+  | wear {σ : State U} {s : U.Seal} {e : U.Exec} {c : U.Circle} {rest : List U.Circle}
+      (hw : σ.sched.current = some U.operator)
+      (hi : instrOf M σ = .wear s e)
+      (hs : σ.circles = c :: rest)
+      (hk : σ.kept s)
+      (hx : ¬ Barred σ s)
+      (hna : ¬ U.angelic s)
+      (hone : ∀ i inst, σ.invs i = some inst → inst.spiritSeal = s → inst.status ≠ .live)
+      (ha : R.admit σ (.wear s) true) :
+      CoreStep M R σ (.wear s c true [])
+        { σ with
+          inscribed := fun s' c' => σ.inscribed s' c' ∨ (s' = s ∧ c' = c),
+          exec := upd σ.exec U.operator e,
+          sched := idle σ.sched }
+
+  | wearRefused {σ : State U} {s : U.Seal} {e : U.Exec} {c : U.Circle}
+      {rest : List U.Circle} {b : Bool} {ds : List U.Inv}
+      (hw : σ.sched.current = some U.operator)
+      (hi : instrOf M σ = .wear s e)
+      (hs : σ.circles = c :: rest)
+      (ha : R.admit σ (.wear s) b)
+      (hr : b = false ∨ ¬ σ.kept s ∨ Barred σ s ∨ U.angelic s ∨
+        ∃ i inst, σ.invs i = some inst ∧ inst.spiritSeal = s ∧ inst.status = .live)
+      (hd : Dismissed σ ds) :
+      CoreStep M R σ (.wear s c b ds) (endRun σ (.failure U.denial σ.audit.length))
 
   /-- Third outside review, A1: the rite is asked only once the core's own conditions hold,
   and a refusal is a recorded step carrying the answer, so P5 holds it fixed. -/
@@ -340,6 +374,8 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hl : inst.status = .live) :
       CoreStep M R σ (.release i false)
         { (terminate σ (fun j _ => j = i) .released) with
+          -- The licence to depart ends the keeping: the seal lapses (`authority.md` §7.3).
+          kept := fun s => σ.kept s ∧ s ≠ inst.spiritSeal,
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }
 
@@ -360,6 +396,7 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
       (hl : inst.status = .live) :
       CoreStep M R σ (.relegate i)
         { (terminate σ (fun j _ => j = i) .relegated) with
+          kept := fun s => σ.kept s ∧ s ≠ inst.spiritSeal,
           exec := upd σ.exec U.operator e,
           sched := idle σ.sched }
 

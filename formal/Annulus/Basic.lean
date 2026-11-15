@@ -256,6 +256,7 @@ inductive Instr (U : Universe) where
   | openC (c : U.Circle) (e : U.Exec)
   | closeC (e : U.Exec)
   | inscribe (s : U.Seal) (k : U.InkClass) (e : U.Exec)
+  | wear (s : U.Seal) (e : U.Exec)
   | act (a : U.RiteAct) (e : U.Exec)
   | invoke (i : U.Inv) (s : U.Seal) (w : U.Worker) (ok no : U.Exec)
   | request (to : Addressee U) (f : U.ReqForm) (q : U.Req) (p : U.Pid) (w : U.Worker) (e : U.Exec)
@@ -274,6 +275,7 @@ inductive Label (U : Universe) where
   | closeC (c : U.Circle)
   | inscribe (s : U.Seal) (k : U.InkClass) (c : U.Circle) (admitted : Bool)
       (dismissed : List U.Inv)
+  | wear (s : U.Seal) (c : U.Circle) (admitted : Bool) (dismissed : List U.Inv)
   | act (a : U.RiteAct) (c : U.Circle) (admitted : Bool) (dismissed : List U.Inv)
   | invoke (i : U.Inv) (s : U.Seal) (c : U.Circle) (w : U.Worker) (admitted : Bool)
       (dismissed : List U.Inv)
@@ -330,6 +332,7 @@ inductive Sealed (U : Universe) where
 inductive Act (U : Universe) where
   | invoke (s : U.Seal) (c : U.Circle)
   | inscribe (s : U.Seal) (k : U.InkClass)
+  | wear (s : U.Seal)
   | rite (a : U.RiteAct)
 
 inductive BoundQ (U : Universe) where

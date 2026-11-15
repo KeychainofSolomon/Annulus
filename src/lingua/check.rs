@@ -310,6 +310,31 @@ impl<'r> Checker<'r> {
                         reserved,
                     });
                 }
+                "sigillum" => {
+                    // `sigillum "name" tentum;`: a kept seal this program may wear
+                    // (`core.md` §9.3d). The wand signs it with the rest of the faculty.
+                    if self.register.by_label(&g.target).is_none() {
+                        self.error(
+                            "A8",
+                            g.pos,
+                            format!("{:?} is not a spirit of this register", g.target),
+                        );
+                    }
+                    if reserved || words.len() != 1 || words[0] != "tentum" || g.amount.is_some() {
+                        self.error(
+                            "A8",
+                            g.pos,
+                            "a kept seal is declared as: sigillum \"name\" tentum;".into(),
+                        );
+                    }
+                    self.grants.push(Granted {
+                        kind: g.kind.clone(),
+                        target: g.target.clone(),
+                        perms: BTreeSet::new(),
+                        amount: None,
+                        reserved: false,
+                    });
+                }
                 "locus" | "historia" | "familiaris" => {
                     self.subset(g.pos, &format!("the {} grant", g.kind))
                 }
@@ -681,6 +706,32 @@ impl<'r> Checker<'r> {
                 if self.rite_only(*pos, "GERE") {
                     if let Some(held) = self.flow.held.last_mut() {
                         held.insert(instrument_word(*instrument));
+                    }
+                }
+            }
+            Stmt::GereSigillum(entity, pos) => {
+                if self.rite_only(*pos, "GERE SIGILLUM") {
+                    if let Some(spirit) = self.entity(entity) {
+                        let register = self.register;
+                        let declared = self.grants.iter().any(|g| {
+                            g.kind == "sigillum"
+                                && register
+                                    .by_label(&g.target)
+                                    .is_some_and(|s| s.n == spirit.n)
+                        });
+                        if !declared {
+                            self.error(
+                                "A8",
+                                *pos,
+                                format!(
+                                    "{}'s kept seal is worn, and the FACULTAS does not declare sigillum {:?} tentum",
+                                    spirit.name, spirit.label
+                                ),
+                            );
+                        }
+                        if let Some(set) = self.flow.inscribed.last_mut() {
+                            set.insert(spirit.n);
+                        }
                     }
                 }
             }

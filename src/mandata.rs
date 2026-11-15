@@ -455,6 +455,25 @@ fn ritus_inner(
         Ok(w) => w,
         Err(e) => return Ok(refuse(&mut say, e)),
     };
+    // Kept seals (`core.md` §9.3d): a program may wear only those its FACULTAS declares,
+    // and only where this house's sealed record holds the spirit.
+    let holds = tab::tenti(&opened.marks);
+    let declared = crate::ritus::tenta_of(&checked);
+    for (n, _) in &declared {
+        if !holds.iter().any(|(k, _)| k == n) {
+            return Ok(refuse(
+                &mut say,
+                format!(
+                    "this house keeps no hold of spirit {n}: a seal is kept only for a spirit that a sealed run kept with MANE"
+                ),
+            ));
+        }
+    }
+    // One kept seal, and no hold declared by hand: its hours are those of its calling.
+    let tentus = f.caelum.tentus.or_else(|| match declared.as_slice() {
+        [(n, _)] => holds.iter().find(|(k, _)| k == n).copied(),
+        _ => None,
+    });
     let options = Optiones {
         semen: f.semen,
         sors: f.sors,
@@ -462,8 +481,10 @@ fn ritus_inner(
         radices: opened.roots.clone(),
         caelum: crate::horae::Caelum {
             hora: Some(f.caelum.hora.unwrap_or_else(crate::horae::now)),
+            tentus,
             ..f.caelum
         },
+        sigilla_tenta: declared.into_iter().map(|(_, seal)| seal).collect(),
     };
     let mut notes = notes;
     notes.push(format!(

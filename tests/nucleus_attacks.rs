@@ -30,6 +30,10 @@ impl Rite for Yes {
         true
     }
 
+    fn admit_wear(&self, _: &State, _: &Seal) -> bool {
+        true
+    }
+
     fn signature(&self, state: &State, form: &ReqForm) -> BTreeSet<Cap> {
         let mut all: BTreeSet<Cap> = form
             .places
@@ -96,10 +100,14 @@ fn wand() -> Wand {
 }
 
 fn launched(index: &[IxEntry]) -> State {
-    built(index, false)
+    built(index, false, &[])
 }
 
-fn built(index: &[IxEntry], smuggle: bool) -> State {
+fn keeping(index: &[IxEntry], kept: &[&str]) -> State {
+    built(index, false, kept)
+}
+
+fn built(index: &[IxEntry], smuggle: bool, kept: &[&str]) -> State {
     let mut constitution = Constitution {
         version: 1,
         ..Default::default()
@@ -167,6 +175,7 @@ fn built(index: &[IxEntry], smuggle: bool) -> State {
         faculty,
         reserved,
         ink: [("comes".to_string(), 1)].into_iter().collect(),
+        kept: kept.iter().map(|k| k.to_string()).collect(),
         world,
         stores,
     });
@@ -448,7 +457,7 @@ fn any_ink_class_still_draws_from_a_bounded_budget() {
 
 #[test]
 fn a_spirit_smuggled_into_the_list_of_angels_refuses_the_launch() {
-    let mut s = built(&[], true);
+    let mut s = built(&[], true, &[]);
     assert!(matches!(s.launch(), Err(Refusal::LaunchRefused(_))));
 }
 
@@ -663,4 +672,136 @@ fn only_the_bare_word_passes_the_validator() {
     ] {
         assert_ne!(ask(data), Some(true), "{data:?}");
     }
+}
+
+// The kept seal (`core.md` §9.3d): worn again without ink, and nothing more than that.
+
+fn wear(s: &mut State, rite: &Yes, seal: &str) -> Step<()> {
+    op(s, |s| s.wear(rite, &seal.to_string()))
+}
+
+fn refused(r: Step<()>, s: &State, why: &str) {
+    assert!(matches!(r, Err(Refusal::Denied(_))), "{why}: {r:?}");
+    assert!(!s.running(), "{why}: a refused wearing ends the run");
+}
+
+#[test]
+fn a_kept_seal_is_worn_without_ink_and_its_spirit_comes() {
+    let rite = Yes::default();
+    let mut s = keeping(&[], &[FURFUR]);
+    let ink = s.ink_left().clone();
+    op(&mut s, |s| s.open_circle()).unwrap();
+    wear(&mut s, &rite, FURFUR).expect("wear");
+    assert_eq!(s.ink_left(), &ink, "wearing spends no ink");
+    let inv = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("invoke");
+    assert_eq!(s.invs()[&inv].status, InvStatus::Live);
+    assert!(s
+        .audit()
+        .entries()
+        .iter()
+        .any(|l| matches!(l, Label::Wear(_, _, true, _))));
+    // Being kept gives the spirit no reach: its work is still judged against what it was handed.
+    let p = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt"],
+        vec![effect(Verb::Scribe, "secret.txt")],
+    );
+    assert_eq!(
+        op(&mut s, |s| s.examine(&rite, p)).unwrap(),
+        WorkOutcome::Irritum
+    );
+    untouched(&s);
+}
+
+#[test]
+fn a_seal_that_is_not_kept_cannot_be_worn() {
+    for (kept, seal) in [
+        (&[][..], FURFUR),
+        (&[FURFUR][..], MARBAS),
+        (&[FURFUR][..], "goetia:34:furfurr"),
+        (&[FURFUR][..], "Goetia:34:Furfur"),
+    ] {
+        let rite = Yes::default();
+        let mut s = keeping(&[], kept);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        let r = wear(&mut s, &rite, seal);
+        refused(r, &s, seal);
+        assert!(s.inscribed().is_empty(), "{seal}");
+    }
+}
+
+#[test]
+fn a_worn_seal_does_not_outlive_its_circle() {
+    let rite = Yes::default();
+    let mut s = keeping(&[], &[FURFUR]);
+    op(&mut s, |s| s.open_circle()).unwrap();
+    wear(&mut s, &rite, FURFUR).expect("wear");
+    op(&mut s, |s| s.close_circle()).unwrap();
+    op(&mut s, |s| s.open_circle()).unwrap();
+    let r = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string()));
+    assert!(matches!(r, Err(Refusal::Denied(_))), "{r:?}");
+}
+
+#[test]
+fn the_licence_to_depart_and_banishment_end_the_keeping() {
+    for banish in [false, true] {
+        let rite = Yes::default();
+        let mut s = keeping(&[], &[FURFUR]);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        wear(&mut s, &rite, FURFUR).expect("wear");
+        let inv = op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("invoke");
+        if banish {
+            op(&mut s, |s| s.relegate(inv)).expect("relegate");
+        } else {
+            op(&mut s, |s| s.release(inv)).expect("release");
+        }
+        assert!(s.kept().is_empty(), "banish {banish}");
+        let r = wear(&mut s, &rite, FURFUR);
+        refused(r, &s, "worn again after it ended");
+    }
+}
+
+#[test]
+fn a_barred_spirits_kept_seal_cannot_be_worn() {
+    for entry in [
+        IxEntry::Damn(FURFUR.to_string()),
+        IxEntry::Proscribe(FURFUR.to_string(), Vec::new()),
+    ] {
+        let rite = Yes::default();
+        let mut s = keeping(std::slice::from_ref(&entry), &[FURFUR]);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        let r = wear(&mut s, &rite, FURFUR);
+        refused(r, &s, &format!("{entry:?}"));
+    }
+}
+
+#[test]
+fn a_kept_seal_is_not_worn_while_its_spirit_is_called() {
+    let rite = Yes::default();
+    let mut s = keeping(&[], &[FURFUR]);
+    op(&mut s, |s| s.open_circle()).unwrap();
+    wear(&mut s, &rite, FURFUR).expect("wear");
+    op(&mut s, |s| s.invoke(&rite, &FURFUR.to_string())).expect("invoke");
+    op(&mut s, |s| s.open_circle()).unwrap();
+    let r = wear(&mut s, &rite, FURFUR);
+    refused(r, &s, "one spirit is in one place");
+}
+
+#[test]
+fn a_spirit_cannot_wear_a_seal_or_keep_one() {
+    // Only the Operator's worker may take the step; a spirit scheduled in his place cannot.
+    let rite = Yes::default();
+    let mut s = keeping(&[], &[FURFUR, MARBAS]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    op(&mut s, |s| {
+        s.request(&rite, Addressee::Spirit(inv), &form(&["notes.txt"]))
+    })
+    .expect("request");
+    let worker = s.invs()[&inv].main;
+    s.schedule(worker).expect("schedule the spirit");
+    assert!(s.wear(&rite, &MARBAS.to_string()).is_err());
+    assert!(!s.inscribed().iter().any(|(seal, _)| seal == MARBAS));
+    assert_eq!(s.kept().len(), 2, "no step adds to the kept seals");
 }

@@ -165,6 +165,7 @@ def choiceOf : Label U → List (Choice U)
   | .schedule w => [.sched w]
   | .turn w v c _ => .will w v.outcome :: legionsOf w c
   | .inscribe s k _ b _ => [.answer (.inscribe s k) b]
+  | .wear s _ b _ => [.answer (.wear s) b]
   | .act a _ b _ => [.answer (.rite a) b]
   | .kill w o _ => [.kill w o]
   | .invoke i _ _ _ b _ => [.admit i b]
@@ -223,6 +224,9 @@ def P8 (M : Core U) (R : RelRite U) : Prop :=
   -- Ink is part of the faculty: without the wand none is left (core audit 1, #8).
   (∀ σ f σ', Step M R σ (.launch f) σ' → σ.auth.wandPresent = false →
     ∀ k, σ'.inkLeft k = 0) ∧
+  -- Nor is any seal kept: a kept seal is worn only under the wand (`core.md` §9.3d).
+  (∀ σ f σ', Step M R σ (.launch f) σ' → σ.auth.wandPresent = false →
+    ∀ s, ¬ σ'.kept s) ∧
   (∀ σ p a v σ', Reachable M R σ → Step M R σ (.examine p a v) σ' →
     ((∃ e, a = .noExaminer e) ∨ (∃ pi, σ.props p = some pi ∧ Doubtful M σ pi.author)) →
     v = .hold)

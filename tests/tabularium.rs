@@ -563,3 +563,21 @@ fn an_audit_against_a_seal_that_names_none_is_refused() {
     let e = read_back(&dir, &acta).unwrap_err();
     assert!(e.contains("names no audit"), "{e}");
 }
+
+/// The look-alike name: a file a spirit wrote, read back under another capitalisation.
+#[test]
+fn quarantine_follows_a_file_under_another_capitalisation() {
+    let dir = std::env::temp_dir().join(format!("annulus-fold-{}", std::process::id()));
+    let _ = fs::remove_dir_all(&dir);
+    fs::create_dir_all(dir.join("domus")).unwrap();
+    fs::write(dir.join("NOTES.TXT"), "the spirit's words").unwrap();
+    let marks: BTreeSet<String> = ["notes.txt".to_string()].into_iter().collect();
+    let places: BTreeSet<String> = ["NOTES.TXT".to_string()].into_iter().collect();
+    let world = read_world(&dir, &places, &marks).unwrap();
+    assert_eq!(world["NOTES.TXT"].1, Mark::Quarantined);
+    let twice: BTreeSet<String> = ["a.txt".to_string(), "A.TXT".to_string()]
+        .into_iter()
+        .collect();
+    assert!(guard_places(&dir, &dir.join("domus"), &twice).is_err());
+    assert!(guard_places(&dir, &dir.join("domus"), &places).is_ok());
+}

@@ -445,6 +445,12 @@ fn ritus_inner(
             "this Constitution is not ratified by your wand for this house: ratify it once with `annulus sanci`".into(),
         ));
     }
+    if tab::place_of(&mundus, &program).is_some_and(|p| tab::marked(&opened.marks, &p)) {
+        return Ok(refuse(
+            &mut say,
+            "a spirit wrote this program: it is quarantined, and a spirit's words never run as a program".into(),
+        ));
+    }
     let before = match tab::read_world(&mundus, &places, &opened.marks) {
         Ok(w) => w,
         Err(e) => return Ok(refuse(&mut say, e)),

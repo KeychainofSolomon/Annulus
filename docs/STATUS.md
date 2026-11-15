@@ -101,12 +101,13 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The model's seal (model file hash, settings, llama.cpp version, vectors, grammar) | Planned (`agens`); GPT's list adopted |
 | The Lean CI fetches its installer script from a moving branch | Open |
 | Between the check of a world path and its use, another process could swap a folder for a link (needs a second local process with write access to the Circle's folder) | Open (GPT, second pass; audit 3, #3): needs handle-relative file operations, separately for Windows and Linux |
-| Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | Not started; open ruling for the ink |
+| Kings (`INVOCA REGEM`), so Presidents can come; ink for two-rank seals | **Drafted** (`docs/TRIA_PLAN.md` §1, 2026-11-15), not built; open ruling for the ink |
 | Berith's ring hour | Needs `GERE` to record its time (the Prince's and Knight's hours are ruled) |
 | `PRAETERITA` of the previous run (`historia "prior" legere`) | Not started: the history must be carried between runs |
 | **`DOCTRINA`** (teaching): a telling office that is also *computing* (`offices.md` §2.2) | **Bindable (2026-11-14, PR #5):** the teaching spirits can be bound through it; a well-formed lesson is **held (`SUSPENSUM`), never approved**, until a domain library checks its certificate (`offices.md` §5.2, `library.md` §3); a citation beyond the handed places is rejected. The checking library is PR #3 (to be rebased onto this) |
 | Offices beyond telling, teaching and the five working kinds (transformation, dignities…) | Not in the subset |
-| The escalation, so `RECUSATIO` can open; spirit-specific malice | Not started |
+| The escalation, so `RECUSATIO` can open; spirit-specific malice | The escalation **drafted** (`docs/TRIA_PLAN.md` §2, 2026-11-15), not built; malice not started |
+| A program receiving a refused `CONSECRA` | **Drafted** (`docs/TRIA_PLAN.md` §3, 2026-11-15), not built; four points for the owner (§6) |
 | Real validators before step 4; the trust handshake | Not started |
 | The seven doubled seals other than Bune | Open ruling |
 | Drift watch: a CI step comparing the Python and Rust parsers' rejection positions | Owed |

@@ -1149,6 +1149,21 @@ fn a_clean_halt_dismisses_nothing() {
 }
 
 #[test]
+fn the_last_called_is_dismissed_first() {
+    // dynamic.md §3.1: "in reverse order of invocation"; Lean: `Dismissed`.
+    let rite = TestRite::default();
+    let mut s = fresh();
+    let (_, first) = circle_and(&mut s, &rite, FURFUR);
+    op(&mut s, |s| s.inscribe(&rite, &MARBAS.to_string(), "comes")).expect("inscribe");
+    let second = op(&mut s, |s| s.invoke(&rite, &MARBAS.to_string())).expect("invoke");
+    op(&mut s, |s| s.halt()).expect("halt");
+    assert_eq!(
+        s.audit().entries().last(),
+        Some(&Label::Halt(vec![second, first]))
+    );
+}
+
+#[test]
 fn a_helper_is_held_to_its_own_narrower_set() {
     let rite = TestRite::default();
     let mut s = fresh();

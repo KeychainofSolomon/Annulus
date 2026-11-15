@@ -1388,6 +1388,29 @@ theorem P4_holds (M : Core U) (R : RelRite U) : P4 M R := by
     obtain ⟨σ1, hc, -⟩ := hsteps m hm2
     exact hnot m (hdead (t + 1) hdt m (by omega) (by omega)) (coreStep_usesHold hinv hc hu)
 
+/-! ### The order of dismissal (towards P9) -/
+
+/-- A closing record's list is fixed by the state: two such lists are equal. -/
+theorem dismissed_unique {σ : State U} {ds ds' : List U.Inv}
+    (h : Dismissed σ ds) (h' : Dismissed σ ds') : ds = ds' := by
+  obtain ⟨f, hf, rfl⟩ := h
+  obtain ⟨g, hg, rfl⟩ := h'
+  have : f = g := by
+    funext i
+    have := (hf i).trans (hg i).symm
+    cases hfi : f i <;> cases hgi : g i <;> simp_all
+  rw [this]
+
+/-- Every state has such a list. -/
+theorem dismissed_exists (σ : State U) : ∃ ds, Dismissed σ ds :=
+  ⟨_, fun i => decide (Live σ i), fun i => by simp, rfl⟩
+
+/-- It names only invocations that are live. -/
+theorem dismissed_live {σ : State U} {ds : List U.Inv} {i : U.Inv}
+    (h : Dismissed σ ds) (hi : i ∈ ds) : Live σ i := by
+  obtain ⟨f, hf, rfl⟩ := h
+  exact (hf i).mp (List.mem_filter.mp hi).2
+
 end Annulus
 
 end

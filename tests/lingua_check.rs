@@ -488,3 +488,58 @@ fn a12_only_a_recorded_divine_name_binds() {
         );
     }
 }
+
+// `SI CONSECRA v IN name { … } ALITER { … }` (`flow.md` §3.5).
+
+const FORMA: &str = "    SI EXAMINA p == RATUM {\n        SI CONSECRA RESPONSUM p IN verba {\n            SI verba == \"ita\" {\n                MANIFESTA 1;\n            }\n        } ALITER {\n            MANIFESTA 0;\n        }\n    }";
+
+#[test]
+fn the_consecration_form_is_lawful() {
+    lawful(&telling(FORMA));
+}
+
+#[test]
+fn the_consecrated_name_does_not_exist_where_consecration_failed() {
+    let found = codes(&telling(&FORMA.replace("MANIFESTA 0;", "MANIFESTA verba;")));
+    assert!(
+        found.contains(&"N1") || found.contains(&"N2"),
+        "used in ALITER: {found:?}"
+    );
+    let after = format!("{FORMA}\n    MANIFESTA verba;");
+    let found = codes(&telling(&after));
+    assert!(
+        found.contains(&"N1") || found.contains(&"N2"),
+        "used after the form: {found:?}"
+    );
+}
+
+#[test]
+fn the_consecration_form_needs_its_aliter() {
+    let bare = FORMA.replace(" ALITER {\n            MANIFESTA 0;\n        }", "");
+    assert!(
+        !codes(&telling(&bare)).is_empty(),
+        "a refusal must not pass in silence"
+    );
+}
+
+#[test]
+fn a17_the_form_is_for_a_spirits_words() {
+    refused(
+        &telling(&FORMA.replace("CONSECRA RESPONSUM p IN", "CONSECRA \"ita\" IN")),
+        "A17",
+    );
+}
+
+#[test]
+fn the_consecrated_name_is_new_and_no_spirits() {
+    refused(&telling(&format!("    SIT verba = 1;\n{FORMA}")), "N3");
+    refused(&telling(&FORMA.replace("verba", "furfur")), "N5");
+}
+
+#[test]
+fn the_consecrated_name_cannot_be_assigned() {
+    refused(
+        &telling(&FORMA.replace("MANIFESTA 1;", "verba = \"non\";")),
+        "N4",
+    );
+}

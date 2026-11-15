@@ -562,6 +562,41 @@ impl<'p> Run<'p> {
         result
     }
 
+    /// The consecration of a spirit's words (`core.md` §9.3a; `flow.md` §3.5). `Some` is
+    /// the words, consecrated; `None` is a refusal, which the core has already recorded.
+    fn consecra_verba(&mut self, t: Text) -> Go<Option<Text>> {
+        let Some(id) = t.id.filter(|_| t.mark == Mark::Quarantined) else {
+            return Ok(Some(t));
+        };
+        let holy = |t: Text| Text {
+            mark: Mark::Consecrated,
+            ..t
+        };
+        // Words consecrated earlier in this run are consecrated: done, never refused.
+        let already = self
+            .state
+            .values
+            .get(&id)
+            .is_some_and(|v| v.mark == Mark::Consecrated);
+        if already {
+            return Ok(Some(holy(t)));
+        }
+        if self.op(|_| true, |s, r| s.consecrate(r, id))? {
+            return Ok(Some(holy(t)));
+        }
+        // A fault is not a refusal: only a validator that ran and did not say yes refuses.
+        let judged = matches!(
+            self.state.audit().entries().last(),
+            Some(Label::Consecrate(_, Some(_), false))
+        );
+        if !judged {
+            return Err(Halt::Denial(
+                "CONSECRA: the Constitution gives no validator for these words".into(),
+            ));
+        }
+        Ok(None)
+    }
+
     fn truth(&mut self, e: &Expr) -> Go<(bool, Mark)> {
         match self.expr(e)? {
             V::Bool(b, m) => Ok((b, m)),
@@ -613,6 +648,29 @@ impl<'p> Run<'p> {
                     self.block(o)
                 } else {
                     Ok(())
+                }
+            }
+            Stmt::SiConsecra {
+                value,
+                name,
+                then,
+                otherwise,
+                ..
+            } => {
+                let V::Text(t) = self.expr(value)? else {
+                    return Err(Halt::Denial(
+                        "SI CONSECRA: the value is not a spirit's words".into(),
+                    ));
+                };
+                match self.consecra_verba(t)? {
+                    Some(holy) => {
+                        self.scopes
+                            .push(BTreeMap::from([(name.clone(), V::Text(holy))]));
+                        let result = then.iter().try_for_each(|s| self.stmt(s));
+                        self.scopes.pop();
+                        result
+                    }
+                    None => self.block(otherwise),
                 }
             }
             Stmt::Dum { cond, body, .. } => {
@@ -962,19 +1020,13 @@ impl<'p> Run<'p> {
             (Unary::Non, V::Bool(b, m)) => Ok(V::Bool(!b, m)),
             (Unary::Consecra, V::Ink(class)) => Ok(V::Ink(class)),
             (Unary::Consecra, V::Text(t)) => {
-                let Some(id) = t.id.filter(|_| t.mark == Mark::Quarantined) else {
-                    return Ok(V::Text(t));
-                };
-                let accepted = self.op(|_| true, |s, r| s.consecrate(r, id))?;
-                if !accepted {
-                    return Err(Halt::Denial(
+                // The bare form has no way to go on with unfit words: a refusal ends the run.
+                match self.consecra_verba(t)? {
+                    Some(holy) => Ok(V::Text(holy)),
+                    None => Err(Halt::Denial(
                         "CONSECRA: the validator does not accept the spirit's words".into(),
-                    ));
+                    )),
                 }
-                Ok(V::Text(Text {
-                    mark: Mark::Consecrated,
-                    ..t
-                }))
             }
             (Unary::Examina, V::Prop(p)) => {
                 let outcome = self.op(

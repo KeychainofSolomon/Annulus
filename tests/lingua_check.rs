@@ -488,3 +488,107 @@ fn a12_only_a_recorded_divine_name_binds() {
         );
     }
 }
+
+// `SI CONSECRA v IN name { … } ALITER { … }` (`flow.md` §3.5).
+
+const FORMA: &str = "    SI EXAMINA p == RATUM {\n        SI CONSECRA RESPONSUM p IN verba {\n            SI verba == \"ita\" {\n                MANIFESTA 1;\n            }\n        } ALITER {\n            MANIFESTA 0;\n        }\n    }";
+
+#[test]
+fn the_consecration_form_is_lawful() {
+    lawful(&telling(FORMA));
+}
+
+#[test]
+fn the_consecrated_name_does_not_exist_where_consecration_failed() {
+    let found = codes(&telling(&FORMA.replace("MANIFESTA 0;", "MANIFESTA verba;")));
+    assert!(
+        found.contains(&"N1") || found.contains(&"N2"),
+        "used in ALITER: {found:?}"
+    );
+    let after = format!("{FORMA}\n    MANIFESTA verba;");
+    let found = codes(&telling(&after));
+    assert!(
+        found.contains(&"N1") || found.contains(&"N2"),
+        "used after the form: {found:?}"
+    );
+}
+
+#[test]
+fn the_consecration_form_needs_its_aliter() {
+    let bare = FORMA.replace(" ALITER {\n            MANIFESTA 0;\n        }", "");
+    assert!(
+        !codes(&telling(&bare)).is_empty(),
+        "a refusal must not pass in silence"
+    );
+}
+
+#[test]
+fn a17_the_form_is_for_a_spirits_words() {
+    refused(
+        &telling(&FORMA.replace("CONSECRA RESPONSUM p IN", "CONSECRA \"ita\" IN")),
+        "A17",
+    );
+}
+
+#[test]
+fn the_consecrated_name_is_new_and_no_spirits() {
+    refused(&telling(&format!("    SIT verba = 1;\n{FORMA}")), "N3");
+    refused(&telling(&FORMA.replace("verba", "furfur")), "N5");
+}
+
+#[test]
+fn the_consecrated_name_cannot_be_assigned() {
+    refused(
+        &telling(&FORMA.replace("MANIFESTA 1;", "verba = \"non\";")),
+        "N4",
+    );
+}
+
+// The kept seal (`core.md` §9.3d): `GERE SIGILLUM x;`, declared `sigillum "x" tentum;`.
+
+fn kept_program(grant: &str, worn: &str) -> String {
+    format!(
+        "FACULTAS {{\n{grant}}}\nCIRCULUS RITU goetia {{\n    INTENTIO \"x\";\n    GERE SIGILLUM {worn};\n    SIT v = INVOCA furfur AD OFFICIUM responsa;\n    SIT p = PETE v(\"venietne tempestas\");\n    MANIFESTA EXAMINA p;\n    MANE v;\n}}\n"
+    )
+}
+
+#[test]
+fn a_declared_kept_seal_serves_in_place_of_an_inscription() {
+    lawful(&kept_program("    sigillum \"furfur\" tentum;\n", "furfur"));
+    lawful(&kept_program(
+        "    sigillum \"furfur\" tentum;\n",
+        "SPIRITUS 34",
+    ));
+}
+
+#[test]
+fn a8_a_kept_seal_must_be_declared() {
+    refused(&kept_program("", "furfur"), "A8");
+    // Another spirit's declaration does not serve.
+    refused(
+        &kept_program("    sigillum \"halphas\" tentum;\n", "furfur"),
+        "A8",
+    );
+}
+
+#[test]
+fn a8_the_declaration_of_a_kept_seal_is_exact() {
+    for grant in [
+        "    sigillum \"furfur\";\n",
+        "    sigillum \"furfur\" tentum 2;\n",
+        "    sigillum \"furfur\" tentum angelis;\n",
+        "    sigillum \"nemo\" tentum;\n",
+    ] {
+        refused(&kept_program(grant, "furfur"), "A8");
+    }
+}
+
+#[test]
+fn wearing_one_seal_does_not_serve_for_another_spirit() {
+    // Halphas's seal worn; Furfur invoked: his seal is neither inscribed nor worn.
+    let found = codes(&kept_program(
+        "    sigillum \"halphas\" tentum;\n",
+        "halphas",
+    ));
+    assert!(!found.is_empty(), "Furfur was called on Halphas's seal");
+}

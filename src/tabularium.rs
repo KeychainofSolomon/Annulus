@@ -1384,6 +1384,33 @@ pub struct Acta {
     pub root: String,
 }
 
+/// One spelling for every name a case-blind file system (Windows, macOS) takes for the
+/// same file.
+pub fn fold_place(place: &str) -> String {
+    place.to_lowercase()
+}
+
+/// Whether the record says a spirit wrote this place, under any capitalisation: a
+/// quarantined file must not come back clean under a look-alike name (`flow.md` §1.3).
+pub fn marked(marks: &BTreeSet<Place>, place: &str) -> bool {
+    let folded = fold_place(place);
+    marks.iter().any(|m| fold_place(m) == folded)
+}
+
+/// The place a file is, seen from the Circle's folder, if it lies in it.
+pub fn place_of(root: &Path, file: &Path) -> Option<String> {
+    let root = fs::canonicalize(root).ok()?;
+    let file = fs::canonicalize(file).ok()?;
+    let inside = file.strip_prefix(&root).ok()?;
+    Some(
+        inside
+            .components()
+            .map(|c| c.as_os_str().to_string_lossy().into_owned())
+            .collect::<Vec<_>>()
+            .join("/"),
+    )
+}
+
 pub fn lawful_place(place: &str) -> bool {
     let path = Path::new(place);
     !place.is_empty()
@@ -1448,6 +1475,14 @@ pub fn guard_places(root: &Path, house: &Path, places: &BTreeSet<String>) -> Res
         .map_err(|e| format!("cannot find the Circle's folder {}: {e}", root.display()))?;
     let house = fs::canonicalize(house)
         .map_err(|e| format!("cannot find the house {}: {e}", house.display()))?;
+    let mut spellings = BTreeSet::new();
+    for place in places {
+        if !spellings.insert(fold_place(place)) {
+            return Err(format!(
+                "the place {place:?} is named twice, in two capitalisations"
+            ));
+        }
+    }
     for place in places {
         let path = guard(&root, place)?;
         if path.starts_with(&house) || folded(&path).starts_with(&folded(&house)) {
@@ -1544,7 +1579,7 @@ pub fn read_world(
     for place in places {
         let path = guard(root, place)?;
         if let Some(text) = read_place(&path, place)? {
-            let mark = if marks.contains(place) {
+            let mark = if marked(marks, place) {
                 Mark::Quarantined
             } else {
                 Mark::Outside

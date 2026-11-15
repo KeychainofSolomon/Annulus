@@ -262,12 +262,16 @@ theorem P7_holds (M : Core U) (R : RelRite U) : P7 M R := by
 /-- P8, proved: `launch` happens only when its checks hold; without the wand the faculty
 is empty; and an examination with no lawful examiner, or of a doubtful author, holds. -/
 theorem P8_holds (M : Core U) (R : RelRite U) : P8 M R := by
-  refine ⟨?_, ?_, ?_⟩
+  refine ⟨?_, ?_, ?_, ?_⟩
   · intro σ f σ' h
     obtain ⟨σ1, hc, -⟩ := h
     cases hc
     assumption
   · intro σ f σ' h hw p m
+    obtain ⟨σ1, hc, -, -, -, rfl⟩ := h
+    cases hc
+    simp [hw]
+  · intro σ f σ' h hw k
     obtain ⟨σ1, hc, -, -, -, rfl⟩ := h
     cases hc
     simp [hw]

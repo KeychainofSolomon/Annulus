@@ -19,7 +19,9 @@ inductive CoreStep (M : Core U) (R : RelRite U) : State U → Label U → State 
         { σ with
           phase := .running,
           faculty := if σ.auth.wandPresent = true then σ.faculty else (fun _ _ => False),
-          reserved := if σ.auth.wandPresent = true then σ.reserved else (fun _ _ => False) }
+          reserved := if σ.auth.wandPresent = true then σ.reserved else (fun _ _ => False),
+          -- P8: ink is part of the faculty (`core.md` §1), so without the wand none is left.
+          inkLeft := if σ.auth.wandPresent = true then σ.inkLeft else (fun _ => 0) }
 
   | openC {σ : State U} {c : U.Circle} {e : U.Exec}
       (hw : σ.sched.current = some U.operator)

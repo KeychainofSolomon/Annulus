@@ -339,6 +339,7 @@ fn without_the_wand_the_faculty_is_empty() {
     let mut s = launch_with(Stores::install(&w), w);
     s.launch().expect("launch");
     assert!(s.faculty().is_empty());
+    assert!(s.ink_left().is_empty(), "ink is part of the faculty");
 }
 
 #[test]

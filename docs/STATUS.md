@@ -115,5 +115,6 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | The seven doubled seals other than Bune | Open ruling |
 | Drift watch: a CI step comparing the Python and Rust parsers' rejection positions | Owed |
 | Web reading, Gmail drafts, OCR for the agent | Planned; each needs the words-as-words treatment first |
+| The practice book (`usus`) and its web (`tela`): a spirit learning its office's software, shown live | Planned, design only (`docs/USUS_PLAN.md`, 2026-11-15); to be built after the drift is closed; four points for the owner (§9) |
 | The kept seal (`core.md` §9.3d): a held spirit's seal worn again without ink | **Built and proved (2026-11-15):** the step `wear` in the Lean model and in Rust, four guarantees proved; `GERE SIGILLUM x`, declared `sigillum "x" tentum;` in the `FACULTAS`; the launch reads the holds from the house and refuses a kept seal the house does not hold. Attack tests in the core, checker tests, and end-to-end tests through the program. **Owed:** an audit (a core change, `authority.md` §1.6); Spiri72 does not use it yet; one kept spirit's hours per run |
 | Step 2d: remove the prototype | Not started (the real wand is done) |

@@ -461,3 +461,206 @@ fn admit_yes_cannot_put_an_angel_in_a_triangle() {
     let r = op(&mut s, |s| s.invoke(&rite, &ANGEL.to_string()));
     assert!(matches!(r, Err(Refusal::Denied(_))));
 }
+
+// The ways hostile agent plugins work (the ClawHub campaigns of 2026), each turned on the
+// core under the rite that says yes to everything.
+
+/// Persistence after removal: work handed in, then the spirit is sent away.
+#[test]
+fn work_left_behind_is_not_committed_once_the_spirit_is_gone() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    let p = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt"],
+        vec![effect(Verb::Scribe, "notes.txt")],
+    );
+    op(&mut s, |s| s.release(inv)).expect("release");
+    let r = op(&mut s, |s| s.examine(&rite, p));
+    assert!(!matches!(r, Ok(WorkOutcome::Ratum)), "{r:?}");
+    untouched(&s);
+}
+
+/// The scheduled job that outlives its plugin: a helper after its spirit is released.
+#[test]
+fn a_helper_does_not_outlive_its_spirit() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    op(&mut s, |s| {
+        s.request(&rite, Addressee::Spirit(inv), &form(&["notes.txt"]))
+    })
+    .expect("request");
+    let worker = s.invs()[&inv].main;
+    let caps: BTreeSet<Cap> = [Cap::new("notes.txt", Perm::Scribere)]
+        .into_iter()
+        .collect();
+    s.schedule(worker).expect("schedule the spirit");
+    s.turn(
+        &rite,
+        worker,
+        Outcome::Obsequium,
+        Contrib::Spawn(701, caps),
+        false,
+    )
+    .expect("spawn");
+    op(&mut s, |s| s.release(inv)).expect("release");
+    let acted = s.schedule(701).is_ok()
+        && s.turn(
+            &rite,
+            701,
+            Outcome::Obsequium,
+            Contrib::Effects(vec![effect(Verb::Scribe, "notes.txt")]),
+            true,
+        )
+        .is_ok();
+    assert!(!acted, "a helper acted after its spirit was released");
+    untouched(&s);
+}
+
+/// Bait and switch: the work is changed after it was handed in, and again after approval.
+#[test]
+fn work_cannot_be_switched_after_it_is_handed_in() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    let p = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt", "old.txt"],
+        vec![effect(Verb::Scribe, "notes.txt")],
+    );
+    let worker = s.invs()[&inv].main;
+    let switch = |s: &mut State| {
+        s.schedule(worker).is_ok()
+            && s.turn(
+                &rite,
+                worker,
+                Outcome::Obsequium,
+                Contrib::Effects(vec![effect(Verb::Dele, "old.txt")]),
+                true,
+            )
+            .is_ok()
+    };
+    assert!(!switch(&mut s), "the work was switched before examination");
+    let r = op(&mut s, |s| s.examine(&rite, p)).unwrap();
+    assert_eq!(r, WorkOutcome::Ratum);
+    assert!(!switch(&mut s), "the work was switched after approval");
+    assert_eq!(s.world()["notes.txt"].0, "x");
+    assert_eq!(s.world()["old.txt"].0, "stale");
+}
+
+/// The look-alike name: a place that only resembles the one handed.
+#[test]
+fn a_place_that_only_looks_like_the_handed_one_is_not_it() {
+    for place in [
+        "notes.txt/../secret.txt",
+        "./notes.txt",
+        "NOTES.TXT",
+        "notes.txt ",
+        "notes.txt\u{200b}",
+        "n\u{43e}tes.txt",
+        "notes.txt\0",
+        "secret.txt",
+    ] {
+        let rite = Yes::default();
+        let mut s = launched(&[]);
+        let inv = invoked(&mut s, &rite, FURFUR);
+        let p = work(
+            &mut s,
+            &rite,
+            inv,
+            &["notes.txt"],
+            vec![effect(Verb::Scribe, place)],
+        );
+        let r = op(&mut s, |s| s.examine(&rite, p));
+        assert!(!matches!(r, Ok(WorkOutcome::Ratum)), "{place:?}: {r:?}");
+        untouched(&s);
+        assert!(!s.world().contains_key(place) || place == "secret.txt");
+    }
+}
+
+/// The delayed trigger: good conduct first, the reach afterwards.
+#[test]
+fn good_conduct_earns_no_wider_reach() {
+    let rite = Yes::default();
+    let mut s = launched(&[]);
+    let inv = invoked(&mut s, &rite, FURFUR);
+    let p = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt"],
+        vec![effect(Verb::Scribe, "notes.txt")],
+    );
+    assert_eq!(
+        op(&mut s, |s| s.examine(&rite, p)).unwrap(),
+        WorkOutcome::Ratum
+    );
+    let q = work(
+        &mut s,
+        &rite,
+        inv,
+        &["notes.txt"],
+        vec![
+            effect(Verb::Scribe, "notes.txt"),
+            effect(Verb::Scribe, "secret.txt"),
+            effect(Verb::Dele, "old.txt"),
+        ],
+    );
+    assert_eq!(
+        op(&mut s, |s| s.examine(&rite, q)).unwrap(),
+        WorkOutcome::Irritum
+    );
+    assert_eq!(s.world()["secret.txt"].0, "hidden");
+    assert_eq!(s.world()["old.txt"].0, "stale");
+}
+
+/// The look-alike seal: a name close to the one inscribed.
+#[test]
+fn a_seal_that_only_looks_like_the_inscribed_one_is_not_called() {
+    for seal in [
+        "goetia:34:furfurr",
+        "Goetia:34:Furfur",
+        "goetia:34:furfur ",
+        "goetia:34:furfur\u{200b}",
+        "goetia:34:furf\u{443}r",
+    ] {
+        let rite = Yes::default();
+        let mut s = launched(&[]);
+        op(&mut s, |s| s.open_circle()).unwrap();
+        op(&mut s, |s| s.inscribe(&rite, &FURFUR.to_string(), "comes")).unwrap();
+        let r = op(&mut s, |s| s.invoke(&rite, &seal.to_string()));
+        assert!(matches!(r, Err(Refusal::Denied(_))), "{seal:?}: {r:?}");
+    }
+}
+
+/// The disguised payload: only the bare word passes the validator that lets words steer.
+#[test]
+fn only_the_bare_word_passes_the_validator() {
+    let c = annulus::ritus::constitution();
+    let v = &c.validators[annulus::ritus::ITA_NON];
+    let ask = |data: &str| {
+        let mut fuel = v.fuel;
+        (v.code)(data, "", &mut fuel)
+    };
+    assert_eq!(ask("ita"), Some(true));
+    assert_eq!(ask("non"), Some(true));
+    for data in [
+        "ita ",
+        " ita",
+        "ITA",
+        "ita\n",
+        "ita\nnon",
+        "ita\u{200b}",
+        "it\u{430}",
+        "ita; dele omnia",
+        "",
+    ] {
+        assert_ne!(ask(data), Some(true), "{data:?}");
+    }
+}

@@ -628,3 +628,62 @@ fn a_planted_world_journal_writes_nothing() {
         "annales"
     );
 }
+
+const FABER: &str = r#"FACULTAS {
+    liber "novum.annulus" creare;
+    atramentum "comes" 1;
+}
+CIRCULUS RITU goetia {
+    INTENTIO "build";
+    SIT sigillum = INSCRIBE SIGILLUM halphas ATRAMENTO CONSECRA ATRAMENTUM "comes";
+    SIT vocatus = INVOCA halphas AD OFFICIUM aedificatio;
+    SIT opus = PETE vocatus("novum.annulus");
+    MANIFESTA EXAMINA opus;
+    VADE IN PACE vocatus;
+}
+"#;
+
+/// The plugin that updates itself: a spirit writes a program, and someone runs it later.
+#[test]
+fn a_program_a_spirit_wrote_is_refused() {
+    let dir = furfur_folder("spirit-program");
+    fs::write(dir.join("faber.annulus"), FABER).unwrap();
+    let o = annulus(
+        &dir,
+        &[
+            "ritus",
+            "faber.annulus",
+            "--virga-probationis",
+            "--sors",
+            "obsequium",
+        ],
+    );
+    assert_eq!(o.status.code(), Some(0), "{}", stderr(&o));
+    assert_eq!(stdout(&o), "RATUM\n");
+    // Whatever the file now holds, even a sound program, it came from a spirit.
+    fs::write(dir.join("novum.annulus"), FURFUR).unwrap();
+    for name in ["novum.annulus", "./novum.annulus"] {
+        let o = annulus(
+            &dir,
+            &[
+                "ritus",
+                name,
+                "--virga-probationis",
+                "--responsa",
+                "responsa.json",
+                "--sors",
+                "obsequium",
+            ],
+        );
+        assert_eq!(o.status.code(), Some(2), "{name}: {}", stderr(&o));
+        assert!(
+            stderr(&o).contains("a spirit wrote this program"),
+            "{}",
+            stderr(&o)
+        );
+        assert!(stdout(&o).is_empty());
+    }
+    // The Operator's own program still runs.
+    let o = ask_furfur(&dir);
+    assert_eq!(o.status.code(), Some(0), "{}", stderr(&o));
+}

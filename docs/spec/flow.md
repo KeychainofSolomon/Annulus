@@ -10,6 +10,8 @@ Draft 1, 2026-11-11, from the owner's rulings of the same day. Roadmap step 1, i
 
 1.3 **The mark follows the data.** It survives storage: a file written with quarantined content stays quarantined, and so does anything read back from it, across runs. The runtime keeps the mark beside the file and records it in the audit. A file with no recorded mark, which the audit shows a spirit wrote, is quarantined. [O]
 
+**Two consequences** (2026-11-15, breach test). The record is matched without regard to capitalisation, since on some file systems one file answers to every capitalisation of its name; a faculty that names one file in two capitalisations is refused. And a program file the record marks is never run: a spirit's words do not become the program.
+
 ## 2. Quarantine: what spirits' words may and may not do
 
 2.1 **Allowed:**

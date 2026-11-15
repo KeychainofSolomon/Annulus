@@ -142,6 +142,7 @@ pub fn launch(
         faculty,
         reserved,
         ink,
+        kept: BTreeSet::new(),
         world,
         stores,
     }

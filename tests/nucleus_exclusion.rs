@@ -138,6 +138,7 @@ fn state_in(
         faculty,
         reserved,
         ink: [("comes".to_string(), ink)].into_iter().collect(),
+        kept: BTreeSet::new(),
         world,
         stores,
     });

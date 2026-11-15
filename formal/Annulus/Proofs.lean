@@ -262,7 +262,7 @@ theorem P7_holds (M : Core U) (R : RelRite U) : P7 M R := by
 /-- P8, proved: `launch` happens only when its checks hold; without the wand the faculty
 is empty; and an examination with no lawful examiner, or of a doubtful author, holds. -/
 theorem P8_holds (M : Core U) (R : RelRite U) : P8 M R := by
-  refine ⟨?_, ?_, ?_, ?_⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · intro σ f σ' h
     obtain ⟨σ1, hc, -⟩ := h
     cases hc
@@ -272,6 +272,10 @@ theorem P8_holds (M : Core U) (R : RelRite U) : P8 M R := by
     cases hc
     simp [hw]
   · intro σ f σ' h hw k
+    obtain ⟨σ1, hc, -, -, -, rfl⟩ := h
+    cases hc
+    simp [hw]
+  · intro σ f σ' h hw s
     obtain ⟨σ1, hc, -, -, -, rfl⟩ := h
     cases hc
     simp [hw]
@@ -752,6 +756,8 @@ theorem coreStep_mono {M : Core U} {R R' : RelRite U} (hS : AtLeastAsStrict R' R
       exact .invokeOk hw hi hs hfi hfw (hA _ _ _ ha) hx hsl hna
   | invokeRefused hw hi hs ha hr hd => exact .invokeRefused hw hi hs (hA _ _ _ ha) hr hd
   | inscribe hw hi hs hn ha => exact .inscribe hw hi hs hn (hA _ _ _ ha)
+  | wear hw hi hs hk hx hna hone ha => exact .wear hw hi hs hk hx hna hone (hA _ _ _ ha)
+  | wearRefused hw hi hs ha hr hd => exact .wearRefused hw hi hs (hA _ _ _ ha) hr hd
   | act hw hi hs hinv hk ha => exact .act hw hi hs hinv hk (hA _ _ _ ha)
   | inscribeRefused hw hi hs hn ha hd => exact .inscribeRefused hw hi hs hn (hA _ _ _ ha) hd
   | actRefused hw hi hs hinv hk ha hd => exact .actRefused hw hi hs hinv hk (hA _ _ _ ha) hd
@@ -1410,6 +1416,104 @@ theorem dismissed_live {σ : State U} {ds : List U.Inv} {i : U.Inv}
     (h : Dismissed σ ds) (hi : i ∈ ds) : Live σ i := by
   obtain ⟨f, hf, rfl⟩ := h
   exact (hf i).mp (List.mem_filter.mp hi).2
+
+/-! ### The kept seal (`core.md` §9.3d) -/
+
+theorem foldl_addMade_kept (l : Label U) :
+    ∀ (ms : List (Made U)) (σ : State U), (ms.foldl (addMade l) σ).kept = σ.kept
+  | [], _ => rfl
+  | m :: ms, σ => foldl_addMade_kept l ms (addMade l σ m)
+
+theorem kept_ite {c : Prop} [Decidable c] {a b : State U} {X : U.Seal → Prop}
+    (ha : a.kept = X) (hb : b.kept = X) : (if c then a else b).kept = X := by
+  by_cases h : c
+  · rw [if_pos h]; exact ha
+  · rw [if_neg h]; exact hb
+
+theorem afterTurn_kept {σ : State U} {w : U.Worker} {wi : WInfo U} {p : U.Pid}
+    {rest : List U.Pid} {pi : PInfo U} {o : U.Outcome} {c : Contrib U} {fin : Bool}
+    {l : Label U} : (afterTurn σ w wi p rest pi o c fin l).kept = σ.kept := by
+  unfold afterTurn
+  cases c <;> rfl
+
+theorem afterJudge_kept {σ : State U} {p : U.Pid} {pi : PInfo U} {d : WorkOutcome}
+    {k : WorkOutcome → U.Exec} : (afterJudge σ p pi d k).kept = σ.kept := by
+  unfold afterJudge
+  exact kept_ite rfl (kept_ite rfl rfl)
+
+/-- **No seal becomes kept inside a run.** Whatever step is taken, by any program, will
+and rite, a seal kept afterwards was kept before. Keeping is made only outside the run,
+under the wand. -/
+theorem coreStep_kept {M : Core U} {R : RelRite U} {σ σ1 : State U} {l : Label U}
+    (h : CoreStep M R σ l σ1) : ∀ s, σ1.kept s → σ.kept s := by
+  cases h
+  all_goals intro s hs
+  all_goals first
+    | exact hs
+    | exact hs.1
+    | (rw [afterTurn_kept] at hs; exact hs)
+    | (rw [afterJudge_kept] at hs; exact hs)
+    | (rw [foldl_addMade_kept] at hs; exact hs)
+    | (dsimp only at hs; split at hs <;> first | exact hs | exact hs.elim)
+
+theorem step_kept {M : Core U} {R : RelRite U} {σ σ' : State U} {l : Label U}
+    (h : Step M R σ l σ') : ∀ s, σ'.kept s → σ.kept s := by
+  obtain ⟨σ1, hc, -, -, -, rfl⟩ := h
+  intro s hs
+  exact coreStep_kept hc s hs
+
+theorem foldl_addMade_inscribed (l : Label U) :
+    ∀ (ms : List (Made U)) (σ : State U), (ms.foldl (addMade l) σ).inscribed = σ.inscribed
+  | [], _ => rfl
+  | m :: ms, σ => foldl_addMade_inscribed l ms (addMade l σ m)
+
+theorem inscribed_ite {c : Prop} [Decidable c] {a b : State U} {X : U.Seal → U.Circle → Prop}
+    (ha : a.inscribed = X) (hb : b.inscribed = X) : (if c then a else b).inscribed = X := by
+  by_cases h : c
+  · rw [if_pos h]; exact ha
+  · rw [if_neg h]; exact hb
+
+theorem afterTurn_inscribed {σ : State U} {w : U.Worker} {wi : WInfo U} {p : U.Pid}
+    {rest : List U.Pid} {pi : PInfo U} {o : U.Outcome} {c : Contrib U} {fin : Bool}
+    {l : Label U} : (afterTurn σ w wi p rest pi o c fin l).inscribed = σ.inscribed := by
+  unfold afterTurn
+  cases c <;> rfl
+
+theorem afterJudge_inscribed {σ : State U} {p : U.Pid} {pi : PInfo U} {d : WorkOutcome}
+    {k : WorkOutcome → U.Exec} : (afterJudge σ p pi d k).inscribed = σ.inscribed := by
+  unfold afterJudge
+  exact inscribed_ite rfl (inscribed_ite rfl rfl)
+
+/-- **No seal comes to serve for nothing.** A seal that serves in a Circle after a step
+either served there before, or was inscribed by that step (which spends ink), or was a
+kept seal worn by that step, its spirit not barred and no angel. There is no third way. -/
+theorem coreStep_inscribed {M : Core U} {R : RelRite U} {σ σ1 : State U} {l : Label U}
+    (h : CoreStep M R σ l σ1) : ∀ s c, σ1.inscribed s c →
+      σ.inscribed s c ∨ (∃ k, l = .inscribe s k c true []) ∨
+        (l = .wear s c true [] ∧ σ.kept s ∧ ¬ Barred σ s ∧ ¬ U.angelic s) := by
+  cases h
+  all_goals intro s' c' hs
+  all_goals first
+    | exact Or.inl hs
+    | (rw [afterTurn_inscribed] at hs; exact Or.inl hs)
+    | (rw [afterJudge_inscribed] at hs; exact Or.inl hs)
+    | (rw [foldl_addMade_inscribed] at hs; exact Or.inl hs)
+    | (rcases hs with hs | ⟨rfl, rfl⟩
+       · exact Or.inl hs
+       · first
+         | exact Or.inr (Or.inl ⟨_, rfl⟩)
+         | exact Or.inr (Or.inr ⟨rfl, by assumption, by assumption, by assumption⟩))
+
+/-- **The licence to depart ends the keeping.** After a live spirit is released, its seal
+is no longer kept, so it cannot be worn again in that run. -/
+theorem release_ends_keeping {M : Core U} {R : RelRite U} {σ σ1 : State U} {i : U.Inv}
+    {inst : Inst U} (hinv : σ.invs i = some inst)
+    (h : CoreStep M R σ (.release i false) σ1) : ¬ σ1.kept inst.spiritSeal := by
+  cases h with
+  | releaseLive hw hi hinv' hl =>
+      rw [hinv] at hinv'
+      cases hinv'
+      exact fun hk => hk.2 rfl
 
 end Annulus
 

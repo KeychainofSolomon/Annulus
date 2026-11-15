@@ -266,6 +266,7 @@ The names in the form are references to Constitution entries (section 2.3).
 7.3 **Ink is a finite budget drawn from a living source.** Inscribing spends ink from a budget owned by a living source: the faculty (section 2.4), or a running invocation.
 - **Provenance:** ink records its source.
 - **Lapse:** when the source is released or banished, every seal inscribed in its ink lapses.
+- **Keeping** (the owner's ruling, 2026-11-15): until then the seal stands. The seal of a spirit held from an earlier run is worn again without new ink (`core.md` §9.3d).
 
 [S: blood carries life, "the life is in the blood", Leviticus 17:11 (general knowledge, not stated in the sources). O: the budget and the lapse rule.]
 

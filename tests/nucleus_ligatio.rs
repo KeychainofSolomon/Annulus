@@ -66,6 +66,7 @@ fn launch(
         faculty,
         reserved,
         ink: BTreeMap::new(),
+        kept: BTreeSet::new(),
         world,
         stores,
     });

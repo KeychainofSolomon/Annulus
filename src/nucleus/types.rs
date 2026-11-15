@@ -276,6 +276,8 @@ pub enum Label {
     OpenC(CircleId),
     CloseC(CircleId),
     Inscribe(Seal, String, CircleId, bool, Vec<InvId>),
+    /// A kept seal worn again without ink (`core.md` §9.3d).
+    Wear(Seal, CircleId, bool, Vec<InvId>),
     Act(RiteAct, CircleId, bool, Vec<InvId>),
     Invoke(InvId, Seal, CircleId, WorkerId, bool, Vec<InvId>),
     Request(

@@ -86,6 +86,7 @@ impl State {
             self.faculty.clear();
             self.reserved.clear();
             self.ink_left.clear();
+            self.kept.clear();
         }
         let granted: BTreeSet<String> = self.faculty.iter().map(|c| c.place.clone()).collect();
         let fingerprints = granted
@@ -235,6 +236,37 @@ impl State {
         ));
         self.done();
         Ok(inv)
+    }
+
+    /// The kept seal (`core.md` §9.3d; Lean: `wear`). The seal of a spirit held from an
+    /// earlier run is worn again without ink. It then serves like an inscribed seal, for
+    /// the life of its Circle and no longer, and `invoke` judges the calling as for any seal.
+    pub fn wear(&mut self, rite: &dyn Rite, seal: &Seal) -> Step<()> {
+        self.operator()?;
+        let Some(&circle) = self.circles.last() else {
+            return self.deny("GERE SIGILLUM outside a Circle");
+        };
+        let admitted = rite.admit_wear(self, seal);
+        let called = self
+            .invs
+            .values()
+            .any(|i| i.seal == *seal && i.status == InvStatus::Live);
+        let lawful = admitted
+            && self.kept.contains(seal)
+            && !self.barred(seal)
+            && !self.angelic(seal)
+            && !called;
+        if !lawful {
+            let dismissed = self.open_invocations();
+            self.record(Label::Wear(seal.clone(), circle, admitted, dismissed));
+            let at = self.audit.len();
+            self.end_run(Ending::Failure(DENIAL, at));
+            return Err(Refusal::Denied("the kept seal is not worn"));
+        }
+        self.inscribed.insert((seal.clone(), circle));
+        self.record(Label::Wear(seal.clone(), circle, true, Vec::new()));
+        self.done();
+        Ok(())
     }
 
     pub fn act(&mut self, rite: &dyn Rite, act: &RiteAct) -> Step<()> {
@@ -736,6 +768,10 @@ impl State {
         };
         let live = status == InvStatus::Live;
         if live {
+            // The licence to depart ends the keeping: the seal lapses (`authority.md` §7.3).
+            if let Some(seal) = self.invs.get(&inv).map(|i| i.seal.clone()) {
+                self.kept.remove(&seal);
+            }
             self.terminate(|i, _| i == inv, InvStatus::Released);
         }
         self.record(Label::Release(inv, !live));
@@ -747,6 +783,9 @@ impl State {
         self.operator()?;
         if !self.live(inv) {
             return self.deny("RELEGA of an invocation that is not open");
+        }
+        if let Some(seal) = self.invs.get(&inv).map(|i| i.seal.clone()) {
+            self.kept.remove(&seal);
         }
         self.terminate(|i, _| i == inv, InvStatus::Relegated);
         self.record(Label::Relegate(inv));

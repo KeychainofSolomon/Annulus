@@ -1,6 +1,6 @@
 # Draft: the kings, the escalation, and a refused consecration
 
-Draft, 2026-11-15. Nothing here is built. It covers three open items of `STATUS.md`: `INVOCA REGEM`, `RECUSATIO` and its escalation, and the form by which a program receives a refused `CONSECRA`.
+Draft, 2026-11-15. **The consecration form (§3) was accepted and built the same day** (`flow.md` §3.5); §3 is kept as the record of its design and research. The kings (§1) and the escalation (§2) are not built. It covers three open items of `STATUS.md`: `INVOCA REGEM`, `RECUSATIO` and its escalation, and the form by which a program receives a refused `CONSECRA`.
 
 ## 0. The finding that shapes the plan
 
@@ -112,7 +112,7 @@ The form holds, on the nine rules of §3.2. It adds one choice to what a spirit 
 
 ## 5. Order of building
 
-1. The consecration form (§3): smallest, touches no rite.
+1. ~~The consecration form (§3).~~ Built, 2026-11-15.
 2. The kings (§1): the escalation's step 4 leans on them.
 3. The escalation (§2).
 4. Spiri72: `recusatio` in the model's grammar.

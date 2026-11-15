@@ -111,7 +111,6 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | **`DOCTRINA`** (teaching): a telling office that is also *computing* (`offices.md` §2.2) | **Bindable (2026-11-14, PR #5):** the teaching spirits can be bound through it; a well-formed lesson is **held (`SUSPENSUM`), never approved**, until a domain library checks its certificate (`offices.md` §5.2, `library.md` §3); a citation beyond the handed places is rejected. The checking library is PR #3 (to be rebased onto this) |
 | Offices beyond telling, teaching and the five working kinds (transformation, dignities…) | Not in the subset |
 | The escalation, so `RECUSATIO` can open; spirit-specific malice | The escalation **drafted** (`docs/TRIA_PLAN.md` §2, 2026-11-15), not built; malice not started |
-| A program receiving a refused `CONSECRA` | **Drafted** (`docs/TRIA_PLAN.md` §3, 2026-11-15), not built; four points for the owner (§6) |
 | Real validators before step 4; the trust handshake | Not started |
 | The seven doubled seals other than Bune | Open ruling |
 | Drift watch: a CI step comparing the Python and Rust parsers' rejection positions | Owed |

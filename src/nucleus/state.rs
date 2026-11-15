@@ -214,6 +214,9 @@ pub struct State {
     pub(crate) reserved: BTreeSet<Cap>,
     pub(crate) ink_left: BTreeMap<String, u64>,
     pub(crate) inscribed: BTreeSet<(Seal, CircleId)>,
+    /// The kept seals (`core.md` §9.3d): read from the sealed store at launch. No step
+    /// adds to them.
+    pub(crate) kept: BTreeSet<Seal>,
     pub(crate) circles: Vec<CircleId>,
     pub(crate) workers: BTreeMap<WorkerId, Worker>,
     pub(crate) invs: BTreeMap<InvId, Inst>,
@@ -260,6 +263,10 @@ impl State {
 
     pub fn inscribed(&self) -> &BTreeSet<(Seal, CircleId)> {
         &self.inscribed
+    }
+
+    pub fn kept(&self) -> &BTreeSet<Seal> {
+        &self.kept
     }
 
     pub fn circles(&self) -> &Vec<CircleId> {
@@ -341,6 +348,8 @@ pub struct Launch {
     pub faculty: BTreeSet<Cap>,
     pub reserved: BTreeSet<Cap>,
     pub ink: BTreeMap<String, u64>,
+    /// The seals of spirits held from an earlier run and not yet given licence.
+    pub kept: BTreeSet<Seal>,
     pub world: BTreeMap<Place, (String, Mark)>,
     pub stores: Stores,
 }
@@ -368,6 +377,7 @@ impl State {
             reserved: launch.reserved,
             ink_left: launch.ink,
             inscribed: BTreeSet::new(),
+            kept: launch.kept,
             circles: Vec::new(),
             workers,
             invs: BTreeMap::new(),

@@ -660,6 +660,14 @@ CIRCULUS RITU goetia {
     assert_eq!(e.class, 2, "a true but open answer cannot be consecrated");
     assert!(e.output.iter().all(|l| l != "steered"));
     theorems(&e.state);
+    assert!(
+        e.state
+            .audit()
+            .entries()
+            .iter()
+            .any(|l| matches!(l, Label::Consecrate(_, _, false))),
+        "the refusal is recorded before the run ends (core.md §9.3a)"
+    );
 }
 
 fn conducted(
@@ -960,4 +968,126 @@ CIRCULUS RITU goetia {
         "a well-formed DOCTRINA answer is held, never approved: {:?}",
         e.output
     );
+}
+
+// `SI CONSECRA v IN name { … } ALITER { … }` (`flow.md` §3.5).
+
+fn forma(body: &str, answer: &str) -> Exitus {
+    let program = format!(
+        r#"FACULTAS {{
+    atramentum "comes" 1;
+}}
+CIRCULUS RITU goetia {{
+    INTENTIO "the form";
+    SIT s = INSCRIBE SIGILLUM furfur ATRAMENTO CONSECRA ATRAMENTUM "comes";
+    SIT v = INVOCA furfur AD OFFICIUM responsa;
+    SIT p = PETE v("quid est tempestas");
+    SI EXAMINA p == RATUM {{
+{body}
+    }}
+    VADE IN PACE v;
+}}
+"#
+    );
+    let options = Optiones {
+        semen: 0,
+        sors: Some(Outcome::Obsequium),
+        responsa: vec![Responsum {
+            spirit: 34,
+            office: "RESPONSA".to_string(),
+            quaestio: "quid est tempestas".to_string(),
+            verum: answer.to_string(),
+            falsum: None,
+        }],
+        caelum: annulus::horae::Caelum::probatio(),
+        ..Default::default()
+    };
+    run_source(
+        &program,
+        test_wand(),
+        Stores::install(&test_wand()),
+        BTreeMap::new(),
+        &options,
+    )
+    .unwrap()
+}
+
+const BRANCHES: &str = r#"        SI CONSECRA RESPONSUM p IN verba {
+            SI verba == "ita" {
+                MANIFESTA "steered";
+            }
+        } ALITER {
+            MANIFESTA "unfit";
+            MANIFESTA RESPONSUM p;
+        }"#;
+
+#[test]
+fn unfit_words_go_to_aliter_and_the_run_goes_on() {
+    let e = forma(BRANCHES, "ventus");
+    assert_eq!(e.class, 0, "{:?}", e.message);
+    assert!(e.output.iter().any(|l| l == "unfit"), "{:?}", e.output);
+    assert!(e.output.iter().all(|l| l != "steered"));
+    // The words are still the spirit's own: shown marked, never clean.
+    assert!(
+        e.output
+            .iter()
+            .any(|l| l.contains("ventus") && l.contains("Furfur")),
+        "{:?}",
+        e.output
+    );
+    // The refusal is recorded, and before the ALITER block's own records.
+    assert!(e
+        .state
+        .audit()
+        .entries()
+        .iter()
+        .any(|l| matches!(l, Label::Consecrate(_, Some(_), false))));
+    theorems(&e.state);
+}
+
+#[test]
+fn fit_words_are_bound_consecrated_and_may_steer() {
+    let e = forma(BRANCHES, "ita");
+    assert_eq!(e.class, 0, "{:?}", e.message);
+    assert!(e.output.iter().any(|l| l == "steered"), "{:?}", e.output);
+    assert!(e.output.iter().all(|l| l != "unfit"));
+    theorems(&e.state);
+}
+
+#[test]
+fn words_consecrated_once_are_not_refused_the_second_time() {
+    let twice = r#"        SIT semel = CONSECRA RESPONSUM p;
+        SIT iterum = CONSECRA RESPONSUM p;
+        SI iterum == "ita" {
+            MANIFESTA "twice";
+        }
+        SI CONSECRA RESPONSUM p IN tertium {
+            MANIFESTA "thrice";
+        } ALITER {
+            MANIFESTA "unfit";
+        }"#;
+    let e = forma(twice, "ita");
+    assert_eq!(e.class, 0, "{:?}", e.message);
+    assert!(e.output.iter().any(|l| l == "twice"), "{:?}", e.output);
+    assert!(e.output.iter().any(|l| l == "thrice"), "{:?}", e.output);
+    theorems(&e.state);
+}
+
+#[test]
+fn the_program_cannot_tell_why_words_were_unfit() {
+    // Outside the list, nearly in it, and far too long all look alike to the program.
+    let long = "ita ".repeat(4000);
+    let seen: Vec<Vec<String>> = ["ventus", "ITA", long.as_str()]
+        .iter()
+        .map(|answer| {
+            let e = forma(
+                "        SI CONSECRA RESPONSUM p IN verba {\n            MANIFESTA \"fit\";\n        } ALITER {\n            MANIFESTA \"unfit\";\n        }",
+                answer,
+            );
+            assert_eq!(e.class, 0, "{:?}", e.message);
+            e.output
+        })
+        .collect();
+    assert!(seen.iter().all(|o| o == &seen[0]), "{seen:?}");
+    assert!(seen[0].iter().any(|l| l == "unfit"));
 }

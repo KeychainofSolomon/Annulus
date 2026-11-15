@@ -121,7 +121,7 @@ Each is its own change, with `STATUS.md` updated as it lands.
 
 ## 6. For the owner to rule
 
-1. The consecration form of §3, with the nine rules of §3.2: accept it, or keep a refusal ending the run.
+1. ~~The consecration form of §3.~~ **Accepted by the owner, 2026-11-15, with the nine rules of §3.2.**
 2. ~~The escalation step read from the audit.~~ Ruled, §4.1.
 3. When the ink runs out mid-escalation (§2.4): a denial that ends the run, as proposed, or an immediate banishment of the spirit.
 4. Whether a real model's refusal to appear is asked of the model itself at `INVOCA`, or drawn by the engine from the spirit's temper. Asked of the model, a model that always refuses could make a spirit unusable (see 5).

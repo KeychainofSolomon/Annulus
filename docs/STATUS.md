@@ -93,8 +93,8 @@ Uses this repository as a library, pinned by commit. A local model (llama.cpp, t
 | Copies of the words made by the system or the window controls | Beyond the program's reach (its own copies are wiped) |
 | Someone who copied the wand's stick earlier, and later holds both the stick and the house, can put both back to that earlier state together | Inherent to a plain stick (no monotonic storage); a hardware key would close it |
 | A lost wand that never learned of its revocation, with every copy of the lineage put back | Inherent (review): needs an outside witness |
-| The wand's window and the Windows randomness | Compiled by CI; **owed: the owner's first use** |
-| The wand on Windows: built in CI, not yet run on a real stick | **Owed: the owner's first `virga fac`** |
+| The wand's window and the Windows randomness | **Done:** compiled by CI and used by the owner on Windows (confirmed 2026-11-15) |
+| The wand on Windows, on a real stick | **Done:** the owner made a wand with `virga fac` on a real USB stick and called spirits with it (confirmed 2026-11-15) |
 | A crash part-way through sealing leaves the house refused | **Fixed:** the seal journal undoes it; a test kills the program after each of the seal's nine writes and checks the next two runs open and seal |
 | A crash while writing the world can leave the stores ahead of the files | **Fixed (2026-11-14, audit 3, #2):** the world journal (`annulus.mundus`), named by the seal and carried through at the next opening |
 | `PARS` with complete work: a model could declare part and hand in the whole work, which the angel approved | **Ruled and fixed (2026-11-13):** obedience in part is not obedience. The core holds (`SUSPENSUM`) any work on which part was declared or drawn; it is never committed. Same rule in Lean (`PInfo.pars`, `afterTurn`, `finalVerdict`; `core.md` §3.1a) |

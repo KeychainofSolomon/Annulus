@@ -23,6 +23,9 @@ pub struct Optiones {
     pub responsa: Vec<Responsum>,
     pub radices: Option<crate::nucleus::state::Roots>,
     pub caelum: crate::horae::Caelum,
+    /// The kept seals this run may wear: declared in the FACULTAS and found held in the
+    /// house's sealed record (`core.md` §9.3d).
+    pub sigilla_tenta: BTreeSet<crate::nucleus::types::Seal>,
 }
 
 pub use crate::nucleus::types::DECLARABLE;
@@ -161,6 +164,7 @@ pub fn run_with(
     will: Option<&mut dyn Voluntas>,
 ) -> Exitus {
     let mut launch = ritus::launch(checked, &mut wand, stores, world, options.radices.clone());
+    launch.kept = options.sigilla_tenta.clone();
     launch.simulated = will.is_none();
     let mut run = Run {
         state: State::initial(launch),
@@ -701,6 +705,11 @@ impl<'p> Run<'p> {
                     }
                     _ => self.op(|_| true, |s, _| s.release(inv)),
                 }
+            }
+            Stmt::GereSigillum(entity, _) => {
+                let seal = self.spirit(entity)?.seal(ritus::RITE);
+                self.op(|_| true, |s, r| s.wear(r, &seal))?;
+                Ok(())
             }
             Stmt::Gere(instrument, _) => {
                 let act = RiteAct::Gere(match instrument {

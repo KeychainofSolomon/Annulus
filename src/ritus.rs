@@ -87,6 +87,19 @@ pub fn faculty_of(checked: &Checked) -> (BTreeSet<Cap>, BTreeSet<Cap>, BTreeMap<
     (faculty, reserved, ink)
 }
 
+/// The kept seals a program declares (`sigillum "name" tentum;`): each spirit's number and
+/// seal. Whether the house really holds them is the launcher's to check.
+pub fn tenta_of(checked: &Checked) -> Vec<(i64, Seal)> {
+    let register = crate::lingua::registra::goetia();
+    checked
+        .grants
+        .iter()
+        .filter(|g| g.kind == "sigillum")
+        .filter_map(|g| register.by_label(&g.target))
+        .map(|s| (i64::from(s.n), s.seal(RITE)))
+        .collect()
+}
+
 /// Prepares the launch: the master key signs the faculty, then is laid down before the
 /// nucleus is built, so that no Circle ever opens while it is held.
 pub fn launch(
@@ -331,6 +344,12 @@ impl Rite for Goetia {
     fn admit(&self, state: &State, seal: &Seal, _circle: CircleId) -> bool {
         self.spirit(seal)
             .is_some_and(|spirit| self.refusal(state, spirit).is_none())
+    }
+
+    /// A kept seal may be worn if it is the seal of a spirit of this register. Whether the
+    /// spirit may then be called is `admit`'s to say, as for any seal.
+    fn admit_wear(&self, _state: &State, seal: &Seal) -> bool {
+        self.spirit(seal).is_some()
     }
 
     fn signature(&self, _state: &State, form: &ReqForm) -> BTreeSet<Cap> {

@@ -130,6 +130,8 @@ pub enum Stmt {
     },
     Release(Release, Expr, Pos),
     Gere(Instrument, Pos),
+    /// `GERE SIGILLUM x;`: a kept seal worn again (`core.md` §9.3d).
+    GereSigillum(Entity, Pos),
     Command(Command, Expr, Pos),
     Constringe(Expr, String, Pos),
     Expr(Expr, Pos),

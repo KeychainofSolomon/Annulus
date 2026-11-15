@@ -370,6 +370,11 @@ impl Parser {
             return self.release(Release::Mane, pos);
         }
         if self.accept("GERE") {
+            if self.accept("SIGILLUM") {
+                let entity = self.entity("SPIRITUS", "ANGELI")?;
+                self.expect(";")?;
+                return Ok(Stmt::GereSigillum(entity, pos));
+            }
             let instrument = if self.accept("ANULUM") {
                 Instrument::Anulum
             } else if self.accept("VIRGAM") {

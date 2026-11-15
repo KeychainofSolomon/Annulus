@@ -543,3 +543,52 @@ fn the_consecrated_name_cannot_be_assigned() {
         "N4",
     );
 }
+
+// The kept seal (`core.md` §9.3d): `GERE SIGILLUM x;`, declared `sigillum "x" tentum;`.
+
+fn kept_program(grant: &str, worn: &str) -> String {
+    format!(
+        "FACULTAS {{\n{grant}}}\nCIRCULUS RITU goetia {{\n    INTENTIO \"x\";\n    GERE SIGILLUM {worn};\n    SIT v = INVOCA furfur AD OFFICIUM responsa;\n    SIT p = PETE v(\"venietne tempestas\");\n    MANIFESTA EXAMINA p;\n    MANE v;\n}}\n"
+    )
+}
+
+#[test]
+fn a_declared_kept_seal_serves_in_place_of_an_inscription() {
+    lawful(&kept_program("    sigillum \"furfur\" tentum;\n", "furfur"));
+    lawful(&kept_program(
+        "    sigillum \"furfur\" tentum;\n",
+        "SPIRITUS 34",
+    ));
+}
+
+#[test]
+fn a8_a_kept_seal_must_be_declared() {
+    refused(&kept_program("", "furfur"), "A8");
+    // Another spirit's declaration does not serve.
+    refused(
+        &kept_program("    sigillum \"halphas\" tentum;\n", "furfur"),
+        "A8",
+    );
+}
+
+#[test]
+fn a8_the_declaration_of_a_kept_seal_is_exact() {
+    for grant in [
+        "    sigillum \"furfur\";\n",
+        "    sigillum \"furfur\" tentum 2;\n",
+        "    sigillum \"furfur\" tentum angelis;\n",
+        "    sigillum \"nemo\" tentum;\n",
+    ] {
+        refused(&kept_program(grant, "furfur"), "A8");
+    }
+}
+
+#[test]
+fn wearing_one_seal_does_not_serve_for_another_spirit() {
+    // Halphas's seal worn; Furfur invoked: his seal is neither inscribed nor worn.
+    let found = codes(&kept_program(
+        "    sigillum \"halphas\" tentum;\n",
+        "halphas",
+    ));
+    assert!(!found.is_empty(), "Furfur was called on Halphas's seal");
+}

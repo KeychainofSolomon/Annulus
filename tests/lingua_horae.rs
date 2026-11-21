@@ -79,15 +79,17 @@ fn a_duke_comes_in_his_hours_under_a_clear_sky() {
 fn nothing_comes_on_a_wrong_day_of_the_moon() {
     let gusion = rite("gusion", "dux", "praesentia");
     refused(
-        &at(&gusion, "2024-04-12T09:00:00+02:00", Some(true)),
-        "Moon is 3 days old",
+        &at(&gusion, "2024-04-25T09:00:00+02:00", Some(true)),
+        "Moon is 16 days old and waning",
     );
     let furfur = rite("furfur", "comes", "responsa");
     refused(
-        &at(&furfur, "2024-04-20T12:00:00+02:00", None),
-        "Moon is 11 days old",
+        &at(&furfur, "2024-04-28T12:00:00+02:00", None),
+        "Moon is 19 days old and waning",
     );
     assert_eq!(at(&furfur, "2024-04-13T03:00:00+02:00", None).class, 0);
+    // an odd day of the waxing Moon is open under the Key's rule
+    assert_eq!(at(&furfur, "2024-04-20T12:00:00+02:00", None).class, 0);
 }
 
 #[test]
@@ -172,11 +174,11 @@ fn a_hold_begins_only_in_an_open_hour() {
     refused(
         &held_at(
             &gusion,
-            "2024-04-12T09:00:00+02:00",
+            "2024-04-25T09:00:00+02:00",
             Some(true),
-            Some("11@2024-04-13T09:00:00+02:00"),
+            Some("11@2024-04-26T09:00:00+02:00"),
         ),
-        "Moon is 3 days old",
+        "Moon is 16 days old",
     );
 }
 

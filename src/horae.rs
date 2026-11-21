@@ -1,7 +1,6 @@
 use std::f64::consts::PI;
 
 pub const DAY: f64 = 86_400.0;
-pub const LUNAR_DAYS: [u32; 7] = [2, 4, 6, 8, 10, 12, 14];
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Caelum {
@@ -74,6 +73,16 @@ pub fn sol(day: i64, lat: f64, lon: f64) -> Option<Sol> {
 }
 
 fn new_moon(k: f64) -> f64 {
+    phase(k, false)
+}
+
+/// The Full Moon that follows the New Moon of lunation `k` (Meeus, *Astronomical
+/// Algorithms*, ch. 49: the same series at `k + 0.5`, with the Full Moon's terms).
+fn full_moon(k: f64) -> f64 {
+    phase(k + 0.5, true)
+}
+
+fn phase(k: f64, full: bool) -> f64 {
     let t = k / 1236.85;
     let jde = 2_451_550.097_66 + 29.530_588_861 * k + 0.000_154_37 * t * t
         - 0.000_000_150 * t * t * t
@@ -83,13 +92,23 @@ fn new_moon(k: f64) -> f64 {
     let mp = rad(201.5643 + 385.816_935_28 * k + 0.010_758_2 * t * t + 0.000_012_38 * t * t * t);
     let f = rad(160.7108 + 390.670_502_84 * k - 0.001_611_8 * t * t - 0.000_002_27 * t * t * t);
     let om = rad(124.7746 - 1.563_755_88 * k + 0.002_067_2 * t * t);
-    let correction = -0.40720 * mp.sin()
-        + 0.17241 * e * m.sin()
-        + 0.01608 * (2.0 * mp).sin()
-        + 0.01039 * (2.0 * f).sin()
-        + 0.00739 * e * (mp - m).sin()
-        - 0.00514 * e * (mp + m).sin()
-        + 0.00208 * e * e * (2.0 * m).sin()
+    // the first seven terms differ between the New and the Full Moon
+    let c: [f64; 7] = if full {
+        [
+            -0.40614, 0.17302, 0.01614, 0.01043, 0.00734, -0.00515, 0.00209,
+        ]
+    } else {
+        [
+            -0.40720, 0.17241, 0.01608, 0.01039, 0.00739, -0.00514, 0.00208,
+        ]
+    };
+    let correction = c[0] * mp.sin()
+        + c[1] * e * m.sin()
+        + c[2] * (2.0 * mp).sin()
+        + c[3] * (2.0 * f).sin()
+        + c[4] * e * (mp - m).sin()
+        + c[5] * e * (mp + m).sin()
+        + c[6] * e * e * (2.0 * m).sin()
         - 0.00111 * (mp - 2.0 * f).sin()
         - 0.00057 * (mp + 2.0 * f).sin()
         + 0.00056 * e * (2.0 * mp + m).sin()
@@ -111,7 +130,8 @@ fn new_moon(k: f64) -> f64 {
     unix(jde + correction - 69.0 / DAY)
 }
 
-pub fn last_new_moon(t: f64) -> f64 {
+/// The lunation whose New Moon last fell at or before `t`.
+fn lunation(t: f64) -> f64 {
     let jd = julian(t);
     let mut k = ((jd - 2_451_550.097_66) / 29.530_588_861).floor();
     while new_moon(k) > t {
@@ -120,7 +140,16 @@ pub fn last_new_moon(t: f64) -> f64 {
     while new_moon(k + 1.0) <= t {
         k += 1.0;
     }
-    new_moon(k)
+    k
+}
+
+pub fn last_new_moon(t: f64) -> f64 {
+    new_moon(lunation(t))
+}
+
+/// Whether the Moon is increasing in light at `t`: past her New Moon and not yet Full.
+pub fn crescens(t: f64) -> bool {
+    t < full_moon(lunation(t))
 }
 
 pub fn aetas_lunae(t: f64) -> u32 {
@@ -181,13 +210,17 @@ pub fn window(rank: &str, t: f64, caelum: &Caelum) -> Result<(), String> {
     }
 }
 
+/// The Key of Solomon (Book I, ch. II; Book II): "At all times of practicing and
+/// putting into execution Magical Arts, the Moon should be increasing in light", and
+/// "the time from the New unto the Full Moon is proper". The Goetia's later narrowing to
+/// the even days 2 to 14 is set aside by the Operator in favour of the older rule.
 pub fn lunar(t: f64) -> Result<(), String> {
-    let age = aetas_lunae(t);
-    if LUNAR_DAYS.contains(&age) {
+    if crescens(t) {
         Ok(())
     } else {
         Err(format!(
-            "the Moon is {age} days old, and the work is done only when she is 2, 4, 6, 8, 10, 12 or 14 days old"
+            "the Moon is {} days old and waning, and the work is done only while she is increasing in light, from the New Moon to the Full",
+            aetas_lunae(t)
         ))
     }
 }

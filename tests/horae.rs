@@ -109,12 +109,39 @@ fn each_rank_keeps_its_hours() {
 }
 
 #[test]
-fn the_moon_must_be_of_an_even_age_to_fourteen() {
+fn the_moon_must_be_increasing_in_light() {
     let earl = rank("earl");
+    // New Moon 2024-04-08 18:21 UTC, Full Moon 2024-04-23 23:49 UTC
     assert!(admit(&earl, &caelum("2024-04-12T20:00:00Z", None)).is_ok());
-    let e = admit(&earl, &caelum("2024-04-11T20:00:00Z", None)).unwrap_err();
-    assert!(e.contains("3 days old"), "{e}");
-    assert!(admit(&earl, &caelum("2024-04-25T20:00:00Z", None)).is_err());
+    assert!(admit(&earl, &caelum("2024-04-11T20:00:00Z", None)).is_ok());
+    assert!(admit(&earl, &caelum("2024-04-08T19:00:00Z", None)).is_ok());
+    assert!(admit(&earl, &caelum("2024-04-23T23:20:00Z", None)).is_ok());
+    let e = admit(&earl, &caelum("2024-04-24T00:20:00Z", None)).unwrap_err();
+    assert!(e.contains("waning"), "{e}");
+    let e = admit(&earl, &caelum("2024-04-25T20:00:00Z", None)).unwrap_err();
+    assert!(e.contains("17 days old and waning"), "{e}");
+    assert!(admit(&earl, &caelum("2024-04-08T18:00:00Z", None)).is_err());
+}
+
+#[test]
+fn full_moons_fall_where_the_eclipses_were() {
+    // total lunar eclipses fall at the Full Moon
+    for (eclipse, during) in [
+        ("2022-11-08T11:02:00Z", "2022-11-08T10:00:00Z"),
+        ("2018-07-27T20:22:00Z", "2018-07-27T19:00:00Z"),
+        ("2019-01-21T05:16:00Z", "2019-01-21T04:00:00Z"),
+    ] {
+        let t = at(eclipse);
+        assert!(crescens(at(during)), "{during} is before the Full Moon");
+        assert!(
+            !crescens(t + 20.0 * 60.0),
+            "{eclipse}: not yet full 20 min after"
+        );
+        assert!(
+            crescens(t - 20.0 * 60.0),
+            "{eclipse}: already full 20 min before"
+        );
+    }
 }
 
 #[test]

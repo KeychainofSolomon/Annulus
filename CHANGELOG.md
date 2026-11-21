@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### The four kings: `INVOCA REGEM` (2026-11-21)
+- `INVOCA REGEM r` is no longer outside the subset. It is an act of the rite, recorded in the audit as `GERE` is: no spirit is named, no ink is spent, the king does not appear. The `goetia` rite admits it only in the kings' hours (the third hour to noon, the ninth hour to evening) and only for one of its own four kings, in any spelling `reges.json` records (Amaymon, Corson or Gorson, Ziminiar, Goap). Outside those hours the run ends in a denial, and the refusal is recorded.
+- **Presidents can come.** A President is admitted only after the king of his stated quarter was invoked in the open Circle, and never at nightfall. His own hours are otherwise every hour (Weyer ch. III). Marbas and Gaap come under Amaymon; Foras, Malphas and Osé under Corson; Zagan under Goap. A President whose quarter no witness states still cannot be invoked.
+- The checker enforces A13 as written: the right king, earlier in the same Circle, on every path; a name that is not a king of the rite is A3.
+- **Readings made here, for the owner to confirm:** *nightfall* is the evening twilight, from sunset to the end of civil twilight (Sloane 3825: "excepting Twilight, at Night"); a held President (`--tentus`) still needs `INVOCA REGEM` in each Circle, so he can be asked again only while the kings' hours are open.
+- No change to the core's rules or to the Lean model, which leaves the rite's acts abstract. 9 new tests (`tests/lingua_reges.rs`); 388 in all.
+
 ### Lean: seven of the obligations proved (2026-11-14)
 - `formal/Annulus/Proofs.lean` now proves, for any language and any rite, with no axiom beyond Lean's own: **P1** (adding (c): a helper holds a subset of the request it serves), **P2** (no self-approval), **P4** (each invocation has one terminal step and nothing uses it afterwards), **P6 (b)** (a stricter rite adds no behaviour), **P7** (the audit is the run's labels), **P8** (fail closed) and **the damnation law**. Only proofs were added; the model and the statements are unchanged.
 - Found while proving: **P9 is false as stated.** `Dismissed σ ds` does not fix the order of `ds`, so two replays may close with records that differ in that order alone. Open ruling. P3 and P5 remain unprovable until `Lang` models the type checker (as `formal/README.md` already said).

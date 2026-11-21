@@ -4,6 +4,7 @@ use std::sync::OnceLock;
 use super::json::{self, Json};
 
 pub const GOETIA: &str = include_str!("../../docs/registers/goetia.json");
+const REGES: &str = include_str!("../../docs/registers/reges.json");
 const NOMINA: &str = include_str!("../../docs/registers/nomina.json");
 
 pub const RITES: &[&str] = &[
@@ -44,9 +45,72 @@ pub struct Spirit {
     pub veracity: String,
     pub veracity_condition: String,
     pub malice: usize,
+    /// The quarter the witnesses give for the spirit, if any (`goetia.md`).
+    pub quarter: Option<String>,
+}
+
+/// One of the four kings of a rite (`docs/registers/reges.md`).
+#[derive(Clone, Debug)]
+pub struct Rex {
+    pub n: u32,
+    pub quarter: String,
+    /// The name he is recorded and shown by: the first the register gives.
+    pub name: String,
+    /// That name as a label; what the audit records.
+    pub label: String,
+    /// Every spelling the register records, as labels.
+    pub spellings: Vec<String>,
+}
+
+/// The four kings of the `goetia` rite, in the register's order.
+pub fn reges() -> &'static [Rex] {
+    static REGES_GOETIA: OnceLock<Vec<Rex>> = OnceLock::new();
+    REGES_GOETIA.get_or_init(|| {
+        let root = json::parse(REGES).expect("the register of kings is well formed");
+        root.list()
+            .iter()
+            .filter(|e| e.get("rite").and_then(Json::text) == Some("goetia"))
+            .filter_map(|e| {
+                let names: Vec<&str> = e
+                    .get("names")
+                    .map(Json::list)
+                    .unwrap_or(&[])
+                    .iter()
+                    .filter_map(|n| n.get("text").and_then(Json::text))
+                    .collect();
+                let name = names.first()?.to_string();
+                let mut spellings: Vec<String> = Vec::new();
+                for s in names.iter().filter_map(|n| label_of(n)) {
+                    if !spellings.contains(&s) {
+                        spellings.push(s);
+                    }
+                }
+                Some(Rex {
+                    n: e.get("n").and_then(Json::number)? as u32,
+                    quarter: e.get("quarter").and_then(Json::text)?.to_string(),
+                    label: label_of(&name)?,
+                    name,
+                    spellings,
+                })
+            })
+            .collect()
+    })
+}
+
+/// The king a program names, in any spelling the register records.
+pub fn rex(name: &str) -> Option<&'static Rex> {
+    let label = label_of(name)?;
+    reges().iter().find(|r| r.spellings.contains(&label))
 }
 
 impl Spirit {
+    /// The king this spirit obeys: the `goetia` king of his stated quarter
+    /// (ruling 2026-11-10). None where the witnesses state no quarter.
+    pub fn rex(&self) -> Option<&'static Rex> {
+        let quarter = self.quarter.as_deref()?;
+        reges().iter().find(|r| r.quarter == quarter)
+    }
+
     pub fn seal(&self, rite: &str) -> String {
         format!("{rite}:{}:{}", self.n, self.label)
     }
@@ -183,6 +247,11 @@ pub fn load(rite: &'static str, source: &str) -> Result<Register, String> {
             veracity: text("veracity"),
             veracity_condition: text("veracity_condition"),
             malice: entry.get("malice").map(Json::list).unwrap_or(&[]).len(),
+            quarter: entry
+                .get("quarter")
+                .and_then(|q| q.get("value"))
+                .and_then(Json::text)
+                .map(str::to_string),
         });
     }
     let mut labels = BTreeMap::new();

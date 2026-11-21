@@ -103,7 +103,9 @@ fn each_rank_keeps_its_hours() {
             && !open("knight", "17:00", None)
             && !open("knight", "20:15", None)
     );
-    assert!(!open("president", "12:00", None));
+    // a President's own hours are every hour but nightfall; that his king must be
+    // invoked first is the rite's to check (tests/lingua_reges.rs)
+    assert!(open("president", "12:00", None) && open("president", "03:00", None));
     let both = vec!["duke".to_string(), "earl".to_string()];
     assert!(admit(&both, &caelum(&format!("{day}T03:00:00+02:00"), None)).is_ok());
 }

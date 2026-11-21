@@ -890,14 +890,25 @@ impl<'r> Checker<'r> {
             );
         }
         if spirit.only_president() {
-            self.error(
-                "A13",
-                pos,
-                format!(
-                    "{} is a President and needs INVOCA REGEM of his king first",
-                    spirit.name
+            match spirit.rex() {
+                None => self.error(
+                    "A13",
+                    pos,
+                    format!(
+                        "{} is a President whose quarter no witness states, so he cannot be invoked",
+                        spirit.name
+                    ),
                 ),
-            );
+                Some(rex) if !held.contains(rex.label.as_str()) => self.error(
+                    "A13",
+                    pos,
+                    format!(
+                        "{} is a President and needs INVOCA REGEM {} earlier in this Circle on every path",
+                        spirit.name, rex.label
+                    ),
+                ),
+                Some(_) => {}
+            }
         }
         Val {
             spirit: Some(spirit.n),
@@ -1171,11 +1182,26 @@ impl<'r> Checker<'r> {
             Expr::Unary(op, operand, pos) => self.unary(*op, operand, *pos),
             Expr::Inscribe(seal, ink, pos) => self.inscribe(seal, ink, *pos),
             Expr::Invoca(entity, office, pos) => self.invoca(entity, office, *pos, false),
-            Expr::InvocaRegem(_, pos) => {
-                if self.rite_only(*pos, "INVOCA REGEM") {
-                    self.subset(*pos, "INVOCA REGEM");
+            Expr::InvocaRegem(name, pos) => {
+                if !self.rite_only(*pos, "INVOCA REGEM") {
+                    return Val::error();
                 }
-                Val::error()
+                match super::registra::rex(name) {
+                    Some(rex) => {
+                        if let Some(held) = self.flow.held.last_mut() {
+                            held.insert(rex.label.as_str());
+                        }
+                        Val::plain(Ty::Nil)
+                    }
+                    None => {
+                        self.error(
+                            "A3",
+                            *pos,
+                            format!("{name} is not one of the four kings of this rite"),
+                        );
+                        Val::error()
+                    }
+                }
             }
             Expr::Pete(name, args, pos) => self.pete(name, args, *pos),
             Expr::Sigillum(entity, pos) => {

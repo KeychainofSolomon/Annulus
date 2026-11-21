@@ -200,6 +200,22 @@ impl Goetia {
             .collect()
     }
 
+    /// The kings invoked in the open Circles, by label, read back from the audit
+    /// as the instruments are.
+    pub fn kings(state: &State) -> BTreeSet<String> {
+        state
+            .audit
+            .entries()
+            .iter()
+            .filter_map(|l| match l {
+                Label::Act(RiteAct::Rex(k), c, true, _) if state.circles.contains(c) => {
+                    Some(k.clone())
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
     pub fn acts_on(state: &State, inv: InvId) -> Vec<RiteAct> {
         state
             .audit
@@ -324,6 +340,19 @@ impl Goetia {
                 Ok(()) if rank == "earl" && !open.is_empty() => {
                     why.push("an Earl comes only when no other spirit is in the Circle".to_string())
                 }
+                // A President comes only after the king he obeys is invoked in this
+                // Circle (Weyer ch. III; `dynamic.md` §5.1).
+                Ok(()) if rank == "president" => match spirit.rex() {
+                    None => why.push(format!(
+                        "{} is a President whose quarter no witness states, so his king is not known",
+                        spirit.name
+                    )),
+                    Some(rex) if !Goetia::kings(state).contains(&rex.label) => why.push(format!(
+                        "{} is a President, who comes only after his king {} is invoked",
+                        spirit.name, rex.name
+                    )),
+                    Some(_) => return None,
+                },
                 Ok(()) => return None,
                 Err(e) => why.push(e),
             }
@@ -528,6 +557,14 @@ impl Rite for Goetia {
         match act {
             RiteAct::Gere(Instrument::Virgam) => state.auth.wand.present,
             RiteAct::Gere(_) => true,
+            // A king of this rite, and only in the kings' hours: the third hour to
+            // noon, the ninth hour to evening (Weyer ch. III; `dynamic.md` §4).
+            RiteAct::Rex(king) => {
+                crate::lingua::registra::rex(king).is_some_and(|r| r.label == *king)
+                    && self.caelum.hora.is_some_and(|t| {
+                        crate::horae::window("king", t as f64, &self.caelum).is_ok()
+                    })
+            }
             RiteAct::Offer(inv, class) => spirit_of(inv).is_some_and(|s| {
                 s.n != 39
                     && s.ranks

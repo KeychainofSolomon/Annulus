@@ -10,6 +10,8 @@ Two small points do touch the core's edge, and are listed in §4.
 
 ## 1. `INVOCA REGEM`
 
+**Built 2026-11-21** as planned below (`CHANGELOG.md`, `STATUS.md`). Point 3's second effect, escalation step 4, waits on §2.
+
 **What the spec already fixes.** The syntax (`grammar.md`), the type `NIHIL` and rule A13 (`static.md` §4.5b), the hours and the three effects (`dynamic.md` §4), the kings and who is under each (`registers/reges.md`), and that a President obeys the `goetia` king of his stated quarter (`authority.md` §8).
 
 **How it lands.**

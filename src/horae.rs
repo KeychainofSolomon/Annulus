@@ -166,11 +166,14 @@ pub fn window(rank: &str, t: f64, caelum: &Caelum) -> Result<(), String> {
         "knight" => in_day(&|s, h| {
             (t >= s.aurora && t < s.ortus) || (t >= s.ortus + 10.0 * h && t < s.occasus)
         })?,
+        // A President may be bound at any hour but the twilight of nightfall
+        // (Weyer ch. III; `dynamic.md` §5.1). That his king must be invoked first
+        // is the rite's to check, since it reads the Circle's record.
         "president" => {
-            return Err(
-                "a President comes only after his king is called, and the kings are not built yet"
-                    .into(),
-            )
+            if in_day(&|s, _| t >= s.occasus && t < s.crepusculum)? {
+                return Err("a President is never bound at nightfall".into());
+            }
+            true
         }
         _ => false,
     };

@@ -859,6 +859,16 @@ impl<'p> Run<'p> {
             }
             Expr::Sigillum(entity, _) => Ok(V::SealEx(self.spirit(entity)?.n)),
             Expr::Atramentum(class, _) => Ok(V::Ink(class.clone())),
+            // The Invocation of the King: recorded as an act of the rite. The king
+            // does not appear and nothing is released (`static.md` §4.5b); outside
+            // the kings' hours the rite refuses it and the run ends in a denial.
+            Expr::InvocaRegem(name, _) => {
+                let rex = super::registra::rex(name)
+                    .ok_or_else(|| Halt::Denial("a king not in the register".into()))?;
+                let act = RiteAct::Rex(rex.label.clone());
+                self.op(|_| true, |s, r| s.act(r, &act))?;
+                Ok(V::Nil)
+            }
             Expr::Invoca(entity, office, _) => {
                 let spirit = self.spirit(entity)?;
                 let seal = spirit.seal(ritus::RITE);

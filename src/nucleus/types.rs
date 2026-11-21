@@ -319,12 +319,15 @@ pub enum RiteAct {
     Veta(InvId),
     Constringe(InvId, String),
     Mane(InvId),
+    /// The invocation of a king of the rite (`INVOCA REGEM`), by his label. No
+    /// spirit is named and no ink is spent; the king does not appear.
+    Rex(String),
 }
 
 impl RiteAct {
     pub fn inv(&self) -> Option<InvId> {
         match self {
-            RiteAct::Gere(_) => None,
+            RiteAct::Gere(_) | RiteAct::Rex(_) => None,
             RiteAct::Offer(i, _)
             | RiteAct::Appella(i)
             | RiteAct::Veta(i)
